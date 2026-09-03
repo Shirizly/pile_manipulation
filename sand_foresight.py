@@ -53,7 +53,8 @@ def load_sand_arrays(pattern: str, grid: int, sigma: float, normalize: str,
                      min_push_mm: float, device: str,
                      view: str = "density", min_grains: float = 2.0,
                      min_height: float | None = None, floor_z: float = 0.010,
-                     cube_size: float | None = None):
+                     cube_size: float | None = None,
+                     max_episodes: int | None = None):
     """Sand transitions -> density maps, actions, and episode ids.
 
     Returns positions as well as maps: the physical-units reporting works on

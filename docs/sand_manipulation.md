@@ -374,7 +374,43 @@ adds 10.6 points on sand and nothing at all on cubes.
 Both components are properties of the material, not of the method: the code,
 canonical frame, solver and metric are identical across the two rows.
 
-### But two explanations fit that table equally well
+### RESOLVED: it was pile DEPTH, not granularity
+
+The two explanations below were what motivated the cube-count spectrum. The
+first cube dataset settles it, and it overturns the reading above.
+
+| dataset | mean-delta | linear | margin |
+|---|---|---|---|
+| cubes, scattered monolayer | +0.013 | +0.010 | **-0.003** |
+| **cubes n=20, PILED (2 layers)** | 0.345 | 0.645 | **+0.300** |
+| sand, size-matched (5 120 tr) | 0.328 | 0.591 | +0.263 |
+| sand, full (48 000 tr) | 0.329 | 0.589 | +0.260 |
+
+**Twenty piled cubes beat sand.** The operator does more state-dependent work on
+a 20-cube heap than on a continuum, so the granularity story in the table above
+-- "whether a given cube is caught, tumbles or is missed is a threshold event, so
+the average response carries almost nothing" -- is not what was happening. The
+operative difference was that every cube dataset was FLAT. Give cubes two layers
+and the linear operator works on them at least as well as on sand. Sand's
+advantage was never being a continuum; it was being a heap.
+
+Consistent with that, the sand pile itself flattens over an episode (4.7 -> 2.4
+mm, ~1.2 grain layers by push 5, see the depth bullet below), so most sand
+transitions are on a thin sheet -- and sand's margin sits *below* the genuinely
+two-layer cube pile's.
+
+Two further contrasts at n=20 against sand:
+
+- **cubes are lower-rank**: rank-4 reaches 0.623 of a 0.645 full operator (97%)
+  against sand's 91%.
+- **mass conservation is nearly free on cubes** (col-stochastic 0.6442 vs
+  0.6447) where it cost sand 0.14. Cubes do not leave the canonical crop the way
+  grains do, so the constraint that was wrong for sand is reasonable here.
+
+Size-matching turned out not to matter (+0.263 matched vs +0.260 full), so the
+comparison is not an artefact of sand having 10x the data.
+
+### The two explanations this replaced
 
 The cube row is **scattered and blind**, the sand row is a **centred pile**, so
 the comparison confounds two things:
