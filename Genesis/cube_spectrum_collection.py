@@ -77,7 +77,13 @@ def parse_args():
                          "proves unstable.")
     ap.add_argument("--density", type=float, default=4000.0)
     ap.add_argument("--friction", type=float, default=0.5)
-    ap.add_argument("--n-envs", type=int, default=32)
+    ap.add_argument("--n-envs", type=int, default=32,
+                    help="Measured OOM ceilings on this GPU are 128 envs at "
+                         "n=50 and 64 at n=100 (docs/scaling_to_200_objects.md "
+                         "3.1), so 64 is safe across this whole spectrum and "
+                         "roughly halves wall time -- 32 is the conservative "
+                         "default because those ceilings assume nothing else "
+                         "is using the GPU.")
     ap.add_argument("--transitions", type=int, default=5200,
                     help="target per count. 5200 matches the first sand "
                          "dataset, so the model comparison is not confounded "
@@ -134,9 +140,13 @@ def main():
                                 "n_particles": n, "density": args.density,
                                 "particle_friction": args.friction})
         cfg["box"]["friction"] = args.friction
-        # Collision pairs scale with the pile; the default is sized for the
-        # 200-cube datasets and over-provisions badly at n=20.
-        cfg.setdefault("rigid_options", {})["max_collision_pairs"] = max(250, 12 * n)
+        # The repo's measured rule (docs/scaling_to_200_objects.md 1.5): the
+        # actual requirement is ~0.26 * n_particles, i.e. 5-21 across this
+        # spectrum, and OVERSIZING is not free -- the constraint Jacobian is
+        # O(max_collision_pairs * contacts_per_pair * n_dofs * n_envs) while
+        # raw step time is independent of the cap, so a too-large value
+        # converts directly into lost parallelism.
+        cfg.setdefault("rigid_options", {})["max_collision_pairs"] = max(150, n // 2)
         cfg["spawn"] = {"mode": args.spawn_mode,
                         "heap_base_frac": args.heap_base_frac,
                         "pyramid_gap": args.pyramid_gap,

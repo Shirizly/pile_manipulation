@@ -57,7 +57,7 @@ def main():
                             "n_particles": args.n, "density": args.density,
                             "particle_friction": args.friction})
     cfg["box"]["friction"] = args.friction
-    cfg.setdefault("rigid_options", {})["max_collision_pairs"] = max(250, 12 * args.n)
+    cfg.setdefault("rigid_options", {})["max_collision_pairs"] = max(150, args.n // 2)
     cfg["spawn"] = {"mode": args.layout, "pyramid_gap": args.gap,
                     "heap_base_frac": args.heap_base_frac,
                     "pyramid_pos_jitter": args.pos_jitter,

@@ -1978,10 +1978,20 @@ class SandboxManipulation:
         if layout == "heap":
             # Irregular by placement rather than by collapse -- a cube stack
             # will not restructure on its own (see heap_positions).
-            pos, n_layers = heap_positions(
-                n_active, size, gap=self._pyramid_gap,
-                base_frac=self._heap_base_frac, floor_z=floor_z,
-                device=gs.device)
+            #
+            # Drawn PER ENV, not once and broadcast. Broadcasting was the first
+            # version and it measurably wasted the parallelism: the envs then
+            # differed only by jitter (probed at 0.04 mm of centroid spread
+            # within an episode), so a 32-env run of 32 episodes saw ~32
+            # distinct arrangements instead of ~1000. The draw is pure index
+            # arithmetic on <=80 cubes, so the loop costs nothing next to the
+            # settle it precedes.
+            per_env = [heap_positions(n_active, size, gap=self._pyramid_gap,
+                                      base_frac=self._heap_base_frac,
+                                      floor_z=floor_z, device=gs.device)
+                       for _ in range(self._n_envs)]
+            n_layers = per_env[0][1]
+            pos = torch.stack([p for p, _ in per_env])       # (n_envs, n, 3)
         else:
             pos, n_layers = pyramid_positions(n_active, size,
                                               gap=self._pyramid_gap,
@@ -1989,7 +1999,9 @@ class SandboxManipulation:
             pos = stagger_layers(pos, size, gap=self._pyramid_gap,
                                  stagger=self._pyramid_stagger, floor_z=floor_z)
         positions = torch.zeros((self._n_envs, n_particles, 3), device=gs.device)
-        positions[:, :n_active] = pos.unsqueeze(0)
+        # pos is (n, 3) for a pyramid (identical in every env) and
+        # (n_envs, n, 3) for a heap (independently drawn per env).
+        positions[:, :n_active] = pos if pos.dim() == 3 else pos.unsqueeze(0)
         positions[:, :n_active, :2] += (
             torch.rand((self._n_envs, n_active, 2), device=gs.device) - 0.5
         ) * size * self._pyramid_pos_jitter

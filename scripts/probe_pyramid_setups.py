@@ -130,8 +130,10 @@ def main():
                                     "n_particles": n, "density": args.density,
                                     "particle_friction": args.friction})
             cfg["box"]["friction"] = args.friction
+            # The repo's measured rule; oversizing costs parallelism, see
+            # docs/scaling_to_200_objects.md 1.5.
             cfg.setdefault("rigid_options", {})["max_collision_pairs"] = \
-                max(250, 12 * n)
+                max(150, n // 2)
             cfg["spawn"] = {"mode": args.layout, "pyramid_gap": gap,
                             "heap_base_frac": args.heap_base_frac,
                             "pyramid_pos_jitter": jit, "pyramid_yaw_jitter": yaw,

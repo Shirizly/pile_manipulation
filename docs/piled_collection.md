@@ -195,6 +195,19 @@ nothing else, so lift is not a sensitive knob here.
 `heap_base_frac` sets the split (0.6 → 60% in layer 0). Geometry and its unit
 tests: `Genesis/spawn_geometry.py`, `tests/test_spawn_geometry.py`.
 
+**What varies and what does not.** The heap is always centred on the tray, so
+its *centroid* barely moves between episodes (0.82 mm measured) — deliberately,
+since it is the analogue of the centred sand pile. The variety is in the
+internal arrangement, so read `pairwise distance` and `height-field std` from
+`scripts/probe_pyramid_diversity.py`, not the centroid spread. Do not compare
+that 0.82 mm against the 15.82 mm of the sand state library: that library
+rebuilt starts from *pushed, off-centre* states, which is a different quantity.
+
+Each env draws its own heap. Broadcasting one draw across the batch was the
+first version and wasted the parallelism — the envs then differed only by
+jitter (0.04 mm of within-episode centroid spread), so a 32-env run of 32
+episodes saw ~32 distinct arrangements rather than ~1000.
+
 ## 2. Pile-aware action sampling
 
 ### What changed
