@@ -21,8 +21,9 @@ Everything is in **new files**. Nothing in the rigid path changed.
 | `Genesis/sand_manipulation.py` | `SandManipulation`, a subclass of `SandboxManipulation` that swaps only the material |
 | `Genesis/configs/sand.yaml` | copy of `basic.yaml` plus `sand:` / `mpm_options:` blocks |
 | `Genesis/sand_data_collection.py` | collection driver: episodes of N sequential pushes |
-| `transforms/sand_occupancy.py` | continuum → grid projections (`sand_to_density`, `sand_to_heightmap`, `sand_mass`) |
-| `tests/test_sand_occupancy.py` | 13 GPU-free tests for the projections |
+| `transforms/sand_occupancy.py` | continuum → grid projections (`sand_to_density`, `sand_to_heightmap`, `sand_to_mask`, `mask_threshold_for_mass`, `sand_mass`) |
+| `tests/test_sand_occupancy.py` | 19 GPU-free tests for the projections |
+| `sand_foresight.py` / `sand_model_zoo.py` | fit + validate the operator, and the model-family comparison |
 
 ---
 
@@ -272,6 +273,83 @@ data at the boundary rather than encoding physics. This was the variant Suh &
 Tedrake flagged as unsolvable with their per-row decomposition; it is solvable
 (per-column simplex projection, column sums 1.0000 ± 0.0000) and it is not worth
 solving.
+
+## 8. The overhead-camera view (binary mask) — and it is BETTER
+
+Everything above used `sand_to_density`, i.e. column mass, which assumes a
+depth-sensing observation. A plain camera above or below the tray does not see
+depth; it sees a silhouette. `sand_to_mask` thresholds the continuum back to
+binary, which is both the realistic sensor model and the like-for-like
+comparison with the cube datasets (binary throughout).
+
+**Choosing the threshold from the data, not by taste.** On the collected piles
+(64×64, 2 mm cells, mean 2.24 grains per occupied cell):
+
+| threshold | cells kept | % of grid | **% of mass kept** |
+|---|---|---|---|
+| ≥1 grain | 855 | 20.9% | 100.0% |
+| **≥2 grains** | **538** | **13.1%** | **83.4%** |
+| ≥3 grains | 297 | 7.3% | 58.3% |
+
+≥2 discards a sparse single-grain fringe holding a sixth of the material — the
+"capture most of the mass, ignore very low density" operating point.
+`mask_threshold_for_mass()` picks it automatically from a target mass fraction.
+
+### Result: the silhouette is not a handicap, and with blur it is a large gain
+
+| view | blur | linear | identity | heuristic |
+|---|---|---|---|---|
+| density | 0 | 51.2% | 74.6% | 72.6% |
+| mask ≥1 | 0 | 53.5% | 89.9% | 89.5% |
+| mask ≥2 | 0 | 51.4% | 83.7% | 91.7% |
+| mask ≥3 | 0 | 49.2% | 77.4% | 94.2% |
+| **mask ≥2** | **1** | **22.3%** | 98.6% | 92.1% |
+| mask, h≥2 mm | 0 | 39.2% | 81.3% | 93.2% |
+
+Two things follow.
+
+**Depth information was not essential.** Unblurred, the binary mask matches the
+density map (51.4% vs 51.2%). The operator was never relying on knowing how deep
+the sand was — which is good news for using a real camera.
+
+**Blur is a precondition for sharp fields, exactly as the cube work found.** On a
+binary mask it takes the operator from 51.4% to **22.3%**; on the naturally
+smooth density map the same blur *hurts*. The rule is not "sand likes blur" or
+"cubes like blur" — it is that the SE(2) warp destroys pixel-scale features, so
+any field with sharp edges needs smoothing first and any field already smooth
+does not.
+
+### Full model comparison on the camera view
+
+| model | % of change | explained |
+|---|---|---|
+| affine (`Ay+b`) | 21.8% | 0.782 |
+| **linear-nonneg** | **22.3%** | **0.777** |
+| reduced-rank r=16 | 22.6% | 0.774 |
+| reduced-rank r=4 | 25.3% | 0.747 |
+| knn retrieval | 34.5% | 0.655 |
+| **mean-delta (0 params)** | **50.0%** | **0.500** |
+| col-stochastic | 50.3% | 0.497 |
+| persistence | 100.0% | 0.000 |
+
+**This is where the operator earns its keep.** Against the mean-delta baseline
+that matters, its state-dependent contribution is **+0.277** here versus +0.106
+on the density view — it roughly doubles what a zero-parameter constant achieves,
+instead of adding a tenth. Effective rank rises too (~16 vs ~4 on density), i.e.
+the operator is using more genuine structure.
+
+Stable across five episode-level validation splits: **22.3 / 22.4 / 22.6 / 22.7 /
+22.4%**.
+
+Why the silhouette suits a *transport* operator better than density is worth
+stating: a blurred binary mask is a smoothed indicator, and its motion under a
+push is exactly what a linear transport map represents. A density map carries
+extra degrees of freedom — how much mass sits in each cell — which the same
+operator must also predict.
+
+Mass conservation fails again for the same reason as before (50.3%): the
+constraint is imposed in the canonical window, where material legitimately leaves
+the crop.
 
 ### The cube/sand comparison, on identical code
 

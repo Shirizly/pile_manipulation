@@ -121,3 +121,69 @@ def test_batch_independence():
 def test_rejects_wrong_shape():
     with pytest.raises(ValueError, match=r"\(B, N, 3\)"):
         sand_to_density(torch.zeros(10, 3), BOUNDS, RES)
+
+
+# --------------------------------------------------------------------------
+# Binary silhouette — the overhead-camera observation model
+# --------------------------------------------------------------------------
+
+from transforms.sand_occupancy import mask_threshold_for_mass, sand_to_mask  # noqa: E402
+
+
+def test_mask_is_binary():
+    g = torch.Generator().manual_seed(10)
+    p = (torch.rand(2, 3000, 3, generator=g) - 0.5) * 0.06
+    m = sand_to_mask(p, BOUNDS, RES, min_grains=2)
+    assert set(torch.unique(m).tolist()) <= {0.0, 1.0}
+
+
+def test_mask_threshold_discards_the_sparse_fringe():
+    """A deep column survives any sane threshold; a single stray grain does not.
+    That is the whole point -- a camera does not see one grain."""
+    deep = _column(10, x=0.0, y=0.0)
+    stray = torch.zeros(1, 1, 3)
+    stray[0, 0, 0] = 0.03
+    p = torch.cat([deep, stray], dim=1)
+    m1 = sand_to_mask(p, BOUNDS, RES, min_grains=1)
+    m2 = sand_to_mask(p, BOUNDS, RES, min_grains=2)
+    assert float(m1.sum()) == 2.0          # both cells
+    assert float(m2.sum()) == 1.0          # stray dropped
+
+
+def test_higher_threshold_never_grows_the_mask():
+    g = torch.Generator().manual_seed(11)
+    p = (torch.rand(1, 4000, 3, generator=g) - 0.5) * 0.06
+    prev = None
+    for t in (1, 2, 3, 4):
+        area = float(sand_to_mask(p, BOUNDS, RES, min_grains=t).sum())
+        if prev is not None:
+            assert area <= prev
+        prev = area
+
+
+def test_height_threshold_alternative():
+    p = _column(20, z0=0.01, dz=0.002)     # 38 mm tall column
+    tall = sand_to_mask(p, BOUNDS, RES, min_height=0.005, floor_z=0.01)
+    too_tall = sand_to_mask(p, BOUNDS, RES, min_height=0.5, floor_z=0.01)
+    assert float(tall.sum()) == 1.0
+    assert float(too_tall.sum()) == 0.0
+
+
+def test_threshold_for_mass_is_self_calibrating():
+    g = torch.Generator().manual_seed(12)
+    p = (torch.rand(1, 6000, 3, generator=g) - 0.5) * 0.05
+    from transforms.sand_occupancy import sand_to_density
+    d = sand_to_density(p, BOUNDS, RES, normalize=None)
+    for frac in (0.99, 0.85, 0.5):
+        t = mask_threshold_for_mass(p, BOUNDS, RES, mass_fraction=frac)
+        kept = float((d * (d >= t)).sum() / d.sum())
+        assert kept >= frac - 1e-6, (frac, t, kept)
+
+
+def test_mask_blur_is_optional_and_off_by_default():
+    g = torch.Generator().manual_seed(13)
+    p = (torch.rand(1, 2000, 3, generator=g) - 0.5) * 0.05
+    hard = sand_to_mask(p, BOUNDS, RES, min_grains=2)
+    soft = sand_to_mask(p, BOUNDS, RES, min_grains=2, sigma=1.0)
+    assert set(torch.unique(hard).tolist()) <= {0.0, 1.0}
+    assert float(soft.max()) < 1.0 or float((soft > 0).sum()) > float((hard > 0).sum())

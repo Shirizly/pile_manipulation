@@ -169,6 +169,76 @@ def sand_to_heightmap(particles: torch.Tensor,
     return _gaussian_blur2d(out.view(B, H, W), sigma)
 
 
+def sand_to_mask(particles: torch.Tensor,
+                 bounds: Dict[str, float],
+                 grid_res: Tuple[int, int],
+                 min_grains: float = 2.0,
+                 min_height: Optional[float] = None,
+                 floor_z: float = 0.0,
+                 sigma: float = 0.0) -> torch.Tensor:
+    """Binary silhouette: what an overhead camera would actually see.
+
+    `sand_to_density` and `sand_to_heightmap` both assume a sensor that measures
+    depth. A plain camera above (or below, through glass) does not: it sees
+    material or it does not. This thresholds the continuum back down to a
+    binary mask so the sand results can be compared **like for like** with the
+    rigid-cube datasets, which were binary silhouettes throughout, and so the
+    model is being asked to work from a realistic observation.
+
+    Parameters
+    ----------
+    min_grains : threshold on column mass, in grains. The default of 2 is chosen
+        from the data rather than by taste: on the collected piles a >=1
+        threshold keeps 100% of the mass over 20.9% of the grid, while >=2 keeps
+        **83.4%** of the mass over 13.1% -- i.e. the cells it discards are a
+        sparse single-grain fringe carrying a sixth of the material. That is the
+        "capture most of the mass, ignore the very low density" operating point.
+        Use 1 for an idealised sensor with no detection floor.
+    min_height : alternative threshold on height (metres) instead of column
+        mass, for a sensor whose floor is geometric rather than photometric.
+        Overrides ``min_grains`` when given. On this data 1 mm keeps 68.5% of
+        the mass and 2 mm keeps 51.7%, so height thresholds bite harder than
+        mass thresholds -- the pile is wide and thin.
+    sigma : blur applied AFTER binarising, so the output is no longer strictly
+        binary. Off by default: the point of this function is the hard
+        silhouette. Exposed because the cube work found smoothing to be a
+        precondition of the SE(2) warp on pixel-scale binary fields, which is
+        exactly what this produces (unlike the naturally smooth density map,
+        where blur measurably hurts).
+
+    Returns 0.0/1.0 floats (or blurred, if ``sigma > 0``), never counts.
+    """
+    if min_height is not None:
+        field = sand_to_heightmap(particles, bounds, grid_res, floor_z=floor_z)
+        mask = (field >= float(min_height)).to(particles.dtype)
+    else:
+        field = sand_to_density(particles, bounds, grid_res, normalize=None)
+        mask = (field >= float(min_grains)).to(particles.dtype)
+    return _gaussian_blur2d(mask, sigma)
+
+
+def mask_threshold_for_mass(particles: torch.Tensor,
+                            bounds: Dict[str, float],
+                            grid_res: Tuple[int, int],
+                            mass_fraction: float = 0.85) -> float:
+    """Smallest ``min_grains`` whose mask still retains ``mass_fraction``.
+
+    Self-calibrating alternative to guessing a threshold: state how much of the
+    material the silhouette must account for and get the tightest threshold that
+    delivers it. Returns a float so it can be fed straight to `sand_to_mask`.
+    """
+    d = sand_to_density(particles, bounds, grid_res, normalize=None)
+    total = d.flatten(1).sum(1).clamp_min(1e-12)
+    best = 1.0
+    for t in range(1, int(d.max().item()) + 1):
+        kept = ((d * (d >= t)).flatten(1).sum(1) / total).mean()
+        if float(kept) >= mass_fraction:
+            best = float(t)
+        else:
+            break
+    return best
+
+
 def sand_mass(particles: torch.Tensor, bounds: Dict[str, float]) -> torch.Tensor:
     """Fraction of particles inside the grid bounds, per frame: (B,).
 

@@ -159,6 +159,8 @@ def main():
     ap.add_argument("--crop", type=float, default=1.0)
     ap.add_argument("--blur", type=float, default=0.0)
     ap.add_argument("--normalize", default="mean")
+    ap.add_argument("--view", default="density", choices=["density", "mask", "height"])
+    ap.add_argument("--min-grains", type=float, default=2.0)
     ap.add_argument("--min-push-mm", type=float, default=19.9)
     ap.add_argument("--val-frac", type=float, default=0.25)
     ap.add_argument("--ridge", type=float, default=1.0)
@@ -170,7 +172,10 @@ def main():
     dev = "cuda" if torch.cuda.is_available() else "cpu"
     norm = None if args.normalize == "none" else args.normalize
     occ_t, occ_t1, actions, ep, s0, s1 = load_sand_arrays(
-        args.glob, args.grid, args.blur, norm, args.min_push_mm, dev)
+        args.glob, args.grid, args.blur, norm, args.min_push_mm, dev,
+        view=args.view, min_grains=args.min_grains)
+    print(f"view = {args.view}"
+          + (f" (>= {args.min_grains:g} grains/cell)" if args.view == "mask" else ""))
     H = W = args.grid
     R, CR = args.res, args.crop
 

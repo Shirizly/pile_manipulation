@@ -41,7 +41,7 @@ from fit_linear_foresight import (
     actions_to_pixels, canonicalise, fit_operator, fit_operator_nonneg,
     metrics, predict_world, swept_region_mask,
 )
-from transforms.sand_occupancy import sand_mass, sand_to_density
+from transforms.sand_occupancy import sand_mass, sand_to_density, sand_to_mask
 
 DEFAULT_GLOB = "Genesis/data/sand/pile20/**/*_data.pt"
 # The tray, and therefore the grid extent, matches the cube datasets exactly.
@@ -49,7 +49,9 @@ BOUNDS = {"x_min": -0.064, "x_max": 0.064, "y_min": -0.064, "y_max": 0.064}
 
 
 def load_sand_arrays(pattern: str, grid: int, sigma: float, normalize: str,
-                     min_push_mm: float, device: str):
+                     min_push_mm: float, device: str,
+                     view: str = "density", min_grains: float = 2.0,
+                     min_height: float | None = None, floor_z: float = 0.010):
     """Sand transitions -> density maps, actions, and episode ids.
 
     Returns positions as well as maps: the physical-units reporting works on
@@ -83,8 +85,21 @@ def load_sand_arrays(pattern: str, grid: int, sigma: float, normalize: str,
           f"pushes, dropped {n_drop} truncated "
           f"({100 * n_drop / max(len(keep), 1):.1f}%)")
 
-    occ_t = sand_to_density(s0, BOUNDS, (grid, grid), sigma=sigma, normalize=normalize)
-    occ_t1 = sand_to_density(s1, BOUNDS, (grid, grid), sigma=sigma, normalize=normalize)
+    if view == "mask":
+        # What an overhead camera sees: a binary silhouette, not a depth map.
+        # This is also the like-for-like comparison with the rigid-cube
+        # datasets, which were binary throughout.
+        proj = lambda x: sand_to_mask(x, BOUNDS, (grid, grid),
+                                      min_grains=min_grains, min_height=min_height,
+                                      floor_z=floor_z, sigma=sigma)
+    elif view == "height":
+        from transforms.sand_occupancy import sand_to_heightmap
+        proj = lambda x: sand_to_heightmap(x, BOUNDS, (grid, grid),
+                                           floor_z=floor_z, sigma=sigma)
+    else:
+        proj = lambda x: sand_to_density(x, BOUNDS, (grid, grid),
+                                         sigma=sigma, normalize=normalize)
+    occ_t, occ_t1 = proj(s0), proj(s1)
     actions = torch.cat([ps[:, :2], pe[:, :2]], dim=-1)      # [sx, sy, ex, ey]
     return occ_t, occ_t1, actions, ep, s0, s1
 
@@ -100,6 +115,17 @@ def main():
     ap.add_argument("--blur", type=float, default=1.0,
                     help="Gaussian sigma on the density map, in cells")
     ap.add_argument("--normalize", default="mean", choices=["mean", "max", "none"])
+    ap.add_argument("--view", default="density", choices=["density", "mask", "height"],
+                    help="'density' = column mass (depth-sensing); 'mask' = binary "
+                         "silhouette, i.e. what a plain overhead camera sees and "
+                         "the like-for-like comparison with the binary cube data; "
+                         "'height' = surface height map.")
+    ap.add_argument("--min-grains", type=float, default=2.0,
+                    help="mask threshold in grains/cell. 2 keeps 83.4%% of the "
+                         "mass over 13.1%% of the grid on this data; 1 keeps 100%% "
+                         "over 20.9%% (no detection floor).")
+    ap.add_argument("--min-height", type=float, default=None,
+                    help="mask on height (m) instead of column mass")
     ap.add_argument("--min-push-mm", type=float, default=19.9)
     ap.add_argument("--val-frac", type=float, default=0.25,
                     help="fraction of EPISODES held out (never transitions)")
@@ -112,7 +138,11 @@ def main():
     norm = None if args.normalize == "none" else args.normalize
 
     occ_t, occ_t1, actions, ep, s0, s1 = load_sand_arrays(
-        args.glob, args.grid, args.blur, norm, args.min_push_mm, dev)
+        args.glob, args.grid, args.blur, norm, args.min_push_mm, dev,
+        view=args.view, min_grains=args.min_grains, min_height=args.min_height)
+    print(f"view = {args.view}" + (f" (>= {args.min_grains:g} grains/cell)"
+                                   if args.view == "mask" and args.min_height is None
+                                   else ""))
     H = W = args.grid
     R, CR = args.res, args.crop
 
