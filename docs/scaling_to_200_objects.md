@@ -672,6 +672,24 @@ count**. The same 200 cubes in a 1.5x tray run **17.5x faster**, which turns
 pile less dense and a push engaging fewer neighbours. It does give open decision
 1 (particle size vs tray size, §6) a quantitative cost argument it did not have.
 
+**CG retested on Genesis 1.3.3 — still not an escape, and now a quiet one.**
+The `constraint_solver: CG` path was recorded as failing at compile time on
+0.4.5 (missing `func_solve_mass_batch`). On 1.3.3 it compiles and is **8.6x
+faster** on a 30-cube heap at 64 envs (1.13 vs 9.70 s/transition) — because it
+never resolves the contacts:
+
+| check | CG result | sane |
+|---|---|---|
+| max \|xy\| from centre | **2896 mm** | <= 64 mm (tray half-width) |
+| z range | **2.3** .. 52.1 mm | >= 10.0 (floor) |
+| max displacement in one push | **2921 mm** | ~20 mm |
+| settle at its 2500-step cap | 78.8 mm/s at q=0.995 | < 1.0 mm/s |
+
+Cubes are ejected metres out of a 128 mm tray. The only thing separating this
+from an apparently free 9x speedup was the settle-cap warning, which is the
+argument for keeping that check loud. Re-test on future versions, but never
+adopt it without re-running containment and rest checks.
+
 **Neither solver escape is available.**
 
 - **CG** would never form a dense Hessian and is the obvious fix, but it is

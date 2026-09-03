@@ -304,11 +304,23 @@ class SandboxManipulation:
         # that is the whole explanation for the cost cliff at 200 objects (see
         # docs/scaling_to_200_objects.md section 8.7).
         #
-        # "CG" would avoid the dense Hessian entirely and is the obvious escape,
-        # but it is BROKEN in Genesis 0.4.5: the kernel references
-        # RigidSolver.func_solve_mass_batch, which does not exist, and every
-        # scene using it fails at compile time. Left exposed anyway so it can be
-        # re-tested against a newer Genesis without touching this file.
+        # "CG" would avoid the dense Hessian entirely and is the obvious escape.
+        # It is BROKEN in Genesis 0.4.5 (the kernel references
+        # RigidSolver.func_solve_mass_batch, which does not exist, so every
+        # scene fails at compile time) and it is STILL BROKEN in 1.3.3, where
+        # the failure mode is worse because it is quiet: the scene compiles and
+        # runs 8.6x faster (1.13 vs 9.70 s/transition on a 30-cube heap, 64
+        # envs) and the speed is entirely because it never resolves the
+        # contacts. Measured on the data it produced: cubes 2896 mm from the
+        # centre of a 128 mm tray, z down to 2.3 mm through a floor at 10.0,
+        # single-cube displacement of 2921 mm from a 20 mm push, and the settle
+        # exiting its 2500-step cap with 78.8 mm/s still in the pile at the
+        # q=0.995 rest quantile against a 1.0 mm/s threshold.
+        #
+        # Only the settle-cap warning distinguished that from a free 9x
+        # speedup, which is the argument for keeping such checks loud.
+        # Re-test against a newer Genesis; do not adopt without re-running the
+        # containment and rest checks above.
         # Default preserves the previous behaviour exactly.
         _cs_name = rigid_cfg.get("constraint_solver", "Newton")
         try:

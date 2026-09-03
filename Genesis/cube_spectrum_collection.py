@@ -118,6 +118,16 @@ def parse_args():
     ap.add_argument("--min-swath-particles", type=int, default=3)
     # Pyramid shaping. Defaults are the setup chosen by
     # scripts/probe_pyramid_setups.py; see docs for the measured rows.
+    ap.add_argument("--constraint-solver", default=None,
+                    choices=["Newton", "CG"],
+                    help="Newton (Genesis default) factorizes a DENSE Hessian "
+                         "per contact island, at a measured island_size^2.64 -- "
+                         "which is why cost jumps 27x from n=20 to n=30 here, as "
+                         "the heap percolates from several islands into one. CG "
+                         "avoids the dense Hessian entirely. It was broken in "
+                         "Genesis 0.4.5 (missing func_solve_mass_batch) and that "
+                         "note is what the default preserves; this exposes it for "
+                         "retest, since we now run 1.3.3.")
     ap.add_argument("--settle-rest-quantile", type=float, default=None,
                     help="fraction of cubes that must be below the velocity "
                          "threshold for the pile to count as at rest "
@@ -173,6 +183,9 @@ def main():
                                 "n_particles": n, "density": args.density,
                                 "particle_friction": args.friction})
         cfg["box"]["friction"] = args.friction
+        if args.constraint_solver is not None:
+            cfg.setdefault("rigid_options", {})["constraint_solver"] = \
+                args.constraint_solver
         if args.settle_rest_quantile is not None:
             cfg.setdefault("simulation", {})["settle_rest_quantile"] = \
                 args.settle_rest_quantile
