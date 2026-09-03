@@ -171,11 +171,26 @@ respawn. By construction it is two layers deep, every upper cube is supported
 (so it stays put through the settle instead of flattening), it stays compact,
 and no two draws are alike:
 
+Geometry, before any physics (`heap_positions` directly):
+
 | n | layers | split | footprint | draw-to-draw spread |
 |---|---|---|---|---|
 | 20 | 2 | 12/8 | 13.8 mm | 0.22 cube |
 | 50 | 2 | 30/20 | 20.7 mm | 0.36 cube |
 | 80 | 2 | 48/32 | 27.6 mm | 0.32 cube |
+
+And after the settle in the simulator, at 3 mm (`probe_pyramid_setups.py
+--layout heap`), the placed split **survives** — the heap does not flatten the
+way a dropped spawn does:
+
+| n | mean layer | layers | footprint | col-CV | collapse |
+|---|---|---|---|---|---|
+| 20 | 0.40 | 60/40 | 14.8 mm | 0.30 | 0.9 mm |
+| 50 | 0.40 | 60/40 | 21.7 mm | 0.35 | 0.9 mm |
+| 80 | 0.40 | 60/40 | 28.7 mm | 0.35 | 0.9 mm |
+
+Raising the lift from 0.3 to a full cube changes the collapse (0.9 → 3.0 mm) and
+nothing else, so lift is not a sensitive knob here.
 
 `heap_base_frac` sets the split (0.6 → 60% in layer 0). Geometry and its unit
 tests: `Genesis/spawn_geometry.py`, `tests/test_spawn_geometry.py`.

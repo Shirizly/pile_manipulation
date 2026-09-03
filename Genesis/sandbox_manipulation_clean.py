@@ -2028,12 +2028,15 @@ class SandboxManipulation:
             quats[:, :n_active, 0] = torch.cos(yaw * 0.5)
             quats[:, :n_active, 3] = torch.sin(yaw * 0.5)
 
+        # Only report the knobs this layout actually uses -- stagger is
+        # pyramid-only and printing it under heap reads as if it applied.
+        extra = (f"base frac {self._heap_base_frac:.2f}" if layout == "heap"
+                 else f"stagger {self._pyramid_stagger:.2f} pitch")
         self._log(f"{layout} spawn: {n_active} particles, {n_layers} layer(s), "
                   f"pitch {1000 * size * self._pyramid_gap:.1f} mm, "
                   f"jitter {self._pyramid_pos_jitter:.2f} cube, "
                   f"yaw +-{self._pyramid_yaw_jitter:.2f} rad, "
-                  f"lift {self._pyramid_lift:.2f} cube, "
-                  f"stagger {self._pyramid_stagger:.2f} pitch")
+                  f"lift {self._pyramid_lift:.2f} cube, {extra}")
         self._write_particle_poses(
             positions, quats, torch.arange(self._n_envs, device=gs.device))
         if self._particle_dofs_idx.numel() > 0:

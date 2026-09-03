@@ -369,12 +369,45 @@ adds 10.6 points on sand and nothing at all on cubes.
 
 Both components are properties of the material, not of the method: the code,
 canonical frame, solver and metric are identical across the two rows.
+
+### But two explanations fit that table equally well
+
+The cube row is **scattered and blind**, the sand row is a **centred pile**, so
+the comparison confounds two things:
+
+* **granularity** — a few large cubes move as individuals, and whether one is
+  caught, tumbles or is missed is a threshold event, so the average response
+  carries little; a continuum averages into something a linear map can capture.
+* **pile depth** — the cube datasets were monolayers and sand was a heap, so the
+  difference may be in what the field IS rather than what it is made of.
+
+`Genesis/cube_spectrum_collection.py` is built to separate them: the same amount
+of data (5200 transitions, matching the first sand set) and the same action
+sampling at **n = 20, 50, 80** small cubes, all *piled*, with sand as the
+continuum limit at the far end. If the linear operator's margin over mean-delta
+grows monotonically as n rises, granularity is the axis; if all three cube counts
+sit together near zero and only sand differs, depth or continuum-ness is.
+
+Two things had to be right for that to be a fair comparison. The piles are
+irregular two-layer heaps rather than monolayers (`--spawn-mode heap`; see
+`docs/piled_collection.md` §1.6 for the eight setups that established a cube
+pyramid will not collapse on its own), and every row runs through the **same**
+loader and projection as sand — `sand_model_zoo.py --cube-size` rasterises each
+cube's real footprint. The cube numbers above came from the dataset registry and
+the sand numbers from `sand_foresight.py`; running a spectrum through two
+projection paths would put a code difference inside the comparison.
+
+Analysis: `scripts/cube_spectrum_analysis.sh`, summarised across n by
+`scripts/cube_spectrum_summary.py`.
+
 ## 7. Open questions
 
 1. **Density or height as the model input?** They carry different information and
    neither dominates. Two channels is the obvious answer and is untested.
 2. **Is the MPM-boundary tray a problem?** It is frictionless-ish where the rigid
    walls are frictional. Only matters once material reaches a wall.
-3. **Is `substeps_mpm = 30` enough?** It is ~1.6× over Genesis' suggested bound
+3. **Does the operator's margin scale with particle count?** The spectrum
+   collection above exists to answer this; unrun as of this writing.
+4. **Is `substeps_mpm = 30` enough?** It is ~1.6× over Genesis' suggested bound
    and ran stably in probing, but that is not a proof. If a pile ever explodes,
    this is the first knob.
