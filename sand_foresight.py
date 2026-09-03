@@ -64,6 +64,14 @@ def load_sand_arrays(pattern: str, grid: int, sigma: float, normalize: str,
     files = sorted(_glob.glob(pattern, recursive=True))
     if not files:
         raise SystemExit(f"no sand data matches {pattern}")
+    if max_episodes is not None:
+        # Size-matching, for comparisons ACROSS datasets. More training data
+        # helps the operator more than it helps the zero-parameter mean-delta
+        # baseline, so a margin fitted on 48 000 sand transitions cannot be set
+        # beside one fitted on 5 200 cube transitions and read as a difference
+        # between the materials. One file is one episode, so truncating files
+        # keeps the episode-level split intact.
+        files = files[:max_episodes]
 
     S0, S1, PS, PE, EP = [], [], [], [], []
     for i, f in enumerate(files):
@@ -175,6 +183,12 @@ def main():
                          "datasets so the mask view rasterises each cube's real "
                          "footprint instead of its centre point; leave unset "
                          "for sand.")
+    ap.add_argument("--max-episodes", type=int, default=None,
+                    help="use only the first N episode files. For size-matched "
+                         "comparisons across datasets: the sand set has 300 "
+                         "episodes of 160 transitions and a cube set has 16 of "
+                         "320, so --max-episodes 32 puts sand on the same 5 200 "
+                         "transitions as the cubes.")
     ap.add_argument("--min-push-mm", type=float, default=19.9)
     ap.add_argument("--val-frac", type=float, default=0.25,
                     help="fraction of EPISODES held out (never transitions)")
@@ -189,7 +203,7 @@ def main():
     occ_t, occ_t1, actions, ep, s0, s1 = load_sand_arrays(
         args.glob, args.grid, args.blur, norm, args.min_push_mm, dev,
         view=args.view, min_grains=args.min_grains, min_height=args.min_height,
-        cube_size=args.cube_size)
+        cube_size=args.cube_size, max_episodes=args.max_episodes)
     print(f"view = {args.view}" + (f" (>= {args.min_grains:g} grains/cell)"
                                    if args.view == "mask" and args.min_height is None
                                    else ""))

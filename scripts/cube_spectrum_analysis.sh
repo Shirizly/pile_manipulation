@@ -40,14 +40,25 @@ for N in 20 30 40 50 80; do
   sed -n '/SWEPT REGION/,$p' "$OUT/zoo_n$N.log" | tee -a "$OUT/00_timeline.log"
 done
 
-say "sand (continuum limit)"
+# Sand twice: at full size, and SIZE-MATCHED to the cube datasets. The margin
+# over mean-delta grows with training data (more data helps the operator, not
+# the zero-parameter baseline), so the full-size sand row cannot be set beside a
+# 5 200-transition cube row and read as a property of the material. 32 sand
+# episodes x 160 transitions = 5 120, against 16 cube episodes x 320 = 5 120.
+say "sand (continuum limit), full size"
 python -u sand_model_zoo.py --glob "$SAND" --view mask --min-grains 2 \
     --blur 1 --res 32 --crop 0.5 --ranks 4 16 64 256 \
     > "$OUT/zoo_sand.log" 2>&1
+say "sand, size-matched to the cube sets"
+python -u sand_model_zoo.py --glob "$SAND" --view mask --min-grains 2 \
+    --blur 1 --res 32 --crop 0.5 --ranks 4 16 64 256 --max-episodes 32 \
+    > "$OUT/zoo_sandmatched.log" 2>&1
+sed -n '/SWEPT REGION/,$p' "$OUT/zoo_sandmatched.log" | tee -a "$OUT/00_timeline.log"
 sed -n '/SWEPT REGION/,$p' "$OUT/zoo_sand.log" | tee -a "$OUT/00_timeline.log"
 
 say "trend across the spectrum"
 python -u scripts/cube_spectrum_summary.py --dir "$OUT" \
+    --cols n20 n30 n40 n50 n80 sandmatched sand \
     | tee -a "$OUT/00_timeline.log"
 
 say "done -> $OUT"

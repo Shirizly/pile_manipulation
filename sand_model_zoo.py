@@ -164,6 +164,9 @@ def main():
     ap.add_argument("--cube-size", type=float, default=None,
                     help="cube edge, metres -- set for cube-spectrum datasets "
                          "so the mask view uses each cube's real footprint")
+    ap.add_argument("--max-episodes", type=int, default=None,
+                    help="use only the first N episode files, for size-matched "
+                         "cross-dataset comparisons")
     ap.add_argument("--min-push-mm", type=float, default=19.9)
     ap.add_argument("--val-frac", type=float, default=0.25)
     ap.add_argument("--ridge", type=float, default=1.0)
@@ -176,7 +179,8 @@ def main():
     norm = None if args.normalize == "none" else args.normalize
     occ_t, occ_t1, actions, ep, s0, s1 = load_sand_arrays(
         args.glob, args.grid, args.blur, norm, args.min_push_mm, dev,
-        view=args.view, min_grains=args.min_grains, cube_size=args.cube_size)
+        view=args.view, min_grains=args.min_grains, cube_size=args.cube_size,
+        max_episodes=args.max_episodes)
     print(f"view = {args.view}"
           + (f" (>= {args.min_grains:g} grains/cell)" if args.view == "mask" else ""))
     H = W = args.grid
