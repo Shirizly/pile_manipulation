@@ -204,9 +204,20 @@ that 0.82 mm against the 15.82 mm of the sand state library: that library
 rebuilt starts from *pushed, off-centre* states, which is a different quantity.
 
 Each env draws its own heap. Broadcasting one draw across the batch was the
-first version and wasted the parallelism — the envs then differed only by
-jitter (0.04 mm of within-episode centroid spread), so a 32-env run of 32
-episodes saw ~32 distinct arrangements rather than ~1000.
+first version and wasted the parallelism, so a 32-env run of 32 episodes saw
+~32 distinct arrangements rather than ~1000. Measured at n=50, 8 episodes x
+8 envs:
+
+| | broadcast | per-env |
+|---|---|---|
+| within-episode env spread | 0.04 mm | **0.90 mm** |
+| across-episode centroid spread | 0.82 mm | 0.95 mm |
+| pairwise distance | 0.26 cube | 0.32 cube |
+| layers | 60/40 | 60/40 |
+
+The check that matters is the first two rows being *equal*: independent draws
+make an env-to-env difference indistinguishable from an episode-to-episode one,
+whereas correlated envs showed a 20x gap between them.
 
 ## 2. Pile-aware action sampling
 
