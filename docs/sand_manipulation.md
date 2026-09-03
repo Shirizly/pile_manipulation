@@ -174,9 +174,13 @@ practical route to a continuum-scale dataset.
 MPM sampling happens once, so every episode restarts from the *same* pile.
 Diversity within an episode comes from the 5 sequential pushes; across episodes,
 only the actions differ. That is good for fitting an operator (many actions from
-one state) and weak for state coverage. If broader coverage is needed, run a few
-random warm-up pushes before recording, or jitter the pile centre — neither is
-implemented yet.
+one state) and weak for state coverage.
+
+**Resolved — see §9.** `Genesis/sand_state_library.py` builds varied starts from
+states already collected mid-episode, expanded through the tray's D4 symmetry
+group. That took the episode-start pile centroid spread from 0.00 mm to
+15.77 mm, and it materially changed the rank result (§9.3), so the numbers in
+§6-8 should be read as the single-pile case.
 
 ---
 
@@ -419,7 +423,129 @@ projection paths would put a code difference inside the comparison.
 Analysis: `scripts/cube_spectrum_analysis.sh`, summarised across n by
 `scripts/cube_spectrum_summary.py`.
 
-## 7. Open questions
+
+## 9. The varied-start dataset (48 000 transitions)
+
+Everything above was fitted on 5 200 transitions whose episodes all began from
+the *identical* as-sampled pile (§5, "Known limitation"). This dataset removes
+that, at 10x the size, so the fits can be overconstrained and the rank results
+separated from the data that produced them.
+
+**Build.** No new physics. States collected mid-episode are already valid
+settled piles -- asymmetric, off-centre, variously spread -- so
+`Genesis/sand_state_library.py` draws from the existing dataset skipping each
+file's first push (those are all the same untouched pile), assigns each draw one
+of the tray's 8 D4 symmetries, and jitters grains 0.3 mm. The symmetry expansion
+is exact rather than approximate: a rotated or mirrored settled pile in a square
+tray is still a settled pile.
+
+300 episodes x 5 pushes x 32 envs = **48 000 transitions** in 12 654 s (3.5 h),
+zero failed episodes.
+
+### 9.1 It is sane, and it is diverse
+
+| check | value |
+|---|---|
+| mass in tray | 1.0000 -> 1.0000 (min 1.0000) |
+| z range | 10.0 .. 16.8 mm (floor 10.0) |
+| grain displacement | mean 5.36, p95 18.55, max 49.13 mm |
+| push length | mean 18.15 sd 5.63 mm, 89.1% full-length |
+| **episode-start centroid spread** | **15.77 mm** (single-pile: 0.00) |
+| episode-start pile radius | 28.6 +- 2.9 mm |
+
+The centroid spread is the whole point: starts differ in *where* the pile is,
+and the radius spread says they differ in how spread out it is too.
+
+### 9.2 Model comparison, both views
+
+Explained variance on the swept region, 10 754 validation transitions,
+episode-level split:
+
+| model | density | mask (blur 1) |
+|---|---|---|
+| affine (Ay+b) | **0.3942** | **0.6022** |
+| linear-nonneg | 0.3914 | 0.5890 |
+| reduced-rank r=64 | 0.3862 | 0.5900 |
+| reduced-rank r=16 | 0.3838 | 0.5836 |
+| reduced-rank r=4 | 0.3761 | 0.5352 |
+| col-stochastic | 0.3767 | 0.4535 |
+| mean-delta (0 params) | 0.3051 | 0.3285 |
+| knn (k=1) | 0.2864 | 0.3856 |
+
+Three results from §6-8 replicate: the mask view beats density, `affine` edges
+out plain linear (a free bias is worth a little), and **column-stochastic hurts**
+-- mass conservation imposed in a window material legitimately leaves is still
+the wrong constraint.
+
+**The margin over mean-delta holds.**
+
+| | single-pile | varied |
+|---|---|---|
+| density | +0.106 | +0.086 |
+| mask | +0.277 | +0.260 |
+
+Mean-delta itself degraded exactly as predicted (mask 0.500 -> 0.329): a single
+stereotyped displacement cannot serve piles in different places. The operator
+degraded too, and the *margin* barely moved -- so the state-dependence result is
+a property of granular transport, not an artefact of the stereotyped start.
+
+### 9.3 The rank result was partly about the data, after all
+
+| | single-pile | varied |
+|---|---|---|
+| density input dims (90% var) | 312 | **573** |
+| mask input dims (90% var) | 14 | **25** |
+| mask rank knee | ~4 | **~16** |
+
+Start diversity roughly doubled the state dimensionality on both views, and the
+required rank rose with it: rank-4 matched the full operator on single-pile data
+and now falls 9% short, while rank-16 recovers 99%. So the operator's rank
+**tracks the dimensionality of its input space** rather than being a fixed
+property of granular transport. The earlier caveat was right, and the surviving
+claim is the weaker one: 16 modes of a possible 1024, against a 573-dimensional
+input space.
+
+### 9.4 Why the blurred mask wins, in one line
+
+The blurred mask spans **25 dimensions** where density spans **573**, and yet
+predicts far better (0.589 vs 0.391). Blurring removes exactly the
+high-frequency detail that is unpredictable, leaving a low-dimensional manifold
+a small operator captures well. That is the mechanism behind the "sharp fields
+need smoothing" rule of §6.
+
+The `identity (warp only)` control makes the gap wider than the error figures
+suggest. Passing the state through the same warp with `A = I`:
+
+| view | identity | linear | so the OPERATOR contributes |
+|---|---|---|---|
+| density | 72.6% | 60.9% | ~12 of 39 points |
+| mask | 97.4% | 41.1% | ~56 of 59 points |
+
+On density most of the apparent gain is resampling, not learning. On the mask
+view the warp is nearly free, so almost all of it is learned. Without this
+control the density view would look far better than it is.
+
+### 9.5 The 10x data bought a bigger operator
+
+| view | crop | res | M/D | linear |
+|---|---|---|---|---|
+| density | 1.0 | 64 | 7.81 | **60.7%** |
+| density | 0.5 | 32 | 31.25 | 60.9% |
+| density | 0.25 | 16 | 125.00 | 71.1% |
+| mask | 1.0 | 64 | 7.81 | **39.4%** |
+| mask | 0.5 | 32 | 31.25 | 41.1% |
+| mask | 0.25 | 16 | 125.00 | 68.1% |
+
+The full-image 64x64 operator is now the best configuration on both views. On
+5 200 transitions it was hopelessly underdetermined; at 48 000 it is fittable and
+slightly better, which is precisely what the larger collection was for. Tight
+crops are much worse -- a push moves mass ~12 px, a large fraction of the
+window, so cropping in throws away the material that moved.
+
+Reproduce all of the above with
+`bash scripts/sand_full_analysis.sh 'Genesis/data/sand/varied/**/*_data.pt' varied`.
+
+## 10. Open questions
 
 1. **Density or height as the model input?** They carry different information and
    neither dominates. Two channels is the obvious answer and is untested.
