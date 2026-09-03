@@ -70,6 +70,16 @@ def parse_args():
                     help="blade-to-pile gap at push start, metres. Defaults to "
                          "one MPM particle size.")
     ap.add_argument("--output-root", default="data/sand/pile")
+    ap.add_argument("--state-library", default=None, metavar="GLOB",
+                    help="glob of a previous sand collection to build varied "
+                         "episode starts from. Without it every episode "
+                         "restarts from the identical as-sampled pile, which "
+                         "measurably caps the state diversity (~14 dims for 90%% "
+                         "of variance) and therefore the rank any fitted "
+                         "operator can need.")
+    ap.add_argument("--library-size", type=int, default=4000)
+    ap.add_argument("--library-jitter", type=float, default=0.15,
+                    help="grain jitter as a fraction of grain diameter")
     ap.add_argument("--particle-size", type=float, default=None,
                     help="override mpm_options.particle_size; drives both the "
                          "grain scale and the particle count")
@@ -108,6 +118,21 @@ def main():
                            debug=args.debug, viewer_type=None)
     sim.build()
     print(f"  build+sample: {time.time() - t0:.0f}s", flush=True)
+
+    if args.state_library:
+        from .sand_state_library import build_sand_state_library
+        lib = build_sand_state_library(
+            args.state_library,
+            box_vol=cfg["box"]["vol"],
+            n_states=args.library_size,
+            skip_first_push=args.n_envs,
+            jitter_frac=args.library_jitter,
+            particle_size=cfg.get("mpm_options", {}).get("particle_size", 0.002),
+            device="cpu")
+        sim.set_state_library(lib)
+        cfg["data_collection"]["state_library"] = {
+            "source": args.state_library, "size": int(lib.shape[0]),
+            "jitter_frac": args.library_jitter}
 
     clearance = (args.pile_clearance if args.pile_clearance is not None
                  else cfg.get("mpm_options", {}).get("particle_size", 0.002))

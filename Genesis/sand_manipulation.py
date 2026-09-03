@@ -309,6 +309,8 @@ class SandManipulation(SandboxManipulation):
     # Reset
     # ------------------------------------------------------------------ #
 
+    _state_library = None
+
     def build(self):
         super().build()
         self.update_material_state()
@@ -318,17 +320,47 @@ class SandManipulation(SandboxManipulation):
         self._initial_sand_pos = self._get_particle_positions().detach().clone()
         self._log("sand: captured initial pile for resets")
 
+    def set_state_library(self, states: torch.Tensor | None) -> None:
+        """Draw episode starts from a bank of varied piles instead of one pile.
+
+        Without this every episode restarts from the identical as-sampled pile,
+        because MPM samples its volume once. Measured consequence: the canonical
+        input states spanned only ~14 dimensions for 90% of their variance,
+        which caps the rank any fitted operator can need and makes a low-rank
+        result partly an artefact of the data. See
+        `Genesis/sand_state_library.py` for how a varied bank is built from
+        states already collected.
+
+        ``states`` is ``(K, N, 3)``; N must match this scene's grain count.
+        """
+        if states is None:
+            self._state_library = None
+            return
+        n = self._material_params["n_particles"]
+        if states.shape[1] != n:
+            raise ValueError(
+                f"state library has {states.shape[1]} grains, scene has {n}. "
+                f"A library is specific to the MPM particle_size and pile "
+                f"volume it was sampled at.")
+        self._state_library = states.to(gs.device)
+        self._log(f"sand: episode starts will be drawn from {states.shape[0]} "
+                  f"library states")
+
     def shuffle_particles(self, pile_extent=None, pile_layers=None, spawn_mode=None):
-        """Restore the pile captured at build time.
+        """Start a new episode: draw from the state library, or restore the
+        as-sampled pile if there is none.
 
         Takes and ignores the cube spawn arguments so callers written against
-        the rigid path (including `collect_data_samples`) work unchanged. There
-        is nothing to randomise: MPM sampling happens once, at entity creation.
-        Episode-to-episode variety comes from the pushes, not the start state —
-        if varied starts are needed, run a few random pushes before recording.
+        the rigid path (including `collect_data_samples`) work unchanged.
         """
         self.flush_transitions()
         self.set_transition_context(None)
+
+        lib = getattr(self, "_state_library", None)
+        if lib is not None:
+            idx = torch.randint(0, lib.shape[0], (self._n_envs,), device=gs.device)
+            self._write_particle_poses(lib[idx], None)
+            return
         if not hasattr(self, "_initial_sand_pos"):
             return
         self._write_particle_poses(self._initial_sand_pos, None)
