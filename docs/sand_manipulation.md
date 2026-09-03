@@ -219,10 +219,78 @@ Two baselines separate "the model learned transport" from cheaper explanations:
   fitted operator beats it — the inversion seen on cubes, where the heuristic
   ranked better, does not occur here.
 
-### Caveat
+### Configuration sweep — and blur *hurts* here
 
-`M/D = 1.08` at 32×32: the fit is only barely overdetermined, so these numbers
-should tighten (or not) with more data. A larger collection is under way.
+| crop / res | M/D | blur 0 | blur 1 |
+|---|---|---|---|
+| 1.0 / 64 | 0.27 | **50.9%** | 54.5% |
+| 0.5 / 32 | 1.08 | 51.0% | 54.8% |
+| 0.375 / 24 | 1.91 | 54.4% | 56.8% |
+| 0.25 / 16 | 4.30 | 63.6% | 63.9% |
+
+Two things invert relative to the cube work. A **bigger** canonical window is
+better, even at `M/D = 0.27` — capacity-limited, not overfitting. And **blur
+hurts**: the σ≈1 smoothing that was a *precondition* on cubes only destroys
+information here, because a sand density map is already smooth. That
+precondition was specific to pixel-scale binary silhouettes, not to the method.
+
+---
+
+## 7. What the operator is actually contributing (`sand_model_zoo.py`)
+
+Fitting several same-complexity families on the combined 4745-transition set
+(`M/D = 3.48`) reframes the headline number:
+
+| model | % of change | explained | params |
+|---|---|---|---|
+| linear-nonneg | **51.2%** | 0.488 | ~1M |
+| reduced-rank r=16 | 51.4% | 0.486 | 33K |
+| **reduced-rank r=4** | **52.2%** | 0.478 | **8K** |
+| affine (`Ay+b`) | 52.4% | 0.476 | ~1M |
+| col-stochastic | 55.9% | 0.441 | ~1M |
+| knn retrieval (k=1) | 60.2% | 0.398 | — |
+| **mean-delta** | **61.8%** | **0.382** | **0** |
+| persistence | 100.0% | 0.000 | — |
+
+**A zero-parameter constant explains 38% of the change.** `mean-delta` predicts
+`y' = y + mean(Δ)` in the canonical frame — no state dependence at all. Since the
+full operator explains 48.8%, *all* of that machinery is worth **~10 points** over
+"apply the average displacement". Most of the headline result is the **canonical
+frame** normalising the action away, not the operator learning transport. Any
+future claim about this operator has to be stated against mean-delta, not against
+persistence.
+
+**The operator is effectively rank 4.** Rank 4 (8K parameters) scores 52.2%
+against the full 51.2%. Sand transport in this frame has very low effective
+dimensionality, which is also why more data barely helped: going from `M/D` 1.08
+to 3.48 moved the linear model 51.0% → 51.2%. It was never data-limited.
+
+**Mass conservation hurts** (55.9% vs 51.2%), despite sand conserving mass to
+1.0000 in the *tray*. The constraint is imposed in the **canonical window**,
+where material genuinely leaves the crop, so forcing column sums to 1 fights the
+data at the boundary rather than encoding physics. This was the variant Suh &
+Tedrake flagged as unsolvable with their per-row decomposition; it is solvable
+(per-column simplex projection, column sums 1.0000 ± 0.0000) and it is not worth
+solving.
+
+### The cube/sand comparison, on identical code
+
+Running the same `mean-delta` and linear fits on the cube dataset:
+
+| | mean-delta (0 params) | linear operator | linear's marginal gain |
+|---|---|---|---|
+| **cubes** (scattered+blind) | +0.013 | +0.010 | **−0.003** |
+| **sand** | **+0.382** | **+0.488** | **+0.106** |
+
+This is H1 confirmed in a sharper form than anticipated. A continuum responds to
+a push in a **stereotyped, repeatable** way, so even a constant explains 38%; with
+discrete cubes, whether a given cube is caught, tumbles or is missed is a
+threshold event, so the average response carries almost nothing (1.3%). And *on
+top of that*, sand alone has learnable state-dependence — the linear operator
+adds 10.6 points on sand and nothing at all on cubes.
+
+Both components are properties of the material, not of the method: the code,
+canonical frame, solver and metric are identical across the two rows.
 ## 7. Open questions
 
 1. **Density or height as the model input?** They carry different information and
