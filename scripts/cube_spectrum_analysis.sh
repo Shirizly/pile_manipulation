@@ -12,7 +12,7 @@
 set -u
 ROOT="${1:-Genesis/data/cube_spectrum}"
 SAND="${2:-Genesis/data/sand/varied/**/*_data.pt}"
-SIZE="${3:-0.003}"
+SIZE="${3:-0.005}"
 OUT=outputs/cube_spectrum
 mkdir -p "$OUT"
 say() { echo "=== $(date '+%H:%M:%S')  $*" | tee -a "$OUT/00_timeline.log"; }
@@ -22,9 +22,17 @@ say() { echo "=== $(date '+%H:%M:%S')  $*" | tee -a "$OUT/00_timeline.log"; }
 # (cube silhouettes and the sand mask both improved a lot; smooth sand density
 # got worse). A binary mask is also the only view the whole spectrum shares --
 # it is what an overhead camera sees of cubes and of sand alike.
-for N in 20 50 80; do
+for N in 20 30 40 50 80; do
   G="$ROOT/n$N/**/*_data.pt"
   ls $ROOT/n$N >/dev/null 2>&1 || { say "n=$N: no data, skipping"; continue; }
+  # Characterise BEFORE fitting. A Genesis solver swap produced an 8.6x
+  # "speedup" whose data had cubes 2896 mm outside a 128 mm tray, and the model
+  # numbers from it would have looked unremarkable rather than wrong -- so
+  # containment and displacement get checked first, every time.
+  say "n=$N cubes: physics check"
+  python -u scripts/sand_describe.py --glob "$G" > "$OUT/describe_n$N.log" 2>&1
+  grep -E "mass in tray|z range|displacement|transitions" "$OUT/describe_n$N.log" \
+      | tee -a "$OUT/00_timeline.log"
   say "n=$N cubes"
   python -u sand_model_zoo.py --glob "$G" --view mask --cube-size "$SIZE" \
       --blur 1 --res 32 --crop 0.5 --ranks 4 16 64 256 \

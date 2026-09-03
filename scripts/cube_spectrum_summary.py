@@ -40,7 +40,13 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--dir", default="outputs/cube_spectrum")
     ap.add_argument("--cols", nargs="+",
-                    default=["n20", "n50", "n80", "sand"])
+                    default=["n20", "n30", "n40", "n50", "n80", "sand"],
+                    help="columns to show, left to right; missing logs are "
+                         "skipped. Counts above n=20 are expensive (Newton's "
+                         "dense per-island Hessian goes as island_size^2.64, so "
+                         "cost runs 0.36 -> 9.70 -> ~28 s/transition at "
+                         "n=20/30/50), so a partial spectrum is the normal case "
+                         "rather than an error.")
     args = ap.parse_args()
 
     d = Path(args.dir)
