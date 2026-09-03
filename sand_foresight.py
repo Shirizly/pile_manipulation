@@ -41,7 +41,8 @@ from fit_linear_foresight import (
     actions_to_pixels, canonicalise, fit_operator, fit_operator_nonneg,
     metrics, predict_world, swept_region_mask,
 )
-from transforms.sand_occupancy import sand_mass, sand_to_density, sand_to_mask
+from transforms.sand_occupancy import (big_quantile, sand_mass,
+                                      sand_to_density, sand_to_mask)
 
 DEFAULT_GLOB = "Genesis/data/sand/pile20/**/*_data.pt"
 # The tray, and therefore the grid extent, matches the cube datasets exactly.
@@ -72,8 +73,14 @@ def load_sand_arrays(pattern: str, grid: int, sigma: float, normalize: str,
         PS.append(d["p_starts"])
         PE.append(d["p_stops"])
         EP.append(torch.full((d["states"].shape[0],), i, dtype=torch.long))
-    s0 = torch.cat(S0).to(device)
-    s1 = torch.cat(S1).to(device)
+    # Grain positions stay on the CPU. At 48 000 transitions x ~2 000 grains
+    # each of s0/s1 is ~1.1 GB, and with both occupancy stacks (786 MB each at
+    # grid 64) the 10x dataset does not fit in 7.6 GB of VRAM -- measured, as
+    # three separate CUDA OOMs across the analysis. Only the occupancy maps and
+    # the fitted operators need to be on the GPU; the position tensors are used
+    # for millimetre-scale reporting, which is happy on the CPU.
+    s0 = torch.cat(S0)
+    s1 = torch.cat(S1)
     ps = torch.cat(PS).to(device)
     pe = torch.cat(PE).to(device)
     ep = torch.cat(EP).to(device)
@@ -81,7 +88,9 @@ def load_sand_arrays(pattern: str, grid: int, sigma: float, normalize: str,
     length_mm = (pe[:, :2] - ps[:, :2]).norm(dim=-1) * 1000.0
     keep = length_mm >= min_push_mm
     n_drop = int((~keep).sum())
-    s0, s1, ps, pe, ep = s0[keep], s1[keep], ps[keep], pe[keep], ep[keep]
+    keep_cpu = keep.cpu()
+    s0, s1 = s0[keep_cpu], s1[keep_cpu]
+    ps, pe, ep = ps[keep], pe[keep], ep[keep]
     print(f"loaded {len(files)} episodes; kept {int(keep.sum())} full-length "
           f"pushes, dropped {n_drop} truncated "
           f"({100 * n_drop / max(len(keep), 1):.1f}%)")
@@ -122,7 +131,19 @@ def load_sand_arrays(pattern: str, grid: int, sigma: float, normalize: str,
     else:
         proj = lambda x: sand_to_density(x, BOUNDS, (grid, grid),
                                          sigma=sigma, normalize=normalize)
-    occ_t, occ_t1 = proj(s0), proj(s1)
+    def project_all(states, chunk=2048):
+        """Project in chunks, one chunk of positions on the GPU at a time.
+
+        Projecting all 48 000 transitions in one call needs the whole position
+        tensor resident alongside its output; chunking keeps the peak to one
+        chunk plus the (much smaller) accumulated maps.
+        """
+        outs = []
+        for i in range(0, states.shape[0], chunk):
+            outs.append(proj(states[i:i + chunk].to(device)))
+        return torch.cat(outs, dim=0)
+
+    occ_t, occ_t1 = project_all(s0), project_all(s1)
     actions = torch.cat([ps[:, :2], pe[:, :2]], dim=-1)      # [sx, sy, ex, ey]
     return occ_t, occ_t1, actions, ep, s0, s1
 
@@ -193,7 +214,7 @@ def main():
     # ---- what one push actually does, in grains ---------------------------
     disp = (s1 - s0)[..., :2].norm(dim=-1) * 1000.0
     print(f"\none push moves grains: mean {float(disp.mean()):.2f} mm, "
-          f"p95 {float(disp.quantile(0.95)):.2f}, max {float(disp.max()):.2f} "
+          f"p95 {big_quantile(disp, 0.95):.2f}, max {float(disp.max()):.2f} "
           f"(push = {float((actions[:, 2:] - actions[:, :2]).norm(dim=-1).mean() * 1000):.1f} mm)")
     print(f"mass in tray: {float(sand_mass(s0, BOUNDS).mean()):.4f} -> "
           f"{float(sand_mass(s1, BOUNDS).mean()):.4f}")

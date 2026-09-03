@@ -10,7 +10,8 @@ from __future__ import annotations
 import argparse, glob as _glob, os, sys
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 import torch
-from transforms.sand_occupancy import sand_mass, sand_to_density, sand_to_mask
+from transforms.sand_occupancy import (big_quantile, sand_mass,
+                                      sand_to_density, sand_to_mask)
 
 ap = argparse.ArgumentParser()
 ap.add_argument("--glob", required=True)
@@ -43,7 +44,7 @@ print(f"mass in tray: before {float(m0.mean()):.4f} (min {float(m0.min()):.4f}) 
 print(f"z range: {1000 * float(s0[..., 2].min()):.1f} .. {1000 * float(s0[..., 2].max()):.1f} mm "
       f"(tray floor 10.0)")
 d = (s1 - s0)[..., :2].norm(dim=-1) * 1000
-print(f"grain displacement: mean {float(d.mean()):.2f} p95 {float(d.quantile(0.95)):.2f} "
+print(f"grain displacement: mean {float(d.mean()):.2f} p95 {big_quantile(d, 0.95):.2f} "
       f"max {float(d.max()):.2f} mm")
 
 print("\n--- start-state diversity (episode starts only) ---")

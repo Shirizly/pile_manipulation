@@ -255,3 +255,28 @@ def sand_mass(particles: torch.Tensor, bounds: Dict[str, float]) -> torch.Tensor
     ok = ((particles[..., 0] >= x0) & (particles[..., 0] < x1)
           & (particles[..., 1] >= y0) & (particles[..., 1] < y1))
     return ok.to(particles.dtype).mean(dim=1)
+
+
+def big_quantile(x: torch.Tensor, q: float, max_elems: int = 8_000_000,
+                 seed: int = 0) -> float:
+    """`torch.quantile` that survives a large dataset.
+
+    `torch.quantile` refuses inputs beyond roughly 16 M elements
+    ("quantile() input tensor is too large"), which the 48 000-transition sand
+    set crosses easily: 48 000 x 2 000 grains is 96 M per-grain values. The cap
+    is in the implementation, not the maths, so above ``max_elems`` this takes a
+    fixed random subsample and quantiles that instead.
+
+    Sampling is deliberate rather than a sorted exact pass: a p95 estimated from
+    8 M draws of a 96 M population is accurate far beyond the two decimals these
+    numbers are ever reported to, and it avoids allocating a full sorted copy of
+    the input. The seed is fixed so a re-run of the same analysis prints the same
+    number -- a diagnostic that jitters between runs is one nobody trusts.
+    """
+    flat = x.reshape(-1)
+    if flat.numel() > max_elems:
+        g = torch.Generator(device="cpu").manual_seed(seed)
+        idx = torch.randint(0, flat.numel(), (max_elems,), generator=g,
+                            device="cpu").to(flat.device)
+        flat = flat[idx]
+    return float(flat.quantile(q))

@@ -41,3 +41,9 @@ for view, blur in (("density", 0.0), ("mask", 1.0)):
     print("  operator predictions, variance captured by top-r modes:")
     print("    " + "  ".join(f"r={r}:{100 * float(en[r - 1]):.1f}%"
                              for r in (1, 2, 4, 8, 16, 32, 64) if r <= len(en)))
+    # Release before the next view. Both views in one process is what OOMed on
+    # the 48 000-transition set: the density pass held its occupancy stacks and
+    # SVD workspace while the mask pass allocated its own.
+    del occ_t, occ_t1, Y0, Y1, A, P, s0, s1, s, e
+    if dev == "cuda":
+        torch.cuda.empty_cache()
