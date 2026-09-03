@@ -118,6 +118,16 @@ def parse_args():
     ap.add_argument("--min-swath-particles", type=int, default=3)
     # Pyramid shaping. Defaults are the setup chosen by
     # scripts/probe_pyramid_setups.py; see docs for the measured rows.
+    ap.add_argument("--settle-rest-quantile", type=float, default=None,
+                    help="fraction of cubes that must be below the velocity "
+                         "threshold for the pile to count as at rest "
+                         "(config default 0.995). Lowering it is the documented "
+                         "knob for a settle held up by a few stragglers, but it "
+                         "records a slightly mid-motion state and that error "
+                         "PROPAGATES, since each transition's s is the previous "
+                         "transition's s'. Measure before reaching for it: "
+                         "steps-to-rest after a push is only ~250 of a 2500 cap, "
+                         "so a slow run is more likely the sweep than the settle.")
     ap.add_argument("--spawn-mode", default="heap",
                     choices=["heap", "pyramid", "drop"],
                     help="'heap' redraws an irregular two-layer pile every "
@@ -163,6 +173,9 @@ def main():
                                 "n_particles": n, "density": args.density,
                                 "particle_friction": args.friction})
         cfg["box"]["friction"] = args.friction
+        if args.settle_rest_quantile is not None:
+            cfg.setdefault("simulation", {})["settle_rest_quantile"] = \
+                args.settle_rest_quantile
         # The repo's measured rule (docs/scaling_to_200_objects.md 1.5): the
         # actual requirement is ~0.26 * n_particles, i.e. 5-21 across this
         # spectrum, and OVERSIZING is not free -- the constraint Jacobian is
@@ -198,12 +211,21 @@ def main():
                                      "sampled_particle_density": None})
         print(f"  build: {time.time() - t0:.0f}s", flush=True)
 
+        t_spawn = t_push = 0.0
         for ep in range(episodes):
             t = time.time()
-            # Fresh pyramid, fresh jitter, fresh collapse -- this is where the
-            # start diversity comes from, so it must happen every episode.
+            # Fresh heap, redrawn per env -- this is where the start diversity
+            # comes from, so it must happen every episode.
             sim.shuffle_particles()
             sim.update_material_state()
+            # Split the two phases. A dense pile is expensive per STEP (cost
+            # tracks how many objects are mutually in contact,
+            # docs/scaling_to_200_objects.md 5), and the respawn settle and the
+            # push sweep have very different step counts -- measured ~1460
+            # steps to rest after a two-layer respawn against ~250 after a
+            # push. Without the split, a slow run gives no clue which to fix.
+            t_spawn += time.time() - t
+            t_p = time.time()
             try:
                 sim.collect_data_samples(
                     n_samples=args.pushes,
@@ -218,10 +240,16 @@ def main():
             except RuntimeError as exc:
                 print(f"  episode {ep + 1} failed: {exc}", flush=True)
                 continue
+            t_push += time.time() - t_p
             if (ep + 1) % 5 == 0 or ep == 0:
+                done = (ep + 1) * args.pushes * args.n_envs
                 print(f"  episode {ep + 1}/{episodes} "
-                      f"({time.time() - t:.0f}s)", flush=True)
-        print(f"  n={n} done in {time.time() - t0:.0f}s", flush=True)
+                      f"({time.time() - t:.0f}s; spawn {t_spawn / (ep + 1):.0f}s "
+                      f"+ pushes {t_push / (ep + 1):.0f}s per episode, "
+                      f"{(t_spawn + t_push) / done:.2f}s/transition)", flush=True)
+        print(f"  n={n} done in {time.time() - t0:.0f}s "
+              f"(spawn {t_spawn:.0f}s, pushes {t_push:.0f}s, "
+              f"{(t_spawn + t_push) / max(total, 1):.2f}s/transition)", flush=True)
         sim.destroy()
 
     print(f"\nall counts done in {time.time() - t_all:.0f}s", flush=True)
