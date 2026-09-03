@@ -1,6 +1,7 @@
 # Sand Manipulation — a continuum material in the same scene
 
-**Status:** implemented on branch `VisualForesight`, first dataset collecting.
+**Status:** implemented on branch `VisualForesight`. First dataset collected and
+fitted — **the linear operator works on sand** (§6), unlike on cubes.
 **Purpose:** run the visual-foresight comparison on a *continuum* instead of
 discrete cubes, without changing anything else about the scene.
 
@@ -178,17 +179,56 @@ implemented yet.
 
 ---
 
-## 6. Open questions
+## 6. First result: the operator works on sand
 
-1. **Does the pixel operator beat persistence on sand?** The point of the
-   exercise. Run `variance_decomposition.py` and `fit_linear_foresight.py`
-   against a sand dataset converted with `sand_to_density`, and compare the
-   linear share against the cube baselines (69% scattered+blind,
-   90–92% contact-aware).
-2. **Density or height as the model input?** They carry different information and
+**On a continuum the paper's per-pixel linear operator beats persistence by a
+wide margin, which it never did on cubes.** `sand_foresight.py`, 1465 full-length
+transitions, validation split by *episode* (never by transition — five sequential
+pushes on one pile are strongly correlated, so a transition split leaks):
+
+| model | rms | **% of the change** | explained |
+|---|---|---|---|
+| **linear-nonneg** | 0.398 | **54.8%** | **0.452** |
+| linear-ridge→I | 0.399 | 54.9% | 0.451 |
+| heur-cumulative | 0.537 | 73.9% | 0.261 |
+| identity (warp only) | 0.574 | 79.0% | 0.210 |
+| persistence | 0.727 | 100.0% | 0.000 |
+
+Swept region; "% of the change" is error relative to persistence, whose error
+*is* the change that occurred, so 100% means no better than predicting nothing
+moved. **The operator explains 45% of what happens.** On cubes the best
+configuration ever managed was 96–99% — under 5% explained
+(`linear_foresight_findings.md` §2.3).
+
+Robust across four episode-level validation splits: **53.0 / 54.0 / 54.9 /
+54.8%**. A ~2-point spread against a ~45-point effect, which is a different
+situation entirely from the cube work, where a 0.004 fold standard deviation
+swamped every effect being compared.
+
+### The controls matter, and they hold
+
+Two baselines separate "the model learned transport" from cheaper explanations:
+
+- **`identity (warp only)`** is the SE(2) round trip with `A = I` — i.e. the
+  blur the warp inflicts, with no model at all. At 79% it *does* beat
+  persistence, because the post-push field is smoother than the pre-push one, so
+  blurring alone helps. The operator's genuine contribution is therefore
+  79% → 55%, not 100% → 55%. Without this control that gain would have been
+  overstated.
+- **`heur-cumulative`**, the hand-written transport heuristic, reaches 74%. The
+  fitted operator beats it — the inversion seen on cubes, where the heuristic
+  ranked better, does not occur here.
+
+### Caveat
+
+`M/D = 1.08` at 32×32: the fit is only barely overdetermined, so these numbers
+should tighten (or not) with more data. A larger collection is under way.
+## 7. Open questions
+
+1. **Density or height as the model input?** They carry different information and
    neither dominates. Two channels is the obvious answer and is untested.
-3. **Is the MPM-boundary tray a problem?** It is frictionless-ish where the rigid
+2. **Is the MPM-boundary tray a problem?** It is frictionless-ish where the rigid
    walls are frictional. Only matters once material reaches a wall.
-4. **Is `substeps_mpm = 30` enough?** It is ~1.6× over Genesis' suggested bound
+3. **Is `substeps_mpm = 30` enough?** It is ~1.6× over Genesis' suggested bound
    and ran stably in probing, but that is not a proof. If a pile ever explodes,
    this is the first knob.
