@@ -103,6 +103,12 @@ fit_linear_foresight.py  fits and falsifies the switched-linear pixel operator
                         Results: reports/linear_foresight_report.md
 
 transforms/
+  sand_occupancy.py     continuum -> grid projections for MPM sand
+                        (sand_to_density / sand_to_heightmap / sand_mass).
+                        UNCLAMPED and mass-preserving, unlike
+                        particles_to_occupancy, which clamps to a binary
+                        silhouette and would discard the depth that is the whole
+                        point of a continuum. Pure torch, GPU-free tests.
   functional.py         particles_to_occupancy (+ footprint_radius hard-disk
                         splat, shape_factor for non-spherical particles),
                         footprint_radius_voxels, draw_plate_soft,
@@ -200,6 +206,18 @@ Genesis/
                         the blind draw per sample when the free set is empty.
                         Genesis-free (torch/numpy/scipy), unit-tested in
                         tests/test_placement_sampling.py.
+  sand_manipulation.py   SandManipulation — SandboxManipulation with an MPM
+                        sand continuum instead of rigid cubes. Subclasses so the
+                        tray, plate, sweep and action sampling stay identical by
+                        construction; only the material differs. See
+                        docs/sand_manipulation.md, which also records three
+                        silent failure modes MPM introduces here (the settle
+                        never running, fixed rigid geometry not coupling to MPM,
+                        and grid_density being cells-per-metre).
+  sand_data_collection.py  episodes of N sequential fixed-length pile-aware
+                        pushes on sand; writes the same on-disk schema as the
+                        cube collectors, so existing loaders read it unchanged.
+  configs/sand.yaml      basic.yaml plus sand:/mpm_options: blocks.
   spawn_geometry.py      stepped-pyramid particle spawn layouts
                         (pyramid_layer_plan / pyramid_positions), pure torch,
                         unit-tested in tests/test_spawn_geometry.py. The only
