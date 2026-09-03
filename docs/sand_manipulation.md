@@ -381,6 +381,25 @@ the comparison confounds two things:
 * **pile depth** — the cube datasets were monolayers and sand was a heap, so the
   difference may be in what the field IS rather than what it is made of.
 
+  Though "sand was a heap" holds only at the *start* of an episode. Measured
+  over the five pushes of an episode on the pile20 set (5th-95th percentile
+  extent, 98th percentile height above the floor):
+
+  | after push | extent | height | grain layers |
+  |---|---|---|---|
+  | 1 | 53.1 mm | 4.7 mm | ~2.4 |
+  | 2 | 61.4 mm | 3.7 mm | ~1.9 |
+  | 3 | 67.6 mm | 3.1 mm | ~1.6 |
+  | 4 | 73.1 mm | 2.7 mm | ~1.4 |
+  | 5 | 77.2 mm | 2.4 mm | **~1.2** |
+
+  The sand pile spreads to 77 mm and its height halves, ending at little over
+  one grain layer. So four fifths of the sand transitions are on a thin spread
+  sheet rather than a heap, which makes the depth explanation weaker than it
+  first looks — and means any cube spreading over an episode is a *matched*
+  behaviour rather than a defect, as long as it is measured rather than
+  assumed.
+
 `Genesis/cube_spectrum_collection.py` is built to separate them: the same amount
 of data (5200 transitions, matching the first sand set) and the same action
 sampling at **n = 20, 50, 80** small cubes, all *piled*, with sand as the

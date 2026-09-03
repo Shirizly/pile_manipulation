@@ -103,6 +103,13 @@ def main():
     ap.add_argument("--envs", type=int, default=4)
     ap.add_argument("--push", action="store_true",
                     help="also apply one push, to check the structure survives")
+    ap.add_argument("--push-seq", type=int, default=0,
+                    help="apply this many SEQUENTIAL pushes, reporting after "
+                         "each. An episode is 5, and one push already spread "
+                         "n=50 from 36 to 61 mm -- so the question is whether "
+                         "the pile is still two layers by push 5 or has been "
+                         "smeared into a monolayer against the walls, which "
+                         "would mean the later transitions are not piled.")
     ap.add_argument("--setups", nargs="+", default=None)
     ap.add_argument("--layout", default="pyramid", choices=["pyramid", "heap"],
                     help="'heap' redraws irregular two-layer sites every "
@@ -159,6 +166,18 @@ def main():
             sim.update_material_state()
             m, cv, foot = report(sim._particle_state[..., :3], args.size,
                                  name, ref=placed)
+            for i in range(args.push_seq):
+                try:
+                    st, e, a = sim.generate_action_samples(
+                        1, pile_aware=True, push_length=0.02,
+                        min_swath_particles=3)
+                    sim.execute_action(st[:, 0, :], e[:, 0, :], a[:, 0])
+                    sim.update_material_state()
+                    report(sim._particle_state[..., :3], args.size,
+                           f"  after push {i + 1}")
+                except Exception as exc:                       # noqa: BLE001
+                    print(f"      push {i + 1} failed: {exc}", flush=True)
+                    break
             if args.push:
                 try:
                     s, e, a = sim.generate_action_samples(
