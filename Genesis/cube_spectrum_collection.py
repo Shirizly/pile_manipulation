@@ -52,9 +52,28 @@ Start diversity is therefore still free here, unlike sand. MPM samples its pile
 once at entity creation, so varied sand starts had to be reconstructed from a
 state library; a heap is simply redrawn.
 
-3 mm cubes at 4000 kg/m3: the smallest cube that runs without the solver
-complaining about mass ratios (1000 kg/m3 at 3 mm is too light), and small
-enough that 80 of them still form a pile rather than a paved floor.
+5 mm cubes, not 3 mm, and that is a measurement rather than a preference. 3 mm
+simulates fine (at 4000 kg/m3 — 1000 is light enough that the solver warns about
+mass ratios), but the shared observation model runs at 2.0 mm per canonical
+pixel, where a 3 mm cube covers **~1 pixel**:
+
+    n=20 @ 3 mm    19 active px of 4096   0.95 px/cube
+    n=50 @ 3 mm    53                     1.06 px/cube
+    n=80 @ 3 mm    88                     1.10 px/cube
+    sand          529                     --
+
+A one-pixel object cannot express partial displacement — it sits still and then
+jumps a whole pixel — so quantisation would dominate the very margin the
+spectrum exists to measure. 3 mm also spans only 15-29 mm against sand's ~40 mm,
+which would reintroduce a pile-EXTENT confound alongside granularity, the exact
+kind of thing this dataset is built to remove.
+
+5 mm gives 2.5 px/cube, heaps of 25-46 mm comparable to the sand pile, and the
+same material as `configs/collection_foresight_single_operator.yaml` (density
+1000, friction 0.3) — so the spectrum connects to the existing cube result
+rather than sitting beside it. Push length stays at sand's 20 mm, not that
+config's 40 mm, because the action sampling is what must match across the
+spectrum.
 """
 
 from __future__ import annotations
@@ -72,11 +91,15 @@ def parse_args():
     ap.add_argument("--config", default="Genesis/configs/basic.yaml")
     ap.add_argument("--counts", type=int, nargs="+", default=[20, 50, 80],
                     help="cube counts to sweep; one dataset per count")
-    ap.add_argument("--size", type=float, default=0.003,
-                    help="cube edge, metres. 0.005 is the fallback if 3 mm "
-                         "proves unstable.")
-    ap.add_argument("--density", type=float, default=4000.0)
-    ap.add_argument("--friction", type=float, default=0.5)
+    ap.add_argument("--size", type=float, default=0.005,
+                    help="cube edge, metres. 5 mm, matching the existing cube "
+                         "foresight dataset -- see the resolution note in the "
+                         "module docstring for why 3 mm is a bad choice here "
+                         "even though it simulates fine.")
+    ap.add_argument("--density", type=float, default=1000.0,
+                    help="matches configs/collection_foresight_single_operator")
+    ap.add_argument("--friction", type=float, default=0.3,
+                    help="matches configs/collection_foresight_single_operator")
     ap.add_argument("--n-envs", type=int, default=32,
                     help="Measured OOM ceilings on this GPU are 128 envs at "
                          "n=50 and 64 at n=100 (docs/scaling_to_200_objects.md "

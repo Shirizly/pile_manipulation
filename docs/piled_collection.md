@@ -171,17 +171,28 @@ respawn. By construction it is two layers deep, every upper cube is supported
 (so it stays put through the settle instead of flattening), it stays compact,
 and no two draws are alike:
 
-Geometry, before any physics (`heap_positions` directly):
+Geometry, before any physics (`heap_positions` directly), at the 5 mm the
+spectrum collects at — and at 3 mm, which is *not* used, for the reason in the
+resolution note below:
 
-| n | layers | split | footprint | draw-to-draw spread |
-|---|---|---|---|---|
-| 20 | 2 | 12/8 | 13.8 mm | 0.22 cube |
-| 50 | 2 | 30/20 | 20.7 mm | 0.36 cube |
-| 80 | 2 | 48/32 | 27.6 mm | 0.32 cube |
+| n | layers | split | footprint (5 mm) | footprint (3 mm) | px/cube (5 mm) |
+|---|---|---|---|---|---|
+| 20 | 2 | 12/8 | 23.0 mm | 13.8 mm | 2.65 |
+| 50 | 2 | 30/20 | 34.5 mm | 20.7 mm | 2.98 |
+| 80 | 2 | 48/32 | 46.0 mm | 27.6 mm | 3.06 |
 
-And after the settle in the simulator, at 3 mm (`probe_pyramid_setups.py
---layout heap`), the placed split **survives** — the heap does not flatten the
-way a dropped spawn does:
+**Resolution note — why not smaller cubes.** 3 mm cubes simulate fine, but the
+occupancy model runs at 2.0 mm per canonical pixel, where a 3 mm cube covers
+**~1 pixel** (measured 0.95-1.10 px/cube, 19-88 active pixels of 4096 against
+529 for sand). A one-pixel object cannot express partial displacement — it sits
+still and then jumps a whole pixel — so quantisation dominates. 3 mm heaps also
+span only 15-29 mm against the sand pile's ~40 mm, which trades a granularity
+comparison for a pile-extent one. 5 mm gives 2.65-3.06 px/cube and 23-46 mm
+extents, comparable to sand.
+
+And after the settle in the simulator (`probe_pyramid_setups.py --layout heap`,
+at 3 mm), the placed split **survives** — the heap does not flatten the way a
+dropped spawn does:
 
 | n | mean layer | layers | footprint | col-CV | collapse |
 |---|---|---|---|---|---|
