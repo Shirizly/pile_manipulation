@@ -374,41 +374,39 @@ adds 10.6 points on sand and nothing at all on cubes.
 Both components are properties of the material, not of the method: the code,
 canonical frame, solver and metric are identical across the two rows.
 
-### RESOLVED: it was pile DEPTH, not granularity
+### RESOLVED — but NOT by depth: the old cube row was a rasteriser artifact
 
-The two explanations below were what motivated the cube-count spectrum. The
-first cube dataset settles it, and it overturns the reading above.
+The cube-count spectrum was collected to separate these two explanations. It
+did, and the answer is neither: **the margin barely depends on regime at all.**
 
-| dataset | mean-delta | linear | margin |
-|---|---|---|---|
-| cubes, scattered monolayer | +0.013 | +0.010 | **-0.003** |
-| **cubes n=20, PILED (2 layers)** | 0.345 | 0.645 | **+0.300** |
-| sand, size-matched (5 120 tr) | 0.328 | 0.591 | +0.263 |
-| sand, full (48 000 tr) | 0.329 | 0.589 | +0.260 |
+Run through ONE code path (`sand_to_mask`), every regime lands in the same band:
 
-**Twenty piled cubes beat sand.** The operator does more state-dependent work on
-a 20-cube heap than on a continuum, so the granularity story in the table above
--- "whether a given cube is caught, tumbles or is missed is a threshold event, so
-the average response carries almost nothing" -- is not what was happening. The
-operative difference was that every cube dataset was FLAT. Give cubes two layers
-and the linear operator works on them at least as well as on sand. Sand's
-advantage was never being a continuum; it was being a heap.
+| regime | M | mean-delta | linear | margin |
+|---|---|---|---|---|
+| cubes n50, **scattered monolayer** | 2560 | 0.120 | 0.411 | **+0.291** |
+| cubes n50, scattered, contact-sampled | 2108 | 0.182 | 0.437 | +0.255 |
+| cubes n20, piled 2 layers | 5120 | 0.345 | 0.645 | **+0.300** |
+| cubes n30, piled 2 layers | 2560 | 0.348 | 0.643 | **+0.295** |
+| sand, size-matched | 5120 | 0.328 | 0.591 | +0.263 |
 
-Consistent with that, the sand pile itself flattens over an episode (4.7 -> 2.4
-mm, ~1.2 grain layers by push 5, see the depth bullet below), so most sand
-transitions are on a thin sheet -- and sand's margin sits *below* the genuinely
-two-layer cube pile's.
+A **scattered monolayer** gives +0.291, statistically the same as a two-layer
+heap's +0.300. Depth is not the operative variable.
 
-Two further contrasts at n=20 against sand:
+**The -0.003 in the table above is not a measurement of cubes.** It came through
+the `PileSweepData` raster, whose occupancy and plate channels are mutually
+transposed — worth more than 40 points of "% of change" (EXP-0001). Comparing a
+new `sand_to_mask` number against it attributes a *code-path difference* to
+physics. §8 of this document warned about exactly that and then did it; this
+section did it a second time before EXP-0002 caught it. See
+`docs/experiments/REGISTER.md` C-019.
 
-- **cubes are lower-rank**: rank-4 reaches 0.623 of a 0.645 full operator (97%)
-  against sand's 91%.
-- **mass conservation is nearly free on cubes** (col-stochastic 0.6442 vs
-  0.6447) where it cost sand 0.14. Cubes do not leave the canonical crop the way
-  grains do, so the constraint that was wrong for sand is reasonable here.
+What DOES vary with regime is **mean-delta** (0.12 -> 0.35) and total
+predictability (0.31 -> 0.64). Depth and continuum-ness make the response more
+*stereotyped* — easier for a constant to predict — not more *linear*. The
+operator's marginal contribution over that constant is roughly flat.
 
-Size-matching turned out not to matter (+0.263 matched vs +0.260 full), so the
-comparison is not an artefact of sand having 10x the data.
+Evidence: EXP-0002 (five regimes, one path), EXP-0006 (n=20/n=30 at 2-5x the
+transitions, size-matched sand).
 
 ### The two explanations this replaced
 
