@@ -51,7 +51,8 @@ BOUNDS = {"x_min": -0.064, "x_max": 0.064, "y_min": -0.064, "y_max": 0.064}
 def load_sand_arrays(pattern: str, grid: int, sigma: float, normalize: str,
                      min_push_mm: float, device: str,
                      view: str = "density", min_grains: float = 2.0,
-                     min_height: float | None = None, floor_z: float = 0.010):
+                     min_height: float | None = None, floor_z: float = 0.010,
+                     cube_size: float | None = None):
     """Sand transitions -> density maps, actions, and episode ids.
 
     Returns positions as well as maps: the physical-units reporting works on
@@ -85,7 +86,29 @@ def load_sand_arrays(pattern: str, grid: int, sigma: float, normalize: str,
           f"pushes, dropped {n_drop} truncated "
           f"({100 * n_drop / max(len(keep), 1):.1f}%)")
 
-    if view == "mask":
+    if view == "mask" and cube_size is not None:
+        # Cubes are not point grains: a 3 mm cube covers more than the single
+        # cell its centre lands in, and splatting only the centre would make a
+        # 20-cube pile look like 20 specks. `footprint_radius` fills every cell
+        # within half a cube of the centre, so the silhouette is the cube's
+        # actual one.
+        #
+        # Using the SAME loader for cubes and sand is deliberate. The cube
+        # results were originally produced through the dataset registry and the
+        # sand results through this function; running the spectrum through two
+        # projection paths would put a code difference inside the very
+        # comparison the spectrum exists to make.
+        from transforms.functional import particles_to_occupancy
+        pitch = (BOUNDS["x_max"] - BOUNDS["x_min"]) / grid
+        radius = 0.5 * cube_size / pitch
+        def proj(x):
+            occ = particles_to_occupancy(x, BOUNDS, (grid, grid),
+                                         footprint_radius=radius)
+            if sigma > 0:
+                from transforms.sand_occupancy import _gaussian_blur2d
+                occ = _gaussian_blur2d(occ, sigma)
+            return occ
+    elif view == "mask":
         # What an overhead camera sees: a binary silhouette, not a depth map.
         # This is also the like-for-like comparison with the rigid-cube
         # datasets, which were binary throughout.
@@ -126,6 +149,11 @@ def main():
                          "over 20.9%% (no detection floor).")
     ap.add_argument("--min-height", type=float, default=None,
                     help="mask on height (m) instead of column mass")
+    ap.add_argument("--cube-size", type=float, default=None,
+                    help="cube edge in metres. Set it for the cube-spectrum "
+                         "datasets so the mask view rasterises each cube's real "
+                         "footprint instead of its centre point; leave unset "
+                         "for sand.")
     ap.add_argument("--min-push-mm", type=float, default=19.9)
     ap.add_argument("--val-frac", type=float, default=0.25,
                     help="fraction of EPISODES held out (never transitions)")
@@ -139,7 +167,8 @@ def main():
 
     occ_t, occ_t1, actions, ep, s0, s1 = load_sand_arrays(
         args.glob, args.grid, args.blur, norm, args.min_push_mm, dev,
-        view=args.view, min_grains=args.min_grains, min_height=args.min_height)
+        view=args.view, min_grains=args.min_grains, min_height=args.min_height,
+        cube_size=args.cube_size)
     print(f"view = {args.view}" + (f" (>= {args.min_grains:g} grains/cell)"
                                    if args.view == "mask" and args.min_height is None
                                    else ""))

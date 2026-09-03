@@ -126,6 +126,60 @@ Notes:
   pyramids needs more settles, or a randomised base offset.
 - Geometry and the layer-count arithmetic: `Genesis/spawn_geometry.py`.
 
+---
+
+## 1.6 `--spawn-mode heap` — depth AND variety
+
+§1.5 gives depth but always the *same* depth: a pyramid is one fixed lattice, so
+every episode starts from an identical pile. That is the defect that capped the
+first sand dataset's state diversity at ~14 dimensions and made its low-rank
+result partly a statement about the data
+(`docs/sand_manipulation.md` §7).
+
+**Perturbing the pyramid does not fix it.** Eight setups were probed at 3 mm
+(`scripts/probe_pyramid_setups.py`), spanning lateral jitter 0.08→0.50 of a
+cube, cube yaw 0→0.35 rad, a lift of 0→1.0 cube so the stack drops, and a
+half-pitch brick bond so upper cubes bridge a seam instead of sitting on one
+support. The settled layer occupancy came out **exactly equal to the placed
+layer plan in all eight**:
+
+| setup (n=20) | lift | stagger | collapse | layers |
+|---|---|---|---|---|
+| A crystalline | 0.0 | 0 | **0.0 mm** | 75/20/5 |
+| B mild | 0.0 | 0 | 0.1 mm | 75/20/5 |
+| C tilt+drop | 0.3 | 0 | 0.9 mm | 75/20/5 |
+| D loose | 0.6 | 0 | 1.8 mm | 75/20/5 |
+| E full drop | 1.0 | 0 | 3.0 mm | 75/20/5 |
+| F stagger | 0.1 | 0.5 | 0.3 mm | 75/20/5 |
+| G stagger+drop | 0.4 | 0.5 | 1.2 mm | 75/20/5 |
+| H stagger loose | 0.6 | 0.5 | 1.8 mm | 75/20/5 |
+
+(75/20/5 is exactly the placed plan [15,4,1]; n=50 behaved identically at
+72/18/8 = [36,9,4,1].) The stack slides a millimetre or three as a unit and
+never restructures. Footprints stayed compact throughout (10.6→12.0 mm).
+
+That is **physics, not a tuning failure**. Flat-faced rigid cubes stack stably
+in almost any arrangement, and a cube bridging two supports is as stable as one
+on a single support. Sand collapses into an irregular heap on its own; a cube
+pile does not. An unperturbed pyramid re-settles byte-identically — measured
+0.0 mm — which is the same result reported in §1.5 from the other direction.
+
+So the irregularity has to be **placed, not waited for**. `--spawn-mode heap`
+draws layer 0 as a random subset of sites in a square footprint and puts each
+remaining cube on top of a randomly chosen occupied site, redrawn every
+respawn. By construction it is two layers deep, every upper cube is supported
+(so it stays put through the settle instead of flattening), it stays compact,
+and no two draws are alike:
+
+| n | layers | split | footprint | draw-to-draw spread |
+|---|---|---|---|---|
+| 20 | 2 | 12/8 | 13.8 mm | 0.22 cube |
+| 50 | 2 | 30/20 | 20.7 mm | 0.36 cube |
+| 80 | 2 | 48/32 | 27.6 mm | 0.32 cube |
+
+`heap_base_frac` sets the split (0.6 → 60% in layer 0). Geometry and its unit
+tests: `Genesis/spawn_geometry.py`, `tests/test_spawn_geometry.py`.
+
 ## 2. Pile-aware action sampling
 
 ### What changed
@@ -257,6 +311,12 @@ For callers that construct `SandboxManipulation` directly (including
 spawn:
   pile_extent: 0.015    # null or absent -> spread over the whole tray
   pile_layers: null     # null -> derived
+  mode: drop            # or 'pyramid' (see 1.5)
+  # pyramid mode only; defaults reproduce the original stable pyramid exactly
+  pyramid_gap: 1.15         # lateral pitch, multiples of a cube
+  pyramid_pos_jitter: 0.08  # xy jitter, multiples of a cube
+  pyramid_yaw_jitter: 0.0   # radians, +-
+  pyramid_lift: 0.0         # multiples of a cube; > 0 makes it DROP and collapse
 ```
 
 `data_collection_clean.py` writes this block from its flags before constructing

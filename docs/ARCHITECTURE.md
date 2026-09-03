@@ -217,6 +217,17 @@ Genesis/
   sand_data_collection.py  episodes of N sequential fixed-length pile-aware
                         pushes on sand; writes the same on-disk schema as the
                         cube collectors, so existing loaders read it unchanged.
+  cube_spectrum_collection.py  the same collection as sand, at n=20/50/80
+                        small cubes, so model performance can be read as a
+                        function of particle count with sand as the continuum
+                        limit. Sand and cubes gave OPPOSITE verdicts on the
+                        linear operator, and granularity vs pile depth explain
+                        that equally well; one dataset cannot separate them, a
+                        spectrum can. Piles with the pyramid spawn (a dropped
+                        pile cannot exceed one layer) and re-jitters it every
+                        episode, so start diversity is free here -- unlike
+                        sand, where MPM samples its pile once and varied starts
+                        had to be built from a state library.
   configs/sand.yaml      basic.yaml plus sand:/mpm_options: blocks.
   spawn_geometry.py      stepped-pyramid particle spawn layouts
                         (pyramid_layer_plan / pyramid_positions), pure torch,
@@ -227,7 +238,14 @@ Genesis/
                         bounce outward on landing. Reached via
                         shuffle_particles(spawn_mode="pyramid") or
                         --spawn-mode pyramid; see
-                        docs/linear_foresight_findings.md section 5.
+                        docs/linear_foresight_findings.md section 5. The
+                        spawn: block's pyramid_gap / pyramid_pos_jitter /
+                        pyramid_yaw_jitter / pyramid_lift shape how much it
+                        collapses: an unperturbed pyramid is exactly at rest
+                        and re-settles byte-identically (measured 0.0 mm), so
+                        without a lift every episode starts from the same
+                        lattice -- see scripts/probe_pyramid_setups.py and
+                        scripts/probe_pyramid_diversity.py.
   action_sampling.py     batch-aware action shaping AND action-space
                         restriction, both pure torch (no `import genesis`),
                         unit-tested in tests/test_action_sampling.py.

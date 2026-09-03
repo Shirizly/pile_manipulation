@@ -8,7 +8,9 @@ import torch
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "Genesis"))
 
-from spawn_geometry import pyramid_layer_plan, pyramid_positions  # noqa: E402
+from spawn_geometry import (  # noqa: E402
+    heap_positions, pyramid_layer_plan, pyramid_positions, stagger_layers,
+)
 
 SIZE = 0.005
 
@@ -85,3 +87,109 @@ def test_is_taller_and_narrower_than_a_flat_layer():
 
 def test_empty_input():
     assert pyramid_layer_plan(0) == []
+
+
+class TestStaggerLayers:
+    """Brick-bonding alternate layers of a pyramid."""
+
+    def test_zero_stagger_is_a_noop(self):
+        pos, _ = pyramid_positions(30, 0.005, floor_z=0.01)
+        out = stagger_layers(pos, 0.005, stagger=0.0, floor_z=0.01)
+        assert torch.equal(out, pos)
+
+    def test_does_not_mutate_input(self):
+        pos, _ = pyramid_positions(30, 0.005, floor_z=0.01)
+        before = pos.clone()
+        stagger_layers(pos, 0.005, stagger=0.5, floor_z=0.01)
+        assert torch.equal(pos, before)
+
+    def test_offsets_odd_layers_only(self):
+        size, gap, floor_z = 0.005, 1.15, 0.01
+        pos, _ = pyramid_positions(30, size, gap=gap, floor_z=floor_z)
+        out = stagger_layers(pos, size, gap=gap, stagger=0.5, floor_z=floor_z)
+        layer = ((pos[:, 2] - floor_z - 0.5 * size) / size).round()
+        shift = 0.5 * size * gap
+        even, odd = layer % 2 == 0, layer % 2 == 1
+        assert torch.allclose(out[even], pos[even])
+        assert torch.allclose(out[odd, :2], pos[odd, :2] + shift)
+        # z is untouched: staggering is lateral only.
+        assert torch.allclose(out[:, 2], pos[:, 2])
+
+
+class TestHeapPositions:
+    """The irregular two-layer heap used for the cube-count spectrum."""
+
+    def test_places_every_cube(self):
+        for n in (1, 7, 20, 50, 80):
+            pos, _ = heap_positions(n, 0.003, floor_z=0.01)
+            assert pos.shape == (n, 3)
+
+    def test_is_two_layers_with_the_requested_split(self):
+        size, floor_z = 0.003, 0.01
+        pos, n_layers = heap_positions(50, size, floor_z=floor_z, base_frac=0.6)
+        z0 = floor_z + 0.5 * size * 1.001
+        layer = ((pos[:, 2] - z0) / size).round().long()
+        assert n_layers == 2
+        assert int((layer == 0).sum()) == 30
+        assert int((layer == 1).sum()) == 20
+
+    def test_every_upper_cube_rests_on_an_occupied_site(self):
+        # This is what keeps the heap STABLE: unsupported cubes would fall and
+        # the pile would flatten into the monolayer a dropped spawn gives.
+        size, floor_z = 0.003, 0.01
+        pos, _ = heap_positions(80, size, floor_z=floor_z)
+        z0 = floor_z + 0.5 * size * 1.001
+        layer = ((pos[:, 2] - z0) / size).round().long()
+        base = {(round(float(x), 6), round(float(y), 6))
+                for x, y in pos[layer == 0][:, :2]}
+        for x, y in pos[layer > 0][:, :2]:
+            assert (round(float(x), 6), round(float(y), 6)) in base
+
+    def test_sits_on_the_floor(self):
+        size, floor_z = 0.003, 0.01
+        pos, _ = heap_positions(20, size, floor_z=floor_z)
+        assert float(pos[:, 2].min()) == pytest.approx(
+            floor_z + 0.5 * size * 1.001, abs=1e-9)
+
+    def test_draws_differ(self):
+        # The whole reason heap exists: a pyramid is the same lattice every
+        # episode, which caps state diversity.
+        a, _ = heap_positions(50, 0.003, floor_z=0.01,
+                              generator=torch.Generator().manual_seed(0))
+        b, _ = heap_positions(50, 0.003, floor_z=0.01,
+                              generator=torch.Generator().manual_seed(1))
+        assert not torch.allclose(a[:, :2].flatten().sort().values,
+                                  b[:, :2].flatten().sort().values)
+
+    def test_reproducible_given_a_generator(self):
+        a, _ = heap_positions(50, 0.003, floor_z=0.01,
+                              generator=torch.Generator().manual_seed(7))
+        b, _ = heap_positions(50, 0.003, floor_z=0.01,
+                              generator=torch.Generator().manual_seed(7))
+        assert torch.equal(a, b)
+
+    def test_stays_compact(self):
+        # A heap must remain a PILE; if it spread like a dropped spawn
+        # (65-67 mm measured) it would defeat the purpose.
+        pos, _ = heap_positions(80, 0.003, floor_z=0.01)
+        span = float(pos[:, :2].max(0).values.sub(pos[:, :2].min(0).values).max())
+        assert span < 0.040
+
+    def test_empty(self):
+        pos, n_layers = heap_positions(0, 0.003)
+        assert pos.shape == (0, 3) and n_layers == 0
+
+    def test_survives_a_non_cpu_default_device(self):
+        # Genesis sets torch's DEFAULT device to cuda, which made a bare
+        # torch.arange inside heap_positions land on the GPU while the
+        # CPU-built index tensors did not: "Expected all tensors to be on the
+        # same device" at the final cat. Every creation now names its device.
+        if not torch.cuda.is_available():
+            pytest.skip("no cuda device to set as default")
+        try:
+            torch.set_default_device("cuda")
+            pos, n_layers = heap_positions(50, 0.003, floor_z=0.01,
+                                           device="cuda")
+            assert pos.shape == (50, 3) and n_layers == 2
+        finally:
+            torch.set_default_device("cpu")

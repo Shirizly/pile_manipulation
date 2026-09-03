@@ -432,6 +432,15 @@ class SandboxManipulation:
         self._pile_extent = _spawn.get("pile_extent", None)
         self._pile_layers = _spawn.get("pile_layers", None)
         self._spawn_mode = str(_spawn.get("mode", "drop")).lower()
+        # Pyramid-spawn shaping. Defaults reproduce the original stable pyramid;
+        # raising jitter/yaw lets it partially collapse into a natural,
+        # non-uniform heap instead of a perfect stepped stack.
+        self._pyramid_gap = float(_spawn.get("pyramid_gap", 1.15))
+        self._pyramid_pos_jitter = float(_spawn.get("pyramid_pos_jitter", 0.08))
+        self._pyramid_yaw_jitter = float(_spawn.get("pyramid_yaw_jitter", 0.0))
+        self._pyramid_lift = float(_spawn.get("pyramid_lift", 0.0))
+        self._pyramid_stagger = float(_spawn.get("pyramid_stagger", 0.0))
+        self._heap_base_frac = float(_spawn.get("heap_base_frac", 0.6))
         if self._pile_extent is not None:
             self._pile_extent = float(self._pile_extent)
         if self._pile_layers is not None:
@@ -778,12 +787,12 @@ class SandboxManipulation:
 
         if spawn_mode is None:
             spawn_mode = self._spawn_mode
-        if spawn_mode == "pyramid":
-            self._spawn_pyramid()
+        if spawn_mode in ("pyramid", "heap"):
+            self._spawn_placed(layout=spawn_mode)
             return
         elif spawn_mode != "drop":
-            raise ValueError(
-                f"spawn_mode must be 'drop' or 'pyramid', got {spawn_mode!r}")
+            raise ValueError("spawn_mode must be 'drop', 'pyramid' or 'heap', "
+                             f"got {spawn_mode!r}")
 
         # Number of stacked layers to spread the particles over on respawn.
         # 1 reproduces the original single-layer behaviour exactly and is
@@ -1931,8 +1940,14 @@ class SandboxManipulation:
         return action_starts, torch.cat((starts_xy + u_dir * L,
                                         action_starts[..., 2:]), dim=-1)
 
-    def _spawn_pyramid(self):
-        """Place the particles as a stepped pyramid instead of dropping them.
+    def _spawn_placed(self, layout: str = "pyramid"):
+        """Place the particles as a pile instead of dropping them.
+
+        ``layout="pyramid"`` builds a stepped pyramid; ``layout="heap"`` builds
+        an irregular two-layer heap whose sites are redrawn every call. Use
+        heap when episodes must START DIFFERENTLY: a pyramid is the same lattice
+        every time and will not restructure (see heap_positions for the eight
+        setups that established that).
 
         The dropped spawn cannot make a pile more than one layer deep -- the
         cubes bounce outward on landing (measured: 90-94% in layer 0 across two
@@ -1947,7 +1962,8 @@ class SandboxManipulation:
         once, which is not a pile, and the jitter also stops the parallel envs
         being exact duplicates.
         """
-        from .spawn_geometry import pyramid_positions
+        from .spawn_geometry import (heap_positions, pyramid_positions,
+                                     stagger_layers)
 
         self.flush_transitions()
         self.set_transition_context(None)
@@ -1959,13 +1975,31 @@ class SandboxManipulation:
         size = float(self._material_params.get("particle_size") or 0.005)
         floor_z = float(self._wall_thickness) / 2.0
 
-        pos, n_layers = pyramid_positions(n_active, size, floor_z=floor_z,
-                                          device=gs.device)
+        if layout == "heap":
+            # Irregular by placement rather than by collapse -- a cube stack
+            # will not restructure on its own (see heap_positions).
+            pos, n_layers = heap_positions(
+                n_active, size, gap=self._pyramid_gap,
+                base_frac=self._heap_base_frac, floor_z=floor_z,
+                device=gs.device)
+        else:
+            pos, n_layers = pyramid_positions(n_active, size,
+                                              gap=self._pyramid_gap,
+                                              floor_z=floor_z, device=gs.device)
+            pos = stagger_layers(pos, size, gap=self._pyramid_gap,
+                                 stagger=self._pyramid_stagger, floor_z=floor_z)
         positions = torch.zeros((self._n_envs, n_particles, 3), device=gs.device)
         positions[:, :n_active] = pos.unsqueeze(0)
         positions[:, :n_active, :2] += (
             torch.rand((self._n_envs, n_active, 2), device=gs.device) - 0.5
-        ) * size * 0.08
+        ) * size * self._pyramid_pos_jitter
+        if self._pyramid_lift > 0.0:
+            # Lift the stack slightly so it drops a fraction of a cube and
+            # partially collapses. A perfect pyramid is at rest and stays put
+            # (measured: as-placed and settled were byte-identical), which makes
+            # a UNIFORM start; a small drop gives a natural, non-uniform heap
+            # while keeping the depth a dropped spawn cannot produce.
+            positions[:, :n_active, 2] += size * self._pyramid_lift
 
         if n_active < n_particles:
             # Same parking grid the dropped spawn uses -- never at z=0, which is
@@ -1985,9 +2019,21 @@ class SandboxManipulation:
         # stacks if the cubes are square to each other.
         quats = torch.zeros((self._n_envs, n_particles, 4), device=gs.device)
         quats[..., 0] = 1.0
+        if self._pyramid_yaw_jitter > 0.0:
+            # Small random yaw. Cubes still stack (they are near-square to each
+            # other) but contact is no longer face-perfect, so the pile shears
+            # and settles unevenly rather than holding a crystalline stack.
+            yaw = (torch.rand((self._n_envs, n_active), device=gs.device) - 0.5) \
+                * 2.0 * self._pyramid_yaw_jitter
+            quats[:, :n_active, 0] = torch.cos(yaw * 0.5)
+            quats[:, :n_active, 3] = torch.sin(yaw * 0.5)
 
-        self._log(f"pyramid spawn: {n_active} particles, {n_layers} layer(s), "
-                  f"base pitch {1000 * size * 1.15:.1f} mm")
+        self._log(f"{layout} spawn: {n_active} particles, {n_layers} layer(s), "
+                  f"pitch {1000 * size * self._pyramid_gap:.1f} mm, "
+                  f"jitter {self._pyramid_pos_jitter:.2f} cube, "
+                  f"yaw +-{self._pyramid_yaw_jitter:.2f} rad, "
+                  f"lift {self._pyramid_lift:.2f} cube, "
+                  f"stagger {self._pyramid_stagger:.2f} pitch")
         self._write_particle_poses(
             positions, quats, torch.arange(self._n_envs, device=gs.device))
         if self._particle_dofs_idx.numel() > 0:
