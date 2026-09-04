@@ -153,7 +153,8 @@ class SandManipulation(SandboxManipulation):
         self._log(f"sand: MPM grid dx {1000 * dx:.1f} mm "
                   f"({cells[0]}x{cells[1]}x{cells[2]} = {cells[0]*cells[1]*cells[2]/1e6:.2f}M cells); "
                   f"domain boundary coincides with the tray "
-                  f"(floor z = {1000 * wall / 2:.0f} mm)")
+                  f"(floor z = {1000 * wall / 2:.0f} mm); "
+                  f"CPIC {'on' if bool(mpm_cfg.get('enable_CPIC', True)) else 'OFF'}")
 
         # Without an explicitly rigid-MPM-capable coupler the sand does not see
         # the tray at all: it falls straight through the floor and settles on the
@@ -163,11 +164,24 @@ class SandManipulation(SandboxManipulation):
         # implements rigid_mpm.
         kwargs["coupler_options"] = gs.options.LegacyCouplerOptions()
 
+        # CPIC (Compatible Particle-In-Cell) is what makes a THIN rigid body
+        # behave like a barrier to a continuum. Without it the grid transfer is
+        # blind to the blade: particles on opposite sides of it share grid
+        # nodes, so material behind the plate is dragged along by material in
+        # front, which looks exactly like sand having adhesion. The sand model
+        # itself has none -- Genesis implements the Klar Drucker-Prager return
+        # mapping, which releases all elastic deformation when the trace turns
+        # tensile, so the constitutive tensile strength is exactly zero. Any
+        # pulling that shows up is therefore numerical, and this is its cure.
+        # Off by default in Genesis; unsupported only in differentiable mode,
+        # which this path does not use.
+        enable_cpic = bool(mpm_cfg.get("enable_CPIC", True))
         kwargs["mpm_options"] = gs.options.MPMOptions(
             particle_size=self._mpm_particle_size,
             grid_density=grid_density,
             lower_bound=lower,
             upper_bound=upper,
+            enable_CPIC=enable_cpic,
         )
         self._scene = gs.Scene(**kwargs)
         self._scene.profiling_options.show_FPS = False
