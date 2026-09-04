@@ -380,13 +380,28 @@ class SandboxManipulation:
     def _add_entities(self):
         width, depth, height = self._box_params["vol"]
 
+        # coup_friction is the tray's friction against a CONTINUUM (MPM), and
+        # it is a different parameter from `friction`, which governs
+        # rigid-rigid contact. It only matters for the sand path, where the
+        # measured consequence is large: Genesis' default of 0.1 lets a sand
+        # pile slide out into a ~9 degree puddle instead of holding an angle of
+        # repose. Left as None here so the rigid-cube path is byte-identical.
+        coup_friction = (self._config.get("box", {}) or {}).get("coup_friction")
+
         def add_box_entity(pos, size):
             box = gs.morphs.Box(pos=pos, size=size, fixed=True)
             surface = gs.surfaces.Default(color=[0, 0, 0])
-            return self._scene.add_entity(morph=box, surface=surface)
+            kw = {}
+            if coup_friction is not None:
+                kw["material"] = gs.materials.Rigid(
+                    coup_friction=float(coup_friction))
+            return self._scene.add_entity(morph=box, surface=surface, **kw)
         
         # floor        
-        self.plane = self._scene.add_entity(gs.morphs.Plane())
+        self.plane = self._scene.add_entity(
+            gs.morphs.Plane(),
+            **({"material": gs.materials.Rigid(coup_friction=float(coup_friction))}
+               if coup_friction is not None else {}))
 
         # add container
         self.box_parts = {
@@ -423,6 +438,14 @@ class SandboxManipulation:
             material=gs.materials.Rigid(
                 rho=3000,
                 friction=float(self._plate_params.get("friction", 0.3)),
+                # Against a CONTINUUM the tool's grip is coup_friction, not
+                # `friction` -- the same distinction the comment above makes for
+                # rigid contact, and just as easy to miss. Genesis defaults it
+                # to 0.1, so the blade was nearly slippery against sand on the
+                # one interface the action acts through. None leaves the rigid
+                # path untouched.
+                **({"coup_friction": float(self._plate_params["coup_friction"])}
+                   if self._plate_params.get("coup_friction") is not None else {}),
             ),
             morph=gs.morphs.Box(
                 pos=(0, 0, height * 2),

@@ -579,6 +579,50 @@ window, so cropping in throws away the material that moved.
 Reproduce all of the above with
 `bash scripts/sand_full_analysis.sh 'Genesis/data/sand/varied/**/*_data.pt' varied`.
 
+## 9.7 SUPERSEDING CAVEAT: the sand was resting on a frictionless floor
+
+Everything above describes a material that could not hold an angle of repose,
+because its base had no friction. Genesis'
+`engine/boundaries/boundaries.py::CubeBoundary.impose_pos_vel` reflects only the
+NORMAL velocity component (`vel[i] *= -restitution`, restitution 0) and leaves
+both tangential components untouched -- a perfect free-slip plane. Section 3
+had deliberately placed the MPM domain boundary at the tray floor, so the sand
+rested on that plane.
+
+A frictional medium on a frictionless base cannot hold a slope: its bottom layer
+has no shear resistance, so the heap spreads until lateral stress vanishes.
+Measured, on a column too tall to stand (EXP-0008):
+
+| | as shipped (coup_friction 0.1) | fixed (0.8) |
+|---|---|---|
+| angle of repose | 9.5 deg | **29.0 deg** (real dry sand 30-35) |
+| settle to rest | **never** | 25 steps |
+| pile extent after 5 pushes | 59.9-82.0 mm | 40.5-50.5 mm |
+| pile top | 13.0-14.5 mm | 20.3-22.1 mm |
+
+Stiffness was the wrong suspect and points the *wrong way*: raising E from 1e5
+to 3e6 pancaked the pile from 5.8 mm to 0.3 mm tall, because a stiffer continuum
+transmits its weight to a frictionless floor more efficiently. 0.9 mm is exactly
+the pile's volume spread over the whole tray floor.
+
+**Fix:** `box.coup_friction: 0.8` (and `plate.coup_friction: 0.3`) in
+`configs/sand.yaml`. `coup_friction` is friction against a *continuum* and is a
+different parameter from `friction`, which is rigid-rigid; Genesis defaults it
+to 0.1. It saturates above ~0.4.
+
+**Also learned:** fixed rigid geoms DO couple to MPM in Genesis 1.3.3. Section
+3's claim that they do not -- the reason the MPM domain was made to stand in for
+the tray -- is stale. Dropping the domain floor 30 mm below the tray floor left
+the sand resting at 9.0 mm, i.e. caught by the rigid floor, not by the boundary
+20 mm lower. The domain-as-container arrangement is no longer necessary, though
+it is harmless once `coup_friction` is set.
+
+**Consequence for every sand number in this document:** they describe a
+spreading puddle, not sand. This is not a data-quality caveat that a re-run
+would tighten -- it is a different material, so results before and after today
+are not comparable. Re-collection is required before the sand rows can be set
+beside anything else.
+
 ## 9.6 CAVEAT on every number above: the settle was capped at 100 steps
 
 `configs/sand.yaml` carried **two top-level `simulation:` blocks**. YAML keeps

@@ -194,8 +194,16 @@ def main():
          f"min grain z {min(zmin):.1f} mm (floor {1000 * floor_z:.1f})"),
         ("settles to rest", max(rest) < 5.0,
          f"worst post-settle q=0.995 speed {max(rest):.2f} mm/s (threshold 5)"),
-        ("blade actually moves sand", min(disp) > 0.2,
-         f"smallest mean displacement {min(disp):.2f} mm"),
+        # Condition on the push actually having length. The pile-aware sampler
+        # can emit a ZERO-length push when it cannot find room -- observed once
+        # in 15 -- and a 0 mm push correctly moves nothing, so scoring it as a
+        # blade failure is a bug in the check, not a finding. Collections drop
+        # these via --min-push-mm, so they never reach a fit.
+        ("blade moves sand (full-length pushes)",
+         (min([r["disp"] for r in report if r["push_mm"] >= 19.9] or [0]) > 0.2),
+         f"smallest mean displacement {min([r['disp'] for r in report if r['push_mm'] >= 19.9] or [0]):.2f} mm "
+         f"over {sum(1 for r in report if r['push_mm'] >= 19.9)}/{len(report)} "
+         f"full-length pushes"),
         ("no launching", max(r["zmax"] for r in report) < 1000 * floor_z + 40,
          f"highest grain {max(r['zmax'] for r in report):.1f} mm"),
     ]

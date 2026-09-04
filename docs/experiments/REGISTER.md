@@ -22,6 +22,10 @@ cited section and has not been re-recorded.
 | ID | Claim | Status | Grade | Supported by | Contradicted by | Depends on |
 |---|---|---|---|---|---|---|
 | C-019 | The linear operator's margin over mean-delta is regime-independent (+0.15..+0.31 across monolayer, heap and continuum) | open | low | EXP-0002, EXP-0006 | — | `rasteriser-identity`, `swept-region-metric`, `episode-split`, `settled-state` |
+| C-026 | The sand pile could not hold an angle of repose because its BASE was frictionless (Genesis' CubeBoundary leaves tangential velocity untouched), not because the material was too soft | supported | moderate | EXP-0008 | — | `sand-projection` |
+| C-027 | box.coup_friction 0.8 gives a 29 deg angle of repose and a 25-step settle, against 9.5 deg and never converging at the default 0.1; it saturates above ~0.4 | supported | moderate | EXP-0008 | — | `sand-projection` |
+| C-028 | Fixed rigid geoms DO couple to MPM in Genesis 1.3.3, contradicting the earlier finding that the MPM domain had to stand in for the tray | supported | moderate | EXP-0008 | `sand_manipulation.md` §3 (stale) | — |
+| C-029 | Every sand dataset collected before 2026-09-04 describes a frictionless-based spreading puddle, not sand, and is not comparable with anything collected after | supported | moderate | EXP-0008 | — | `settled-state` |
 | C-023 | Every sand transition collected before 2026-09-04 was recorded ~1.3 mm of mean grain displacement before the pile finished moving (settle capped at 100 steps, not 2500) | supported | moderate | EXP-0007 | — | `config-keys-reach-sim` |
 | C-024 | MPM sand never reaches the rigid path's rest criterion: the median grain is at rest (0.05 mm/s) while the top 0.5% creeps indefinitely at ~0.4 um/step, so q=0.995 < 1 mm/s tests the tail rather than the pile | open | moderate | EXP-0007 | — | `settled-state` |
 | C-025 | A 5-push sand episode yields only ~2-3 informative transitions: by push 4-5 the pile has spread to 63-82 mm and a push moves 0.25-1.4 mm | open | low | EXP-0007 | — | `settled-state` |

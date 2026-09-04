@@ -115,6 +115,14 @@ rigid_options:
   constraint_solver: Newton
 
 box:
+  # Friction against the MPM continuum -- NOT `friction`, which is rigid-rigid.
+  # Genesis defaults this to 0.1, which is too slippery for a granular pile to
+  # stand on: the base layer has no shear resistance, so the heap slides out
+  # into a ~9 degree puddle and never stops creeping. Measured on a column too
+  # tall to stand (r 10 mm, h 30 mm): 0.1 gives 9.5 deg and never settles; 0.8
+  # gives a 29 deg angle of repose (real dry sand is 30-35) and settles in 25
+  # steps. Saturates above ~0.4. See EXP-0008.
+  coup_friction: 0.8
   vol : [0.128, 0.128, 0.04]
   wall_thickness : 0.02
   friction : None                           # SET IN DATA_COLLECTION LOOP
@@ -139,6 +147,13 @@ material:
 safety_margin : 0.02
 
 plate:
+  # Grip against the CONTINUUM, as distinct from `friction` just below, which
+  # is rigid-rigid. Genesis defaults it to 0.1; set to match the plate's rigid
+  # friction rather than left implicit. Measured sensitivity on one push: mean
+  # grain displacement 6.87 / 7.57 / 8.41 mm at 0.1 / 0.3 / 0.6, all engaging
+  # the whole pile -- a real but secondary effect next to the tray's
+  # coup_friction, which decides whether the pile stands at all. See EXP-0008.
+  coup_friction: 0.3
   speed : 0.125 # m/s                       # cruise speed of the trapezoid profile
   size : [0.04, 0.002, 0.01]
   friction : 0.3                            # must be set: unset -> Genesis default 1.0,
