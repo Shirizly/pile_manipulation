@@ -21,6 +21,20 @@ simulation:
   # mid-motion state, which propagates because each transition's s is the
   # previous transition's s'.
   settle_steps : 2500
+  # MPM substeps. Sand needs far more than the rigid path: the MPM substep_dt
+  # must satisfy a CFL bound that the plate's control cadence does not, so the
+  # substeps are raised rather than dt lowered, which would change how often
+  # the plate is commanded. 30 is ~1.6x over Genesis' suggested bound at
+  # E = 1e5 and ran stably; see docs/sand_manipulation.md.
+  #
+  # This key lived in a SECOND top-level `simulation:` block further down the
+  # file. YAML keeps only the last mapping for a repeated key, so that block
+  # silently replaced this entire one -- dt, substeps, settle_steps and every
+  # settle threshold reverted to code defaults, and settle_steps went 2500 ->
+  # 100, which capped the settle and recorded piles still moving at ~8 mm/s
+  # against a 1 mm/s rest threshold. Guarded by
+  # tests/test_config_no_duplicate_keys.py.
+  substeps_mpm: 30
   settle_check_every : 10                   # steps between rest checks (one GPU sync each)
   settle_velocity_threshold : 1.0e-3        # m/s, matches Genesis' hibernation default
   # Fraction of particles that must be below threshold. Testing max() instead
@@ -193,8 +207,6 @@ plate:
 # so changing it would alter the sweep and the scene would stop being identical
 # to the cube setup. 30 puts substep_dt ~1.3e-4 against a suggested 8e-5 -- about
 # 1.6x over, which ran stably in probing; raise it if the sand ever explodes.
-simulation:
-  substeps_mpm: 30
 
 mpm_options:
   # Grain size. This sets BOTH the physical resolution and the particle count,

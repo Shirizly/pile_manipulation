@@ -26,7 +26,8 @@ day one.
 | `swept-region-metric` | The scoring region covers the pixels a push can plausibly change; whole-image error is ~95% untouched pixels where persistence is exact | `unchecked` | none |
 | `mass-conservation` | World-frame `‖I_k‖₁ / ‖I_{k+1}‖₁ ≈ 1`. Holds to 0.4% on cubes and 1.0000 on sand — but **only in the world frame**; in the canonical crop material legitimately leaves | `unchecked` | none; measured per-run by `fit_linear_foresight.py` |
 | `perpendicular-actions` | The action distribution in training data matches deployment | **broken** | none — training is oblique 92% of the time, every MPC executes perpendicular 99.6% of the time (`linear_foresight_report.md` §3). `--perpendicular-pushes` fixes collection |
-| `settled-state` | Recorded `s'` is a pile at rest, not material still moving | `unchecked` | none; MPM path silently skipped the settle once (`sand_manipulation.md` §3) |
+| `settled-state` | Recorded `s'` is a pile at rest, not material still moving | **broken** for all sand data collected before 2026-09-04 (EXP-0007) | `tests/test_config_no_duplicate_keys.py` guards the cause; the residual-speed check itself is unchecked |
+| `config-keys-reach-sim` | Every key written in a config YAML actually reaches the simulator: no duplicate top-level key silently discards a block, no declared key is ignored | `fixed` (2026-09-04) | `tests/test_config_no_duplicate_keys.py` (15 tests) |
 | `deploy-train-raster` | The occupancy a learned model sees at MPC time is produced the same way as the one it trained on | **broken** (suspected, 2026-09-03) | none — training uses the cv2 raster, `simple_mpc/*` uses `particles_to_occupancy` |
 
 ## Adding a tag

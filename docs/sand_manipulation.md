@@ -579,6 +579,41 @@ window, so cropping in throws away the material that moved.
 Reproduce all of the above with
 `bash scripts/sand_full_analysis.sh 'Genesis/data/sand/varied/**/*_data.pt' varied`.
 
+## 9.6 CAVEAT on every number above: the settle was capped at 100 steps
+
+`configs/sand.yaml` carried **two top-level `simulation:` blocks**. YAML keeps
+the last, so the whole first block was silently discarded and `settle_steps` ran
+at the code default of **100** rather than the declared 2500. Every sand dataset
+on disk was collected that way (EXP-0007, fixed 2026-09-04, guarded by
+`tests/test_config_no_duplicate_keys.py`).
+
+Consequence, measured: after a push the q=0.995 grain speed is 1.905 mm/s at
+step 100 against 0.811 at step 3000, and the pile moves a further **1.31 mm** of
+mean grain displacement after step 100 — about **11%** of the 10-15 mm a push
+moves. Each transition's `s` is the previous `s'`, so it accumulates along an
+episode. Mass conservation and floor containment were unaffected (1.0000 and
+exactly 10.0 mm throughout).
+
+The sections above therefore stand *as measured* but describe a pile recorded
+slightly early. Whether that moves the fitted margins is untested; re-collecting
+the 48 000-transition set with the fix is 3.5 h and would settle it.
+
+Two things the same investigation established, which outlive the bug:
+
+- **Sand creeps and never stops.** With the cap fixed, post-*push* settles do
+  converge (0.98-1.00 mm/s), but post-*spawn* settles never pass the criterion
+  at all (2.12-2.22 mm/s over three episodes). The median grain is at rest
+  (0.046 mm/s) while the top 0.5% keeps moving and drift/step flattens at
+  ~0.4 um/step rather than reaching zero. `q=0.995 < 1 mm/s` was inherited from
+  the rigid path and tests the moving tail, not the pile.
+- **Late-episode sand pushes barely do anything.** Mean displacement per push
+  fell to 0.25-1.42 mm once pile extent reached 63-82 mm, against 8-15 mm early
+  in an episode. With the separately measured flattening to ~1.2 grain layers by
+  push 5, a 5-push episode is roughly 2-3 informative transitions plus 2-3
+  near-no-ops.
+
+Videos: `outputs/sand_physicality/` (oblique | overhead, 3 episodes x 5 sweeps).
+
 ## 10. Open questions
 
 1. **Density or height as the model input?** They carry different information and
