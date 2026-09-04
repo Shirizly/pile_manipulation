@@ -27,7 +27,7 @@ design:
   baselines: [mean-delta]
   metric: "explained variance of the canonical-frame delta over the train-mean delta"
 noise_floor: "not measured; differences under ~2 points treated as not interpretable"
-depends_on: [canonical-warp, episode-split, sand-projection]
+depends_on: [canonical-warp, episode-split, particle-projection]
 result: "matched view wins every column; every multi-channel stack is 0.3-2 points WORSE than the matched single channel, in all six columns"
 verdict: supported
 downgrades: [imprecision, untested-dependency]

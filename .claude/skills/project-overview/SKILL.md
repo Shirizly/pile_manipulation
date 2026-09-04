@@ -43,13 +43,18 @@ infrastructure all three depend on.
 | `docs/UTILITIES.md` | Utility ownership boundaries: what belongs in `transforms/functional.py` vs `utils.py` vs a scoped module, and the on_phase-hook / write_video_frame pattern as the reference example |
 | `docs/oracle_mpc_design.md` | Full design reference for the oracle MPC subsystem: snapshot/restore state management, sampling optimizers, occupancy-representation caveats, config schema, known limitations |
 | `docs/linear_visual_foresight_baseline.md` | Suh & Tedrake 2020 switched-linear visual foresight as a comparison baseline: paper summary, what the repo already supports, the integration plan, and the perpendicular-push / fixed-length action restriction (§7, implemented) |
-| `docs/sand_manipulation.md` | Sand (MPM continuum) as a drop-in replacement for the rigid cubes: what stays identical, what necessarily differs, the continuum→occupancy projections, and the MPM failure modes that produce plausible-looking but wrong data |
+| `docs/rejected_mpm_sand.md` | Why MPM sand was tried as the continuum end of the granularity spectrum and abandoned: cohesion is zero by construction and adhesion measured zero, but the pile is three grid cells tall and a continuum cannot represent grain-scale discreteness at any resolution. Use DEM (the cube path) if a granular medium is needed |
 | `docs/piled_collection.md` | Piled (multi-layer, centred) particle spawns and pile-aware action sampling: why they exist, what they guarantee, and every flag/config that activates them |
 | `docs/human_demo_design.md` | Full design reference for the human-demonstration subsystem: the 5D action convention, local grid-search refinement, GUI interaction model, output-schema/recording parity with `run_oracle_mpc.py` |
-| `.github/skills/mpc-experiments/SKILL.md` | Deep-dive operational guide for the learned-model MPC framework specifically (adapters, reward types, running/debugging experiments) |
+| `docs/experiments/` | The evidence layer: `REGISTER.md` (one row per claim, with what supports/contradicts it and what it depends on), `INVARIANTS.md` (the `depends_on` tag registry and its test backing), and `EXP-####-*.md` records. Owned by the `experiment-log` skill; validated by `scripts/check_register.py` |
+| `docs/prediction_difficulty_hypotheses.md` | The live hypothesis set (H-A1…H-C5) for prediction accuracy and MPC suitability, plus the frame-convention bug that invalidated much of the earlier cube work |
+
+(A previous version of this map pointed at `.github/skills/mpc-experiments/SKILL.md`,
+which does not exist. Removed 2026-09-03 — and it is a fair example of why
+`scripts/check_register.py` exists.)
 
 If you're not sure where something belongs, it's almost certainly one of
-these five `docs/` files, not a new one — check the Design Philosophy in
+these `docs/` files, not a new one — check the Design Philosophy in
 `ARCHITECTURE.md` first; it explains *why* the boundaries are drawn where
 they are, which usually settles where a change's documentation belongs too.
 
@@ -72,6 +77,10 @@ Concretely, before considering such a change done:
   `docs/oracle_mpc_design.md`'s relevant section (it's organized by design
   decision, so most changes map to one existing section or a clearly-scoped
   new one).
+- **Any experiment, probe, fit, sweep or benchmark whose number might be
+  cited → a record under `docs/experiments/`, via the `experiment-log` skill.**
+  A number in a commit message or a chat log is a number the next session
+  cannot check, compare, or invalidate.
 - A genuinely new subsystem on the scale of oracle MPC → give it its own
   `docs/<name>_design.md` following that file's shape (purpose, architecture
   with *why* alongside *what*, file map, config reference, usage, known

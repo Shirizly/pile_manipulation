@@ -3,8 +3,8 @@
 import pytest
 import torch
 
-from transforms.sand_occupancy import (
-    sand_mass, sand_to_density, sand_to_heightmap,
+from transforms.particle_fields import (
+    fraction_in_bounds, points_to_density, points_to_heightmap,
 )
 
 BOUNDS = {"x_min": -0.064, "x_max": 0.064, "y_min": -0.064, "y_max": 0.064}
@@ -23,8 +23,8 @@ def _column(n, x=0.0, y=0.0, z0=0.0, dz=0.001):
 def test_density_counts_depth_rather_than_presence():
     """The whole reason this is not particles_to_occupancy: a deep column and a
     shallow one must not read the same."""
-    shallow = sand_to_density(_column(1), BOUNDS, RES, normalize=None)
-    deep = sand_to_density(_column(40), BOUNDS, RES, normalize=None)
+    shallow = points_to_density(_column(1), BOUNDS, RES, normalize=None)
+    deep = points_to_density(_column(40), BOUNDS, RES, normalize=None)
     assert float(shallow.max()) == pytest.approx(1.0)
     assert float(deep.max()) == pytest.approx(40.0)
 
@@ -32,15 +32,15 @@ def test_density_counts_depth_rather_than_presence():
 def test_density_conserves_mass():
     g = torch.Generator().manual_seed(0)
     p = (torch.rand(2, 5000, 3, generator=g) - 0.5) * 0.1
-    d = sand_to_density(p, BOUNDS, RES, normalize=None)
+    d = points_to_density(p, BOUNDS, RES, normalize=None)
     assert torch.allclose(d.flatten(1).sum(1), torch.full((2,), 5000.0), rtol=1e-4)
 
 
 def test_blur_conserves_mass():
     g = torch.Generator().manual_seed(1)
     p = (torch.rand(1, 3000, 3, generator=g) - 0.5) * 0.08
-    raw = sand_to_density(p, BOUNDS, RES, sigma=0.0, normalize=None)
-    smooth = sand_to_density(p, BOUNDS, RES, sigma=1.5, normalize=None)
+    raw = points_to_density(p, BOUNDS, RES, sigma=0.0, normalize=None)
+    smooth = points_to_density(p, BOUNDS, RES, sigma=1.5, normalize=None)
     assert float(smooth.sum()) == pytest.approx(float(raw.sum()), rel=1e-3)
 
 
@@ -49,7 +49,7 @@ def test_out_of_bounds_is_dropped_not_clamped():
     exactly the artefact a transport model would then learn."""
     p = torch.zeros(1, 10, 3)
     p[0, :, 0] = 0.5          # far outside
-    d = sand_to_density(p, BOUNDS, RES, normalize=None)
+    d = points_to_density(p, BOUNDS, RES, normalize=None)
     assert float(d.sum()) == 0.0
 
 
@@ -57,7 +57,7 @@ def test_normalize_mean_makes_a_typical_cell_about_one():
     g = torch.Generator().manual_seed(2)
     for n in (2000, 20000):
         p = (torch.rand(1, n, 3, generator=g) - 0.5) * 0.06
-        d = sand_to_density(p, BOUNDS, RES, normalize="mean")
+        d = points_to_density(p, BOUNDS, RES, normalize="mean")
         occ = d[d > 0]
         assert 0.5 < float(occ.mean()) < 2.0, n
 
@@ -65,7 +65,7 @@ def test_normalize_mean_makes_a_typical_cell_about_one():
 def test_normalize_max_is_bounded():
     g = torch.Generator().manual_seed(3)
     p = (torch.rand(1, 4000, 3, generator=g) - 0.5) * 0.06
-    d = sand_to_density(p, BOUNDS, RES, normalize="max")
+    d = points_to_density(p, BOUNDS, RES, normalize="max")
     assert float(d.max()) == pytest.approx(1.0)
     assert float(d.min()) >= 0.0
 
@@ -73,18 +73,18 @@ def test_normalize_max_is_bounded():
 def test_density_is_unclamped():
     """A regression guard: the cube path clamps to [0,1] and that is the bug
     this module exists to avoid."""
-    d = sand_to_density(_column(100), BOUNDS, RES, normalize=None)
+    d = points_to_density(_column(100), BOUNDS, RES, normalize=None)
     assert float(d.max()) > 1.0
 
 
 def test_heightmap_reports_the_topmost_particle():
     p = _column(20, z0=0.01, dz=0.002)          # top at 0.01 + 19*0.002
-    h = sand_to_heightmap(p, BOUNDS, RES, floor_z=0.01)
+    h = points_to_heightmap(p, BOUNDS, RES, floor_z=0.01)
     assert float(h.max()) == pytest.approx(19 * 0.002, abs=1e-6)
 
 
 def test_heightmap_empty_cells_read_floor_level():
-    h = sand_to_heightmap(_column(5, z0=0.01), BOUNDS, RES, floor_z=0.01)
+    h = points_to_heightmap(_column(5, z0=0.01), BOUNDS, RES, floor_z=0.01)
     assert float(h.min()) == 0.0
     assert torch.isfinite(h).all()
 
@@ -94,11 +94,11 @@ def test_density_and_height_separate_wide_from_tall():
     tall = _column(64, z0=0.0, dz=0.001)
     wide = torch.zeros(1, 64, 3)
     wide[0, :, 0] = torch.linspace(-0.03, 0.03, 64)
-    d_tall = sand_to_density(tall, BOUNDS, RES, normalize=None)
-    d_wide = sand_to_density(wide, BOUNDS, RES, normalize=None)
+    d_tall = points_to_density(tall, BOUNDS, RES, normalize=None)
+    d_wide = points_to_density(wide, BOUNDS, RES, normalize=None)
     assert float(d_tall.max()) > float(d_wide.max()) * 10
-    h_tall = sand_to_heightmap(tall, BOUNDS, RES)
-    h_wide = sand_to_heightmap(wide, BOUNDS, RES)
+    h_tall = points_to_heightmap(tall, BOUNDS, RES)
+    h_wide = points_to_heightmap(wide, BOUNDS, RES)
     assert float(h_tall.max()) > float(h_wide.max())
 
 
@@ -106,34 +106,34 @@ def test_sand_mass_flags_material_leaving_the_tray():
     p = torch.zeros(1, 100, 3)
     p[0, :50, 0] = 0.0            # inside
     p[0, 50:, 0] = 0.5            # escaped
-    assert float(sand_mass(p, BOUNDS)[0]) == pytest.approx(0.5)
+    assert float(fraction_in_bounds(p, BOUNDS)[0]) == pytest.approx(0.5)
 
 
 def test_batch_independence():
     g = torch.Generator().manual_seed(4)
     p = (torch.rand(3, 1000, 3, generator=g) - 0.5) * 0.06
-    d = sand_to_density(p, BOUNDS, RES, normalize=None)
+    d = points_to_density(p, BOUNDS, RES, normalize=None)
     for i in range(3):
-        one = sand_to_density(p[i:i + 1], BOUNDS, RES, normalize=None)
+        one = points_to_density(p[i:i + 1], BOUNDS, RES, normalize=None)
         assert torch.allclose(d[i], one[0])
 
 
 def test_rejects_wrong_shape():
     with pytest.raises(ValueError, match=r"\(B, N, 3\)"):
-        sand_to_density(torch.zeros(10, 3), BOUNDS, RES)
+        points_to_density(torch.zeros(10, 3), BOUNDS, RES)
 
 
 # --------------------------------------------------------------------------
 # Binary silhouette — the overhead-camera observation model
 # --------------------------------------------------------------------------
 
-from transforms.sand_occupancy import mask_threshold_for_mass, sand_to_mask  # noqa: E402
+from transforms.particle_fields import mask_threshold_for_mass, points_to_mask  # noqa: E402
 
 
 def test_mask_is_binary():
     g = torch.Generator().manual_seed(10)
     p = (torch.rand(2, 3000, 3, generator=g) - 0.5) * 0.06
-    m = sand_to_mask(p, BOUNDS, RES, min_grains=2)
+    m = points_to_mask(p, BOUNDS, RES, min_grains=2)
     assert set(torch.unique(m).tolist()) <= {0.0, 1.0}
 
 
@@ -144,8 +144,8 @@ def test_mask_threshold_discards_the_sparse_fringe():
     stray = torch.zeros(1, 1, 3)
     stray[0, 0, 0] = 0.03
     p = torch.cat([deep, stray], dim=1)
-    m1 = sand_to_mask(p, BOUNDS, RES, min_grains=1)
-    m2 = sand_to_mask(p, BOUNDS, RES, min_grains=2)
+    m1 = points_to_mask(p, BOUNDS, RES, min_grains=1)
+    m2 = points_to_mask(p, BOUNDS, RES, min_grains=2)
     assert float(m1.sum()) == 2.0          # both cells
     assert float(m2.sum()) == 1.0          # stray dropped
 
@@ -155,7 +155,7 @@ def test_higher_threshold_never_grows_the_mask():
     p = (torch.rand(1, 4000, 3, generator=g) - 0.5) * 0.06
     prev = None
     for t in (1, 2, 3, 4):
-        area = float(sand_to_mask(p, BOUNDS, RES, min_grains=t).sum())
+        area = float(points_to_mask(p, BOUNDS, RES, min_grains=t).sum())
         if prev is not None:
             assert area <= prev
         prev = area
@@ -163,8 +163,8 @@ def test_higher_threshold_never_grows_the_mask():
 
 def test_height_threshold_alternative():
     p = _column(20, z0=0.01, dz=0.002)     # 38 mm tall column
-    tall = sand_to_mask(p, BOUNDS, RES, min_height=0.005, floor_z=0.01)
-    too_tall = sand_to_mask(p, BOUNDS, RES, min_height=0.5, floor_z=0.01)
+    tall = points_to_mask(p, BOUNDS, RES, min_height=0.005, floor_z=0.01)
+    too_tall = points_to_mask(p, BOUNDS, RES, min_height=0.5, floor_z=0.01)
     assert float(tall.sum()) == 1.0
     assert float(too_tall.sum()) == 0.0
 
@@ -172,8 +172,8 @@ def test_height_threshold_alternative():
 def test_threshold_for_mass_is_self_calibrating():
     g = torch.Generator().manual_seed(12)
     p = (torch.rand(1, 6000, 3, generator=g) - 0.5) * 0.05
-    from transforms.sand_occupancy import sand_to_density
-    d = sand_to_density(p, BOUNDS, RES, normalize=None)
+    from transforms.particle_fields import points_to_density
+    d = points_to_density(p, BOUNDS, RES, normalize=None)
     for frac in (0.99, 0.85, 0.5):
         t = mask_threshold_for_mass(p, BOUNDS, RES, mass_fraction=frac)
         kept = float((d * (d >= t)).sum() / d.sum())
@@ -183,7 +183,7 @@ def test_threshold_for_mass_is_self_calibrating():
 def test_mask_blur_is_optional_and_off_by_default():
     g = torch.Generator().manual_seed(13)
     p = (torch.rand(1, 2000, 3, generator=g) - 0.5) * 0.05
-    hard = sand_to_mask(p, BOUNDS, RES, min_grains=2)
-    soft = sand_to_mask(p, BOUNDS, RES, min_grains=2, sigma=1.0)
+    hard = points_to_mask(p, BOUNDS, RES, min_grains=2)
+    soft = points_to_mask(p, BOUNDS, RES, min_grains=2, sigma=1.0)
     assert set(torch.unique(hard).tolist()) <= {0.0, 1.0}
     assert float(soft.max()) < 1.0 or float((soft > 0).sum()) > float((hard > 0).sum())

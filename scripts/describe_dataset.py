@@ -10,8 +10,8 @@ from __future__ import annotations
 import argparse, glob as _glob, os, sys
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 import torch
-from transforms.sand_occupancy import (big_quantile, sand_mass,
-                                      sand_to_density, sand_to_mask)
+from transforms.particle_fields import (big_quantile, fraction_in_bounds,
+                                      points_to_density, points_to_mask)
 
 ap = argparse.ArgumentParser()
 ap.add_argument("--glob", required=True)
@@ -38,7 +38,7 @@ print(f"push length: mean {float(L.mean()):.2f} sd {float(L.std()):.2f} mm; "
       f"full-length {100 * float(full.float().mean()):.1f}%")
 
 print("\n--- physics ---")
-m0, m1 = sand_mass(s0, B), sand_mass(s1, B)
+m0, m1 = fraction_in_bounds(s0, B), fraction_in_bounds(s1, B)
 print(f"mass in tray: before {float(m0.mean()):.4f} (min {float(m0.min()):.4f}) "
       f"| after {float(m1.mean()):.4f} (min {float(m1.min()):.4f})")
 print(f"z range: {1000 * float(s0[..., 2].min()):.1f} .. {1000 * float(s0[..., 2].max()):.1f} mm "
@@ -57,8 +57,8 @@ r = (s0[first][..., :2] - c[:, None, :]).norm(dim=-1).mean(1)
 print(f"episode-start pile radius: mean {1000 * float(r.mean()):.1f} sd {1000 * float(r.std()):.1f} mm")
 
 print("\n--- observation maps ---")
-for name, fn in (("density", lambda x: sand_to_density(x, B, (a.grid, a.grid), normalize=None)),
-                 ("mask>=2", lambda x: sand_to_mask(x, B, (a.grid, a.grid), min_grains=2))):
+for name, fn in (("density", lambda x: points_to_density(x, B, (a.grid, a.grid), normalize=None)),
+                 ("mask>=2", lambda x: points_to_mask(x, B, (a.grid, a.grid), min_grains=2))):
     f0 = fn(s0[:512])
     print(f"{name:9s}: occupied {float((f0 > 0).float().sum(dim=(1,2)).mean()):.0f}/"
           f"{a.grid**2} cells, max {float(f0.max()):.1f}")

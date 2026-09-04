@@ -1,42 +1,23 @@
 """
-Which SIMPLE models fit sand push dynamics, and how much does each buy?
+Which SIMPLE models fit pile push dynamics, and how much does each buy?
 
-`sand_foresight.py` showed the paper's switched-linear operator explains ~45% of
-what a push does on sand. This asks what else in the same complexity class --
-closed-form or convex, no training loop, interpretable -- does as well or better,
-and, more importantly, which cheaper model it has to beat to be worth anything.
+Beyond the paper's switched-linear operator, this fits everything in the same
+complexity class -- closed-form or convex, no training loop, interpretable:
+mean-delta, affine, reduced-rank, column-stochastic (mass-conserving) and
+nearest-neighbour retrieval.
 
-All models predict the next canonical-frame image from the current one, are
-fitted on the same train episodes, and are scored by the same swept-region
-metric, so the numbers are directly comparable to `sand_foresight.py`.
+The number to beat is NOT persistence but **mean-delta**: the canonical frame
+normalises the action away, so beating "predict nothing moved" is nearly free,
+and a zero-parameter constant displacement is what tells you whether an operator
+is doing state-dependent work at all.
 
-The families
-------------
-mean-delta        y' = y + mean(dy). ZERO parameters. The canonical frame has
-                  already normalised the action away, so if a stereotyped
-                  average displacement captures most of the effect then the
-                  operator is not doing state-dependent work and the headline
-                  result means much less than it appears to. This is the
-                  baseline that can invalidate the others, which is why it is
-                  first.
-linear            A y, non-negative, shrunk toward I. The paper's model.
-affine            A y + b. One extra vector, absorbing systematic drift that the
-                  linear part would otherwise have to encode.
-reduced-rank      rank-r truncation of the ridge solution, via one SVD. Gives an
-                  accuracy-vs-rank curve, i.e. the effective dimensionality of
-                  sand transport, and is the principled response to a fit that
-                  is underdetermined (M/D = 0.27 at the best configuration).
-col-stochastic    A with non-negative columns summing to 1: a true transport
-                  map, where every unit of input mass is redistributed and none
-                  is created or destroyed. Justified by measurement -- sand mass
-                  is conserved to 1.0000 -- and it is the variant Suh & Tedrake
-                  explicitly could not solve, because it breaks the row
-                  decomposition their tractability argument rests on. Projected
-                  gradient with a per-column simplex projection does solve it.
-knn               non-parametric: copy the delta of the most similar training
-                  state. Tests whether a parametric model is needed at all.
+Pass `--cube-size` for rigid-cube datasets, and `--max-episodes` to size-match
+two datasets before comparing their margins -- the margin grows with training
+data, so an unmatched comparison measures dataset size and reports it as
+material.
 
-    python sand_model_zoo.py --crop 1.0 --res 64 --blur 0
+Originally written for the MPM sand path, which was abandoned
+(docs/rejected_mpm_sand.md).
 """
 
 from __future__ import annotations
@@ -50,7 +31,7 @@ from fit_linear_foresight import (
     canonicalise, fit_operator, fit_operator_nonneg, metrics, predict_world,
     swept_region_mask,
 )
-from sand_foresight import BOUNDS, DEFAULT_GLOB, load_sand_arrays
+from occupancy_foresight import BOUNDS, DEFAULT_GLOB, load_transition_fields
 from fit_linear_foresight import actions_to_pixels
 
 
@@ -177,7 +158,7 @@ def main():
 
     dev = "cuda" if torch.cuda.is_available() else "cpu"
     norm = None if args.normalize == "none" else args.normalize
-    occ_t, occ_t1, actions, ep, s0, s1 = load_sand_arrays(
+    occ_t, occ_t1, actions, ep, s0, s1 = load_transition_fields(
         args.glob, args.grid, args.blur, norm, args.min_push_mm, dev,
         view=args.view, min_grains=args.min_grains, cube_size=args.cube_size,
         max_episodes=args.max_episodes)

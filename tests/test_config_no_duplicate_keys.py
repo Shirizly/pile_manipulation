@@ -1,12 +1,14 @@
 """Config YAMLs must not silently drop settings to duplicate keys.
 
-`Genesis/configs/sand.yaml` carried TWO top-level `simulation:` blocks. YAML
-takes the last one, so the entire first block -- dt, substeps, settle_steps,
-every settle threshold and all their justifying comments -- was discarded, and
-the only survivor was the two-line block that had been appended later. Nothing
-warned. The sand runs therefore used `settle_steps = 100` (the code default)
-where the config said 2500, so the settle hit its cap and recorded piles that
-were still moving.
+The now-removed `configs/sand.yaml` carried TWO top-level `simulation:` blocks.
+YAML takes the last one, so the entire first block -- dt, substeps,
+settle_steps, every settle threshold and all their justifying comments -- was
+discarded, and the only survivor was the two-line block appended later. Nothing
+warned, and the runs used `settle_steps = 100` where the config said 2500, so
+the pile was recorded still moving (docs/rejected_mpm_sand.md).
+
+The sand path is gone; this check is not, because the failure mode belongs to
+YAML rather than to sand and every remaining config is just as exposed.
 
 This is the same failure shape as `safety_margin` (declared 0.005, hardcoded
 0.02, never read) and the fixed `rigid_options` allow-list: a config that lies
@@ -48,19 +50,3 @@ _DuplicateKeyLoader.add_constructor(
 @pytest.mark.parametrize("path", CONFIGS, ids=lambda p: p.name)
 def test_config_has_no_duplicate_keys(path):
     yaml.load(path.read_text(), Loader=_DuplicateKeyLoader)
-
-
-def test_sand_config_settle_steps_reaches_the_simulation_block():
-    """The specific setting the duplicate key ate.
-
-    A cap of 100 is not enough for sand: measured at the cap, the q=0.995 grain
-    speed was 7.91 mm/s against a 1.0 mm/s rest threshold.
-    """
-    cfg = yaml.safe_load((CONFIG_DIR / "sand.yaml").read_text())
-    sim = cfg["simulation"]
-    assert sim.get("settle_steps", 100) > 100, (
-        "sand.yaml's simulation block must carry settle_steps; without it the "
-        "code default of 100 applies and the pile is recorded mid-motion")
-    for key in ("settle_velocity_threshold", "settle_rest_quantile",
-                "settle_check_every", "dt"):
-        assert key in sim, f"sand.yaml simulation block lost {key}"

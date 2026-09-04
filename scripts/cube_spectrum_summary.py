@@ -1,9 +1,9 @@
 """Collapse the per-dataset model-zoo logs into one table across the spectrum.
 
 Reads the logs `scripts/cube_spectrum_analysis.sh` writes and prints, for each
-model family, its score at n=20, 50, 80 cubes and on sand. The whole reason the
-spectrum exists is the TREND, and reading it off four separate 8-row tables is
-how the earlier cube/sand comparison stayed muddled for as long as it did.
+model family, its score at each cube count. The whole reason the spectrum
+exists is the TREND, and reading it off several separate 8-row tables is how the
+earlier comparison stayed muddled for as long as it did.
 
 Reported number is "% of change": 100% = no better than predicting nothing
 moved, lower is better. The number to beat is not persistence but mean-delta.
@@ -40,7 +40,7 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--dir", default="outputs/cube_spectrum")
     ap.add_argument("--cols", nargs="+",
-                    default=["n20", "n30", "n40", "n50", "n80", "sand"],
+                    default=["n20", "n30", "n40", "n50", "n80"],
                     help="columns to show, left to right; missing logs are "
                          "skipped. Counts above n=20 are expensive (Newton's "
                          "dense per-island Hessian goes as island_size^2.64, so "

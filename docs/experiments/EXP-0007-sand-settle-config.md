@@ -26,7 +26,7 @@ design:
   baselines: [persistence, mean-delta]
   metric: "q=0.995 grain speed (mm/s) after the settle, and mean grain displacement between step 100 and step N"
 noise_floor: "not applicable to the config defect, which is exact; for the 1.3 mm bias, one pile and one push were measured, so treat it as an order of magnitude and not a calibrated number"
-depends_on: [sand-projection]
+depends_on: [particle-projection]
 establishes: [config-keys-reach-sim, settled-state]
 result: "settle_steps 2500 -> 100 silently; post-push q0.995 speed 1.905 mm/s at step 100 vs 0.811 at 3000; pile moves a further 1.314 mm mean after step 100; mass 1.0000 and floor containment hold throughout"
 verdict: supported

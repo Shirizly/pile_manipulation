@@ -1,41 +1,31 @@
 """
-transforms/sand_occupancy.py — projecting a granular CONTINUUM to model inputs.
+transforms/particle_fields.py — projecting a particle set to model inputs.
 
-Why this is not `particles_to_occupancy`
----------------------------------------
-The rigid-cube path represents the scene as a binary silhouette: every occupied
-cell is exactly 1.0, because `particles_to_occupancy` scatter-adds a count and
-then clamps to [0, 1]. For 30-80 discrete cubes that is a defensible
-representation of "is there an object here".
+Three views of the same point cloud, for whatever the particles represent:
 
-For sand it throws away the only thing that matters. MPM sand is a continuum
-sampled by thousands of equal-mass particles, so the number of particles in a
-column *is* the material's local depth. Clamping it makes a 1-particle-deep
-smear and a 40-particle-deep dune identical — precisely the confusion that made
-the cube datasets uninformative about depth
-(docs/linear_foresight_findings.md §3.2).
+    points_to_density     unclamped column mass -- how MUCH is in each cell
+    points_to_heightmap   surface height
+    points_to_mask        binary silhouette, i.e. what an overhead camera sees
 
-So the sand projections here are **mass-preserving and unclamped**:
+Why not just `particles_to_occupancy`
+-------------------------------------
+That one scatter-adds a count and then CLAMPS to [0, 1], which is the right
+representation for "is there an object in this cell" and throws away depth. For
+cubes the mask view is the like-for-like camera model and `particles_to_occupancy`
+with a `footprint_radius` is the correct rasteriser, since a cube covers more
+than the cell its centre lands in. The density and height views here exist for
+cases where the column matters rather than its silhouette.
 
-    sand_to_density     top-down column mass per cell. The direct analogue of
-                        the paper's greyscale image, and the natural input for
-                        an image-space transport operator: a push moves mass
-                        between cells, and this is the quantity that is
-                        conserved when it does.
-    sand_to_heightmap   max particle height per cell. Complementary, not a
-                        substitute: it says how TALL the material is, which
-                        column mass cannot distinguish from how WIDE.
+Out-of-bounds points are DROPPED, never clamped to the edge: clamping would pile
+escaped material onto the boundary cells and quietly invent mass there.
 
-Both are pure torch with no `genesis` import, so they are unit tested without a
-GPU (tests/test_sand_occupancy.py), following the same ownership rule as the
-rest of `transforms/` (docs/UTILITIES.md).
+`fraction_in_bounds` is the conservation check -- the fraction of points still
+inside the grid bounds. A run where it drifts is losing material, and its
+transitions do not describe the physics a model is meant to learn.
 
-A note on smoothing. The linear-foresight work found that the SE(2) warp its
-operator needs costs more accuracy than one push changes when the field has
-features at the pixel scale, and that a sigma ~ 1 px blur removes that cost
-entirely. A sand density map is naturally smoother than a cube silhouette, but
-`sigma` is exposed here so the same precondition can be met explicitly rather
-than hoped for.
+These were written for the MPM sand path, which was abandoned
+(docs/rejected_mpm_sand.md); they are kept because the projections and the
+conservation check are material-agnostic and the cube analysis uses them.
 """
 
 from __future__ import annotations
@@ -82,7 +72,7 @@ def _gaussian_blur2d(field: torch.Tensor, sigma: float) -> torch.Tensor:
     return x.squeeze(1)
 
 
-def sand_to_density(particles: torch.Tensor,
+def points_to_density(particles: torch.Tensor,
                     bounds: Dict[str, float],
                     grid_res: Tuple[int, int],
                     sigma: float = 0.0,
@@ -139,7 +129,7 @@ def sand_to_density(particles: torch.Tensor,
     return out
 
 
-def sand_to_heightmap(particles: torch.Tensor,
+def points_to_heightmap(particles: torch.Tensor,
                       bounds: Dict[str, float],
                       grid_res: Tuple[int, int],
                       floor_z: float = 0.0,
@@ -149,7 +139,7 @@ def sand_to_heightmap(particles: torch.Tensor,
     Empty cells read ``0.0`` (i.e. floor level), not ``-inf``, so the map is
     usable as a model input directly.
 
-    Complementary to `sand_to_density`, not a replacement. Column mass cannot
+    Complementary to `points_to_density`, not a replacement. Column mass cannot
     separate "a wide thin layer" from "a narrow tall dune" once the pile spreads
     past one cell; height can. Height in turn cannot see how much material sits
     under the surface. A model that needs both should take them as two channels.
@@ -169,7 +159,7 @@ def sand_to_heightmap(particles: torch.Tensor,
     return _gaussian_blur2d(out.view(B, H, W), sigma)
 
 
-def sand_to_mask(particles: torch.Tensor,
+def points_to_mask(particles: torch.Tensor,
                  bounds: Dict[str, float],
                  grid_res: Tuple[int, int],
                  min_grains: float = 2.0,
@@ -178,7 +168,7 @@ def sand_to_mask(particles: torch.Tensor,
                  sigma: float = 0.0) -> torch.Tensor:
     """Binary silhouette: what an overhead camera would actually see.
 
-    `sand_to_density` and `sand_to_heightmap` both assume a sensor that measures
+    `points_to_density` and `points_to_heightmap` both assume a sensor that measures
     depth. A plain camera above (or below, through glass) does not: it sees
     material or it does not. This thresholds the continuum back down to a
     binary mask so the sand results can be compared **like for like** with the
@@ -209,10 +199,10 @@ def sand_to_mask(particles: torch.Tensor,
     Returns 0.0/1.0 floats (or blurred, if ``sigma > 0``), never counts.
     """
     if min_height is not None:
-        field = sand_to_heightmap(particles, bounds, grid_res, floor_z=floor_z)
+        field = points_to_heightmap(particles, bounds, grid_res, floor_z=floor_z)
         mask = (field >= float(min_height)).to(particles.dtype)
     else:
-        field = sand_to_density(particles, bounds, grid_res, normalize=None)
+        field = points_to_density(particles, bounds, grid_res, normalize=None)
         mask = (field >= float(min_grains)).to(particles.dtype)
     return _gaussian_blur2d(mask, sigma)
 
@@ -225,9 +215,9 @@ def mask_threshold_for_mass(particles: torch.Tensor,
 
     Self-calibrating alternative to guessing a threshold: state how much of the
     material the silhouette must account for and get the tightest threshold that
-    delivers it. Returns a float so it can be fed straight to `sand_to_mask`.
+    delivers it. Returns a float so it can be fed straight to `points_to_mask`.
     """
-    d = sand_to_density(particles, bounds, grid_res, normalize=None)
+    d = points_to_density(particles, bounds, grid_res, normalize=None)
     total = d.flatten(1).sum(1).clamp_min(1e-12)
     best = 1.0
     for t in range(1, int(d.max().item()) + 1):
@@ -239,7 +229,7 @@ def mask_threshold_for_mass(particles: torch.Tensor,
     return best
 
 
-def sand_mass(particles: torch.Tensor, bounds: Dict[str, float]) -> torch.Tensor:
+def fraction_in_bounds(particles: torch.Tensor, bounds: Dict[str, float]) -> torch.Tensor:
     """Fraction of particles inside the grid bounds, per frame: (B,).
 
     The conservation check for a sand dataset. A push should move sand, not

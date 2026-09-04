@@ -1,6 +1,11 @@
 #!/usr/bin/env bash
-# Model comparison as a function of particle count: cubes at n=20/50/80, sand
-# as the continuum limit.
+# Model comparison as a function of cube count.
+#
+# There used to be a sand row here, as the continuum limit. The MPM sand path
+# was abandoned (docs/rejected_mpm_sand.md) and its datasets are void, so the
+# spectrum is cube counts alone -- which is sufficient: run through one code
+# path the operator's margin over mean-delta is flat across regimes anyway
+# (EXP-0002, EXP-0006).
 #
 # The point is a TREND, so every run below differs only in the dataset and the
 # cube footprint -- same views, same resolution, same crop, same splits, same
@@ -11,17 +16,16 @@
 #
 set -u
 ROOT="${1:-Genesis/data/cube_spectrum}"
-SAND="${2:-Genesis/data/sand/varied/**/*_data.pt}"
 SIZE="${3:-0.005}"
 OUT=outputs/cube_spectrum
 mkdir -p "$OUT"
 say() { echo "=== $(date '+%H:%M:%S')  $*" | tee -a "$OUT/00_timeline.log"; }
 
 # Mask view only, and blurred. Both choices are measurements, not taste: the
-# SE(2) warp destroys pixel-scale features, so SHARP fields need smoothing
-# (cube silhouettes and the sand mask both improved a lot; smooth sand density
-# got worse). A binary mask is also the only view the whole spectrum shares --
-# it is what an overhead camera sees of cubes and of sand alike.
+# SE(2) warp destroys pixel-scale features, so a SHARP field needs smoothing
+# before it survives the round trip, and a cube silhouette is as sharp as they
+# come. The mask is also the honest camera model -- it is what an overhead
+# camera sees.
 for N in 20 30 40 50 80; do
   G="$ROOT/n$N/**/*_data.pt"
   ls $ROOT/n$N >/dev/null 2>&1 || { say "n=$N: no data, skipping"; continue; }
@@ -30,35 +34,19 @@ for N in 20 30 40 50 80; do
   # numbers from it would have looked unremarkable rather than wrong -- so
   # containment and displacement get checked first, every time.
   say "n=$N cubes: physics check"
-  python -u scripts/sand_describe.py --glob "$G" > "$OUT/describe_n$N.log" 2>&1
+  python -u scripts/describe_dataset.py --glob "$G" > "$OUT/describe_n$N.log" 2>&1
   grep -E "mass in tray|z range|displacement|transitions" "$OUT/describe_n$N.log" \
       | tee -a "$OUT/00_timeline.log"
   say "n=$N cubes"
-  python -u sand_model_zoo.py --glob "$G" --view mask --cube-size "$SIZE" \
+  python -u model_zoo.py --glob "$G" --view mask --cube-size "$SIZE" \
       --blur 1 --res 32 --crop 0.5 --ranks 4 16 64 256 \
       > "$OUT/zoo_n$N.log" 2>&1
   sed -n '/SWEPT REGION/,$p' "$OUT/zoo_n$N.log" | tee -a "$OUT/00_timeline.log"
 done
 
-# Sand twice: at full size, and SIZE-MATCHED to the cube datasets. The margin
-# over mean-delta grows with training data (more data helps the operator, not
-# the zero-parameter baseline), so the full-size sand row cannot be set beside a
-# 5 200-transition cube row and read as a property of the material. 32 sand
-# episodes x 160 transitions = 5 120, against 16 cube episodes x 320 = 5 120.
-say "sand (continuum limit), full size"
-python -u sand_model_zoo.py --glob "$SAND" --view mask --min-grains 2 \
-    --blur 1 --res 32 --crop 0.5 --ranks 4 16 64 256 \
-    > "$OUT/zoo_sand.log" 2>&1
-say "sand, size-matched to the cube sets"
-python -u sand_model_zoo.py --glob "$SAND" --view mask --min-grains 2 \
-    --blur 1 --res 32 --crop 0.5 --ranks 4 16 64 256 --max-episodes 32 \
-    > "$OUT/zoo_sandmatched.log" 2>&1
-sed -n '/SWEPT REGION/,$p' "$OUT/zoo_sandmatched.log" | tee -a "$OUT/00_timeline.log"
-sed -n '/SWEPT REGION/,$p' "$OUT/zoo_sand.log" | tee -a "$OUT/00_timeline.log"
-
 say "trend across the spectrum"
 python -u scripts/cube_spectrum_summary.py --dir "$OUT" \
-    --cols n20 n30 n40 n50 n80 sandmatched sand \
+    --cols n20 n30 n40 n50 n80 \
     | tee -a "$OUT/00_timeline.log"
 
 say "done -> $OUT"

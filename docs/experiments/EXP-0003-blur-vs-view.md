@@ -28,7 +28,7 @@ design:
   baselines: [persistence, mean-delta, identity-warp]
   metric: "swept-region rms as a percentage of the persistence rms at the SAME blur"
 noise_floor: "not measured for this design; view differences of <7 points are treated as not interpretable"
-depends_on: [canonical-warp, warp-blend, swept-region-metric, episode-split, sand-projection]
+depends_on: [canonical-warp, warp-blend, swept-region-metric, episode-split, particle-projection]
 result: "sand: mask 63.0/58.7/40.9/33.2%, density 62.5/59.4/33.9/26.7% across sigma 0/0.5/1.0/1.5. Same pattern at res 64 and on cubes."
 verdict: supported
 downgrades: [indirectness, imprecision, untested-dependency]

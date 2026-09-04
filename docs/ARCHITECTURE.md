@@ -103,8 +103,11 @@ fit_linear_foresight.py  fits and falsifies the switched-linear pixel operator
                         Results: reports/linear_foresight_report.md
 
 transforms/
-  sand_occupancy.py     continuum -> grid projections for MPM sand
-                        (sand_to_density / sand_to_heightmap / sand_mass).
+  particle_fields.py    particle set -> grid projections (points_to_density /
+                        points_to_heightmap / points_to_mask) plus
+                        fraction_in_bounds, the conservation check. Out-of-bounds
+                        points are DROPPED, not clamped, so escaped material
+                        cannot pile onto the boundary cells and invent mass.
                         UNCLAMPED and mass-preserving, unlike
                         particles_to_occupancy, which clamps to a binary
                         silhouette and would discard the depth that is the whole
@@ -206,29 +209,16 @@ Genesis/
                         the blind draw per sample when the free set is empty.
                         Genesis-free (torch/numpy/scipy), unit-tested in
                         tests/test_placement_sampling.py.
-  sand_manipulation.py   SandManipulation — SandboxManipulation with an MPM
-                        sand continuum instead of rigid cubes. Subclasses so the
-                        tray, plate, sweep and action sampling stay identical by
-                        construction; only the material differs. See
-                        docs/sand_manipulation.md, which also records three
-                        silent failure modes MPM introduces here (the settle
-                        never running, fixed rigid geometry not coupling to MPM,
-                        and grid_density being cells-per-metre).
-  sand_data_collection.py  episodes of N sequential fixed-length pile-aware
-                        pushes on sand; writes the same on-disk schema as the
-                        cube collectors, so existing loaders read it unchanged.
-  cube_spectrum_collection.py  the same collection as sand, at n=20/50/80
-                        small cubes, so model performance can be read as a
-                        function of particle count with sand as the continuum
-                        limit. Sand and cubes gave OPPOSITE verdicts on the
-                        linear operator, and granularity vs pile depth explain
-                        that equally well; one dataset cannot separate them, a
-                        spectrum can. Piles with the pyramid spawn (a dropped
-                        pile cannot exceed one layer) and re-jitters it every
-                        episode, so start diversity is free here -- unlike
-                        sand, where MPM samples its pile once and varied starts
-                        had to be built from a state library.
-  configs/sand.yaml      basic.yaml plus sand:/mpm_options: blocks.
+  cube_spectrum_collection.py  piled-cube collection at a range of cube
+                        counts, so model performance can be read as a function
+                        of particle count. Piles with the pyramid/heap spawn (a
+                        dropped pile cannot exceed one layer) and redraws the
+                        heap every episode, so start diversity is free. NOTE:
+                        cost is set by contact-island size, not cube count --
+                        0.36 s/transition at n=20 but 9.93 at n=30, because the
+                        heap percolates from several islands into one and Newton
+                        factorizes a dense Hessian per island
+                        (docs/scaling_to_200_objects.md).
   spawn_geometry.py      stepped-pyramid particle spawn layouts
                         (pyramid_layer_plan / pyramid_positions), pure torch,
                         unit-tested in tests/test_spawn_geometry.py. The only

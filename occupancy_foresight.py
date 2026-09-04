@@ -1,32 +1,24 @@
 """
-Fit the switched-linear visual-foresight operator on SAND, and validate it.
+Fit the switched-linear visual-foresight operator on a pushed pile, and validate it.
 
-This is the continuum test the cube work pointed at: on rigid cubes the paper's
-per-pixel linear operator never beat "predict nothing moved", and the leading
-explanation (docs/linear_foresight_findings.md §4, H1) is that its carrots formed
-a near-continuous mass while 30-80 cubes are a discrete set moving in threshold
-events. Sand is that continuum.
+Loads transitions from the on-disk `*_data.pt` schema, projects them to an
+occupancy field, fits the operator in the SE(2) canonical push frame and scores
+it on the swept region against persistence and mean-delta.
 
 Everything about the fit is reused from `fit_linear_foresight.py` -- the same
-SE(2) canonical push frame, the same non-negative FISTA solve, the same
-identity-operator control, the same swept-region metric -- so a difference in the
-result is a difference in the *material*, not in the method. Only the input
-representation changes: sand goes through `transforms/sand_occupancy.py`
-(unclamped column mass) instead of the binary silhouette
-`particles_to_occupancy` produces.
+canonical frame, the same non-negative FISTA solve, the same identity-operator
+control, the same swept-region metric -- so a difference between two datasets is
+a difference in the DATA, not in the method. That property is load-bearing: the
+cube and sand rows of an earlier comparison came through two different
+rasterisers and the ~49-point gap that produced was misread as physics
+(EXP-0001, EXP-0002).
 
-Two dataset-specific choices, both forced by measurement:
+Pass `--cube-size` for rigid-cube datasets so the mask view rasterises each
+cube's real footprint rather than its centre point.
 
-* **Only full-length pushes are fitted.** 91.6% of collected pushes travel the
-  requested 20 mm; the rest are truncated because the pile spreads over an
-  episode until the blade's clamped start has no room (97.5% full on push 1,
-  falling to 88% by push 4). A single-operator fit must not mix lengths, so the
-  short ones are dropped rather than silently averaged in.
-* **Train/validation split is by EPISODE, never by transition.** Five sequential
-  pushes on one pile are strongly correlated -- s' of push k is s of push k+1 --
-  so a transition-level split leaks the answer across the boundary.
-
-    python sand_foresight.py --res 32 --crop 0.5 --blur 1.0
+Originally written for the MPM sand path, which was abandoned
+(docs/rejected_mpm_sand.md). It is kept, and renamed, because the cube spectrum
+analysis runs through it.
 """
 
 from __future__ import annotations
@@ -41,15 +33,15 @@ from fit_linear_foresight import (
     actions_to_pixels, canonicalise, fit_operator, fit_operator_nonneg,
     metrics, predict_world, swept_region_mask,
 )
-from transforms.sand_occupancy import (big_quantile, sand_mass,
-                                      sand_to_density, sand_to_mask)
+from transforms.particle_fields import (big_quantile, fraction_in_bounds,
+                                      points_to_density, points_to_mask)
 
 DEFAULT_GLOB = "Genesis/data/sand/pile20/**/*_data.pt"
 # The tray, and therefore the grid extent, matches the cube datasets exactly.
 BOUNDS = {"x_min": -0.064, "x_max": 0.064, "y_min": -0.064, "y_max": 0.064}
 
 
-def load_sand_arrays(pattern: str, grid: int, sigma: float, normalize: str,
+def load_transition_fields(pattern: str, grid: int, sigma: float, normalize: str,
                      min_push_mm: float, device: str,
                      view: str = "density", min_grains: float = 2.0,
                      min_height: float | None = None, floor_z: float = 0.010,
@@ -123,22 +115,22 @@ def load_sand_arrays(pattern: str, grid: int, sigma: float, normalize: str,
             occ = particles_to_occupancy(x, BOUNDS, (grid, grid),
                                          footprint_radius=radius)
             if sigma > 0:
-                from transforms.sand_occupancy import _gaussian_blur2d
+                from transforms.particle_fields import _gaussian_blur2d
                 occ = _gaussian_blur2d(occ, sigma)
             return occ
     elif view == "mask":
         # What an overhead camera sees: a binary silhouette, not a depth map.
         # This is also the like-for-like comparison with the rigid-cube
         # datasets, which were binary throughout.
-        proj = lambda x: sand_to_mask(x, BOUNDS, (grid, grid),
+        proj = lambda x: points_to_mask(x, BOUNDS, (grid, grid),
                                       min_grains=min_grains, min_height=min_height,
                                       floor_z=floor_z, sigma=sigma)
     elif view == "height":
-        from transforms.sand_occupancy import sand_to_heightmap
-        proj = lambda x: sand_to_heightmap(x, BOUNDS, (grid, grid),
+        from transforms.particle_fields import points_to_heightmap
+        proj = lambda x: points_to_heightmap(x, BOUNDS, (grid, grid),
                                            floor_z=floor_z, sigma=sigma)
     else:
-        proj = lambda x: sand_to_density(x, BOUNDS, (grid, grid),
+        proj = lambda x: points_to_density(x, BOUNDS, (grid, grid),
                                          sigma=sigma, normalize=normalize)
     def project_all(states, chunk=2048):
         """Project in chunks, one chunk of positions on the GPU at a time.
@@ -201,7 +193,7 @@ def main():
     dev = "cuda" if torch.cuda.is_available() else "cpu"
     norm = None if args.normalize == "none" else args.normalize
 
-    occ_t, occ_t1, actions, ep, s0, s1 = load_sand_arrays(
+    occ_t, occ_t1, actions, ep, s0, s1 = load_transition_fields(
         args.glob, args.grid, args.blur, norm, args.min_push_mm, dev,
         view=args.view, min_grains=args.min_grains, min_height=args.min_height,
         cube_size=args.cube_size, max_episodes=args.max_episodes)
@@ -231,8 +223,8 @@ def main():
     print(f"\none push moves grains: mean {float(disp.mean()):.2f} mm, "
           f"p95 {big_quantile(disp, 0.95):.2f}, max {float(disp.max()):.2f} "
           f"(push = {float((actions[:, 2:] - actions[:, :2]).norm(dim=-1).mean() * 1000):.1f} mm)")
-    print(f"mass in tray: {float(sand_mass(s0, BOUNDS).mean()):.4f} -> "
-          f"{float(sand_mass(s1, BOUNDS).mean()):.4f}")
+    print(f"mass in tray: {float(fraction_in_bounds(s0, BOUNDS).mean()):.4f} -> "
+          f"{float(fraction_in_bounds(s1, BOUNDS).mean()):.4f}")
 
     # ---- fit --------------------------------------------------------------
     Y0 = canonicalise(occ_t[tr], s_px[tr], e_px[tr], R, CR).reshape(int(tr.sum()), -1).T

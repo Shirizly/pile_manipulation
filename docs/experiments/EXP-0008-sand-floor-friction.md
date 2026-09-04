@@ -26,7 +26,7 @@ design:
   baselines: [persistence, mean-delta]
   metric: "settled angle of repose (deg, outer-flank fit to the free surface), settle steps to q0.995 < 1 mm/s, pile height, resting z, mass in tray"
 noise_floor: "single run per cell; repose estimates vary a few degrees between measurements of the same config (9.5 vs 3.2 on two runs of the unfixed setup), so read differences under ~5 deg as noise"
-depends_on: [sand-projection]
+depends_on: [particle-projection]
 establishes: [settled-state]
 result: "coup_friction 0.1 -> 0.8 takes repose 9.5 -> 29.0 deg and settle 'never' -> 25 steps; stiffness goes the WRONG way (E 1e5 -> 3e6 pancakes the pile 5.8 -> 0.3 mm tall); dropping the MPM floor is unnecessary once coup_friction is set"
 verdict: supported
