@@ -1,14 +1,13 @@
 """The `grid-convention` and `rasteriser-identity` invariants.
 
 Written BEFORE the fix, per .claude/skills/experiment-log/SKILL.md's bug
-procedure, so the failure is recorded in the suite rather than in prose. The
-occupancy channel and the plate/action channel of a PileSweepData sample place
+procedure, so the failure was recorded in the suite rather than in prose. The
+occupancy channel and the plate/action channel of a PileSweepData sample placed
 world x on opposite grid axes; see docs/experiments/EXP-0001-occupancy-transpose.md.
 
-The three convention tests below pass and pin the pieces. The fourth is
-`xfail(strict=True)`, so when the dataset raster is corrected it turns into an
-XPASS failure and whoever fixed it is told to drop the marker and update
-docs/experiments/INVARIANTS.md.
+**Fixed 2026-09-05** in `PileSweepData._draw_particle_grid`. The fourth test was
+`xfail(strict=True)` until then; it now asserts normally. The first three pin
+the individual conventions so the fix cannot silently regress.
 """
 import glob
 
@@ -50,11 +49,8 @@ def test_draw_plate_soft_puts_world_x_on_dim0():
     assert abs(col - 32.0) < 2.0
 
 
-@pytest.mark.xfail(strict=True, reason="grid-convention is BROKEN: the dataset "
-                                       "rasterises particles through cv2, so its "
-                                       "occupancy is the transpose of its plate "
-                                       "channel. See EXP-0001.")
 def test_dataset_occupancy_agrees_with_particles_to_occupancy():
+    """Fixed 2026-09-05. Was xfail(strict) from 2026-09-03; see EXP-0001."""
     if not glob.glob("Genesis/data/foresight/L040/**/*_data.pt", recursive=True):
         pytest.skip("L040 dataset not present")
     from dmdc_baseline import load_transition_arrays

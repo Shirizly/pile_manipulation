@@ -7,62 +7,68 @@ hand — which is what had to happen on 2026-09-03.
 
 **Status:** `supported` · `refuted` · `open` (stated, under test) ·
 `contested` (evidence points both ways) · `invalidated` (an input is now known
-broken; the measurement stands, the conclusion does not) · `superseded`.
+broken; the measurement stands, the conclusion does not) · `superseded` ·
+`withdrawn` (the whole line of work was abandoned; see the note below).
 
 **Grade** is the best grade among supporting records, capped at `low` when
 support is exploratory-only. It is recomputed by `scripts/check_register.py`.
 
-Backfilled 2026-09-03 from `reports/linear_foresight_report.md`,
-`docs/sand_manipulation.md` and `docs/prediction_difficulty_hypotheses.md`.
-Rows without an `EXP` id predate this register; their evidence lives in the
-cited section and has not been re-recorded.
+> **2026-09-05 — the MPM sand path was withdrawn.** The medium was found to be
+> a soft deformable body rather than a granular one, for structural rather than
+> parameter reasons (`docs/rejected_mpm_sand.md`), and the code and datasets
+> were removed in `e9b83f99`. **Thirteen claims (C-010, C-012, C-013, C-014,
+> C-016, C-021, C-023 … C-029) were withdrawn with it and are not restated
+> here**, because carrying their numbers forward is exactly what this file
+> exists to prevent. They are recoverable from git history if the conclusion
+> rather than the measurement is ever wanted. Four surviving claims were
+> **re-sourced** to cube-only evidence — C-002, C-003, C-011, C-017 — and are
+> marked below; two, C-015/C-022, were already refuted and are now stated in
+> cube-only terms.
+
+Backfilled 2026-09-03 from `reports/linear_foresight_report.md` and
+`docs/prediction_difficulty_hypotheses.md`. Rows without an `EXP` id predate
+this register; their evidence lives in the cited section and has not been
+re-recorded.
 
 ## Open and contested
 
 | ID | Claim | Status | Grade | Supported by | Contradicted by | Depends on |
 |---|---|---|---|---|---|---|
-| C-019 | The linear operator's margin over mean-delta is regime-independent (+0.15..+0.31 across monolayer, heap and continuum) | open | low | EXP-0002, EXP-0006 | — | `rasteriser-identity`, `swept-region-metric`, `episode-split`, `settled-state` |
-| C-026 | The sand pile could not hold an angle of repose because its BASE was frictionless (Genesis' CubeBoundary leaves tangential velocity untouched), not because the material was too soft | supported | moderate | EXP-0008 | — | `particle-projection` |
-| C-027 | box.coup_friction 0.8 gives a 29 deg angle of repose and a 25-step settle, against 9.5 deg and never converging at the default 0.1; it saturates above ~0.4 | supported | moderate | EXP-0008 | — | `particle-projection` |
-| C-028 | Fixed rigid geoms DO couple to MPM in Genesis 1.3.3, contradicting the earlier finding that the MPM domain had to stand in for the tray | supported | moderate | EXP-0008 | `sand_manipulation.md` §3 (stale) | — |
-| C-029 | Every sand dataset collected before 2026-09-04 describes a frictionless-based spreading puddle, not sand, and is not comparable with anything collected after | supported (MPM path since abandoned, docs/rejected_mpm_sand.md; datasets deleted) | moderate | EXP-0008 | — | `settled-state` |
-| C-023 | Every sand transition collected before 2026-09-04 was recorded ~1.3 mm of mean grain displacement before the pile finished moving (settle capped at 100 steps, not 2500) | invalidated | moderate | EXP-0007 | — | `config-keys-reach-sim` |
-| C-024 | MPM sand never reaches the rigid path's rest criterion: the median grain is at rest (0.05 mm/s) while the top 0.5% creeps indefinitely at ~0.4 um/step, so q=0.995 < 1 mm/s tests the tail rather than the pile | invalidated | moderate | EXP-0007 | — | `settled-state` |
-| C-025 | A 5-push sand episode yields only ~2-3 informative transitions: by push 4-5 the pile has spread to 63-82 mm and a push moves 0.25-1.4 mm | invalidated | low | EXP-0007 | — | `settled-state` |
-| C-022 | Pile depth is what makes the linear operator work on sand and not on cubes | refuted | low | — | EXP-0002, EXP-0006 | `rasteriser-identity` |
+| C-019 | The linear operator's margin over mean-delta is regime-independent (+0.15..+0.31 across scattered monolayers and two-layer heaps) | open | low | EXP-0002, EXP-0006 | — | `rasteriser-identity`, `swept-region-metric`, `episode-split` |
 | C-020 | The scattered-monolayer UNet failure is caused by the transposed action channel | open | very-low | EXP-0004 | — | `grid-convention`, `deploy-train-raster` |
-| C-014 | The binary mask view predicts better than the density view | invalidated | low | `sand_manipulation.md` §8, §9.2 | EXP-0003 (blur not held fixed in the original) | `particle-projection`, `swept-region-metric`, `settled-state` |
-| C-016 | Blur hurts on a density map because it is already smooth | invalidated | very-low | `sand_manipulation.md` §6 (single split, unreplicated) | EXP-0003, EXP-0009 (blur helps by 15-33 points, both datasets, both estimators, both resolutions, everywhere EXP-0009 could afford to check; the one `hurts` cell — nonneg at res 64 — is the one EXP-0009 could not reproduce) | `particle-projection`, `settled-state` |
 | C-004 | Non-negativity beats ridge for the pixel operator (their Fig. 7) | open | — | `linear_foresight_report.md` §6 (cube fits — needs re-run) | — | `grid-convention` |
-| C-021 | Neither the dataset (`pile20` vs varied) nor the resolution (32 vs 64, under ridge) explains blur's sign flip on the density view: blur helps by 15-33 points, far above a ~1-point seed sd, in every cell EXP-0009 could afford. The standing (untested) explanation is that it takes `linear-nonneg` specifically AT res 64 — the one cell too expensive to fit on CPU (FISTA cost is O(D^3) per iteration; projected >1h for one fit at D=4096) | open | very-low | EXP-0003, EXP-0009 | — | `particle-projection`, `canonical-warp`, `warp-blend`, `episode-split`, `swept-region-metric`, `settled-state` |
+| C-030 | **Weakened, then re-opened 2026-09-05.** A signal-sensitive metric ranks models for MPC better than pixel rms does. The original mechanism ("the fine band is unpredictable") is refuted by EXP-0007; the *global* metric swap (FSS for rms) is refuted by EXP-0008; but EXP-0008's own table shows a strong **per-error-type** dissociation — see C-035, which is now where this programme lives | contested | very-low | — | EXP-0007, EXP-0008 (both refute the strong forms) | `canonical-warp`, `swept-region-metric` |
 
 ## Supported
 
 | ID | Claim | Status | Grade | Supported by | Depends on |
 |---|---|---|---|---|---|
 | C-018 | The dataset's occupancy channel and its plate/action channel place world x on opposite grid axes | supported | moderate | EXP-0001 | — (establishes `grid-convention`) |
-| C-017 | Height and density channels never beat the view matched to the prediction target | supported | low | EXP-0005 | `particle-projection`, `episode-split` |
-| C-010 | On sand the linear operator explains ~45–59% of the change, far above persistence | invalidated | — | `sand_manipulation.md` §6, §9.2 | `particle-projection`, `canonical-warp`, `settled-state` |
-| C-011 | mean-delta (zero parameters) is the baseline that matters, not persistence — the canonical frame normalises the action away | supported | — | `sand_manipulation.md` §7 | `canonical-warp` |
-| C-012 | The sand operator is effectively low rank, and its rank tracks the input space's dimensionality (~4 single-pile, ~16 varied) | invalidated | — | `sand_manipulation.md` §7, §9.3 | `particle-projection`, `settled-state` |
-| C-013 | Imposing mass conservation in the canonical window hurts, because material legitimately leaves the crop | invalidated | — | `sand_manipulation.md` §7, §9.2 | `mass-conservation`, `settled-state` |
+| C-031 | On cubes, blur moves the operator's error ~4x more than the choice of view does (33 points vs 8 across σ 0→1.5) | supported | very-low | EXP-0003 | `canonical-warp`, `warp-blend`, `swept-region-metric`, `episode-split`, `particle-projection` |
+| C-017 | **Re-sourced, cube-only.** Adding a height or density channel to a mask input does not help a linear model predict the cube silhouette | supported | low | EXP-0005 | `particle-projection`, `episode-split` |
+| C-011 | **Re-sourced, cube-only.** mean-delta (zero parameters) is the baseline that matters, not persistence — the canonical frame normalises the action away, and mean-delta alone reaches 0.12–0.35 explained | supported | low | EXP-0002, EXP-0005, EXP-0006 | `canonical-warp` |
 | C-007 | In scalar targets, essentially all the nonlinearity is one variable: how much material the blade meets | supported | — | `linear_foresight_report.md` §2.6, §2.9 | — (particle-based, not grid-based) |
 | C-009 | Per-push band displacement is 84% predictable from grid-visible features but only 58% linearly | supported | — | `linear_foresight_report.md` §2.3 | — (particle-based) |
 | C-005 | Every MPC derives blade yaw from the push direction; training data is oblique 92% of the time and deployment perpendicular 99.6% | supported | — | `linear_foresight_report.md` §3 | — (action-based) |
-| C-003 | World-frame occupancy mass is conserved to 0.4% on cubes and exactly on sand | supported | — | `linear_foresight_report.md` §4 | `mass-conservation` |
-| C-002 | The SE(2) warp costs more than one push changes unless the field is smoothed to σ≈1 | supported | — | `linear_foresight_report.md` §1; identity-baseline rows of EXP-0001, EXP-0003 | `canonical-warp` |
+| C-003 | **Re-sourced, cube-only.** World-frame occupancy mass is conserved to 0.4% on cubes | supported | — | `linear_foresight_report.md` §4 | `mass-conservation` |
+| C-002 | **Re-sourced, cube-only.** The SE(2) warp costs more than one push changes unless the field is smoothed to σ≈1 | supported | — | `linear_foresight_report.md` §1; identity-baseline rows of EXP-0001, EXP-0003 | `canonical-warp` |
 
-## Invalidated
+## Refuted and invalidated
 
-These were measured correctly and concluded wrongly, because an input was
-broken. Listed so nothing cites them, and so the re-runs are queued.
+Measured correctly, concluded wrongly. Listed so nothing cites them, and so the
+re-runs are queued.
 
-| ID | Claim | Invalidated by | Was stated in | Depends on |
-|---|---|---|---|---|
-| C-001 | On scattered cube monolayers nothing beats persistence at one-step pixel prediction | EXP-0001 | `linear_foresight_report.md` §1, §2, §2.1–§2.3, Q2/Q3/Q8 | `grid-convention` |
-| C-008 | Contact-switching does not transfer from scalar targets to the pixel operator | EXP-0001 | `linear_foresight_report.md` §2.7 | `grid-convention` |
-| C-015 | It was pile DEPTH, not granularity: the operator does state-dependent work on heaps and not on monolayers | EXP-0001, EXP-0002 | `sand_manipulation.md` §8 | `grid-convention`, `rasteriser-identity` |
-| C-006 | The paper's Fig. 5 deposit structure (depletion across the band, deposition just ahead) reproduces on our data | EXP-0001 | `linear_foresight_report.md` §5 | `grid-convention` |
+| ID | Claim | Status | By | Was stated in | Depends on |
+|---|---|---|---|---|---|
+| C-001 | On scattered cube monolayers nothing beats persistence at one-step pixel prediction | invalidated | EXP-0001 | `linear_foresight_report.md` §1, §2, §2.1–§2.3, Q2/Q3/Q8 | `grid-convention` |
+| C-008 | Contact-switching does not transfer from scalar targets to the pixel operator | invalidated | EXP-0001 | `linear_foresight_report.md` §2.7 | `grid-convention` |
+| C-006 | The paper's Fig. 5 deposit structure (depletion across the band, deposition just ahead) reproduces on our data | invalidated | EXP-0001 | `linear_foresight_report.md` §5 | `grid-convention` |
+| C-015 | **Restated cube-only.** Pile depth is what makes the linear operator do state-dependent work — monolayers should show no margin over mean-delta | refuted | EXP-0002, EXP-0006 | withdrawn cube/continuum comparison, commit `242a9cc1` | `rasteriser-identity` |
+| C-022 | *(duplicate of C-015 as originally filed; merged 2026-09-05)* | superseded | — | — | — |
+| C-032 | P1 (`docs/ideas_log_signal_vs_detail.md` §5): FSS skill vs. neighbourhood radius rises and saturates by r≈3-5px on cube n20, near the σ≈1-1.5 that helped in EXP-0003 | refuted | EXP-0007 | `docs/ideas_log_signal_vs_detail.md` §5 | `swept-region-metric`, `episode-split`, `canonical-warp`, `warp-blend`, `footprint-splat` |
+| C-033 | The linear operator's error as a fraction of the band signal falls ~3x from the finest scale (0.686) to ~8 px (0.221) — fine detail is harder, not unpredictable, and the operator has usable FSS skill (0.888) at the finest radius against a 0.549 threshold | open | very-low | EXP-0007 (M5 arm + reviewer amendment) | — | `swept-region-metric`, `episode-split` |
+| C-035 | **The dissociation is by error TYPE, and rms gets two of three wrong.** At matched or lower rms, high-frequency noise destroys control utility (slate4 −0.04 at rms 0.241) while displacement preserves it (slate4 +0.55 at rms 0.281); amplitude and blur errors cost rms and cost control *nothing* (a=0.5: rms 0.218→0.271, dV Spearman 0.474→0.472) | open | very-low | EXP-0008 (reviewer re-analysis of its own table) | — | `swept-region-metric`, `episode-split` |
+| C-034 | P2 (`docs/ideas_log_signal_vs_detail.md` §5): under synthetic degradation of the operator's cube n20 prediction, rms and Lyapunov-dV control utility cross order between displacement and hf-noise; and (partial P3) FSS(r=1) rank-correlates with control utility better than rms does across the spectrum | refuted | EXP-0008 | `docs/ideas_log_signal_vs_detail.md` §5 | `swept-region-metric`, `episode-split`, `canonical-warp`, `warp-blend`, `footprint-splat` |
 
 ## Queued re-runs
 
@@ -72,16 +78,9 @@ Ordered by what unblocks the most rows.
    tests written first. Unblocks C-001, C-004, C-006, C-008, C-015.
 2. Re-run `linear_foresight_report.md` §2 and §2.7 on corrected grids (C-001,
    C-008); §2.7 is the one likeliest to reverse.
-3. EXP-0002 under leave-one-run-out, size-matched (C-019).
-4. ~~Resolve C-014/C-016 by running EXP-0003's cross on the single-pile
-   `pile20` set with `linear-nonneg`.~~ Done by EXP-0009: dataset and
-   resolution-under-ridge are ruled out. What remains queued is narrower —
-   fit `linear-nonneg` at res 64 on `pile20` and `varied` (blur 0 and 1, ~4
-   fits): infeasible on CPU (FISTA is O(D^3) per iteration, projected >1h per
-   fit at D=4096), affordable in ~1 GPU-hour. This is the one cell that can
-   still flip C-021/C-016.
+3. EXP-0002 under leave-one-run-out (C-019).
+4. A density-target cube run, to break the target-matching confound EXP-0005's
+   amendment introduced (C-017).
 5. Retrain one UNet config with the raster fixed (C-020). GPU, ~1 h.
-6. Re-collect `pile20`/`varied`-equivalent sand data after the friction and
-   settle-cap fixes (EXP-0007, EXP-0008) and re-run EXP-0009 on it — every
-   number in EXP-0009 rests on `settled-state`, broken for all data collected
-   before 2026-09-04. ~3.5h collection.
+6. The signal-vs-detail metric programme (C-030) —
+   `docs/ideas_log_signal_vs_detail.md`.

@@ -265,11 +265,37 @@ class PileSweepData(Dataset):
         return particles, particles_, plate_pos, plate_pos_, angle
 
     def _draw_particle_grid(self, particle_states, grid, config):
+        """Rasterise particles into `grid`, with `dim 0 = world_x`.
 
+        THE AXIS CONVENTION, and why this is not the obvious code.
+
+        OpenCV takes a point as ``(column, row)``. Drawing a particle at
+        ``(center_x, center_y)`` therefore puts world x on the *column* axis
+        (dim 1) and world y on dim 0 -- the opposite of every other rasteriser
+        in this repo (`transforms.particles_to_occupancy`,
+        `transforms.particle_fields.points_to_mask`, `draw_plate_soft`) and of
+        `actions_to_pixels`. For the whole life of the visual-foresight work
+        the occupancy channel of a sample was therefore the TRANSPOSE of its
+        own plate/action channel, which cost the linear operator ~49 points of
+        swept-region error and produced the retracted conclusion that nothing
+        beats persistence on scattered monolayers
+        (docs/experiments/EXP-0001-occupancy-transpose.md).
+
+        The fix draws in OpenCV's own convention into a scratch buffer and
+        transposes once at the end. Rewriting the coordinate maths in place
+        would also work, but it needs the box angle reflected (theta -> 90-theta)
+        as well as the centres swapped, and getting that subtly wrong would
+        reintroduce the same class of bug silently. A transpose cannot be
+        subtly wrong.
+
+        Guarded by tests/test_grid_convention.py.
+        """
         num_particles = config["material"]["n_particles"]
         shape = config["material"]["shape"]
         particle_sizes = config["data_collection"]["sampled"]["particle_sizes"]
-        grid_np = grid.numpy()
+        # Scratch buffer in OpenCV's (row=y, col=x) convention; transposed into
+        # `grid` at the end of this method.
+        grid_np = np.zeros(tuple(grid.shape), dtype=np.float32)
 
         def draw_box_points(grid, center, box_dim, angle, density=1):
             rotated_rect = (
@@ -330,7 +356,11 @@ class PileSweepData(Dataset):
                 quaternion_to_yaw(particle_state[3:]),
                 1
             )
-    
+
+        # (row=y, col=x) -> (dim0=x, dim1=y), matching the plate channel and
+        # actions_to_pixels. See this method's docstring.
+        grid.copy_(torch.from_numpy(grid_np.T.copy()))
+
     def _draw_plate(self, start_pos, end_pos, angle, config):
         plate_dim_x, plate_dim_y, _ = self._get_plate_dims(config)
         plate_dim_x *= self.to_pxl

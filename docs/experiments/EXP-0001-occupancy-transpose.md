@@ -18,12 +18,12 @@ provenance:
   commit: 17a7d4a7
   script: scripts/probes/ab_occ.py
   data: ["configs/dataset/genesis_foresight_L040.yaml", "Genesis/data/foresight/L040/**/*_data.pt"]
-  code_path: "both, deliberately: PileSweepData raster vs sand_to_mask"
+  code_path: "both, deliberately: PileSweepData raster vs points_to_mask"
   seed: 0
   split: "episode-level, 25% of 8 files, seed 0"
   runtime: "~3 min, CPU"
 design:
-  varied: {occupancy_source: ["registry as stored", "registry transposed", "sand_to_mask re-rasterised"]}
+  varied: {occupancy_source: ["registry as stored", "registry transposed", "points_to_mask re-rasterised"]}
   held_fixed: {res: 64, crop: 0.5, blur: 1.0, view: mask, ridge: 1.0, estimator: "ridge toward identity", actions: identical, split: identical, metric: identical, occupied_area: "matched via cube_size 0.007 (occ_mean 0.1169 vs 0.1194)"}
   baselines: [persistence, mean-delta, identity-warp]
   metric: "held-out rms over the swept region, as a percentage of the persistence rms (100% = no better than predicting nothing moved)"
@@ -101,3 +101,7 @@ the two invariant tests, then re-running everything in EXP-0002.
   re-rasterised path independently.
 - Considered and dismissed: **blur interaction.** The transpose gap is present
   at blur 0 too (EXP-0003's sweep), so it is not an artifact of σ=1.
+
+## Unrelated findings
+
+none recorded — this record predates the section (added 2026-09-05).

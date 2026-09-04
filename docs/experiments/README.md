@@ -25,9 +25,13 @@ record, which may predate a rule change.
 
 ## State as of 2026-09-03
 
-Backfilled from the linear-foresight and sand work. Two invariants are
-**broken** (`grid-convention`, `rasteriser-identity`) and most are `unchecked`,
-so most records grade `low`. That is an accurate reading of the evidence, not a
+Backfilled from the linear-foresight work and, at the time, the MPM sand work.
+The sand arm was withdrawn as non-physical on 2026-09-05
+(`docs/rejected_mpm_sand.md`); its evidence is marked `invalidated` in
+`REGISTER.md` rather than deleted, but the `EXP-####` records here (EXP-0001
+through EXP-0006) are cube-only. Two invariants are **broken**
+(`grid-convention`, `rasteriser-identity`) and most are `unchecked`, so most
+records grade `low`. That is an accurate reading of the evidence, not a
 miscalibrated scale — four claims in `REGISTER.md` are already marked
 `invalidated` because of it, and the re-runs that would restore them are listed
 at the bottom of that file.

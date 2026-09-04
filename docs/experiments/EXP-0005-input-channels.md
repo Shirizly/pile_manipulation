@@ -1,14 +1,15 @@
 ---
 id: EXP-0005
-title: Height and density channels never beat the view matched to the target
+title: Depth channels do not help predict the cube silhouette
 tier: T1
 mode: confirmatory
 date: 2026-09-03
 hypothesis: null
 claim: >
-  For predicting a given view's delta, the same view as input beats every other
-  single channel and every multi-channel stack, on both cubes and sand — so
-  adding a depth channel to a silhouette input does not help.
+  RESTATED 2026-09-05 to cube-only scope (see Amendment). For predicting the
+  blurred-mask delta on piled cubes (n=20), a mask input beats a height input,
+  a density input, and every multi-channel stack containing them — so adding
+  depth information to a silhouette input does not help a linear model.
 prediction:
   supports: "no multi-channel input beats the matched single channel in any configuration"
   refutes:  "mask+height or mask+density beats mask-only by more than a couple of points anywhere"
@@ -16,19 +17,19 @@ prediction:
 provenance:
   commit: 17a7d4a7
   script: scripts/probes/channels.py
-  data: ["Genesis/data/cube_spectrum/n20/*_data.pt", "Genesis/data/sand/varied/*_data.pt (40 eps)"]
-  code_path: sand_to_mask / sand_to_density / sand_to_heightmap
+  data: ["Genesis/data/cube_spectrum/n20/*_data.pt"]
+  code_path: points_to_mask / points_to_density / points_to_heightmap
   seed: 0
   split: "episode-level, 25% of files, seed 0"
   runtime: "~25 min, CPU"
 design:
-  varied: {input: [mask, height, density, mask+height, mask+density, mask+height+density], target: [mask-delta, density-delta], dataset: [cubes-n20-piled, sand-varied]}
+  varied: {input: [mask, height, density, mask+height, mask+density, mask+height+density], target: [mask-delta]}
   held_fixed: {res: 32, crop: 1.0, blur: 1.0, ridge: 1.0, grid: 64, target_per_column: fixed, channel_energy: "rescaled to the mask's std so the shared ridge does not switch a channel off"}
   baselines: [mean-delta]
   metric: "explained variance of the canonical-frame delta over the train-mean delta"
 noise_floor: "not measured; differences under ~2 points treated as not interpretable"
 depends_on: [canonical-warp, episode-split, particle-projection]
-result: "matched view wins every column; every multi-channel stack is 0.3-2 points WORSE than the matched single channel, in all six columns"
+result: "mask-only 0.739 beats height 0.631, density 0.656, and every stack (0.731-0.737); no stack helps"
 verdict: supported
 downgrades: [imprecision, untested-dependency]
 grade: low
@@ -38,38 +39,55 @@ invalidated_by: null
 
 ## Why this test discriminates
 
-`sand_manipulation.md` §10 Q1 asks whether density or height is the better
-input and asserts two channels is "the obvious answer". Holding the target
-fixed and varying only the input makes the question answerable: if depth
-carries information the silhouette lacks, adding it must help at least
-somewhere. Running both targets guards against the trivial confound that an
-input predicts itself.
+The question was whether depth carries information a silhouette lacks. Holding
+the target fixed and varying only the input makes it answerable: if it does,
+adding it must help somewhere.
 
 ## What was actually run
 
-Ridge from the input image(s) to the canonical-frame delta of the target view,
-with a free (unregularised) bias so the zero-parameter mean-delta baseline is
-nested inside every model. Height maps are in metres and were rescaled to the
-mask's std, otherwise a shared ridge silently suppresses them.
+Ridge from the input image(s) to the canonical-frame delta of the mask view,
+with a free (unregularised) bias so mean-delta is nested inside every model.
+Height maps are in metres and were rescaled to the mask's std, otherwise a
+shared ridge silently suppresses them.
+
+**Amendment, 2026-09-05.** This experiment originally ran three columns: mask
+target on cubes, and mask *and* density targets on MPM sand. The sand path was
+withdrawn as non-physical (`docs/rejected_mpm_sand.md`), removing two of the
+three columns. Consequences:
+
+1. The surviving cube column is unchanged and still shows no multi-channel gain.
+2. The broader generalisation the original claim made — "**each** view predicts
+   itself best" — rested on having two targets, and only sand had two. It is
+   **withdrawn**, not merely narrowed: no cube run used a density target.
+3. Because only one target remains, this record can no longer distinguish "depth
+   carries no extra information" from "the mask input has an unfair advantage
+   because the target is the mask". That confound is now live and is the reason
+   the verdict keeps its downgrades.
 
 ## Numbers
 
-Explained variance over mean-delta:
+Explained variance over mean-delta, cubes n20 piled, mask-delta target,
+res 32, σ=1, episode split:
 
-| input | mask target, cubes n20 | mask target, sand | density target, sand |
-|---|---|---|---|
-| mask only | **0.739** | **0.579** | 0.516 |
-| height only | 0.631 | 0.225 | 0.185 |
-| density only | 0.656 | 0.414 | **0.669** |
-| mask + height | 0.733 | 0.561 | 0.520 |
-| mask + density | 0.737 | 0.564 | 0.650 |
-| mask + height + density | 0.731 | 0.551 | 0.648 |
+| input | dim | explained over mean-delta |
+|---|---|---|
+| mean-delta (0 params) | 0 | 0.000 |
+| **mask only** | 1024 | **0.739** |
+| height only | 1024 | 0.631 |
+| density only | 1024 | 0.656 |
+| mask + height | 2048 | 0.733 |
+| mask + density | 2048 | 0.737 |
+| mask + height + density | 3072 | 0.731 |
 
 ## What would change the verdict
 
-A nonlinear model. This tests whether a *linear* map can use depth; a UNet
-might extract something linear regression cannot. Also worth testing at res 64,
-where the doubled input dimension is less punishing relative to M.
+Two things, both cheap and both now necessary rather than optional:
+
+1. **A density-target cube run**, to break the target-matching confound the
+   amendment introduces. Without it this record cannot separate "depth is
+   uninformative" from "the input matching the target wins".
+2. **A nonlinear model.** This tests whether a *linear* map can use depth; a
+   UNet might extract what ridge cannot.
 
 ## Threats
 
@@ -77,7 +95,10 @@ where the doubled input dimension is less punishing relative to M.
   and could partly be the doubled parameter count rather than an absence of
   information — a per-block ridge would separate those.
 - `untested-dependency`: `episode-split` unchecked.
-- Note: cross-view rows also show density-target/density-input (0.669) beating
-  mask-target/mask-input (0.579), which is the opposite ordering to
-  `sand_manipulation.md` §9.2. Different metric and frame, so not a direct
-  contradiction, but see EXP-0003.
+- **Target matching is an unresolved confound** since the amendment — see
+  "What would change the verdict". This is the main reason not to lean on this
+  record.
+
+## Unrelated findings
+
+none recorded — this record predates the section (added 2026-09-05).
