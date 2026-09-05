@@ -26,6 +26,7 @@ class PileSweepData(Dataset):
             test_pct: int = 5,
             resolution_scale: float = 1.0,
             physics_bounds: PhysicsBounds | None = None,
+            min_push_length_m: float | None = None,
         ):
         """
         Initialize dataset with either a folder containing data or a specific run.
@@ -38,6 +39,16 @@ class PileSweepData(Dataset):
                 Whole runs with the same nominal physics params stay in the same split.
             @param val_pct: percentage of physics groups assigned to validation
             @param test_pct: percentage of physics groups assigned to test
+            @param min_push_length_m: if set, drop samples whose actual
+                (p_stop - p_start) XY length is <= this many metres. Some
+                collection configs (contact-triggered stop) execute a
+                shorter-than-nominal push when the blade meets material
+                early, which otherwise confounds a "same nominal push length"
+                comparison across datasets with genuinely variable travel
+                (measured: EXP-0021, contact arms run 28-33mm mean vs a
+                40mm nominal). Applied uniformly, before any split-internal
+                indexing, so it shrinks the pool the same way for train/val/
+                test alike.
         """
         assert split in ("train", "val", "test"), f"Invalid split: {split!r}"
         if val_pct < 0 or test_pct < 0 or val_pct + test_pct >= 100:
@@ -89,10 +100,39 @@ class PileSweepData(Dataset):
             self._run_lookup.extend([r] * num_samples)
             self._offsets.append(self._offsets[-1] + num_samples)
 
+        # Optional push-length filter: an index-remapping layer over the full
+        # (run, sample) lookup above, rather than rebuilding it, so every
+        # other accessor (get_run_index, get_raw_action, __getitem__) only
+        # needs one extra indirection through `self._index_map`.
+        self._index_map = None
+        if min_push_length_m is not None:
+            keep = []
+            for global_idx in range(len(self._run_lookup)):
+                run_idx = self._run_lookup[global_idx]
+                sample_idx = global_idx - self._offsets[run_idx]
+                run = self.runs[run_idx]
+                p_start = run["p_starts"][sample_idx]
+                p_stop = run["p_stops"][sample_idx]
+                length = math.hypot(
+                    float(p_stop[0]) - float(p_start[0]),
+                    float(p_stop[1]) - float(p_start[1]),
+                )
+                if length > min_push_length_m:
+                    keep.append(global_idx)
+            if not keep:
+                raise ValueError(
+                    f"min_push_length_m={min_push_length_m} filtered out every "
+                    f"sample (of {len(self._run_lookup)})."
+                )
+            self._index_map = keep
+
         self._create_grids(self.configs[0])
-        
+
+    def _resolve_idx(self, idx: int) -> int:
+        return idx if self._index_map is None else self._index_map[idx]
+
     def __len__(self):
-        return len(self._run_lookup)
+        return len(self._run_lookup) if self._index_map is None else len(self._index_map)
 
     # ------------------------------------------------------------------
     # Public accessors for transition metadata not carried in the batch
@@ -110,7 +150,7 @@ class PileSweepData(Dataset):
     def get_run_index(self, idx: int) -> int:
         """Index of the run (data file) that sample ``idx`` belongs to.
         Samples sharing a run share nominal physics and particle geometry."""
-        return self._run_lookup[idx]
+        return self._run_lookup[self._resolve_idx(idx)]
 
     def get_raw_action(self, idx: int) -> torch.Tensor:
         """Raw world-frame push ``[sx, sy, ex, ey]`` (metres) for sample ``idx``.
@@ -118,6 +158,7 @@ class PileSweepData(Dataset):
         This is the plate start/stop position before rasterisation into the
         input action channel, recovered from the underlying run arrays.
         """
+        idx = self._resolve_idx(idx)
         run_idx = self._run_lookup[idx]
         sample_index = idx - self._offsets[run_idx]
         run = self.runs[run_idx]
@@ -190,10 +231,25 @@ class PileSweepData(Dataset):
             ).append((data_file, config_file))
 
         for physics_groups in folder_groups.values():
-            groups = sorted(
-                physics_groups.items(),
-                key=lambda item: hashlib.md5(item[0].encode()).hexdigest(),
-            )
+            if len(physics_groups) == 1:
+                # Every file in this folder shares one nominal physics key
+                # (e.g. a single collection run family), so grouping by
+                # physics key cannot split anything -- it would put 100% of
+                # the folder in one split. Fall back to per-FILE groups:
+                # this is still whole-run/episode granularity (no transition
+                # leaks across a split) and loses no leakage protection,
+                # since every file here already shares physics params, which
+                # is the only reason physics-grouping exists.
+                only_group = next(iter(physics_groups.values()))
+                groups = sorted(
+                    ((str(f), [(f, c)]) for f, c in only_group),
+                    key=lambda item: hashlib.md5(item[0].encode()).hexdigest(),
+                )
+            else:
+                groups = sorted(
+                    physics_groups.items(),
+                    key=lambda item: hashlib.md5(item[0].encode()).hexdigest(),
+                )
             assignments = cls._assign_group_splits(len(groups), val_pct, test_pct)
             for (_, group), assigned_split in zip(groups, assignments):
                 for data_file, _ in group:
@@ -507,6 +563,7 @@ class PileSweepData(Dataset):
         self._clear_grids()
 
         # look up sample and config in table
+        idx = self._resolve_idx(idx)
         run_idx = self._run_lookup[idx]
         run = self.runs[run_idx]
         config = self.configs[run_idx]

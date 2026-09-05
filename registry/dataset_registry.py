@@ -331,6 +331,9 @@ def _build_genesis_dataset(cfg: dict, split: str) -> EulerianDatasetWrapper:
         test_pct:              int        (default 5)
         resolution_scale:      float      (default 1.0)
         include_physics:       bool       (default true)
+        min_push_length_m:     float | None (default None) — drop samples whose
+                                            actual push travel is <= this many
+                                            metres (see PileSweepData docstring)
         physics.normalization: dict       — bounds used by PileSweepData._det_physics;
                                             passed to the dataset so normalisation
                                             is config-driven rather than hardcoded.
@@ -343,6 +346,7 @@ def _build_genesis_dataset(cfg: dict, split: str) -> EulerianDatasetWrapper:
         if "physics" in cfg
         else PhysicsBounds.default()
     )
+    min_push_length_m = cfg.get("min_push_length_m")
     raw = PileSweepData(
         paths=cfg["paths"],
         split=split,
@@ -350,6 +354,9 @@ def _build_genesis_dataset(cfg: dict, split: str) -> EulerianDatasetWrapper:
         test_pct=int(cfg.get("test_pct", 5)),
         resolution_scale=float(cfg.get("resolution_scale", 1.0)),
         physics_bounds=bounds,
+        min_push_length_m=(
+            float(min_push_length_m) if min_push_length_m is not None else None
+        ),
     )
     return EulerianDatasetWrapper(
         raw,
