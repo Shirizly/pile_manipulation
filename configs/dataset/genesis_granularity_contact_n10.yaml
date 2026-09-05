@@ -1,0 +1,25 @@
+# EXP-0021 cell: contact n=10, perpendicular pushes, 5mm cubes, filtered to
+# actual push length > 39mm. The contact-triggered-stop collection executes a
+# shorter-than-nominal push when the blade meets material early (measured
+# 28-33mm mean vs 40mm nominal); filtering to >39mm selects the transitions
+# where the full push actually ran, matching the blind arms' push length and
+# avoiding a variable-length confound (EXP-0021).
+type: genesis
+
+paths:
+  - granularity/c10/cube/n10/size0.005
+
+val_pct: 10
+test_pct: 10
+
+resolution_scale: 0.5   # see genesis_granularity_blind_n5.yaml for why 0.5
+
+min_push_length_m: 0.039
+
+include_physics: true
+
+physics:
+  normalization:
+    friction: {min: 0.05, max: 0.50}
+    density: {min: 750.0, max: 5000.0}
+    box_friction: {min: 0.05, max: 0.50}

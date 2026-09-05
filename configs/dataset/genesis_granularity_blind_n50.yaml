@@ -1,0 +1,23 @@
+# EXP-0021 cell: blind n=50 (L040), perpendicular 40mm pushes, 5mm cubes. Same
+# collection family as configs/dataset/genesis_foresight_L040.yaml (used by
+# fit_linear_foresight.py with val_pct/test_pct=0 and its own episode split);
+# this copy sets val_pct/test_pct=10/10 so the SAME split rule (per-file,
+# 6/1/1 of 8 files) applies as the other 6 granularity cells, for UNet
+# training. 2560 transitions (8 files x 320).
+type: genesis
+
+paths:
+  - foresight/L040/cube/n50/size0.005
+
+val_pct: 10
+test_pct: 10
+
+resolution_scale: 0.5   # box 0.128 m -> 64x64 grid, matching all other cells
+
+include_physics: true
+
+physics:
+  normalization:
+    friction: {min: 0.05, max: 0.50}
+    density: {min: 750.0, max: 5000.0}
+    box_friction: {min: 0.05, max: 0.50}

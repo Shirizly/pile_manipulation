@@ -1,0 +1,23 @@
+# EXP-0021 cell: blind n=20, perpendicular 40mm pushes, 5mm cubes. No push-length
+# filter (blind arms are collected to a fixed nominal length, no early-contact
+# stop). 2560 transitions (8 files x 320).
+type: genesis
+
+paths:
+  - granularity/n20/cube/n20/size0.005
+
+val_pct: 10
+test_pct: 10
+
+resolution_scale: 0.5   # box 0.128 m -> 64x64 grid; deliberately deviates from
+                         # the unetfilm_corl_limited_100e_fixedraster template's
+                         # 1.0, so the UNet's own world-frame grid matches the
+                         # linear operator's res=64 fit exactly and the two are
+                         # evaluated on the identical grid -- see EXP-0021.
+include_physics: true
+
+physics:
+  normalization:
+    friction: {min: 0.05, max: 0.50}
+    density: {min: 750.0, max: 5000.0}
+    box_friction: {min: 0.05, max: 0.50}
