@@ -554,8 +554,21 @@ class SandboxManipulation:
             num : int
         ):
         path = path / (f"_{num}_config.yaml")
+        # Stamp the code state the data was collected under. Without this a
+        # dataset cannot be tied to the simulator that produced it: the physics,
+        # spawn mode, settle criterion and action sampler all live in code, and
+        # several of them have been fixed mid-project (the MPM settle cap, the
+        # frictionless floor). Reconstructing which datasets predate which fix
+        # had to be done from file mtimes on 2026-09-05, which is guesswork.
+        # See docs/experiments/INVARIANTS.md :: dataset-provenance.
+        cfg = dict(self._config)
+        try:
+            from utils import git_provenance
+            cfg["provenance"] = git_provenance()
+        except Exception as exc:                       # never block collection
+            cfg["provenance"] = {"commit": "unknown", "error": repr(exc)}
         with open(path, 'w') as outfile:
-            yaml.dump(self._config, outfile, default_flow_style=False)
+            yaml.dump(cfg, outfile, default_flow_style=False)
 
     def _allocate_collection_buffers(self, n_samples: int):
         """Allocate persistent GPU buffers for repeated data collection."""

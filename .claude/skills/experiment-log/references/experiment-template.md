@@ -20,7 +20,12 @@ prediction:                      # REQUIRED at T2, and must be committed BEFORE 
 
 # ---- how the numbers were made -------------------------------------------
 provenance:
-  commit: <git sha at run time>
+  commit: <git sha at run time — `python -c "import utils; print(utils.git_provenance())"`>
+  dirty: false                    # was the working tree modified when this ran?
+                                  # A sha alone does NOT reconstruct a run if it was.
+                                  # If true, say in "What was actually run" what was uncommitted.
+  data_commit: <sha the DATASET was collected under, from its _N_config.yaml
+                `provenance:` block; "unrecorded" for datasets predating 2026-09-05>
   script: <path, committed>
   data: ["<glob or dataset config>"]
   code_path: <points_to_mask | PileSweepData raster | particles_to_occupancy | ...>

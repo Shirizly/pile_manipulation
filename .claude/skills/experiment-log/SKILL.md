@@ -104,6 +104,15 @@ Copy `references/experiment-template.md`. Field meanings:
   them and set `mode: exploratory`. Say which in "What was actually run". **`discriminating: false` means stop**:
   if both branches predict the same observation, the experiment cannot teach
   you anything and should be redesigned, not run.
+- **`provenance.commit` / `.dirty` / `.data_commit`** — three different code
+  states, and they are genuinely different questions. `commit` is the analysis
+  code; `dirty` says whether a sha even identifies it (if the tree was
+  modified, it does not, and you must say what was uncommitted); `data_commit`
+  is the *simulator* the dataset was collected under, which is a separate
+  lineage entirely — physics, spawn mode, settle criterion and action sampler
+  all live in code and have all been changed mid-project. Get all three from
+  `utils.git_provenance()`; the dataset's is stamped into its `_N_config.yaml`.
+  **Commit before you run**, so `dirty` is false and the sha means something.
 - **`provenance.code_path`** — which implementation produced the numbers
   (`points_to_mask` vs the `PileSweepData` rasteriser vs
   `particles_to_occupancy`). Two records may only be compared if this matches,
@@ -267,7 +276,14 @@ by refusing `grade: high` to claims supported only by exploratory records.
 
 ## When you find a bug
 
-This is the case the whole design exists for, so it has its own procedure:
+This is the case the whole design exists for, so it has its own procedure.
+**Commit the fix as soon as it is plausible, even tentatively** — mark it as
+tentative in the message and leave the invariant's status honest rather than
+sitting on an uncommitted fix. Every experiment run against an uncommitted fix
+records a sha that does not describe the code that ran, and every dataset
+collected against one is unreconstructable. A tentative commit that is later
+reverted costs nothing; a week of results with no recoverable code state costs
+the results.
 
 1. Add or update the tag in `INVARIANTS.md`, marking it **broken** with the
    date and the evidence.

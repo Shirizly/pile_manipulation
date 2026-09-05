@@ -808,3 +808,55 @@ def np2o3d(pcd, color=None):
         assert color.min() >= 0
         pcd_o3d.colors = o3d.utility.Vector3dVector(color)
     return pcd_o3d
+
+
+# ---------------------------------------------------------------------------
+# Provenance
+# ---------------------------------------------------------------------------
+
+def git_provenance(root: str | None = None) -> dict:
+    """The code state a run happened under, for reconstruction later.
+
+    A recorded commit sha is not enough on its own: if the working tree was
+    dirty the sha does not identify the code that ran. Several experiments on
+    2026-09-05 recorded a sha while probe scripts were being edited between
+    runs, so the field looked authoritative and was not. `dirty` is what makes
+    it honest, and `describe` carries the nearest tag/offset when there is one.
+
+    Returns keys that are always present, so a caller can embed the dict
+    unconditionally; on failure the values say so rather than being absent.
+    """
+    import subprocess
+
+    def _run(args):
+        try:
+            return subprocess.run(args, cwd=root, capture_output=True,
+                                  text=True, timeout=10).stdout.strip()
+        except Exception:
+            return ""
+
+    sha = _run(["git", "rev-parse", "HEAD"])
+    if not sha:
+        return {"commit": "unknown", "dirty": "unknown", "branch": "unknown"}
+    status = _run(["git", "status", "--porcelain", "--untracked-files=no"])
+    # Compiled bytecode is tracked in this repo and is therefore ~always
+    # modified. Counting it would make `dirty` true on every run and destroy
+    # the signal, and a stale .pyc does not change what code ran -- Python
+    # regenerates it from source. So it is excluded, deliberately.
+    # Parse by splitting, not by a fixed index: `_run` strips the whole output,
+    # which eats the leading status space of the FIRST line only, so `line[3:]`
+    # silently loses a character from exactly one path. (Caught by a stamped
+    # config reading "enesis/..." instead of "Genesis/...".)
+    files = []
+    for line in status.splitlines():
+        parts = line.strip().split(None, 1)
+        path = parts[1].strip() if len(parts) == 2 else ""
+        if path and "__pycache__" not in path and not path.endswith(".pyc"):
+            files.append(path)
+    return {
+        "commit": sha[:8],
+        "commit_full": sha,
+        "dirty": bool(files),
+        "dirty_files": sorted(files)[:20],
+        "branch": _run(["git", "rev-parse", "--abbrev-ref", "HEAD"]) or "unknown",
+    }

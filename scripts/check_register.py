@@ -110,6 +110,17 @@ def check_record(path, rec, invariants, errors, warnings):
             f"downgrade(s) compute to {want!r}")
 
     prov = rec.get("provenance") or {}
+    sha = str(prov.get("commit", ""))
+    if sha and sha not in ("unknown",) and not re.match(r"^[0-9a-f]{7,40}\b", sha):
+        warn(f"provenance.commit {sha!r} does not look like a git sha")
+    if "dirty" not in prov:
+        warn("no provenance.dirty — a sha does not reconstruct a run if the "
+             "tree was modified; get it from utils.git_provenance()")
+    elif prov.get("dirty") is True and "dirty" not in str(rec.get("downgrades", "")):
+        warn("ran with a dirty tree: say in the body what was uncommitted")
+    if "data_commit" not in prov:
+        warn("no provenance.data_commit — the simulator lineage of the dataset "
+             "is a separate question from the analysis code's")
     for f in PROVENANCE:
         if f not in prov or prov[f] in (None, ""):
             err(f"provenance.{f} is missing — comparisons need it")
