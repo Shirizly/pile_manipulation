@@ -47,6 +47,11 @@ prediction:
 # ---- how the numbers were made -------------------------------------------
 provenance:
   commit: 006004d0
+  dirty: true                     # BACKFILLED 2026-09-05: the collection driver
+                                  # `Genesis/same_state_slate_collection.py` did not exist at
+                                  # 006004d0 -- it was written in the same session and first
+                                  # committed at dbf21ba2. This sha bounds the run from below only.
+  script_first_committed: dbf21ba2
   script: >
     Genesis/same_state_slate_collection.py (new, this record) for collection;
     scripts/probes/same_state_degradation.py (new, this record; reuses

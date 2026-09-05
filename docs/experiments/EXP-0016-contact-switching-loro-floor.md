@@ -17,6 +17,12 @@ prediction:
   discriminating: true
 provenance:
   commit: 006004d0
+  dirty: true                     # BACKFILLED 2026-09-05: `scripts/probes/exp0016_loro.py`
+                                  # did not exist at 006004d0; it was written in the same
+                                  # session and first committed at 5401349d. So this sha
+                                  # bounds the run from below only -- the analysis code
+                                  # that actually ran is the 5401349d version of that file.
+  script_first_committed: 5401349d
   script: "scripts/probes/exp0016_loro.py (reuses fit_linear_foresight.py's canonicalise/contact_score/fit_operator/fit_operator_nonneg/predict_world/metrics/swept_region_mask verbatim, plus exp0009_rerun.py's predict_meandelta)"
   data: ["configs/dataset/genesis_foresight_L040.yaml (2560 transitions, 8 runs x 320, 50 cubes, 40 mm perpendicular pushes)"]
   code_path: "PileSweepData raster, post-fix (same as EXP-0015/EXP-0009)"

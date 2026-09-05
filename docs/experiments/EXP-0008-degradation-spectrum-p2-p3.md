@@ -29,6 +29,12 @@ prediction:
 # ---- how the numbers were made -------------------------------------------
 provenance:
   commit: e9b83f99
+  dirty: true                     # BACKFILLED 2026-09-05: `scripts/probes/degradation_spectrum.py`
+                                  # did not exist at e9b83f99; it was written in the same
+                                  # session and first committed at aac084e3. So this sha
+                                  # bounds the run from below only -- the analysis code
+                                  # that actually ran is the aac084e3 version of that file.
+  script_first_committed: aac084e3
   script: scripts/probes/degradation_spectrum.py
   data: ["Genesis/data/cube_spectrum/n20/*_data.pt"]
   code_path: particles_to_occupancy (via occupancy_foresight.load_transition_fields, view="mask")

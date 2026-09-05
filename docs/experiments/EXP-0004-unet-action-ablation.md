@@ -12,6 +12,12 @@ claim: >
 prediction: null
 provenance:
   commit: 17a7d4a7
+  dirty: true                     # BACKFILLED 2026-09-05: `scripts/probes/unet_action_ablation.py`
+                                  # did not exist at 17a7d4a7; it was written in the same
+                                  # session and first committed at aac084e3. So this sha
+                                  # bounds the run from below only -- the analysis code
+                                  # that actually ran is the aac084e3 version of that file.
+  script_first_committed: aac084e3
   script: scripts/probes/unet_action_ablation.py
   data: ["runs_cubes/unetfilm_corl_limited_100e/unet_best.pth", "corl_limited/cubes val split, 200 samples"]
   code_path: "PileSweepData raster (the model's own training path)"

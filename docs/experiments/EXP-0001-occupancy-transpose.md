@@ -16,6 +16,12 @@ prediction:
   discriminating: true
 provenance:
   commit: 17a7d4a7
+  dirty: true                     # BACKFILLED 2026-09-05: `scripts/probes/ab_occ.py`
+                                  # did not exist at 17a7d4a7; it was written in the same
+                                  # session and first committed at aac084e3. So this sha
+                                  # bounds the run from below only -- the analysis code
+                                  # that actually ran is the aac084e3 version of that file.
+  script_first_committed: aac084e3
   script: scripts/probes/ab_occ.py
   data: ["configs/dataset/genesis_foresight_L040.yaml", "Genesis/data/foresight/L040/**/*_data.pt"]
   code_path: "both, deliberately: PileSweepData raster vs points_to_mask"

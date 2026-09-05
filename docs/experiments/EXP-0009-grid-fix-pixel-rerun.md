@@ -20,6 +20,12 @@ prediction:
   discriminating: true
 provenance:
   commit: aac084e3
+  dirty: true                     # BACKFILLED 2026-09-05: `scripts/probes/exp0009_rerun.py`
+                                  # did not exist at aac084e3; it was written in the same
+                                  # session and first committed at 006004d0. So this sha
+                                  # bounds the run from below only -- the analysis code
+                                  # that actually ran is the 006004d0 version of that file.
+  script_first_committed: 006004d0
   script: scripts/probes/exp0009_rerun.py
   data: ["configs/dataset/genesis_foresight_L040.yaml", "Genesis/data/foresight/L040/cube/n50/size0.005/**/*_data.pt"]
   code_path: "PileSweepData raster (now fixed), via fit_linear_foresight.py's own canonicalise/fit_operator/fit_operator_nonneg/predict_world/contact_score, imported directly rather than reimplemented"

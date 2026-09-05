@@ -26,6 +26,12 @@ prediction:
 
 provenance:
   commit: aac084e3
+  dirty: true                     # BACKFILLED 2026-09-05: `scripts/probes/deposit_profile.py`
+                                  # did not exist at aac084e3; it was written in the same
+                                  # session and first committed at 006004d0. So this sha
+                                  # bounds the run from below only -- the analysis code
+                                  # that actually ran is the 006004d0 version of that file.
+  script_first_committed: 006004d0
   script: "scripts/probes/deposit_profile.py (C-006); scripts/probes/nonneg_vs_ridge.py (C-004)"
   data: ["Genesis/data/foresight/L040/**/*_data.pt", "Genesis/data/cube_spectrum/n20/*_data.pt"]
   code_path: "particles_to_occupancy via occupancy_foresight.load_transition_fields (view=mask, cube_size=0.005) -- ONE code path for both datasets and both claims, so scattered-vs-piled is a data difference, never a rasteriser difference (EXP-0001/EXP-0002)"

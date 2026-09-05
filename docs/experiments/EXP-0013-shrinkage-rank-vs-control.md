@@ -18,6 +18,12 @@ prediction:
   discriminating: true
 provenance:
   commit: aac084e3
+  dirty: true                     # BACKFILLED 2026-09-05: `scripts/probes/shrinkage_vs_control.py`
+                                  # did not exist at aac084e3; it was written in the same
+                                  # session and first committed at 006004d0. So this sha
+                                  # bounds the run from below only -- the analysis code
+                                  # that actually ran is the 006004d0 version of that file.
+  script_first_committed: 006004d0
   script: scripts/probes/shrinkage_vs_control.py
   data: ["Genesis/data/cube_spectrum/n20/*_data.pt (4840 full-length pushes, 16 episodes)"]
   code_path: points_to_mask

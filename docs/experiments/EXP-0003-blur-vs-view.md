@@ -20,6 +20,12 @@ prediction:
   discriminating: true
 provenance:
   commit: 17a7d4a7
+  dirty: true                     # BACKFILLED 2026-09-05: `scripts/probes/view_blur.py`
+                                  # did not exist at 17a7d4a7; it was written in the same
+                                  # session and first committed at aac084e3. So this sha
+                                  # bounds the run from below only -- the analysis code
+                                  # that actually ran is the aac084e3 version of that file.
+  script_first_committed: aac084e3
   script: scripts/probes/view_blur.py
   data: ["Genesis/data/foresight/L040/**/*_data.pt"]
   code_path: points_to_mask / points_to_density
