@@ -45,8 +45,17 @@ Added to the skill after the C-001/C-008, C-006/C-004 and same-state-slate runs:
 | # | Variant | Task | Budget | Spent | Outcome | Notes |
 |---|---|---|---|---|---|---|
 | R4 | v2 | re-run C-001 and C-008 on the fixed grid | 60 min, 160k | ~100 min, 140k — **exceeded** | C-001 reverses; C-008 not reached | **Stalled on a watcher** and returned with no deliverable; resumed with a writeup-only instruction and then delivered. Ran its most expensive cell first, so the ~1000x cheaper C-008 config never got CPU. Its only in-session cell was res=8, a degenerate resolution. Much of the overrun was the task-giver's fault — the machine was oversubscribed to load 37. |
-| R5 | v2 | re-run C-006 and C-004 | 50 min, 140k | *pending* | *pending* | Also stalled on a watcher; resumed the same way. |
-| R6 | v2 | same-state candidate slates | 90 min, 200k | *pending* | *pending* | GPU collection. |
+| R5 | v2 | re-run C-006 and C-004 | 50 min, 140k | ~100 min, >140k — **exceeded** | C-006 reconfirmed; C-004 contested/regime-split | Stalled on a watcher, resumed, then delivered a good record. Lost ~18 min outright to a backgrounded run piped through `tail` and killed with `kill -9` before `tail` flushed — all buffered output destroyed. Recovered by capping episodes, which is why its cells use a small subset. Took `untested-dependency` for tags that had become `holds` mid-session; reviewer corrected the grade. |
+| R6 | v2 | same-state candidate slates | 90 min, 200k | ~95 min, 150k — **exceeded** | `inconclusive` / `very-low` | **The most valuable result of the day, from the least complete run.** Ran a two-env smoke test first and caught a path-doubling bug before the real collection — the plan gate's "cheapest invalidating check" working exactly as intended. Verification of the slates was thorough and clean. But it collected 6 of 50 states because it spent its budget watching progress notifications instead of working with data already on disk, and correctly graded itself `inconclusive` on n=6 rather than overclaiming. The coordinator finished the collection afterwards in ~15 min. |
+| R7 | v3 | retrain a UNet on the corrected raster (C-020) | 100 min, 200k | *pending* | *pending* | First run under v3. Handed back mid-training with a clear statement of what was done and what remained — which is the *correct* behaviour for a job that genuinely must run to completion, and is distinct from the R4/R5/R6 failure of waiting on results already written to disk. See the v3 caveat below. |
+
+**A caveat on the v3 rule, from R7.** "Never block on a watcher" was written
+against agents that waited while their own results sat unread in a file. It
+should not be read as "never hand back mid-job": an agent training a model for
+40 minutes has nothing to read and nothing to do, and handing back with a clear
+account of what is done and what remains is right. The rule's target is
+*unread results*, not *waiting per se*. Worth tightening the wording if a v4
+happens.
 
 **The pattern worth acting on:** two of three agents produced correct
 computations and then failed to deliver them, in the same way. That is not a
