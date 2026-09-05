@@ -38,7 +38,7 @@ def rmse(a, b):
     return float(np.sqrt(np.mean((a - b) ** 2)))
 
 
-def fit(X, yy, groups, booster_kwargs, n_splits=5):
+def fit(X, yy, groups, booster_kwargs, n_splits=5, return_sd=False):
     gkf = GroupKFold(n_splits=n_splits)
     rl, rg, el, eg = [], [], [], []
     for tr, te in gkf.split(X, yy, groups=groups):
@@ -49,6 +49,9 @@ def fit(X, yy, groups, booster_kwargs, n_splits=5):
         pg = HistGradientBoostingRegressor(random_state=0, **booster_kwargs).fit(A, yy[tr]).predict(B)
         rl.append(r2(yy[te], pl)); rg.append(r2(yy[te], pg))
         el.append(rmse(yy[te], pl)); eg.append(rmse(yy[te], pg))
+    if return_sd:
+        return (np.mean(rl), np.mean(rg), np.mean(el), np.mean(eg),
+                np.std(rl), np.std(rg))
     return np.mean(rl), np.mean(rg), np.mean(el), np.mean(eg)
 
 
@@ -86,17 +89,17 @@ def main():
     for tname, y in [("mean disp (original C-007 target)", y_mean),
                      ("max disp (threshold-sensitive target)", y_max)]:
         print(f"\n--- target: {tname} ---")
-        print(f"{'stratum':>8s} {'n':>5s} {'sd(y)':>6s} | {'Lr2':>6s} {'Gr2(weak)':>10s} "
+        print(f"{'stratum':>8s} {'n':>5s} {'sd(y)':>6s} | {'Lr2':>6s} {'(sd)':>5s} {'Gr2(weak)':>10s} {'(sd)':>5s} "
               f"{'share':>6s} {'RMSE_L':>7s} {'RMSE_G':>7s} | {'Gr2(strong)':>11s} {'share_s':>8s}")
         for i in range(4):
             mm = (n_in_band >= qs[i]) & ((n_in_band <= qs[i+1]) if i == 3 else (n_in_band < qs[i+1]))
             Xm, ym, rm = Xo[mm], y[mm], runs[mm]
-            Lw, Gw, El, Eg = fit(Xm, ym, rm, WEAK)
+            Lw, Gw, El, Eg, sdL, sdG = fit(Xm, ym, rm, WEAK, return_sd=True)
             Ls, Gs, _, _ = fit(Xm, ym, rm, STRONG)
             sw = 100 * Lw / Gw if Gw > 0.02 else float('nan')
             ss = 100 * Ls / Gs if Gs > 0.02 else float('nan')
-            print(f"{i:8d} {mm.sum():5d} {ym.std():6.2f} | {Lw:6.3f} {Gw:10.3f} {sw:5.0f}% "
-                  f"{El:7.3f} {Eg:7.3f} | {Gs:11.3f} {ss:7.0f}%")
+            print(f"{i:8d} {mm.sum():5d} {ym.std():6.2f} | {Lw:6.3f} {sdL:5.3f} {Gw:10.3f} {sdG:5.3f} "
+                  f"{sw:5.0f}% {El:7.3f} {Eg:7.3f} | {Gs:11.3f} {ss:7.0f}%")
 
 
 if __name__ == "__main__":
