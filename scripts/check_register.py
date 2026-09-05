@@ -118,6 +118,18 @@ def check_record(path, rec, invariants, errors, warnings):
              "tree was modified; get it from utils.git_provenance()")
     elif prov.get("dirty") is True and "dirty" not in str(rec.get("downgrades", "")):
         warn("ran with a dirty tree: say in the body what was uncommitted")
+    # A sha that predates the script it names does not reconstruct the run.
+    # 11 of 14 records were in this state on 2026-09-05, all written in the
+    # same session as their script and committed afterwards.
+    script = str(prov.get("script", "")).split()[0].split("(")[0].strip()
+    if sha and script.endswith(".py") and re.match(r"^[0-9a-f]{7,40}$", sha):
+        import subprocess as _sp
+        if _sp.run(["git", "cat-file", "-e", f"{sha}:{script}"],
+                   capture_output=True).returncode != 0:
+            (err if prov.get("dirty") is not True else warn)(
+                f"provenance.commit {sha} predates its own script {script} — "
+                f"the sha does not reconstruct this run"
+                + ("" if prov.get("dirty") is True else "; set dirty: true and say so"))
     if "data_commit" not in prov:
         warn("no provenance.data_commit — the simulator lineage of the dataset "
              "is a separate question from the analysis code's")
@@ -245,6 +257,17 @@ def main():
 
     n = len([r for _, r, e in records if r and not e])
     print(f"checked {n} record(s), {len(invariants)} invariant tag(s)")
+    # The letter grade saturates at 3 downgrade domains, so print the counts:
+    # a claim going 4 -> 3 domains is real progress the letter cannot show.
+    tally = {}
+    for _, r, e in records:
+        if r and not e:
+            tally.setdefault(r.get("grade", "?"), []).append(
+                (r.get("id", "?"), len(set(r.get("downgrades") or []))))
+    for g in ("high", "moderate", "low", "very-low"):
+        if g in tally:
+            items = ", ".join(f"{i}({d})" for i, d in sorted(tally[g]))
+            print(f"  {g:9s} {len(tally[g]):2d}  {items}")
     for w in warnings:
         print(f"  warn:  {w}")
     for e in errors:

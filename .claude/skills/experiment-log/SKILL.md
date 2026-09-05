@@ -149,6 +149,14 @@ from refuted, and the distinction matters when re-running).
 downgrade domain present. `high → moderate → low → very-low`. The validator
 recomputes it and fails on a mismatch, so inflating it is not possible.
 
+**The letter saturates at three domains, and the downgrade list is the finer
+signal.** A record carrying four weaknesses and one carrying three both read
+`very-low`, so retiring one does not move the letter — which means the letter
+alone cannot show a claim getting *better*. That is a real limitation, found
+when EXP-0018 retired `provenance` from C-001 and the grade did not budge.
+When reporting progress on a claim, cite the **domains retired**, not the
+letter: "provenance retired, three remain" says what "still very-low" hides.
+
 Downgrade domains (adapted from GRADE; use only these words):
 
 | Domain | Applies when |
