@@ -37,6 +37,25 @@ Budget: one extra research slot per comparison.
 | R2 | v1 | FSS + scale-decomposed error on the constrained domain (P1 in `ideas_log_signal_vs_detail.md`) | 35 min, 120k tok | **~30 min, 98k tok — within** | `refuted` / `low`, corrected on review to `very-low` | **Budget rule worked**: stayed inside, ran the optional σ=1 arm, did not drop cells. **Unrelated-findings rule worked**: found `scripts/probes/regimes.py` has a dead import, logged it, did not fix it. **What it missed**: its deconfounding measure (FSS difference) has a forced decline because both terms converge to 1 — it identified this failure mode *in the abstract* in its own feedback and did not apply it to its own instrument. It also did not compute the standard usable-skill threshold, which reverses the conclusion's reason. Reviewer added an amendment and a downgrade. |
 | R3 | v2 | synthetic-degradation study: does rms rank error *types* the way realised control utility does? (P2/P3) | 40 min, 130k tok | **~45 min, 117k tok — exceeded, disclosed** | `refuted` / `very-low` | **Plan gate worked, and visibly**: it wrote the "most embarrassing result" line before running and then hit exactly that outcome, which it reported without rationalising. **Bounded-metric section worked in an unexpected direction**: it used it to explain why FSS *lost*, rather than to defend FSS. **Budget rule worked**: exceeded and said so in the frontmatter rather than hiding it. **Two failures**: (1) it allocated a claim id already in use and overwrote another row — the validator now checks for duplicates; (2) it drew its headline conclusion from a pooled rank correlation over 14 heterogeneous models, which by construction cannot see the per-type dissociation its own table contains. The reviewer had to re-read the table to find the main result. |
 
+## v3 (2026-09-05) — from three concurrent runs, not one
+
+Added to the skill after the C-001/C-008, C-006/C-004 and same-state-slate runs:
+**never block on a watcher**, plus `python -u` and thread-capping corollaries.
+
+| # | Variant | Task | Budget | Spent | Outcome | Notes |
+|---|---|---|---|---|---|---|
+| R4 | v2 | re-run C-001 and C-008 on the fixed grid | 60 min, 160k | ~100 min, 140k — **exceeded** | C-001 reverses; C-008 not reached | **Stalled on a watcher** and returned with no deliverable; resumed with a writeup-only instruction and then delivered. Ran its most expensive cell first, so the ~1000x cheaper C-008 config never got CPU. Its only in-session cell was res=8, a degenerate resolution. Much of the overrun was the task-giver's fault — the machine was oversubscribed to load 37. |
+| R5 | v2 | re-run C-006 and C-004 | 50 min, 140k | *pending* | *pending* | Also stalled on a watcher; resumed the same way. |
+| R6 | v2 | same-state candidate slates | 90 min, 200k | *pending* | *pending* | GPU collection. |
+
+**The pattern worth acting on:** two of three agents produced correct
+computations and then failed to deliver them, in the same way. That is not a
+reasoning failure, it is a workflow failure, and it is fixable with one rule in
+the prompt-facing part of the skill — which is what v3 does. It also says
+something about the budget rule as written in v1/v2: "stop and write up what you
+have" was not enough, because an agent waiting on a watcher does not believe it
+is out of budget yet.
+
 ## Candidate v3 changes, from R3
 
 - **Claim-id allocation** needs a rule (grep the register, take max+1, and

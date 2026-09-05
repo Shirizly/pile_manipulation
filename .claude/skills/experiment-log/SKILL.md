@@ -210,6 +210,23 @@ keep going quietly. Specifically:
   two-minute feasibility check that saves an hour is always in budget, and a
   cost pilot never compromises a prediction (see `prediction`, above).
 
+**Never block on a watcher.** If you launch a long job in the background, do
+not then wait on it, poll it, or set up a monitor and return. Read whatever its
+output file already holds and write up what is in it, or run the job in the
+foreground with a bounded timeout and a configuration small enough to finish.
+Three separate agents stalled this way on 2026-09-05, each returning with no
+deliverable while its own results sat in a file it had not read. An unwritten
+result is worth nothing; a partial record is worth a lot.
+
+Two practical corollaries, both learned the hard way the same day:
+- **`python -u`, always.** Python fully buffers stdout when redirected to a
+  file, so a long job looks frozen for its entire run and you cannot tell a
+  slow job from a hung one.
+- **Cap your threads** (`OMP_NUM_THREADS=4`) and check `uptime` before
+  starting. This is a shared machine; four concurrent BLAS jobs took the load
+  average to 37 on 20 cores and starved an agent's whole budget, so it reported
+  a degenerate 8x8 configuration as its only completed cell.
+
 A budget is a planning instrument, not a hard stop: exceeding it is allowed and
 is recorded, not hidden. Repeatedly exceeding it means the tier or the sizing
 is wrong, which is information about the process rather than about the science.
