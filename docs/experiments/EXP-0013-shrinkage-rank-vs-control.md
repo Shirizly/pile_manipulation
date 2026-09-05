@@ -87,8 +87,8 @@ fraction of the oracle's advantage over a random pick (higher better).
 |---|---|---|---|---|
 | persistence | 100.0 | 0.00 | 0.000 | 0.003 |
 | oracle | 0.0 | 6.39 | 0.795 | 1.000 |
-| identity (warp only) | 86.7 | 15.12 | 0.146 | −0.037 |
-| **mean-delta (0 params)** | **69.2** | 8.44 | **0.601** | **0.852** |
+| identity (warp only) | 86.7 | 15.12 | 0.162 [corrected] | −0.037 |
+| **mean-delta (0 params)** | **69.2** | 8.44 | **0.395** [corrected] | **0.852** |
 | ridge 1 | 54.1 | 4.94 | 0.622 | 0.972 |
 | ridge 10 | **53.9** | 5.00 | 0.616 | 0.974 |
 | ridge 1e4 | 69.5 | 10.42 | 0.565 | 0.946 |
@@ -167,3 +167,48 @@ in place.
 - Python fully buffers stdout when redirected to a file, so a long background
   job appears frozen. `python -u` is required for any probe whose progress is
   going to be watched.
+
+
+## Reviewer correction, 2026-09-05: this record's table was mistranscribed
+
+**Two cells of the Numbers table above were wrong, they were the two the
+headline conclusion rested on, and the error is the author's.**
+
+`slate4 center` for `mean-delta` and for `identity (warp only)` were copied
+from the `pa_cent` column (the partial correlation) instead of `sl4_cent`.
+Correct values: mean-delta **0.395**, not 0.601; identity **0.162**, not 0.146.
+The `ridge` and `rank` rows were copied correctly.
+
+**Mechanism of the mistake, because it is preventable.** The probe prints a
+fixed-width table in which the `|A-I|` column is populated for operator rows
+(`I|/|I|=0.587`) and **empty** for `persistence`, `oracle`, `mean-delta` and
+`identity`. Reading it by eye, the blank cell shifted the remaining columns one
+place left on exactly those rows. `scripts/probes/shrinkage_vs_control.py` now
+prints a `-` placeholder so the columns cannot go ragged again.
+
+### What it changes
+
+The headline read: "every rank-truncated operator from rank 1 to rank 128 has
+better rms than mean-delta and worse slate-4." That compared correct `rank_r`
+values (0.338–0.605) against a mean-delta figure of 0.601 that was really
+**0.395**. Against the true baseline only **rank 1** (0.338) is worse on
+control while better on rms. Every rank ≥ 2 beats mean-delta on **both**
+metrics — agreement, not dissociation.
+
+EXP-0017 measured this independently over 5 seeds at res 32 and 3 at res 64 and
+reached the same place from data rather than from this table: rank 1 dissociates
+at 6.7–23 sd; ranks ≥ 2 agree at 6.6–31 sd. So the narrow claim survives and the
+broad one does not.
+
+**What is NOT affected:** this record's own verdict. C-036 (shrinkage and rank
+do not trade accuracy for control) was computed from the sweep output directly,
+not from the hand-copied table, and stands refuted as recorded.
+
+### The lesson worth keeping
+
+The register's whole design is that a claim's provenance is recoverable. Here
+provenance worked — the raw output was on disk, so an independent run could
+find the discrepancy — but nothing *checked* the transcription from output to
+Markdown, which is a manual step in every record in this directory. A number
+retyped by hand is a number nobody has verified. Where a table is the evidence,
+generate it rather than retyping it.

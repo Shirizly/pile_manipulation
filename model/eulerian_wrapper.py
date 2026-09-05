@@ -1230,7 +1230,7 @@ class UNetFiLMPushModel(nn.Module):
 
     def _draw_plate_soft(
         self,
-        center: torch.Tensor,  # (B, 2) [iy_world_y, ix_world_x] in dataset grid coords
+        center: torch.Tensor,  # (B, 2) [ix_world_x, iy_world_y] in dataset grid coords
         angle: torch.Tensor,   # (B,)   plate draw-angle (see convention below)
         intensity: float,
     ) -> torch.Tensor:         # (B, Nx, Ny)
@@ -1240,15 +1240,15 @@ class UNetFiLMPushModel(nn.Module):
         The gradient flows through ``center``, enabling the MPC Adam optimizer
         to improve start/end positions via backpropagation.
 
-        Convention (training/dataset layout, after the flip+transpose):
-            grid[dim0, dim1] = grid[world_y_idx, world_x_idx]
-            Dim 0 = world-y, Dim 1 = world-x.
+        Convention (training/dataset layout, after the dim-1 flip):
+            grid[dim0, dim1] = grid[world_x_idx, world_y_idx]
+            Dim 0 = world-x, Dim 1 = world-y.
 
         Angle convention:
-            angle = atan2(Δworld_y, Δworld_x) — direction of travel.
-            At angle=0 (travel along +world_x): plate_L is along dim 0 (world_y),
-            i.e. the plate is perpendicular to the direction of travel ✓.
-            This differs from the physical plate yaw (angle_sim = angle + π/2).
+            angle = the PHYSICAL plate yaw, atan2(Δworld_y, Δworld_x) + π/2 —
+            the same quantity the dataset stores in `angles`.
+            At that angle the plate is perpendicular to the direction of
+            travel ✓, matching `transforms.draw_plate_soft` exactly.
         """
         device = center.device
 
@@ -1257,18 +1257,18 @@ class UNetFiLMPushModel(nn.Module):
         iy = torch.arange(self.Ny, device=device, dtype=torch.float32)
         GX, GY = torch.meshgrid(ix, iy, indexing='ij')  # (Nx, Ny) each
 
-        cx = center[:, 0:1, None]   # (B, 1, 1) — along world-y (dim 0)
-        cy = center[:, 1:2, None]   # (B, 1, 1) — along world-x (dim 1)
+        cx = center[:, 0:1, None]   # (B, 1, 1) — along world-x (dim 0)
+        cy = center[:, 1:2, None]   # (B, 1, 1) — along world-y (dim 1)
 
         cos_a = torch.cos(angle)[:, None, None]  # (B, 1, 1)
         sin_a = torch.sin(angle)[:, None, None]
 
-        dx = GX[None] - cx   # (B, Nx, Ny) — displacement along dim 0 (world-y)
-        dy = GY[None] - cy   # (B, Nx, Ny) — displacement along dim 1 (world-x)
+        dx = GX[None] - cx   # (B, Nx, Ny) — displacement along dim 0 (world-x)
+        dy = GY[None] - cy   # (B, Nx, Ny) — displacement along dim 1 (world-y)
 
         # Rotate into plate-local frame:
         #   rl = along length,  rw = along width
-        # At angle=0 (travel in +world_x): rl=dx (length along world_y ⊥ to travel) ✓
+        # At yaw=π/2 (travel in +world_x): rl runs along world_y, ⊥ to travel ✓
         rl = cos_a * dx + sin_a * dy
         rw = -sin_a * dx + cos_a * dy
 
@@ -1312,10 +1312,17 @@ class UNetFiLMPushModel(nn.Module):
 
         # ── 1. Convert EulerianWrapper → dataset convention ──────────────────
         # EulerianWrapper: (B, dim0=cam_x=world_x, dim1=cam_y=−world_y)
-        # Dataset (cv2):   (B, dim0=world_y,        dim1=world_x)
-        # Step 1: flip dim1 so cam_y → world_y  →  (world_x, world_y)
-        # Step 2: transpose so (world_x, world_y) → (world_y, world_x)
-        occ_ds = occ.flip(dims=[-1]).transpose(-2, -1)   # (B, Ny_world, Nx_world)
+        # Dataset:         (B, dim0=world_x,        dim1=world_y)
+        # So the conversion is a flip of dim1 and NOTHING ELSE.
+        #
+        # This used to also transpose, because until 2026-09-05 the dataset
+        # rasterised particles through OpenCV and so laid them out as
+        # (world_y, world_x) — the transpose bug of EXP-0001. That was fixed in
+        # `PileSweepData._draw_particle_grid`, and this path has to move with
+        # it: a transpose here would now feed every deployed model a scene in a
+        # frame it never trained on. Guarded by
+        # tests/test_deploy_train_raster.py.
+        occ_ds = occ.flip(dims=[-1])                    # (B, Nx_world, Ny_world)
 
         # ── 2. Convert action y-indices to dataset convention ────────────────
         # EulerianWrapper: iy_cam = grid-y index; cam_y = −world_y
@@ -1326,28 +1333,30 @@ class UNetFiLMPushModel(nn.Module):
         iy_e_ds  = (Ny - 1) - iy_e_cam
 
         # ── 3. Plate draw-angle in dataset convention ─────────────────────────
-        # Dataset convention after flip+transpose: dim0=world_y, dim1=world_x.
-        # In _draw_plate_soft at angle=0: plate_L is along dim0=world_y.
-        # Plate should be perpendicular to the direction of travel, so:
-        #   angle_draw = atan2(Δworld_y, Δworld_x) = direction of travel
-        # (The physical plate yaw angle_sim = angle_draw + π/2 is NOT used here;
-        #  the +π/2 and the axis-swap of the transpose cancel exactly.)
+        # Dataset convention: dim0=world_x, dim1=world_y.
+        # In _draw_plate_soft at angle=0: plate_L is along dim0=world_x.
+        # The plate must be perpendicular to the direction of travel, so
+        #   angle_draw = atan2(Δworld_y, Δworld_x) + π/2
+        # which IS the physical plate yaw — the same quantity `PileSweepData`
+        # stores in `angles` and hands to `draw_plate_soft`, and the same one
+        # every MPC computes (linear_foresight_report.md §3). The old code
+        # dropped the +π/2 because the transpose in step 1 cancelled it; with
+        # the transpose gone, the +π/2 has to come back.
         dx    = action_end[:, 0] - action_start[:, 0]
         dy_ds = iy_e_ds - iy_s_ds            # world-y direction in grid px
 
         dxy   = torch.hypot(dx, dy_ds)
-        # Draw-angle = direction of travel (no +π/2 compared to physical yaw)
         angle = torch.where(
             dxy > 1e-4,
-            torch.atan2(dy_ds, dx),
+            torch.atan2(dy_ds, dx) + math.pi / 2.0,
             torch.zeros_like(dxy),
         )
 
         # ── 4. Draw action channel in dataset convention ──────────────────────
-        # Center = (world_y_idx, world_x_idx) — dim0 first, matching dataset.
+        # Center = (world_x_idx, world_y_idx) — dim0 first, matching dataset.
         # Use .detach() for the angle only; gradients still flow through centers.
-        start_center = torch.stack([iy_s_ds, action_start[:, 0]], dim=1)  # (B,2) (world_y, world_x)
-        end_center   = torch.stack([iy_e_ds, action_end[:, 0]],   dim=1)
+        start_center = torch.stack([action_start[:, 0], iy_s_ds], dim=1)  # (B,2) (world_x, world_y)
+        end_center   = torch.stack([action_end[:, 0],   iy_e_ds], dim=1)
 
         act_start = self._draw_plate_soft(start_center, angle.detach(), 0.5)
         act_end   = self._draw_plate_soft(end_center,   angle.detach(), 1.0)
@@ -1371,5 +1380,5 @@ class UNetFiLMPushModel(nn.Module):
         #       always flows;
         #   (b) multi-step rollouts — subsequent steps receive [0,1]
         #       occupancy, matching the training input distribution.
-        # Inverse of step 1: transpose(-2,-1) then flip(dim1)
-        return torch.sigmoid(occ_pred_ds).transpose(-2, -1).flip(dims=[-1])
+        # Inverse of step 1: flip(dim1). (No transpose — see step 1.)
+        return torch.sigmoid(occ_pred_ds).flip(dims=[-1])

@@ -158,7 +158,10 @@ def main():
         hdr += f" {'sp_' + gl[:4]:>9s} {'sl4_' + gl[:4]:>10s} {'pa_' + gl[:4]:>9s}"
     print("\n" + hdr); print("-" * len(hdr))
     for r in rows:
-        line = f"{r['name']:22s} {r['rms_pct']:7.1f} {r['hf']:6.3f} {r['extra'][-12:]:>12s}"
+        # A blank cell here shifted the columns and produced a mistranscribed
+        # table in EXP-0013; always print something.
+        extra = r["extra"][-12:] if r["extra"] else "-"
+        line = f"{r['name']:22s} {r['rms_pct']:7.1f} {r['hf']:6.3f} {extra:>12s}"
         for gl in goals:
             line += (f" {r[f'spear_{gl}']:9.3f} {r[f'slate4_{gl}']:10.3f}"
                      f" {r[f'part_{gl}']:9.3f}")
