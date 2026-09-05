@@ -121,6 +121,12 @@ Copy `references/experiment-template.md`. Field meanings:
   everything that did not. `held_fixed` must list every knob the compared
   configurations share. If a knob is neither varied nor held fixed, the design
   is incomplete.
+- **`design.metric`** — name a metric **key from `docs/experiments/METRICS.md`**,
+  not a prose description. "swept-region rms as % of persistence" does not say
+  whether the average is a ratio of means or a mean of ratios, what the
+  denominator is, or how it moves under preprocessing — and all three of those
+  ambiguities have caused a real misreading here. If your metric is not in that
+  file, add it there first, with its formula.
 - **`design.baselines`** — non-empty, always, and must include a "do nothing"
   baseline. In this repo that is `persistence` for image prediction and
   `mean-delta` for canonical-frame prediction. `mean-delta` is the one that

@@ -29,7 +29,7 @@ design:
   varied: {regime: [scattered-blind, scattered-contact, piled-n30, piled-n20], res: [64], crop: [0.5, 1.0]}
   held_fixed: {view: mask, blur: 1.0, ridge: 1.0, estimator: "ridge toward identity", grid: 64, rasteriser: points_to_mask, split_rule: identical}
   baselines: [persistence, mean-delta]
-  metric: "explained variance over the swept region, 1 - rms/rms_persistence"
+  metric: "explained (vs persistence, swept region) — see docs/experiments/METRICS.md. Originally recorded as: explained variance over the swept region, 1 - rms/rms_persistence"
 noise_floor: "not measured for this design; the report's cube fold sd is ~0.004 rms (~3 points of explained variance), so differences under ~0.05 between regimes are not interpretable"
 depends_on: [canonical-warp, warp-blend, swept-region-metric, episode-split, rasteriser-identity]
 result: "margin +0.291 / +0.255 / +0.226 / +0.306 at crop 0.5; mean-delta itself varies 0.12 -> 0.35 across the same regimes"

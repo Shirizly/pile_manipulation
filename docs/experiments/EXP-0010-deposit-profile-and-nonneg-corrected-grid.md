@@ -58,13 +58,14 @@ design:
   held_fixed: {view: mask, cube_size: 0.005, min_grains: 1.0, grid: 64, blur: 1.0, episodes_per_dataset: "2 of 8 (scattered) / 16 (piled) available -- capped for budget, see incomplete-design", split_seed: 0, res: "32 for C-004 (res=64 not affordable, see cost warning below)", estimator_prior: "toward identity", nonneg_iters: 4000}
   baselines: [persistence, mean-delta]
   metric: >
+    canonical_delta_profile (C-006 arm) + pct_persistence (C-004 arm) --
+    see docs/experiments/METRICS.md. As originally recorded:
     C-006: mean(I_{k+1}-I_k) in the canonical push frame (res=32, crop=1.0),
     profiled by column (push axis; verified against transforms/functional.py
     that canonical +x/columns is the push direction) over a +/-4px row band.
     C-004: held-out rms over the swept region (swept_region_mask, half-width
     0.5*plate+2px, forward pad 0.5*plate), reported as a percentage of
     persistence rms AND of mean-delta rms ("% of the change" both ways).
-
 noise_floor: >
   C-006: measured here via episode folds -- 0.0003-0.006 across columns
   (typically ~0.003-0.004 at the peak columns), against peak effects of

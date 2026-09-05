@@ -153,6 +153,15 @@ def check_record(path, rec, invariants, errors, warnings):
         for f in DESIGN:
             if f not in design or design[f] in (None, "", [], {}):
                 err(f"design.{f} is missing")
+        met = str(design.get("metric", ""))
+        keys = ("pct_persistence", "pct_persistence_wholeimage",
+                "explained_over_meandelta", "explained", "soft_iou",
+                "l1_per_mass", "frobenius", "spearman", "slate4", "partial",
+                "FSS", "canonical_delta_profile", "r2_grouped_cv",
+                "world_alignment_cosine")
+        if met and not any(k in met for k in keys):
+            warn(f"design.metric does not name a key from "
+                 f"docs/experiments/METRICS.md: {met[:60]!r}")
         if not (design.get("baselines") or []):
             err("design.baselines must be non-empty and include a do-nothing baseline")
 

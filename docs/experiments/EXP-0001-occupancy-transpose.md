@@ -32,7 +32,7 @@ design:
   varied: {occupancy_source: ["registry as stored", "registry transposed", "points_to_mask re-rasterised"]}
   held_fixed: {res: 64, crop: 0.5, blur: 1.0, view: mask, ridge: 1.0, estimator: "ridge toward identity", actions: identical, split: identical, metric: identical, occupied_area: "matched via cube_size 0.007 (occ_mean 0.1169 vs 0.1194)"}
   baselines: [persistence, mean-delta, identity-warp]
-  metric: "held-out rms over the swept region, as a percentage of the persistence rms (100% = no better than predicting nothing moved)"
+  metric: "pct_persistence (swept region) — see docs/experiments/METRICS.md. Originally: held-out rms over the swept region, as a percentage of the persistence rms (100%"
 noise_floor: "~1 point; the report's own fold sd is 0.004 rms against a persistence rms of 0.11, and the effect here is ~49 points"
 establishes: [grid-convention, rasteriser-identity, pixel-index-origin]
 depends_on: [canonical-warp, warp-blend, swept-region-metric, episode-split]

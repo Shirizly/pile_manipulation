@@ -38,7 +38,7 @@ design:
   varied: {ridge: [0.01, 0.03, 0.1, 0.3, 1, 3, 10, 30, 100, 300, 1e3, 1e4, 1e5], rank: [1, 2, 4, 8, 16, 32, 64, 128, 256, 512]}
   held_fixed: {dataset: cube_spectrum/n20, view: mask, cube_size: 0.005, min_grains: 1.0, res: 32, crop: 1.0, blur: 0, grid: 64, estimator: "ridge toward identity", split: identical, goals: [center, corner], rank_lambda: 10}
   baselines: [persistence, mean-delta, identity-warp, oracle]
-  metric: "swept-region rms as % of persistence; dV Spearman and slate-4 regret (control_utility_test.rank_metrics), partial-correlated against the state's own V0 and its contact score"
+  metric: "pct_persistence (swept region) + slate4 / spearman (dV ranking) — see docs/experiments/METRICS.md. Originally recorded as: swept-region rms as % of persistence; dV Spearman and slate-4 regret (control_utility_test"
 noise_floor: "not separately measured for this design. The ridge curve is flat to +-0.9 points of rms and +-0.015 of slate4 over four decades of lambda, which is itself the relevant scale: any 'optimum' inside that band is not a real optimum."
 depends_on: [canonical-warp, warp-blend, swept-region-metric, episode-split, particle-projection]
 establishes: []

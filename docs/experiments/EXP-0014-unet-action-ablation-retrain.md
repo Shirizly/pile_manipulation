@@ -41,7 +41,7 @@ design:
   varied: {checkpoint: ["old (trained pre-fix, transposed data)", "new (trained post-fix, corrected data)"], action_channel: [true, zeroed, shuffled], pile_channel: [true, transposed]}
   held_fixed: {architecture: unetfilm (in_channels=2, cond_dim=3, uses_physics=true, input_mode=standard), epochs: 100, batch_size: 32, lr: 1e-4 StepLR(step=50,gamma=0.75), loss: eulerian_combined(mse=1.0,mass=0.2), dataset: corl_limited/cubes, val_pct/test_pct: 10/10, resolution_scale: 1.0, mixed_precision: true, grad_clip_norm: 1.0, samples_evaluated: 200, sigmoid: applied, metric: whole-image rms}
   baselines: [persistence]
-  metric: "whole-image rms against the target occupancy, as a percentage of the persistence rms -- identical definition to EXP-0004, so the two records are directly comparable"
+  metric: "pct_persistence_wholeimage — NOT comparable with swept-region numbers — see docs/experiments/METRICS.md. Originally: whole-image rms against the target occupancy, as a percentage of the persistence"
 
 noise_floor: "not independently measured for this record either (inherited limitation from EXP-0004); the shuffle arm's own permutation is unseeded so its single value carries unquantified sampling noise -- see Threats. Given the effect sizes involved (single-digit points) this stays a T2 gate on the strength of the discriminating-prediction design, not on a measured floor, which is an honest gap flagged below rather than hidden."
 

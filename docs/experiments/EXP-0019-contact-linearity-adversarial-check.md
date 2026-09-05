@@ -53,7 +53,7 @@ design:
            booster: [weak (250 iter, lr 0.06, original), strong (1000 iter, lr 0.03, depth 6, early-stopping)]}
   held_fixed: {feature_set: "OCC (grid-visible)", dataset: "L040+L040b scattered 50-cube, n=7680", cv: "GroupKFold(5) by run", ridge: RidgeCV(alphas 1e-3..1e4)}
   baselines: [noise control (Gaussian random features, from variance_decomposition.py), n_in_band-alone (1-feature trivial predictor), contact-binary-alone]
-  metric: "R^2 (5-fold mean, held-out), RMSE in mm (held-out), and per-fold sd of R^2 as the noise floor"
+  metric: "r2_grouped_cv, with RMSE reported alongside — see docs/experiments/METRICS.md. Originally: R^2 (5-fold mean, held-out), RMSE in mm (held-out), and per-fold sd of R^2 as th"
 
 noise_floor: >
   Per-fold sd of R^2 across the 5 GroupKFold splits, measured directly (not

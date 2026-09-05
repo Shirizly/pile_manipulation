@@ -32,7 +32,7 @@ design:
   varied: {input: [mask, height, density, mask+height, mask+density, mask+height+density], target: [mask-delta]}
   held_fixed: {res: 32, crop: 1.0, blur: 1.0, ridge: 1.0, grid: 64, target_per_column: fixed, channel_energy: "rescaled to the mask's std so the shared ridge does not switch a channel off"}
   baselines: [mean-delta]
-  metric: "explained variance of the canonical-frame delta over the train-mean delta"
+  metric: "explained_over_meandelta (canonical-frame delta) — see docs/experiments/METRICS.md. Originally recorded as: explained variance of the canonical-frame delta over the train-mean delta"
 noise_floor: "not measured; differences under ~2 points treated as not interpretable"
 depends_on: [canonical-warp, episode-split, particle-projection]
 result: "mask-only 0.739 beats height 0.631, density 0.656, and every stack (0.731-0.737); no stack helps"

@@ -31,7 +31,7 @@ design:
   varied: {crop: [0.25, 0.5, 1.0], estimator: [switched-nonneg, single ridge1]}
   held_fixed: {res: 16, blur: 1.0, bins: 3, dataset: L040, device: cpu, split_seed: 0, ridge: 1.0, metric: swept-region}
   baselines: [persistence, identity-warp]
-  metric: "explained = 1 - ||pred-truth|| / ||I_k+1 - I_k||, swept region, held out"
+  metric: "explained (vs persistence, swept region) — see docs/experiments/METRICS.md. Originally recorded as: explained = 1 - ||pred-truth|| / ||I_k+1 - I_k||, swept region, held out"
 noise_floor: >
   ~0.03 explained variance, converted from reports/linear_foresight_report.md
   §2.2b's measured fold-to-fold sd of ~0.004 rms against a persistence rms of

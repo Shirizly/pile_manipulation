@@ -36,7 +36,7 @@ design:
   varied: {blur: [0.0, 0.5, 1.0, 1.5], view: [mask, density], res: [32, 64]}
   held_fixed: {crop: 1.0, ridge: 1.0, estimator: "ridge toward identity", grid: 64, normalize: mean, split_rule: identical}
   baselines: [persistence, mean-delta, identity-warp]
-  metric: "swept-region rms as a percentage of the persistence rms at the SAME blur"
+  metric: "pct_persistence (swept region) — see docs/experiments/METRICS.md. Originally recorded as: swept-region rms as a percentage of the persistence rms at the SAME blur"
 noise_floor: "not measured for this design; view differences of <7 points are treated as not interpretable"
 depends_on: [canonical-warp, warp-blend, swept-region-metric, episode-split, particle-projection]
 result: "cubes L040: mask 89.4/83.6/67.4/56.1%, density 97.0/93.4/75.4/64.3% across sigma 0/0.5/1.0/1.5. Blur spans 33 points, view spans 8."

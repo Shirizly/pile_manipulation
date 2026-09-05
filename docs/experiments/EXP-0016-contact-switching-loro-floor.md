@@ -37,7 +37,7 @@ design:
   varied: {held_out_run: [0, 1, 2, 3, 4, 5, 6, 7]}
   held_fixed: {res: 16, crop: 0.5, blur: 1.0, bins: 3, dataset: L040, device: cpu, single_estimator: "ridge lambda=1.0", switched_estimator: "nonneg per bin", metric: swept-region explained}
   baselines: [persistence, mean-delta]
-  metric: "explained = 1 - ||pred-truth|| / ||I_k+1 - I_k||, swept region, held-out run"
+  metric: "explained (vs persistence, swept region), paired per LORO fold — see docs/experiments/METRICS.md. Originally recorded as: explained = 1 - ||pred-truth|| / ||I_k+1 - I_k||, swept region, held-out run"
 noise_floor: >
   0.0027 -- the sd of the paired per-fold difference (switched - single) across
   the 8 LORO folds, MEASURED on this exact design (not borrowed). sem =

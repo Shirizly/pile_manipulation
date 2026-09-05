@@ -33,7 +33,7 @@ design:
   varied: {scoring_target: [sharp, "blurred sigma=1"], cell: [blind_n50, blind_n20, contact_n20, contact_n5]}
   held_fixed: {res: 64, crop: 0.5, ridge: 1.0, estimator: "ridge toward identity", checkpoints: "EXP-0021's, unchanged", split: identical, metric: "swept-region rms as % of persistence AT THE SAME sigma"}
   baselines: [persistence]
-  metric: "swept-region rms / persistence rms, both computed on whichever target is being scored"
+  metric: "pct_persistence (swept region), computed at the SAME sigma for both models — see docs/experiments/METRICS.md. Originally: swept-region rms / persistence rms, both computed on whichever target is being s"
 noise_floor: "not measured for this design; the effect is a 9-12 point swing that reverses a ranking, and it reproduces in 4/4 cells"
 depends_on: [grid-convention, rasteriser-identity, canonical-warp, warp-blend, swept-region-metric, episode-split, world-frame-alignment]
 establishes: []

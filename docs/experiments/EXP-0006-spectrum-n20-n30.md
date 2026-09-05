@@ -22,7 +22,7 @@ design:
   varied: {n_cubes: [20, 30]}
   held_fixed: {view: mask, blur: 1.0, res: 32, crop: 0.5, grid: 64, cube_size: 0.005, density: 1000.0, friction: 0.3, push_length: 0.02, pushes_per_episode: 5, spawn: heap, base_frac: 0.6, rasteriser: points_to_mask, ridge: 1.0, estimator: "ridge toward identity", n_envs: 64}
   baselines: [persistence, mean-delta]
-  metric: "explained variance over the swept region, 1 - rms/rms_persistence"
+  metric: "explained (vs persistence, swept region) — see docs/experiments/METRICS.md. Originally recorded as: explained variance over the swept region, 1 - rms/rms_persistence"
 noise_floor: "~0.05, inherited from EXP-0002 (cube fold sd ~0.004 rms, ~3 points explained variance); NOT re-measured for this design -- only one split was run"
 depends_on: [canonical-warp, warp-blend, swept-region-metric, episode-split, settled-state, footprint-splat]
 establishes: []

@@ -32,7 +32,7 @@ design:
   varied: {convention: ["dim0=world_x (post-fix)", "dim0=world_y (pre-fix)"]}
   held_fixed: {dataset: cube_spectrum/n20, rasteriser: particles_to_occupancy, sigma: 0.0, grid: 64, bounds: "±0.064 m"}
   baselines: ["the competing convention", "world-frame particle motion (ground truth, grid-free)"]
-  metric: "cosine between the grid's transport direction (centroid of arriving occupancy minus centroid of departing occupancy) and the world-frame push direction"
+  metric: "world_alignment_cosine — see docs/experiments/METRICS.md. Originally: cosine between the grid's transport direction (centroid of arriving occupancy mi"
 noise_floor: "not needed: the two hypotheses are separated by 0.98, and the competing one sits at 0.00 — i.e. exactly the no-information value"
 depends_on: [grid-convention, rasteriser-identity]
 establishes: [world-frame-alignment]
