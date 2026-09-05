@@ -28,8 +28,8 @@ noise_floor: "not measured for this design; the report's cube fold sd is ~0.004 
 depends_on: [canonical-warp, warp-blend, swept-region-metric, episode-split, rasteriser-identity]
 result: "margin +0.291 / +0.255 / +0.226 / +0.306 at crop 0.5; mean-delta itself varies 0.12 -> 0.35 across the same regimes"
 verdict: supported
-downgrades: [imprecision, untested-dependency]
-grade: low
+downgrades: [imprecision]
+grade: moderate
 supersedes: []
 invalidated_by: null
 ---
@@ -85,6 +85,13 @@ floor around 0.05.
 - `untested-dependency`: `rasteriser-identity` is broken, though held fixed here.
 - Considered and dismissed: **unequal dataset sizes.** EXP-0006 measured
   size-matching as worth 0.003 on the piled sets.
+
+## Grade note, 2026-09-05
+
+`untested-dependency` dropped: this record's `depends_on` tags all
+hold as of the invariant tests added today (`tests/test_metric_invariants.py`,
+`tests/test_grid_convention.py`). Grade low -> moderate. The evidence did not
+change; what changed is that the assumptions it rests on are now checked.
 
 ## Unrelated findings
 

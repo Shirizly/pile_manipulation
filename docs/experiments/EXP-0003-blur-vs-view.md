@@ -35,8 +35,8 @@ noise_floor: "not measured for this design; view differences of <7 points are tr
 depends_on: [canonical-warp, warp-blend, swept-region-metric, episode-split, particle-projection]
 result: "cubes L040: mask 89.4/83.6/67.4/56.1%, density 97.0/93.4/75.4/64.3% across sigma 0/0.5/1.0/1.5. Blur spans 33 points, view spans 8."
 verdict: supported
-downgrades: [indirectness, imprecision, untested-dependency]
-grade: very-low
+downgrades: [indirectness, imprecision]
+grade: low
 supersedes: []
 invalidated_by: null
 ---
@@ -106,6 +106,13 @@ monolayer artifact. ~1 h, no new data.
   main line — see `docs/ideas_log_signal_vs_detail.md`.
 - `imprecision`: one seed-0 split where LORO was affordable.
 - `untested-dependency`: `swept-region-metric`, `episode-split` unchecked.
+
+## Grade note, 2026-09-05
+
+`untested-dependency` dropped: this record's `depends_on` tags all
+hold as of the invariant tests added today (`tests/test_metric_invariants.py`,
+`tests/test_grid_convention.py`). Grade very-low -> low. The evidence did not
+change; what changed is that the assumptions it rests on are now checked.
 
 ## Unrelated findings
 

@@ -32,8 +32,8 @@ establishes: [grid-convention, rasteriser-identity, pixel-index-origin]
 depends_on: [canonical-warp, warp-blend, swept-region-metric, episode-split]
 result: "107.1% as stored -> 57.9% transposed -> 54.1% re-rasterised; best IoU against a dim0=world_x raster is 0.103 untransposed and 0.573 transposed"
 verdict: supported
-downgrades: [untested-dependency]
-grade: moderate
+downgrades: []
+grade: high
 supersedes: []
 invalidated_by: null
 ---
@@ -101,6 +101,13 @@ the two invariant tests, then re-running everything in EXP-0002.
   re-rasterised path independently.
 - Considered and dismissed: **blur interaction.** The transpose gap is present
   at blur 0 too (EXP-0003's sweep), so it is not an artifact of σ=1.
+
+## Grade note, 2026-09-05
+
+`untested-dependency` dropped: this record's `depends_on` tags all
+hold as of the invariant tests added today (`tests/test_metric_invariants.py`,
+`tests/test_grid_convention.py`). Grade moderate -> high. The evidence did not
+change; what changed is that the assumptions it rests on are now checked.
 
 ## Unrelated findings
 

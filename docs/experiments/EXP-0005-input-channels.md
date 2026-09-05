@@ -31,8 +31,8 @@ noise_floor: "not measured; differences under ~2 points treated as not interpret
 depends_on: [canonical-warp, episode-split, particle-projection]
 result: "mask-only 0.739 beats height 0.631, density 0.656, and every stack (0.731-0.737); no stack helps"
 verdict: supported
-downgrades: [imprecision, untested-dependency]
-grade: low
+downgrades: [imprecision]
+grade: moderate
 supersedes: []
 invalidated_by: null
 ---
@@ -98,6 +98,13 @@ Two things, both cheap and both now necessary rather than optional:
 - **Target matching is an unresolved confound** since the amendment — see
   "What would change the verdict". This is the main reason not to lean on this
   record.
+
+## Grade note, 2026-09-05
+
+`untested-dependency` dropped: this record's `depends_on` tags all
+hold as of the invariant tests added today (`tests/test_metric_invariants.py`,
+`tests/test_grid_convention.py`). Grade low -> moderate. The evidence did not
+change; what changed is that the assumptions it rests on are now checked.
 
 ## Unrelated findings
 

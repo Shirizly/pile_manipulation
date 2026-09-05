@@ -71,8 +71,8 @@ result: >
   not at the predicted radius.
 
 verdict: refuted
-downgrades: [imprecision, untested-dependency, indirectness]
-grade: very-low
+downgrades: [imprecision, indirectness]
+grade: low
 supersedes: []
 invalidated_by: null
 ---
@@ -202,6 +202,13 @@ gap to close. What would matter:
   at fine scales -- M5's unbounded ratio, which does show a genuine (if
   differently-shaped and non-monotonic) scale structure, is the more trustworthy
   read of "where is the skill" from this record.
+
+## Grade note, 2026-09-05
+
+`untested-dependency` dropped: this record's `depends_on` tags all
+hold as of the invariant tests added today (`tests/test_metric_invariants.py`,
+`tests/test_grid_convention.py`). Grade very-low -> low. The evidence did not
+change; what changed is that the assumptions it rests on are now checked.
 
 ## Unrelated findings
 

@@ -37,7 +37,10 @@ re-recorded.
 | C-019 | The linear operator's margin over mean-delta is regime-independent (+0.15..+0.31 across scattered monolayers and two-layer heaps) | open | low | EXP-0002, EXP-0006 | — | `rasteriser-identity`, `swept-region-metric`, `episode-split` |
 | C-020 | The scattered-monolayer UNet failure is caused by the transposed action channel | open | very-low | EXP-0004 | — | `grid-convention`, `deploy-train-raster` |
 | C-004 | Non-negativity beats ridge for the pixel operator (their Fig. 7) | open | — | `linear_foresight_report.md` §6 (cube fits — needs re-run) | — | `grid-convention` |
-| C-030 | **Weakened, then re-opened 2026-09-05.** A signal-sensitive metric ranks models for MPC better than pixel rms does. The original mechanism ("the fine band is unpredictable") is refuted by EXP-0007; the *global* metric swap (FSS for rms) is refuted by EXP-0008; but EXP-0008's own table shows a strong **per-error-type** dissociation — see C-035, which is now where this programme lives | contested | very-low | — | EXP-0007, EXP-0008 (both refute the strong forms) | `canonical-warp`, `swept-region-metric` |
+| C-036 | **Neither ridge shrinkage nor rank truncation trades predictive accuracy for control utility.** lambda*_rms = 10 and lambda*_control = 1..10; rank*_rms = 256 and rank*_control = 512 (truncation hurts both monotonically) | refuted | low | — | EXP-0013 | `canonical-warp`, `swept-region-metric`, `episode-split` |
+| C-037 | **rms and control utility order nine real fitted models oppositely.** Every rank-truncated operator from rank 1 to rank 128 beats mean-delta on swept-region rms (53.9-60.5% vs 69.2%) and loses to it on slate-4 action selection (0.338-0.570 vs 0.601). Not explained by high-frequency energy, which is flat across the block | open | low | EXP-0013 (a by-product of a sweep built for C-036; wants its own confirmatory run) | — | `canonical-warp`, `swept-region-metric`, `episode-split` |
+| C-030 | **Weakened, re-opened, now directly supported at model level by C-037 (2026-09-05).** A signal-sensitive metric ranks models for MPC better than pixel rms does. The original mechanism ("the fine band is unpredictable") is refuted by EXP-0007; the *global* metric swap (FSS for rms) is refuted by EXP-0008; but EXP-0008's own table shows a strong **per-error-type** dissociation — see C-035, which is now where this programme lives | contested | very-low | — | EXP-0007, EXP-0008 (both refute the strong forms) | `canonical-warp`, `swept-region-metric` |
+| C-008 | Contact-switching does not transfer from scalar targets to the pixel operator. **Re-opened 2026-09-05**: the grid-convention bug this was measured under is now fixed, but the re-run (EXP-0009) queued the switched-operator cells (res=16/crop=0.25, bins=2/3, est. M/D 2.9-4.4 per bin) behind a much more expensive res=64 cell and none of them finished in budget — still genuinely untested on the fixed grid | open | very-low | EXP-0009 (attempted; no cell completed) | — | `grid-convention`, `rasteriser-identity`, `swept-region-metric`, `episode-split` |
 
 ## Supported
 
@@ -52,6 +55,7 @@ re-recorded.
 | C-005 | Every MPC derives blade yaw from the push direction; training data is oblique 92% of the time and deployment perpendicular 99.6% | supported | — | `linear_foresight_report.md` §3 | — (action-based) |
 | C-003 | **Re-sourced, cube-only.** World-frame occupancy mass is conserved to 0.4% on cubes | supported | — | `linear_foresight_report.md` §4 | `mass-conservation` |
 | C-002 | **Re-sourced, cube-only.** The SE(2) warp costs more than one push changes unless the field is smoothed to σ≈1 | supported | — | `linear_foresight_report.md` §1; identity-baseline rows of EXP-0001, EXP-0003 | `canonical-warp` |
+| C-001 | **REVERSED 2026-09-05** (was: nothing beats persistence). With `grid-convention` actually fixed in the codebase (commit `aac084e3`), the linear/ridge/nonneg pixel operator on scattered cube monolayers beats persistence by 30-46 points of explained variance (54-58% of persistence rms at res=64/crop=0.5, 70.5% at res=8/crop=0.5) and beats mean-delta too (+0.17 to +0.38 explained) | supported | very-low | EXP-0001 (res=64 numbers, pre-fix simulated), EXP-0009 (res=8, actual fixed pipeline; res=64 same-session cell did not complete) | `grid-convention`, `rasteriser-identity` |
 
 ## Refuted and invalidated
 
@@ -60,8 +64,6 @@ re-runs are queued.
 
 | ID | Claim | Status | By | Was stated in | Depends on |
 |---|---|---|---|---|---|
-| C-001 | On scattered cube monolayers nothing beats persistence at one-step pixel prediction | invalidated | EXP-0001 | `linear_foresight_report.md` §1, §2, §2.1–§2.3, Q2/Q3/Q8 | `grid-convention` |
-| C-008 | Contact-switching does not transfer from scalar targets to the pixel operator | invalidated | EXP-0001 | `linear_foresight_report.md` §2.7 | `grid-convention` |
 | C-006 | The paper's Fig. 5 deposit structure (depletion across the band, deposition just ahead) reproduces on our data | invalidated | EXP-0001 | `linear_foresight_report.md` §5 | `grid-convention` |
 | C-015 | **Restated cube-only.** Pile depth is what makes the linear operator do state-dependent work — monolayers should show no margin over mean-delta | refuted | EXP-0002, EXP-0006 | withdrawn cube/continuum comparison, commit `242a9cc1` | `rasteriser-identity` |
 | C-022 | *(duplicate of C-015 as originally filed; merged 2026-09-05)* | superseded | — | — | — |
@@ -74,13 +76,27 @@ re-runs are queued.
 
 Ordered by what unblocks the most rows.
 
-1. Fix `grid-convention` + `rasteriser-identity` + `pixel-index-origin`, with
-   tests written first. Unblocks C-001, C-004, C-006, C-008, C-015.
-2. Re-run `linear_foresight_report.md` §2 and §2.7 on corrected grids (C-001,
-   C-008); §2.7 is the one likeliest to reverse.
+1. ~~Fix `grid-convention` + `rasteriser-identity` + `pixel-index-origin`~~ —
+   done 2026-09-05, commit `aac084e3`. `pixel-index-origin` remains broken.
+2. ~~Re-run `linear_foresight_report.md` §2 and §2.7 on corrected grids
+   (C-001, C-008)~~ — **C-001 done, reversed (EXP-0009).** C-008 still queued:
+   run the switched-operator cells (res=16/crop=0.25, bins=2 and 3) FIRST,
+   before any res=64 cell — they are ~1000x cheaper (D=256 vs D=4096) and
+   were the ones actually left undone when EXP-0009 ran out of budget.
+   ~5 min CPU, no new data needed (`scripts/probes/exp0009_rerun.py --bins 2|3
+   --res 16 --crop 0.25` already exists). A full same-session res=64 cell for
+   C-001 (currently sourced from EXP-0001's pre-fix numbers, `provenance`
+   downgrade) needs `fit_operator_nonneg` capped well below its default
+   `max_iter=4000` (measured ~3.1 s/iter at D=4096 under CPU contention; even
+   a 300-iter cap is ~15 min) or a GPU.
 3. EXP-0002 under leave-one-run-out (C-019).
 4. A density-target cube run, to break the target-matching confound EXP-0005's
    amendment introduced (C-017).
 5. Retrain one UNet config with the raster fixed (C-020). GPU, ~1 h.
 6. The signal-vs-detail metric programme (C-030) —
-   `docs/ideas_log_signal_vs_detail.md`.
+   `docs/ideas_log_signal_vs_detail.md`. Next: a dedicated confirmatory run for
+   C-037 (rms vs control utility over real fitted models) with a measured noise
+   floor and a second seed — EXP-0013 found it while testing something else.
+7. C-008 is genuinely untested on the fixed grid (EXP-0009 ran out of budget
+   before reaching it). Run the `--bins` config first: at res 16 / crop 0.25 it
+   is ~1000x cheaper than the res-64 cell that starved it.

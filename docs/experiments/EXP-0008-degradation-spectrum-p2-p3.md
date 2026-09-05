@@ -100,8 +100,8 @@ result: >
   spectrum, the opposite of what P3 predicted.
 
 verdict: refuted
-downgrades: [imprecision, untested-dependency, incomplete-design]
-grade: very-low
+downgrades: [imprecision, incomplete-design]
+grade: low
 supersedes: []
 invalidated_by: null
 ---
@@ -251,6 +251,13 @@ mean higher control utility. rms wins all four comparisons.)
   so that risk did not need to be managed here; it should be flagged again if
   EMD is added later, since EMD's "mass moved" and V's "mass-weighted
   distance" are close enough in spirit to warrant real scrutiny.
+
+## Grade note, 2026-09-05
+
+`untested-dependency` dropped: this record's `depends_on` tags all
+hold as of the invariant tests added today (`tests/test_metric_invariants.py`,
+`tests/test_grid_convention.py`). Grade very-low -> low. The evidence did not
+change; what changed is that the assumptions it rests on are now checked.
 
 ## Unrelated findings
 
