@@ -20,7 +20,7 @@ same question for both, and it is the comparison neither EXP-0018 nor EXP-0021
 ran.
 
     PYTHONPATH=. python scripts/probes/exp0022_blur_fair.py \
-        configs/training/exp0021_unetfilm_blind_n50.yaml \
+        configs/dataset/genesis_granularity_blind_n50.yaml \
         runs_granularity/unetfilm_blind_n50 --tag blind_n50
 """
 from __future__ import annotations
@@ -52,20 +52,19 @@ def gblur(x, sig):
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("train_cfg"); ap.add_argument("run_dir")
+    ap.add_argument("dataset_cfg"); ap.add_argument("run_dir")
     ap.add_argument("--tag", required=True)
     ap.add_argument("--sigma", type=float, default=1.0)
     a = ap.parse_args()
 
-    cfg = yaml.safe_load(open(a.train_cfg).read())
-    ds_cfg = cfg["dataset"] if isinstance(cfg.get("dataset"), str) else a.train_cfg
-    d_tr = load_transition_arrays(ds_cfg, split="train")
-    d_te = load_transition_arrays(ds_cfg, split="test")
+    cfg = yaml.safe_load(open(a.dataset_cfg).read())
+    d_tr = load_transition_arrays(a.dataset_cfg, split="train")
+    d_te = load_transition_arrays(a.dataset_cfg, split="test")
     H, W = d_tr.occ_t.shape[-2:]
 
     model, mcfg, _ = load_unet(a.run_dir)
     from registry.dataset_registry import build_dataset
-    raw = build_dataset(cfg["dataset"], "test")
+    raw = build_dataset(cfg, "test")
     X = torch.stack([raw[i]["input"] for i in range(len(raw))])
     P = torch.stack([raw[i]["physics"] for i in range(len(raw))])
     truth = torch.stack([raw[i]["target"] for i in range(len(raw))])
