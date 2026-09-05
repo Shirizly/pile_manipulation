@@ -227,6 +227,18 @@ keep going quietly. Specifically:
   two-minute feasibility check that saves an hour is always in budget, and a
   cost pilot never compromises a prediction (see `prediction`, above).
 
+**Use `scripts/run_probe.py` for anything long.**
+
+    python scripts/run_probe.py --tag blur_sweep -- python scripts/probes/view_blur.py --res 32
+
+It forces `python -u`, redirects straight to a file (no pipe to get wrong),
+records the PID so a job is stopped by PID rather than by a `pkill` pattern
+broad enough to match the killer, caps threads, and writes
+`utils.git_provenance()` beside the log so the code state is captured at run
+time instead of reconstructed later. The three hazards below are the reason it
+exists; each one bit repeatedly on 2026-09-05, twice *after* the warning was
+written, which is the evidence that prose was not enough.
+
 **Never block on a watcher.** If you launch a long job in the background, do
 not then wait on it, poll it, or set up a monitor and return. Read whatever its
 output file already holds and write up what is in it, or run the job in the
