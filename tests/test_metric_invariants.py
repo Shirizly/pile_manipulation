@@ -98,3 +98,33 @@ def test_episode_split_matters_because_within_episode_states_are_similar(data):
     assert near < far, (
         f"neighbouring transitions ({near:.5f}) are not more similar than "
         f"random pairs ({far:.5f}) — the episode-split rule would be pointless")
+
+
+def test_saved_configs_carry_git_provenance():
+    """`dataset-provenance`: every config written by the collection path must
+    carry the code state, so a dataset can be tied to the simulator that made
+    it. Datasets collected before 2026-09-05 do not have this and never will --
+    this test guards the path, not the history.
+    """
+    import inspect
+    from Genesis import sandbox_manipulation_clean as smc
+    src = inspect.getsource(smc.SandboxManipulation._save_config)
+    assert "git_provenance" in src, (
+        "_save_config no longer stamps utils.git_provenance() -- new datasets "
+        "would be unreconstructable, which is how every pre-2026-09-05 dataset "
+        "ended up with its lineage guessable only from file mtimes")
+
+
+def test_git_provenance_reports_dirty_honestly():
+    """A sha does not reconstruct a run if the tree was modified, so `dirty`
+    has to be right. Two bugs were found here: tracked .pyc made it always
+    true, and a fixed-index parse of stripped porcelain output clipped a path.
+    """
+    from utils import git_provenance
+    p = git_provenance()
+    assert set(("commit", "dirty", "branch")) <= set(p)
+    assert isinstance(p["dirty"], bool) or p["dirty"] == "unknown"
+    for f in p.get("dirty_files", []):
+        assert not f.startswith(("enesis/", "ests/", "cripts/")), (
+            f"path {f!r} is clipped -- porcelain parsed by fixed index again")
+        assert "__pycache__" not in f and not f.endswith(".pyc")

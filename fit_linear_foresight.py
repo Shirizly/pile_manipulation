@@ -331,8 +331,22 @@ def metrics(pred, truth, occ_prev, region=None):
         "soft_iou": float((inter / union).mean()),
         # Fraction of the change the model actually explains: 1 means perfect,
         # 0 means no better than predicting no change at all.
+        #
+        # NOTE this uses the raw Frobenius norm, while `rms` divides by the
+        # region pixel count first. The two coincide only when the region size
+        # is constant across transitions (true for fixed-length pushes, false
+        # in general). Prefer `accuracy` below, which is defined with ONE norm.
         "explained": float(1.0 - flat.norm(dim=1).mean()
                            / (tr_ - pv).norm(dim=1).mean().clamp_min(1e-9)),
+        # THE STANDARD METRIC (docs/experiments/METRICS.md). Same `rms` norm in
+        # numerator and denominator, so it is exactly 1 - pct_persistence/100
+        # with no discrepancy to reconcile. Up is better:
+        #   1  = perfect
+        #   0  = no better than predicting nothing moved
+        #  <0  = worse than doing nothing
+        "accuracy": float(1.0 - (flat.pow(2).sum(dim=1) / npix).sqrt().mean()
+                          / (((tr_ - pv).pow(2).sum(dim=1) / npix).sqrt()
+                             .mean().clamp_min(1e-9))),
     }
 
 

@@ -121,7 +121,10 @@ Copy `references/experiment-template.md`. Field meanings:
   everything that did not. `held_fixed` must list every knob the compared
   configurations share. If a knob is neither varied nor held fixed, the design
   is incomplete.
-- **`design.metric`** — name a metric **key from `docs/experiments/METRICS.md`**,
+- **`design.metric`** — report the two standard metrics, **`accuracy`** (image)
+  and **`slate4`** (control), in every record. Both go up when better. Where the
+  metric is itself what you are studying, give a standard one as a reference row
+  anyway. Then name a metric **key from `docs/experiments/METRICS.md`**,
   not a prose description. "swept-region rms as % of persistence" does not say
   whether the average is a ratio of means or a mean of ratios, what the
   denominator is, or how it moves under preprocessing — and all three of those

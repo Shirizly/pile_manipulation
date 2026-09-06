@@ -60,6 +60,7 @@ verdict: supported
 downgrades: [imprecision, indirectness]
 grade: low
 supersedes: []
+superseded_by: [EXP-0021]
 invalidated_by: null
 ---
 
@@ -172,3 +173,12 @@ worth doing:
   (`n = min(200, len(ds))`) is now conservative relative to the dataset: the
   val split is 472 samples, not ~200, so a straightforward change would let a
   future run use more samples for less noise. Not acted on.
+
+
+## Superseded, 2026-09-06
+
+**This record is superseded by EXP-0021.** Its measurements stand as taken; do
+not cite its conclusions. Reason: scored on whole-image rms (~95% untouched pixels), one dataset, no linear-operator anchor. EXP-0021 covers 7 cells on the swept region against persistence, mean-delta, identity and the linear operator, stratified on contact.
+
+Kept rather than deleted because the register's audit trail depends on being
+able to see what was believed and why it changed.

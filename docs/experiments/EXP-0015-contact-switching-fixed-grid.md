@@ -46,6 +46,7 @@ verdict: inconclusive
 downgrades: [imprecision]
 grade: moderate
 supersedes: []
+superseded_by: [EXP-0016]
 invalidated_by: null
 ---
 
@@ -140,3 +141,12 @@ suspected.
   the switched estimator, so there is no single-operator per-bin column to
   compare it against. Adding one would make the switched-vs-single comparison
   readable per bin rather than only in aggregate. Logged, not acted on.
+
+
+## Superseded, 2026-09-06
+
+**This record is superseded by EXP-0016.** Its measurements stand as taken; do
+not cite its conclusions. Reason: one seed-0 split against a noise floor BORROWED from a different design. EXP-0016 measured the floor by 8-fold LORO (paired sd 0.0027, ~11x smaller) and settled the claim.
+
+Kept rather than deleted because the register's audit trail depends on being
+able to see what was believed and why it changed.

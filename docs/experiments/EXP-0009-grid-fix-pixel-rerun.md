@@ -60,6 +60,7 @@ verdict: inconclusive
 downgrades: [incomplete-design, imprecision, provenance, untested-dependency]
 grade: very-low
 supersedes: []
+superseded_by: [EXP-0018]
 invalidated_by: null
 ---
 
@@ -228,3 +229,12 @@ would answer that claim within minutes.
   incremental progress. This cost real debugging time in this session and
   would trip up any future agent monitoring a long CPU job the same way;
   `python -u` or `PYTHONUNBUFFERED=1` avoids it.
+
+
+## Superseded, 2026-09-06
+
+**This record is superseded by EXP-0018.** Its measurements stand as taken; do
+not cite its conclusions. Reason: its only in-session completed cell was res=8, a degenerate resolution, and its headline was borrowed from EXP-0001. EXP-0018 closed that gap: the literal res=64/crop=0.5 cell measured in-session at 57.8%, matching the borrowed 57.9%, plus 8-fold LORO.
+
+Kept rather than deleted because the register's audit trail depends on being
+able to see what was believed and why it changed.

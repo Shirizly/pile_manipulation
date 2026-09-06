@@ -36,6 +36,7 @@ verdict: inconclusive
 downgrades: [imprecision, indirectness, untested-dependency]
 grade: very-low
 supersedes: []
+superseded_by: [EXP-0014, EXP-0021]
 invalidated_by: null
 ---
 
@@ -82,3 +83,12 @@ establish it — a model could underuse its action channel for other reasons
 - `untested-dependency`: both cited tags are broken.
 - Considered and **not** dismissed: this is `corl_limited`, a deliberately small
   dataset. A model this weak may simply be undertrained.
+
+
+## Superseded, 2026-09-06
+
+**This record is superseded by EXP-0014, EXP-0021.** Its measurements stand as taken; do
+not cite its conclusions. Reason: measured on the pre-fix (transposed) raster, and on whole-image rms. EXP-0014 re-ran it after the fix; EXP-0021 re-ran it across 7 cells on the swept region with a linear-operator anchor.
+
+Kept rather than deleted because the register's audit trail depends on being
+able to see what was believed and why it changed.

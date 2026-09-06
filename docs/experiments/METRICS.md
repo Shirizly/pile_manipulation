@@ -10,6 +10,41 @@ Source of truth: `fit_linear_foresight.py::metrics`.
 
 ---
 
+## THE TWO STANDARD METRICS
+
+**Report these in every record.** Both go UP when better. Where the metric
+itself is the object of study (FSS, R², a profile), report these as a reference
+row anyway, so results stay comparable across the register.
+
+| key | definition | 0 means | 1 means |
+|---|---|---|---|
+| **`accuracy`** | `1 − rms(model) / rms(persistence)`, swept region, same norm top and bottom | no better than predicting nothing moved | perfect |
+| **`slate4`** | fraction of the oracle's advantage over a random pick that the model captures, within a candidate slate of 4 | no better than random | as good as the oracle |
+
+Negative values are meaningful in both: worse than doing nothing, and worse than
+choosing at random, respectively.
+
+**Why two.** Image accuracy and control utility have been measured
+dissociating three times in this project — EXP-0008 (noise destroys ranking at
+a cost rms barely sees), EXP-0013/EXP-0017 (a rank-1 operator with better rms
+and worse ranking), EXP-0022 (the UNet's whole advantage sits in a frequency
+band control appears not to consume). A single image number cannot serve an MPC
+objective, so the standard is a pair.
+
+**Why `accuracy` and not `explained`.** They are the same idea, but `explained`
+was defined with the Frobenius norm while `pct` used the pixel-normalised one,
+so the two disagree whenever region size varies. `accuracy` uses one norm
+throughout and is exactly `1 − pct_persistence/100`. Prefer it; `explained` is
+kept only so old records still parse.
+
+**What `accuracy` still cannot do:** be compared across different
+preprocessing. Its denominator is the size of the actual change, which shrinks
+under blur and grows with region. `accuracy = 0.42` at σ=0 and `accuracy = 0.42`
+at σ=1 are not the same achievement. Compare within a configuration; across
+configurations, say so.
+
+---
+
 ## `pct_persistence` — "% of the change"
 
 ```
