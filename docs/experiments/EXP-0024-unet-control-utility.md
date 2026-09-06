@@ -34,20 +34,20 @@ prediction:
     the better model" without qualification.
   discriminating: true
 provenance:
-  commit: 57452569
-  dirty: true
+  commit: bc4bc6bf
+  dirty: false
   dirty_note: >
-    Working tree carried OTHER AGENTS' concurrent uncommitted edits at run
-    time (per `utils.git_provenance()`): .claude/skills/experiment-log/SKILL.md,
-    docs/experiments/{EXP-0004,EXP-0009,EXP-0014,EXP-0015}*.md,
-    docs/experiments/METRICS.md, and fit_linear_foresight.py. The last one is
-    load-bearing: it adds the `accuracy` key to `metrics()` (the exact diff is
-    quoted in "What was actually run" below) that this record's image-accuracy
-    numbers use. None of this experiment's own new files (the four committed
-    at 57452569) were touched by any other session. Re-running from 57452569
-    alone will NOT reproduce the `accuracy` numbers until that key lands in a
-    commit -- reproduce instead from the diff quoted below, or from whatever
-    later commit adds it.
+    UNet training was launched under commit 57452569 (this record's own 4
+    new files, clean), while OTHER AGENTS' concurrent work was uncommitted in
+    the tree (per `utils.git_provenance()` at launch time): docs/experiments/
+    METRICS.md and fit_linear_foresight.py among them -- the latter added the
+    `accuracy` key this record's image-accuracy numbers use. Training itself
+    never touches fit_linear_foresight.py, so that is immaterial to the UNet
+    checkpoint. By the time `scripts/probes/exp0024_control_eval.py` actually
+    ran (after training finished), that work had landed at 811cc700 and the
+    tree was clean at bc4bc6bf (HEAD at eval time, and the sha recorded here)
+    -- so every number in this record, not just the checkpoint, reconstructs
+    from a clean commit.
   data_commit: >
     cube_spectrum/n20 predates provenance stamping (dataset-provenance tag,
     unrecorded for pre-2026-09-05 data) -- lineage is reconstructable only
@@ -75,11 +75,11 @@ provenance:
     EXP-0021's convention. n20_heap_5mm slates: no split, evaluated in full
     (all physics groups routed to "test" via test_pct=99/val_pct=0), grouped
     by `get_run_index` (one file = one slate, EXP-0012's own convention).
-  runtime: "UNet training: 100 epochs, ~<FILL> min GPU. Fit+eval: <FILL> s CPU."
+  runtime: "UNet training: 100 epochs, ~16 min GPU (9-22s/epoch under shared-machine contention, 2 other agents running). Fit+eval: ~25s CPU."
 budget:
-  declared: "2h wall-clock, 300k tokens (task-level T2-gate sizing)"
-  spent: "<FILL>"
-  outcome: "<FILL>"
+  declared: "2h wall-clock, 300k tokens (task-level sizing; see 'tier' note below for why this record is filed as T1, not T2)"
+  spent: "~1h10min wall-clock, ~140k tokens"
+  outcome: within
 design:
   varied: {model: [persistence, mean-delta, "linear (ridge->identity)", UNetFilm, oracle]}
   held_fixed:
@@ -92,23 +92,50 @@ design:
   baselines: [persistence, mean-delta, oracle]
   metric: "accuracy AND slate4 (docs/experiments/METRICS.md), reported side by side per METRICS.md's explicit instruction for this exact juxtaposition"
 noise_floor: >
-  Across-slate sd of slate4 and spearman (49-50 slates), reported alongside
-  every mean -- this IS the noise floor per EXP-0012's own convention. Pilot
-  value observed on the linear operator (goal=corner, this code path): slate4
-  sd 0.020, spearman sd 0.026 (n=49 slates; EXP-0012's own numbers: slate4 sd
-  0.017, spearman sd 0.021, n=50) -- so an across-model slate4 gap smaller
-  than ~0.02-0.03 should not be read as a clear win either way.
+  Across-slate sd of slate4 and spearman (49 usable slates, goal=corner),
+  reported alongside every mean -- this IS the noise floor per EXP-0012's own
+  convention. Measured here: linear slate4 sd 0.020, spearman sd 0.026; UNet
+  slate4 sd 0.020, spearman sd 0.018 (EXP-0012's own numbers on its different
+  code path: slate4 sd 0.017, spearman sd 0.021, n=50 -- closely consistent).
+  So an across-model slate4/spearman gap smaller than ~0.02-0.03 is inside the
+  noise floor and should not be read as a clear win either way.
 depends_on: [grid-convention, rasteriser-identity, canonical-warp, warp-blend,
              swept-region-metric, episode-split, settled-state]
 establishes: []
 result: >
-  <FILL AFTER RUN>
-verdict: "<FILL>"
-downgrades: [provenance, indirectness, untested-dependency]
+  Image accuracy (held-out cube_spectrum/n20, n=596): persistence 0.000,
+  mean-delta 0.343, linear 0.533, UNet 0.569, oracle 1.000 -- UNet beats
+  linear by 3.6 points, same direction as EXP-0021's 14/14 cells but at the
+  low end of its 4.4-10.9 point range. Control (n20_heap_5mm, 49 slates,
+  goal=corner): slate4 mean(sd) -- persistence -0.002(0.014) [cannot rank],
+  mean-delta 0.796(0.059), linear 0.950(0.020), UNet 0.969(0.020), oracle
+  1.000(0.000); spearman -- persistence -0.052(0.170), mean-delta
+  0.790(0.055), linear 0.921(0.026), UNet 0.937(0.018), oracle 0.969(0.000,
+  the ceiling this specific metric formula gives for ~32-candidate slates,
+  not 1.0 -- see Unrelated findings). UNet-linear gap: slate4 +0.019, spearman
+  +0.016 -- both smaller than either model's own across-slate sd (~0.02),
+  i.e. within the noise floor. goal=center: only 11/49 slates clear the
+  dv_true-variation threshold (mean dv_true 0.00004, sd 0.00120, 0% helpful)
+  -- degenerate, as C-040/EXP-0012 found, and not informative; not used for
+  the verdict. PREDICTION SUPPORTED: the UNet's real, EXP-0021-consistent
+  image-accuracy edge does NOT show up as a clear control-utility edge --
+  both models are control-equivalent within measurement noise on slate4.
+verdict: supported
+downgrades: [imprecision, untested-dependency]
 grade: low
 supersedes: []
 invalidated_by: null
 ---
+
+**Tier note.** This was scoped as a T2 gate (a prediction block committed
+before the run, which is included below). It is filed as **T1** instead
+because `scripts/check_register.py` forbids a T2 record from citing a
+`depends_on` tag that is not `holds`/`fixed`, and this record genuinely
+depends on `settled-state`, which is `unchecked` for the rigid-cube path
+(the same debt EXP-0012 — the record this one directly extends — already
+carries and never retired). Writing a settled-state velocity check was out
+of scope for this run's budget; the prediction block, baselines, and
+multiverse discipline below otherwise match T2 practice.
 
 ## Why this test discriminates
 
@@ -184,35 +211,119 @@ its exact code, quoted for reproducibility:
 
 ## Numbers
 
-<FILL>
+**Image accuracy** (`fit_linear_foresight.py::metrics`, held-out
+cube_spectrum/n20 test split, n=596, swept-region mask):
+
+| model | accuracy |
+|---|---|
+| persistence | 0.000 |
+| mean-delta | 0.343 |
+| linear (ridge→identity) | 0.533 |
+| **UNet** | **0.569** |
+| oracle | 1.000 |
+
+UNet − linear = **+3.6 points**. Same direction as EXP-0021's 14/14 cells, at
+the low end of its 4.4-10.9 point range (this dataset's fixed 20mm
+contact-aware pushes and crop=1.0 fit differ from EXP-0021's ~40mm-push,
+crop=0.5 headline cells, so an exact match was not expected).
+
+**Control utility** (`control_utility_test.py::rank_metrics` via
+`same_state_degradation.py::per_slate_metrics`, n20_heap_5mm, 49 usable
+slates, goal=corner, mean ± sd across slates):
+
+| model | spearman | slate4 |
+|---|---|---|
+| persistence | −0.052 ± 0.170 (cannot rank) | −0.002 ± 0.014 (cannot rank) |
+| mean-delta | 0.790 ± 0.055 | 0.796 ± 0.059 |
+| linear (ridge→identity) | 0.921 ± 0.026 | 0.950 ± 0.020 |
+| **UNet** | **0.937 ± 0.018** | **0.969 ± 0.020** |
+| oracle | 0.969 ± 0.000 | 1.000 ± 0.000 |
+
+UNet − linear = **+0.016 spearman, +0.019 slate4** — both smaller than either
+model's own across-slate sd (~0.02), i.e. **inside the noise floor**.
+Persistence's numbers are noise around 0 by construction (dv_pred≡0 for
+every candidate: it cannot rank at all) and must not be read as "persistence
+ranks at −0.05". The oracle's spearman is 0.969, not 1.0 — a property of
+`rank_metrics`' own formula at slate size ≈32 (see Unrelated findings), not a
+measurement of anything here; its slate4 is exactly 1.0 as expected.
+
+goal=center: dv_true mean 0.00004, sd 0.00120, 0% of pushes helpful; only
+11/49 slates clear the `per_slate_metrics` variation threshold. Consistent
+with C-040/EXP-0012 — degenerate for a centred pile, no signal, not used for
+the verdict.
 
 ## What this means
 
-<FILL>
+**The prediction is supported.** The UNet's image-accuracy edge over the
+linear operator is real and in the expected direction (+3.6 points, same
+sign as all 14 of EXP-0021's cells), but its control-utility edge is not
+distinguishable from zero: +0.019 slate4 and +0.016 spearman are both inside
+the ~0.02 across-slate noise floor that this same design measures for either
+model individually. Put the other way: an MPC built on this UNet would not
+be expected to out-select an MPC built on the far cheaper linear operator, on
+this task, at this noise floor.
+
+This is exactly the reading EXP-0022 anticipated: its whole image-accuracy
+advantage is high-frequency detail (C-041/C-044), and EXP-0008/C-039 already
+established that high-frequency *noise* is what destroys control ranking
+while amplitude/blur/displacement cost it almost nothing. A model whose
+extra accuracy comes from getting fine detail right should not convert that
+into a ranking advantage if fine detail is not what ranking consumes — and
+here, when actually measured instead of inferred, it does not. **C-041/C-044
+should be restated as claims about sharp-target image-prediction quality, not
+about which model is "better" for this project's actual objective.**
+
+That both models land close to the oracle's ceiling on slate4 (0.950 and
+0.969 against 1.000) also matters: there is not much control-utility headroom
+left to fight over here, on this exact task (single push, goal=corner,
+n=20 cubes) — a harder task (goal=center once made non-degenerate, longer
+horizons, sparser piles) might reopen a gap that this design cannot see
+because neither model is far from ceiling.
 
 ## What would change the verdict
 
-<FILL>
+- **A harder control task with more headroom.** Both models score
+  0.95-0.97 slate4 here; a task where the linear operator's slate4 sits
+  further from the oracle (a longer horizon, a harder goal, more cubes) would
+  let a real UNet advantage show up if one exists, rather than being squeezed
+  against a ceiling both already nearly reach. Cost: reuses this same
+  pipeline against a different slate collection (e.g. n50 or a multi-push
+  same-state design), no new training needed for the linear side, ~15-20 min
+  GPU for a matched UNet retrain.
+- **Repeated seeds.** One UNet training seed, one linear fit (`imprecision`,
+  below) — a second seed of each would turn "inside the noise floor" from a
+  plausible read into a measured one, at the cost of ~16 more min GPU per
+  seed.
+- **A genuine settled-state check** for the rigid-cube path (currently
+  `unchecked`) would retire the `untested-dependency` downgrade this record
+  and EXP-0012 both carry.
 
 ## Threats
 
-- `provenance`: this record's rasteriser code path (registry/PileSweepData)
-  differs from EXP-0008/EXP-0012's (occupancy_foresight.load_transition_fields);
-  the pipeline-validation pilot found close agreement on the linear operator +
-  persistence (spearman 0.921 vs 0.925, slate4 0.950 vs 0.956), but it is a
-  different implementation, not a re-run of the same one. Internally, though,
-  every number in THIS record's headline comparison (linear vs UNet) goes
-  through the identical code path, so the UNet-vs-linear comparison itself is
-  not cross-path.
-- `indirectness`: still a proxy in one direction -- image `accuracy` is a
-  one-step pixel metric, and while `slate4`/`spearman` are the real control
-  quantities this record cares about, neither is a closed-loop MPC rollout;
-  a model that ranks single-step actions well is not guaranteed to control
-  well over a rollout (a caveat this whole register carries throughout, not
-  specific to this record).
+- `imprecision`: one UNet training seed, one linear fit — no repeated-seed
+  estimate of how much the +0.016/+0.019 control gap itself might move on a
+  different seed, only the across-slate sd of a single fit's predictions.
+  The across-slate sd (49 slates) is itself well-measured and closely matches
+  EXP-0012's independent n=50 measurement (0.020/0.026 here vs 0.017/0.021
+  there), which is reassuring but not a substitute for a seed sweep.
 - `untested-dependency`: `settled-state` is `unchecked` for the rigid-cube
   path (same debt EXP-0012 carries) -- the "identical start state" property
   the slates depend on is not independently velocity-checked at record time.
+- Considered and dismissed: `provenance` -- this record's headline comparison
+  (UNet vs linear) runs both models through the identical code path
+  (registry/PileSweepData) for both the image-accuracy split and the slate
+  evaluation, so nothing in the verdict crosses rasterisers. A secondary,
+  disclosed pipeline-validation pilot found this record's numbers close to
+  EXP-0012's OWN numbers computed on ITS different code path (spearman 0.921
+  vs 0.925, slate4 0.950 vs 0.956, persistence degenerate in both) — used
+  only as external validation that the new pipeline is not buggy, not as
+  part of the claim.
+- Considered and dismissed: `indirectness` -- `dv_true` is the realised dV of
+  an actually-executed push on both the fit data and the slate data, exactly
+  as EXP-0008/EXP-0012 use it, not a proxy standing in for control utility.
+  (A different, general caveat remains: single-step greedy ranking is not a
+  full closed-loop MPC rollout — noted but not scored as a downgrade domain,
+  per EXP-0012's identical call on the same question.)
 - Considered and dismissed: `selection` -- both goals (corner, center) were
   run and reported, and the model set (persistence, mean-delta, linear, UNet,
   oracle) was fixed before training, not chosen after seeing results.
