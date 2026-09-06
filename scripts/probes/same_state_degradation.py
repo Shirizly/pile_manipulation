@@ -72,6 +72,12 @@ def per_slate_metrics(dv_pred, dv_true, ep, min_slate=8):
         vals = np.array([s[k] for s in slates.values()])
         out[f"{k}_mean"] = float(np.nanmean(vals))
         out[f"{k}_sd"] = float(np.nanstd(vals))
+    # Keep the per-slate values. Two models scored on the SAME slates have
+    # highly correlated scores -- slates differ a lot in difficulty -- so the
+    # across-slate sd is the wrong floor for comparing them; the PAIRED
+    # difference is. EXP-0016 learned this the hard way: an unpaired floor was
+    # ~11x too large and left a real effect recorded as inconclusive.
+    out["per_slate"] = slates
     return out
 
 

@@ -169,7 +169,27 @@ def main():
         print(f"  {'oracle':26s}{m['n_slates']:6d}{m['spearman_mean']:11.3f}"
               f"{m['spearman_sd']:8.3f}{100 * m['sign_mean']:7.0f}%"
               f"{m['slate4_mean']:9.3f}{m['slate4_sd']:8.3f}")
-        results["control"][goal] = goal_out
+        # PAIRED comparison. The models are scored on the SAME slates, whose
+        # difficulty varies a lot, so the across-slate sd printed above is the
+        # wrong floor for a between-model difference -- it is dominated by
+        # slate difficulty that BOTH models share. EXP-0016 made exactly this
+        # correction for C-008 and the verdict changed.
+        import numpy as _np
+        base = goal_out.get("linear (ridge->identity)", {}).get("per_slate", {})
+        for name, m in goal_out.items():
+            ps = m.get("per_slate") or {}
+            common = sorted(set(ps) & set(base))
+            if name.startswith("linear") or len(common) < 5:
+                continue
+            d = _np.array([ps[k]["slate4"] - base[k]["slate4"] for k in common])
+            sem = d.std(ddof=1) / _np.sqrt(len(d))
+            print(f"  PAIRED vs linear: {name:22s} mean_diff={d.mean():+.4f} "
+                  f"paired_sd={d.std(ddof=1):.4f} sem={sem:.4f} "
+                  f"t={d.mean()/max(sem,1e-9):+.2f} n={len(d)} "
+                  f"wins={int((d>0).sum())}/{len(d)}")
+        results["control"][goal] = {k: {kk: vv for kk, vv in v.items()
+                                        if kk != "per_slate"}
+                                    for k, v in goal_out.items()}
 
     print("\npersistence's dv_pred is 0 for every candidate by construction: "
           "it cannot rank at all, and its 'spearman'/'slate4' numbers above "
