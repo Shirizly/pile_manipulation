@@ -1,0 +1,37 @@
+# EXP-0024: same-state candidate slates (Genesis/data/slates/n20_heap_5mm,
+# EXP-0012 -- 50 states x up to 32 candidate actions, verified identical start
+# states to 4.7e-10 m). Same rasterisation/physics-normalisation settings as
+# configs/dataset/genesis_cube_spectrum_n20.yaml (the training-fit config for
+# this same material/action configuration), so occupancy fields and UNet
+# input channels are built by the identical code path for train and eval.
+#
+# val_pct=0, test_pct=100 puts every file in the "test" split unconditionally
+# (registry/dataset_registry.py::_assign_split buckets 0-99; test_pct=100
+# means bucket < 100 always) -- there is no train/test split *within* the
+# slate data, it is held out in full, exactly as EXP-0012's own evaluation
+# script (scripts/probes/same_state_degradation.py) treats it.
+type: genesis
+
+paths:
+  - slates/n20_heap_5mm
+
+val_pct: 0
+test_pct: 99   # must be <100 (PileSweepData asserts val_pct+test_pct<100); with
+                # one physics-group per file this rounds to num_groups all "test"
+
+resolution_scale: 0.5
+
+min_push_length_m: 0.0199
+
+include_physics: true
+
+transforms:
+  - type: ensure_representation
+    representation: eulerian
+  - type: eulerian_aliases
+
+physics:
+  normalization:
+    friction: {min: 0.05, max: 0.50}
+    density: {min: 750.0, max: 5000.0}
+    box_friction: {min: 0.05, max: 0.50}

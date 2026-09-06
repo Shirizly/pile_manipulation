@@ -1,0 +1,45 @@
+# EXP-0024: cube_spectrum n=20 (heap spawn, 5mm cubes, density 1000,
+# friction 0.3, pile_aware perpendicular contact-aware pushes, FIXED 20mm
+# nominal push length). This is the exact material/action configuration the
+# same-state slates (Genesis/data/slates/n20_heap_5mm, EXP-0012) were
+# collected under, so a model trained on this dataset is in-distribution for
+# those slates -- unlike EXP-0021's granularity/{blind,contact}_n20 cells,
+# which use a different (~40mm nominal) push length.
+#
+# Built from configs/training/exp0021_unetfilm_contact_n20.yaml's dataset
+# block (a WORKING config, not the configs/ tree default) per EXP-0014's
+# finding that resolution_scale drifted in configs/dataset/genesis_cube.yaml
+# (1.0, stale) vs the value actually used in training (0.5). box vol here is
+# also 0.128 x 0.128 m (see cube_spectrum/n20/_0_config.yaml), so 0.5 ->
+# 64x64 matches EXP-0021/EXP-0012's convention exactly.
+type: genesis
+
+paths:
+  - cube_spectrum/n20
+
+val_pct: 10
+test_pct: 10
+
+resolution_scale: 0.5   # box 0.128 m -> 64x64 grid, matching EXP-0021/EXP-0012
+
+# Fixed-length (20mm nominal) contact-aware pushes: the blade sometimes meets
+# material early and stops short (measured: 95% of pushes land at
+# 19.9998-20.0098mm, but ~5.3% are shorter, down to ~1e-6m for a handful of
+# already-in-contact starts). Filter to near-full-length pushes only, so
+# every scored transition used a real ~20mm push and matches
+# scripts/probes/same_state_degradation.py's own 19.9mm convention for this
+# exact dataset (see EXP-0012).
+min_push_length_m: 0.0199
+
+include_physics: true
+
+transforms:
+  - type: ensure_representation
+    representation: eulerian
+  - type: eulerian_aliases
+
+physics:
+  normalization:
+    friction: {min: 0.05, max: 0.50}
+    density: {min: 750.0, max: 5000.0}
+    box_friction: {min: 0.05, max: 0.50}
