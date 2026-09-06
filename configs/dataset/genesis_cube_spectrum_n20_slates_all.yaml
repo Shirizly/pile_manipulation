@@ -1,0 +1,45 @@
+# EXP-0026: the same-state slates (Genesis/data/slates/n20_heap_5mm), ALL 50
+# files, loaded through the identical code path as
+# configs/dataset/genesis_cube_spectrum_n20_slates.yaml.
+#
+# Why this file exists. That config sets val_pct=0/test_pct=99 with the
+# comment "rounds to num_groups all test". It does not:
+# PileSweepData._assign_group_splits computes round(50 * 99/100) = 49 test
+# groups and puts the remaining group in "train", and its own overflow clamp
+# (test_count + val_count >= num_groups) would cap it at num_groups-1 in any
+# case. So the registry path CANNOT put every file in "test" -- one slate is
+# always withheld, whichever way test_pct is set. That is the real reason
+# EXP-0024 scored 49 slates, not the min_push_length_m filter its "Unrelated
+# findings" blamed (a direct length filter on the raw files keeps 1597 of
+# 1600 candidates, dropping only 3 individual short pushes, and no whole file).
+#
+# The slates are held out by construction -- a physically separate collection
+# run that no fit or training ever saw -- so which nominal split name they
+# carry is immaterial; val_pct=0/test_pct=0 with split="train" is simply the
+# only setting that yields all 50. Everything else matches the sibling config
+# exactly (resolution_scale, min_push_length_m, transforms, physics bounds),
+# so the two are interchangeable apart from the withheld slate.
+type: genesis
+
+paths:
+  - slates/n20_heap_5mm
+
+val_pct: 0
+test_pct: 0
+
+resolution_scale: 0.5
+
+min_push_length_m: 0.0199
+
+include_physics: true
+
+transforms:
+  - type: ensure_representation
+    representation: eulerian
+  - type: eulerian_aliases
+
+physics:
+  normalization:
+    friction: {min: 0.05, max: 0.50}
+    density: {min: 750.0, max: 5000.0}
+    box_friction: {min: 0.05, max: 0.50}
