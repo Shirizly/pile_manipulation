@@ -47,6 +47,7 @@ testable without a GPU (tests/test_action_sampling.py).
 
 from __future__ import annotations
 
+import math
 from typing import NamedTuple
 
 import torch
@@ -286,6 +287,46 @@ def constrain_push(starts_xy: torch.Tensor, stops_xy: torch.Tensor,
         d = torch.where(infeasible.unsqueeze(-1), direction * t_max, d)
 
     return ConstrainedPush(new_starts, new_starts + d, moved, infeasible)
+
+
+def duplicate_action_mask(starts_xy: torch.Tensor, headings: torch.Tensor,
+                          pos_tol: float, angle_tol: float) -> torch.Tensor:
+    """Flag every action that coincides with another in the same batch.
+
+    Used by multi-step same-state slate collection (see
+    ``Genesis/same_state_slate_collection.py``) to enforce that a slate's X
+    candidate action sequences never repeat the same (start, heading) at a
+    given step -- otherwise two "independent" candidates would in fact be one
+    push simulated twice.
+
+    ``headings`` is the actual travel direction (``atan2(dy, dx)`` of
+    stop-start), not the blade yaw: a perpendicular push can travel along
+    either ``+`` or ``-`` the blade normal for the same yaw, and those are
+    different actions. Compared circularly over the full ``2*pi`` range since
+    a travel direction has no restricted domain the way blade yaw does.
+
+    Parameters
+    ----------
+    starts_xy  : (n, 2) push start points, metres.
+    headings   : (n,) travel direction, radians, any range.
+    pos_tol    : two starts closer than this (metres) count as the same point.
+    angle_tol  : two headings closer than this (radians, circular) count as
+                 the same direction.
+
+    Returns
+    -------
+    (n,) bool -- True for every action that has at least one match elsewhere
+    in the batch. Both members of a colliding pair are flagged (not just the
+    later one), so a caller can resample both instead of arbitrarily keeping
+    whichever came first.
+    """
+    n = starts_xy.shape[0]
+    dpos = torch.cdist(starts_xy, starts_xy)
+    dh = headings.unsqueeze(0) - headings.unsqueeze(1)
+    dh = (dh + math.pi) % (2 * math.pi) - math.pi
+    close = (dpos < pos_tol) & (dh.abs() < angle_tol)
+    close.fill_diagonal_(False)
+    return close.any(dim=1)
 
 
 def relative_blade_angle(starts_xy: torch.Tensor, stops_xy: torch.Tensor,

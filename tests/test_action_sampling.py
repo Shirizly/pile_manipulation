@@ -11,7 +11,7 @@ import torch
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "Genesis"))
 
 from action_sampling import (  # noqa: E402
-    equalize_travel_distance, shared_batch_distance,
+    duplicate_action_mask, equalize_travel_distance, shared_batch_distance,
 )
 
 LOW = torch.tensor([-0.05, -0.05])
@@ -459,3 +459,31 @@ def test_pile_contact_start_can_be_far_outside_a_small_box():
     outside = (starts.abs() > 0.0235).any(dim=-1)
     assert outside.any(), (
         "fixture should reproduce the out-of-box condition the clamp exists for")
+
+
+# ---------------------------------------------------------------------------
+# duplicate_action_mask
+# ---------------------------------------------------------------------------
+
+
+def test_duplicate_action_mask_flags_a_close_pair():
+    starts = torch.tensor([[0.0, 0.0], [0.0002, 0.0001], [0.03, 0.03]])
+    headings = torch.tensor([0.1, 0.101, 0.1])
+    dup = duplicate_action_mask(starts, headings, pos_tol=0.001, angle_tol=0.05)
+    assert dup.tolist() == [True, True, False]
+
+
+def test_duplicate_action_mask_no_false_positives_when_all_distinct():
+    g = torch.Generator().manual_seed(3)
+    starts = torch.rand(64, 2, generator=g) * 0.1
+    headings = torch.rand(64, generator=g) * 2 * torch.pi
+    dup = duplicate_action_mask(starts, headings, pos_tol=1e-6, angle_tol=1e-6)
+    assert not dup.any()
+
+
+def test_duplicate_action_mask_wraps_the_heading_circle():
+    # +pi and -pi are the same direction.
+    starts = torch.zeros(2, 2)
+    headings = torch.tensor([torch.pi - 1e-4, -torch.pi + 1e-4])
+    dup = duplicate_action_mask(starts, headings, pos_tol=1e-3, angle_tol=1e-3)
+    assert dup.all()
