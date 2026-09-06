@@ -110,7 +110,11 @@ design:
     `metrics()` are the fitting path (repeat 2). Repeat 2 C-006:
     canonical_delta_profile. Repeat 2 C-004: `accuracy` (1 - rms(model)/
     rms(persistence)) plus pct-of-mean-delta, both from `fit_linear_foresight
-    .py::metrics`.
+    .py::metrics`. `slate4` NOT reported for either repeat: none of
+    `channels.py`, `deposit_profile.py` or `nonneg_vs_ridge.py` touch a
+    candidate-slate structure, so getting it would mean building one against
+    `Genesis/data/slates/` from scratch rather than reading it off an
+    existing probe -- not the "cheap if available" case the task allowed for.
 noise_floor: >
   Repeat 1: not independently re-measured this run; using EXP-0005's "~2
   points" prior (differences under that are not interpretable). Repeat 2
