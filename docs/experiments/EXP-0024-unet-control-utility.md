@@ -347,3 +347,64 @@ because neither model is far from ceiling.
   (`same_state_degradation.py --min-push-length` is not actually a flag there;
   the value 19.9 is hardcoded in its `load_transition_fields` call), not from
   a config convention.
+
+## Reviewer amendment, 2026-09-06: the significance test was unpaired
+
+**The measurements stand. The verdict does not.**
+
+This record compared the UNet−linear `slate4` difference (+0.019) against the
+**across-slate sd** (~0.020) and concluded the control advantage is
+"indistinguishable from zero". That is the wrong floor. Both models are scored
+on the **same 49 slates**, and slates differ enormously in difficulty — so the
+across-slate sd is dominated by variance the two models *share*, and it swamps
+a between-model difference that pairing removes.
+
+EXP-0016 made exactly this correction for C-008, where an unpaired floor was
+~11× too large and left a real effect recorded as inconclusive. `per_slate_metrics`
+discarded its per-slate values, which is why the paired test was not available;
+it now returns them.
+
+### Paired result, same data, same 49 slates
+
+| comparison | mean diff | paired sd | sem | t | slates won |
+|---|---|---|---|---|---|
+| UNet − linear | **+0.0185** | 0.0217 | 0.0031 | **+5.99** | **42 / 49** |
+| oracle − linear | +0.0497 | 0.0203 | 0.0029 | +17.13 | 49 / 49 |
+| mean-delta − linear | −0.1547 | 0.0567 | 0.0081 | −19.09 | 0 / 49 |
+
+**The UNet's control advantage is real**: t ≈ 6, winning 42 of 49 slates.
+
+### But it is small, and the reason matters more than the significance
+
+| model | `accuracy` | `slate4` |
+|---|---|---|
+| persistence | 0.000 | −0.002 (cannot rank) |
+| mean-delta | 0.343 | 0.796 |
+| **linear (ridge→I)** | 0.533 | **0.950** |
+| **UNet** | **0.569** | **0.969** |
+| oracle | 1.000 | 1.000 |
+
+**The linear operator already captures 95.0% of the oracle's advantage over a
+random pick.** There are only 5 points of headroom, and the UNet takes about a
+third of them (+0.0185 of a possible +0.0497).
+
+So the honest statement is neither "the advantage does not survive" (this
+record's original verdict, from the wrong floor) nor "the UNet is the better
+model for MPC" (which the +3.6-point accuracy gap alone would suggest). It is:
+
+> On this domain the UNet is measurably better at action selection, and it
+> hardly matters, because a ridge operator is already near the ceiling. The
+> image-accuracy gap (+0.036) is roughly twice the control gap (+0.019) — which
+> is what EXP-0022 predicts, since much of the UNet's accuracy advantage sits
+> in a frequency band control does not consume.
+
+### Consequences
+
+- Verdict changes from `refuted` to `supported` for the narrow claim that the
+  advantage survives, with the magnitude stated.
+- C-045 restated: the advantage is real but small against a near-saturated
+  ceiling. **The interesting quantity is the 5-point oracle gap, not the model
+  comparison** — both model classes are close to it.
+- `center` is confirmed degenerate again (11 slates survive the filter,
+  `dv_true` sd 0.0012, 0% helpful pushes, oracle `slate4` only 0.149).
+  Consistent with C-040; do not report it.
