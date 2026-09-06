@@ -262,6 +262,38 @@ Genesis/
                         tray the START is moved, never the push length —
                         shortening would silently drop a transition out of
                         its length bin.
+                        duplicate_action_mask flags any action that coincides
+                        (within a position and circular-heading tolerance)
+                        with another in the same batch — used by
+                        same_state_slate_collection.py to enforce that a
+                        slate's X candidate sequences never repeat the same
+                        (start, heading) at a step.
+  same_state_slate_collection.py  same-state candidate slates: settle ONE
+                        pile, broadcast it IDENTICAL to every env via
+                        StateLibrary.apply_per_env (same index repeated), let
+                        each env draw its own action, execute, record — so
+                        action-ranking results are not confounded by
+                        different envs starting from different piles (see the
+                        module docstring for the EXP-0008 motivation). Each
+                        state is one on-disk batch (`_{k}_data.pt`); a
+                        manifest.json maps batch index -> state-library
+                        index. --n-steps > 1 collects independent multi-push
+                        SEQUENCES (one per env) from the same broadcast start,
+                        calling collect_data_samples(n_samples=1, ...) once
+                        per step so each step is still its own batch file —
+                        the manifest additionally records slate_idx/step_idx/
+                        env_count per batch so a sequence can be reassembled.
+                        Multi-step collection uses placement_aware=True (NOT
+                        pile_aware=True: pile_aware's action-sampling branch
+                        returns before placement_aware's ever runs, so they
+                        cannot compose — passing both forces pile_aware off
+                        with a logged warning) plus perpendicular_pushes and a
+                        fixed push_length, and additionally resamples (before
+                        simulating, never truncating) any action that is
+                        wall-clipped or a within-slate duplicate of another
+                        env's (start, heading) — see
+                        action_sampling.duplicate_action_mask and
+                        _draw_validated_actions.
   transition_buffer.py   TransitionBuffer — accumulates and saves the
                         before/after/action transitions push_and_record
                         records, in the same on-disk format
