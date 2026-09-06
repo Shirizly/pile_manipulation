@@ -156,6 +156,50 @@ subject of C-030/C-035/C-044.
   EXP-0012 measured the cross-state confound as inflating noise-related ranking
   damage about two-fold.
 
+**`slate4` draws its 4 candidates WITH replacement.** `rank_metrics` builds
+slates with `torch.randint`, so a "slate of 4" is 4 draws from the candidate
+pool and holds ~3.44 distinct actions on average; `slate16` holds ~13. Measured
+cost of the difference (EXP-0026, same 49 slates, same predictions): linear
+0.9503 with replacement vs 0.9583 without, UNet 0.9688 vs 0.9743, mean-delta
+0.7956 vs 0.8063 — every `slate4` in this register is **0.5–1.1 points low**
+relative to a true 4-distinct-candidate slate. No verdict in the register turns
+on that, but a `slate4` and a `slateK` value must not be set side by side
+without saying which sampler produced them.
+
+## `slateK`, `regret_dv`, `pick_pctile` — selection under pressure
+
+From `scripts/probes/exp0026_kcurve.py`. The same candidate-slate idea as
+`slate4`, swept over the slate size **K**, with subsets drawn **without
+replacement** (`torch.randperm`) so K is a count of distinct candidates. At
+`K = n_slate` there is exactly one subset — the deterministic
+top-1-of-everything test.
+
+```
+per draw:  chosen = dv_true[argmin_j dv_pred_j]     over the K sampled candidates
+           oracle = min_j dv_true_j
+           rand   = mean_j dv_true_j
+slateK      = mean over draws of (rand − chosen) / (rand − oracle)   [bounded, ↑ better]
+regret_dv   = mean over draws of (chosen − oracle)                   [Lyapunov units, ↓ better]
+pick_pctile = mean over draws of #{j : dv_true_j < chosen} / K       [fraction, ↓ better]
+```
+
+`slateK` is a **mean of per-draw ratios**, matching `rank_metrics`' own
+convention, so `slateK` at K=4 is directly comparable with a `slate4` from a
+without-replacement sampler.
+
+**Always report `regret_dv` beside `slateK`.** `slateK`'s denominator
+`(rand − oracle)` grows with K — the best of 31 candidates beats the average by
+more than the best of 4 does — so a flat `slateK` curve does **not** mean the
+selection problem is unchanged by K. Measured (EXP-0026, linear operator,
+n=50 slates): `slateK` 0.958 → 0.958 from K=4 to K=31 while `regret_dv` grows
+0.0012 → 0.0032, a 2.7× rise in the value actually left on the table. Both
+statements are true and neither alone is the answer.
+
+`pick_pctile` is the scale-free companion: what fraction of the offered
+candidates were better than the one chosen (0 = picked the best). It is the
+metric to quote when K itself varies, since it does not depend on the spread of
+`dv_true` at all.
+
 ## `FSS(r)` and `FSS_useful`
 
 Fractions Skill Score at neighbourhood radius `r`, from

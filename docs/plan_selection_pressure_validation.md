@@ -115,7 +115,24 @@ candidates per slate (already verified: 47 slates at 32, 3 at 31).
 unchanged — which is a real possibility and is exactly why this runs first, for
 free, before any sim time is spent.
 
-**Known discrepancy to resolve inside this run (5 min).** A direct length filter
+**OUTCOME, 2026-09-06 — [EXP-0026](experiments/EXP-0026-selection-pressure-curve.md),
+prediction REFUTED.** Linear `slateK` 0.958 at K=4 and 0.958 at K=31 (never
+below 0.94); the paired UNet−linear gap is flat at +0.0164 → +0.0177, below
+`gap(4) + 1 sem`. Top-1-of-31 is no harder, relatively, than top-1-of-4, so
+weakness §1.1 is closed on this domain — while `regret_dv` grows 2.7×, so the
+*absolute* value left on the table does scale with K even though the captured
+fraction does not. The degradation arms give the mechanism and are the finding
+worth carrying forward (now C-046): **selection pressure amplifies only errors
+that are independent per candidate.** Systematic arms are K-invariant (blur
+s=1.0 0.951→0.960), hf-noise is not (m=1.0 0.878→0.802, excess regret ×4.7).
+The Gaussian-copula extrapolation to K=10²–10³ was fitted and **failed
+validation** on the measured range, in level and in direction, so the
+"hundreds to thousands" question is genuinely open and EXP-B is not optional.
+
+**Known discrepancy to resolve inside this run (5 min).** (Resolved: it was
+neither the length filter nor a bad file — `PileSweepData._assign_group_splits`
+cannot put every group in `test` for any `test_pct`, so one slate was always
+withheld. New config `genesis_cube_spectrum_n20_slates_all.yaml` loads all 50.) A direct length filter
 on the raw slate files gives 50 usable slates (47×32 + 3×31 = 1597
 transitions); EXP-0024's registry path reported 49 usable and dropped one file
 entirely. Two code paths disagreeing about which candidates exist is exactly a
@@ -293,7 +310,15 @@ EXP-B  (overnight sim) ───────┴─→ EXP-D, EXP-E
 
 1. **EXP-A + EXP-A2 + EXP-F first**, because they are cheap and EXP-A alone can
    already refute or confirm the central "K=4 was too easy" objection on data in
-   hand. If EXP-A's curve is flat, EXP-B/C shrink to a confirmation run.
+   hand. ~~If EXP-A's curve is flat, EXP-B/C shrink to a confirmation run.~~
+   **EXP-A ran and its curve is flat (EXP-0026), and EXP-B/C do NOT shrink** —
+   for a reason EXP-A also supplied. The K-axis is closed only for candidates
+   that are (a) sparse sampler draws and (b) not chosen by the model itself.
+   EXP-0026 shows the one error type selection pressure *does* punish is the
+   independent-per-candidate kind, which is exactly what a dense candidate set
+   (EXP-B) and an optimizer searching for the model's own optimum (EXP-C) put
+   under load. The passive winner's curse is now measured; the active one is
+   not.
 2. **EXP-B overnight**, gated on its own `n_envs` pilot and on the
    `settled-state` check.
 3. **EXP-C** is the decision point for the whole model-selection question.
