@@ -113,11 +113,32 @@ should pay — and it is untested.
 
 ## 6. Traps that cost real time here
 
-1. **Unpaired noise floors hid a real effect twice** (C-008 in
-   [EXP-0016](experiments/EXP-0016-contact-switching-loro-floor.md), C-045 in
-   EXP-0024) — both times the correction flipped the verdict. Models scored on
-   shared slates/folds **must** be compared paired. `imprecision` is on 16 of 20
-   records; this is the register's dominant weakness.
+1. **A wrong noise floor produced a false negative twice**, and both
+   corrections flipped a verdict. They were **two different errors** — worth
+   separating, because they have different fixes:
+
+   - **A borrowed floor** (C-008, [EXP-0015](experiments/EXP-0015-contact-switching-fixed-grid.md)
+     → [EXP-0016](experiments/EXP-0016-contact-switching-loro-floor.md)). The
+     effect (+0.0059) was compared against a floor of 0.030 taken from a
+     *different design*, because none had been measured for this one. The
+     measured floor was sd 0.0027 / sem 0.00096 over 8 LORO folds — the borrowed
+     one was **11× too large against the sd, 31× against the sem**. t = 6.2,
+     8/8 folds positive. *Fix: never import a floor you did not measure on this
+     design.*
+   - **An sd used where the sem was needed** (C-045, EXP-0024 + amendment). The
+     effect (+0.0185) was compared against the **across-slate sd** (~0.020) —
+     the spread of *individual slates* — instead of the **sem of the mean
+     difference** (0.0031). That inflated the floor **6.5×**. Note pairing was
+     *not* what rescued it: computed unpaired but with a correct sem the t is
+     still 4.58. *Fix: compare a mean to a sem, never to an sd, and report
+     `mean/sem` plus the win-rate (42/49, 8/8) so the error is visible.*
+
+   Both share one shape: **a wrong yardstick makes a real effect look like
+   nothing**, and the resulting "no effect" reads as the cautious call, so
+   nobody re-examines it. Pairing is still worth doing whenever units are shared
+   (it cost nothing and gained 23% precision in the second case) — it is just
+   not the whole fix. `imprecision` is on 16 of 20 records; this is the
+   register's dominant weakness.
 2. **`accuracy` cannot be compared across preprocessing.** Its denominator is
    the size of the actual change, which shrinks under blur. See METRICS.md.
 3. **Bounded metrics saturate**, and a *difference* of two of them trends toward
