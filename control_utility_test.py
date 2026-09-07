@@ -41,12 +41,40 @@ from loro_foresight import gaussian_blur
 
 
 def lyapunov_weights(grid_res, goal, device):
-    """Distance transform `d` for a target set, normalised to [0, 1].
+    """Weight field `d` (or `w`) for a target set, normalised to [0, 1].
 
-    `goal` is one of:
+    `goal` is one of the three original keys, byte-identical to before:
       center  -- a centred square covering a quarter of the tray area
       corner  -- a square in one corner (their non-convex-ish harder case)
       stripe  -- a central band, so the cost only rewards one axis
+
+    plus the functional-sharpness family added for EXP-0024_v2/EXP-0026_v2
+    (see docs/experiments/METRICS.md, "weight-field functional family"),
+    which vary the FUNCTIONAL FORM (distance transform vs indicator, and a
+    clip radius in between) at a FIXED target, and one control that varies
+    target SIZE without sharpening the functional:
+
+      distclip-corner-r{2,4,8} -- distance transform to the corner
+          half-plane (same mask as `corner`), clipped and renormalised at
+          radius r pixels: min(dist_px, r) / r. r large -> smooth (like
+          `corner`); r -> 0 -> an indicator. A tolerance knob at FIXED target.
+      ind-corner    -- indicator (1 outside, 0 inside) of the corner
+          half-plane -- the r -> 0 limit of distclip-corner-r*.
+      ind-square8   -- indicator of an 8x8 px square (side = H // 8, i.e. an
+          "eighth-side square"), offset one side-length in from the corner
+          (rows/cols [H//8 : 2*H//8]) -- off-centre so a centred pile does
+          not hit the C-040 degeneracy, and clear of the array boundary so
+          the distance-transform sibling below is not itself boundary-cropped
+          (measured: a corner-flush placement understates a small target's
+          own spectral concentration, since most of the grid then sits on
+          one side of it -- placement matters for a distance transform's
+          actual values, unlike for an indicator's, whose |FFT| a discrete
+          transform's implicit periodicity makes position-invariant). The
+          SHARP form.
+      dist-square8  -- distance transform to the SAME 8x8 px square. Isolates
+          target SIZE from functional sharpness: shrinking a distance
+          transform's target does not sharpen its spectrum (measured), so
+          this is the control that shows size alone is not the lever.
     """
     from scipy.ndimage import distance_transform_edt
 
@@ -59,9 +87,26 @@ def lyapunov_weights(grid_res, goal, device):
         mask[: H // 2, : W // 2] = True
     elif goal == "stripe":
         mask[H // 2 - H // 8: H // 2 + H // 8, :] = True
+    elif goal in ("ind-corner",) or goal.startswith("distclip-corner-r"):
+        mask[: H // 2, : W // 2] = True
+    elif goal in ("ind-square8", "dist-square8"):
+        side_h, side_w = max(1, H // 8), max(1, W // 8)
+        mask[side_h:2 * side_h, side_w:2 * side_w] = True
     else:
         raise ValueError(goal)
+
+    if goal.startswith("ind-"):
+        # Indicator: 1 outside the target, 0 inside -- the r -> 0 limit of a
+        # clipped distance transform, and the sharp form for the target-size
+        # control (`ind-square8`).
+        return torch.from_numpy((~mask).astype(np.float32)).to(device)
+
     d = distance_transform_edt(~mask).astype(np.float32)
+    if goal.startswith("distclip-corner-r"):
+        r = float(goal.rsplit("r", 1)[1])
+        d = np.minimum(d, r) / r
+        return torch.from_numpy(d).to(device)
+
     d /= max(float(d.max()), 1e-6)
     return torch.from_numpy(d).to(device)
 

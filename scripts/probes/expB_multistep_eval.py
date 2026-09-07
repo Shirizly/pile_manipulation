@@ -89,6 +89,11 @@ def main():
     ap.add_argument("--tag", required=True)
     ap.add_argument("--degradations", action="store_true")
     ap.add_argument("--out-prefix", required=True)
+    ap.add_argument("--goals", default="corner,center",
+                     help="comma-separated lyapunov_weights goal keys, same "
+                          "convention as exp0026_selection_pressure.py's "
+                          "--goals (default preserves the original two goals "
+                          "byte-identically).")
     args = ap.parse_args()
 
     prov = git_provenance()
@@ -196,7 +201,7 @@ def main():
              "config": {"train_cfg": args.train_cfg, "eval_cfg": args.eval_cfg,
                         "run_dir": args.run_dir, "R": R, "crop": CR, "ridge": RIDGE},
              "dv": {}}
-    for goal in ("corner", "center"):
+    for goal in [g.strip() for g in args.goals.split(",") if g.strip()]:
         dw = lyapunov_weights((H, W), goal, "cpu")
         v0 = lyapunov(occ0_s0, dw)
         dv_true = lyapunov(occ1_s0, dw) - v0

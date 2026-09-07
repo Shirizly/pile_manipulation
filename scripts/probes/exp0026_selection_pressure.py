@@ -127,6 +127,14 @@ def main():
                          "the EXP-0025 probe; only the code path that produces "
                          "the fields differs (registry/PileSweepData here).")
     ap.add_argument("--out", default="runs_exp0026/dv_cache.pt")
+    ap.add_argument("--goals", default="corner,center",
+                     help="comma-separated lyapunov_weights goal keys to "
+                          "cache dV for. Default is EXP-0024/EXP-0026's "
+                          "original two goals, unchanged. Pass additional "
+                          "keys (e.g. ind-square8, distclip-corner-r4) to "
+                          "extend the cache without touching the original "
+                          "corner/center numbers -- lyapunov_weights keeps "
+                          "those two byte-identical to before.")
     args = ap.parse_args()
 
     prov = git_provenance()
@@ -183,7 +191,7 @@ def main():
            "config": {"dataset_cfg": args.dataset_cfg, "slate_cfg": args.slate_cfg,
                       "run_dir": args.run_dir, "R": R, "crop": CR, "ridge": RIDGE},
            "dv": {}}
-    for goal in ("corner", "center"):
+    for goal in [g.strip() for g in args.goals.split(",") if g.strip()]:
         dw = lyapunov_weights((H, W), goal, "cpu")
         v0 = lyapunov(occ0, dw)
         dv_true = lyapunov(occ1, dw) - v0
