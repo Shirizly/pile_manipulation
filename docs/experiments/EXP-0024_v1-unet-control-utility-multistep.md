@@ -170,10 +170,10 @@ result: >
   sem 0.0032, t=5.47, 19/20), +0.0097 (L40, sem 0.0010, t=10.23, 19/20) --
   real, clears sem, in all three. At K=128: -0.0235 (L10, sem 0.0462, t=-0.51,
   2/20, 15 ties), +0.0151 (L20, sem 0.0203, t=0.75, 5/20, 9 ties), +0.0134
-  (L40, sem 0.0069, t=1.93, 8/20, 10 ties) -- the gap survives to K=128 at
-  L20/L40 (does not clear its own sem there, same falling-t-from-ties pattern
-  EXP-0026 already found) but INVERTS in point estimate at L10 (still inside
-  noise, 15/20 ties). worstK at K=4: linear 0.6209/1.0299/0.6150, UNet
+  (L40, sem 0.0069, t=1.93, 8/20, 10 ties) -- the gap does NOT resolve at
+  K>=32 in ANY cell (see the reviewer amendment: "survives to K=128" was the
+  wrong word for t=0.75, and is withdrawn), and it inverts in point estimate
+  at L10, also inside noise (15/20 ties). worstK at K=4: linear 0.6209/1.0299/0.6150, UNet
   0.6074/0.7406/0.4847 (L10/L20/L40) -- the average-vs-worst-case separation
   EXP-0026 measured as ~22x on old slates reproduces in ORDER OF MAGNITUDE at
   L20 (~17x) and L40 (~13x) but NOT at L10 (~0.2x -- worst case is LESS
@@ -464,3 +464,63 @@ for every future record using this pipeline at an unfamiliar push length.
   concrete evidence for the "serialise GPU and CPU-heavy analysis" rule
   already in `.claude/skills/experiment-log/SKILL.md`, not just a
   theoretical risk.
+
+## Reviewer amendment, 2026-09-07: the large-K comparison is underpowered, and one word overclaimed it
+
+**The measurements stand. One sentence of their reading does not.** The result
+above said the UNet-linear gap "survives to K=128 at L20/L40" while noting in
+the same breath that it does not clear its own sem there. Those cannot both be
+reported as a finding: this register's own rule is that an effect inside its
+noise floor is `inconclusive`, never supported. The phrase is withdrawn.
+
+### What the paired test actually does across K
+
+| K | L20 mean (sem, t, ties) | L40 mean (sem, t, ties) |
+|---|---|---|
+| 4 | +0.0173 (0.0032, **5.47**, 0) | +0.0097 (0.0010, **10.23**, 0) |
+| 16 | +0.0073 (0.0033, **2.19**, 0) | +0.0110 (0.0013, **8.33**, 0) |
+| 32 | +0.0059 (0.0058, 1.02, 0) | +0.0122 (0.0025, **4.87**, 0) |
+| 64 | +0.0090 (0.0101, 0.89, 0) | +0.0135 (0.0042, **3.22**, 0) |
+| 128 | +0.0151 (0.0203, 0.75, 9) | +0.0134 (0.0069, 1.93, 10) |
+
+So the honest scope is: **resolved through K=16 in both clean cells (and
+through K=64 at L40), unresolved at K=128 anywhere.**
+
+### Why, and whose fault it is
+
+Not the models — the design. At `K = n_slate` the metric is deterministic per
+slate, and the two models frequently pick the *same* action: 9 of 20 slates at
+L20, 10 of 20 at L40, 15 of 20 at L10. Effective n is therefore 5-11 slates,
+against a ~0.015 effect. EXP-0026 reached t=2.58 at K=31 because it had **50**
+eval slates; this design has **20**, because the 30/20 train/eval split was
+chosen to give each cell its own in-distribution training set. That was the
+right call for training validity and it cost the large-K comparison its power.
+Both things are true and the record should say so.
+
+### What is NOT affected by this
+
+The single-model capture at K=128 — linear **0.967** (L20), **0.979** (L40) —
+is a mean over 20 slates of a well-measured per-slate quantity, not a
+difference between two nearly identical orderings, and its bootstrap CI is
+narrow. **The "a ridge operator sits near the oracle ceiling" conclusion
+therefore replicates at K=128 on independent, in-distribution data**, which is
+this record's load-bearing result and does not depend on the model gap
+resolving. Likewise C-046 in EXP-0026_v1 rests on within-model K-dependence
+(mean-delta 0.55 -> 0.29), not on a between-model difference.
+
+### The one cell where the gap grows with selection pressure
+
+At L40 the gap rises monotonically with K — +0.0080 (K=2) to +0.0135 (K=64),
+significant throughout (t=7.81 down to 3.22). That is the *only* place in this
+project where EXP-A's original hypothesis (a costlier model's edge widens as
+selection pressure rises) is supported, and it should be stated rather than
+buried under the K=128 non-result. It is one cell, one seed, 20 slates, so it
+is a lead and not a claim.
+
+### What would resolve it
+
+A 2-fold cross-fit per cell (train on slates A / score B, then swap) recovers
+all 50 slates as eval and roughly doubles the informative-slate count at large
+K, for 3 additional UNet trainings (~39 min each at the measured 21.7 s/epoch,
+so ~2 h GPU). That is the cheapest thing that would turn the K>=32 comparison
+from unresolved into measured.
