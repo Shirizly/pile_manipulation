@@ -200,6 +200,69 @@ candidates were better than the one chosen (0 = picked the best). It is the
 metric to quote when K itself varies, since it does not depend on the spread of
 `dv_true` at all.
 
+## `slateK_exact`, `worstK`, `rank_profile` — the ordering, not a sample of it
+
+From `scripts/probes/exp0026_kcurve.py` (closed form) — **prefer these over the
+sampled `slateK` above.** Sampling subsets is a Monte-Carlo estimate of a
+quantity that has an exact expression, because within a fixed slate the model
+picks its rank-`r` candidate exactly when `r` is drawn and every better-ranked
+candidate is not:
+
+```
+w_r(K) = C(n-r, K-1) / C(n, K)            weight on the model's rank r
+E_chosen(K)  = sum_r  t_(r) * w_r(K)      t_(r) = true dV at MODEL rank r
+E_oracle(K)  = sum_r  t_[r] * w_r(K)      t_[r] = true dV sorted ascending
+                                           (= E[min over a random K-subset])
+slateK_exact = (mean(t) - E_chosen(K)) / (mean(t) - E_oracle(K))    per slate
+```
+
+Average the per-slate values across slates (not a pooled ratio of sums) so the
+model comparison stays pairable. Two consequences of the closed form worth
+knowing before reading any curve:
+
+- **The whole K-curve is a family of linear functionals of the model's
+  ordering.** Nothing but the ordering and the true values enters, so K is only
+  a knob on how sharply weight concentrates at the top. At n=32: K=4 puts
+  0.125 on rank 1 and still 0.056 on rank 8; K=31 puts 0.969 on rank 1.
+- **It is not the same estimand as the sampled `slateK`**, which is a mean of
+  per-draw ratios with a *subset-specific* denominator and therefore weights
+  every pool equally regardless of how much was at stake in it. Measured on the
+  same 50 slates (EXP-0026 data, linear operator): exact 0.977 vs sampled 0.958
+  at K=4, converging to 0.958 vs 0.958 at K=31. Quote which one you used.
+
+```
+worstK = max over model-rank r with (n - r) >= K-1  of
+             [ t_(r) - min_{r' > r} t_(r') ]        / (mean(t) - min(t))
+```
+
+**`worstK` is the adversarial pool**: the largest value-inversion an adversary
+can exploit by offering K candidates and letting the model pick its best-ranked.
+`0` = never worse than the best on offer; `1` = as bad as an average random
+pick. Report it beside `slateK_exact`, because **the average-case number is
+where model classes look equivalent and the worst case is where they do not**:
+measured (EXP-0026 data, K=4), linear 0.471 vs UNet 0.316 — a paired difference
+of +0.155 (sem 0.031, t=5.07, 42/50 slates) against an average-case difference
+of 0.007, i.e. **~22x more separation**. It is also nearly K-independent
+(0.483 → 0.334 from K=2 to K=16), since it is a property of one inversion in the
+ordering rather than of the pool size. A real MPC pool is neither uniform nor
+adversarial — CEM concentrates where the model says value is high — so the
+operating point sits between the two columns.
+
+```
+rank_profile[r] = mean over slates of  #{j : t_j < t_(r)} / n
+```
+
+The mean true percentile of the candidate the model ranked `r`-th
+(`0` = truly best, `1` = truly worst). This is the diagnostic the summary
+metrics cannot give: a model can rank the best action first and a catastrophic
+one second, which destroys it in any pool missing the best, and every
+average-over-pools metric dilutes that. Report the profile at
+r = 1, 2, 3, 4, 8, 16, n and the fraction of slates whose rank-2/3/4 pick falls
+in the true bottom quartile. Measured on EXP-0026's data, no model showed this
+pathology (linear 0.035 → 0.058 → 0.076 → 0.095 across ranks 1-4; 0% of slates
+bottom-quartile at ranks 2-4), which is *why* its K-curve is flat — so a flat
+curve is only trustworthy alongside this check.
+
 ## `FSS(r)` and `FSS_useful`
 
 Fractions Skill Score at neighbourhood radius `r`, from
