@@ -1,0 +1,47 @@
+# Baselines overnight run (2026-09-08, ORCHESTRATION_LOG.md scope decision):
+# POOLED training split, both push lengths -- n20_L20mm_train (30 slates x 3
+# steps) AND n20_L40mm_train (30 slates x 3 steps), 180 batches total. Same
+# shape as genesis_slates_multistep_n20_L20mm_train.yaml (see that file for
+# why val_pct/test_pct=0 and why min_push_length_m is a guard, not a filter,
+# under the placement-aware/no-early-stop collection). L10mm is excluded
+# (suspect per EXP-0028/EXP-0029); n50_L20mm is excluded (incomplete).
+#
+# IMPORTANT for every model trained on this config: push length is NOT
+# constant across the pool (20mm vs 40mm commanded, ~0% short pushes at
+# either length per scripts/probes/verify_slate_cell.py). A model that
+# ignores the action and only conditions on occ0 will be fitting a mixture
+# and will underperform both per-cell UNet-FiLM numbers in
+# ORCHESTRATION_LOG.md's reference table -- the action (or the raw
+# p_start/p_stop/angle triple, for particle-space models) MUST be consumed,
+# not just used to pick a push location.
+#
+# min_push_length_m is set to the L20mm cell's own guard (0.0198 m, just
+# under the 20mm nominal length) rather than the L40mm cell's 0.0396 m --
+# using the L40mm threshold here would silently drop every L20mm transition
+# from the pool. This is a GUARD against short/failed pushes, not a
+# cell-selection filter: both cells are included via `paths` below.
+type: genesis
+
+paths:
+  - slates_multistep/n20_L20mm_train
+  - slates_multistep/n20_L40mm_train
+
+val_pct: 0
+test_pct: 0
+
+resolution_scale: 0.5   # box 0.128 m -> 64x64, matching EXP-0024/EXP-0026/EXP-B
+
+min_push_length_m: 0.0198   # lowered from the L40mm cell's 0.0396 m to admit 20mm pushes
+
+include_physics: true
+
+transforms:
+  - type: ensure_representation
+    representation: eulerian
+  - type: eulerian_aliases
+
+physics:
+  normalization:
+    friction: {min: 0.05, max: 0.50}
+    density: {min: 750.0, max: 5000.0}
+    box_friction: {min: 0.05, max: 0.50}
