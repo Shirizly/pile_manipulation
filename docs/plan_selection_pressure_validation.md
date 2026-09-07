@@ -178,6 +178,95 @@ the `settled-state` residual-velocity check for the rigid-cube path. It is
 new data is being collected retires an `untested-dependency` from the entire
 programme for maybe 30 minutes of work.
 
+#### EXP-B collection status, 2026-09-07 — 3 of 4 planned cells done
+
+Collected under `Genesis/data/slates_multistep/` (data is untracked; the driver
+is `Genesis/same_state_slate_collection.py`, extended for multi-step in
+`4dd9a673`). Every cell is 50 states x 128 candidate ACTION SEQUENCES x 3 steps,
+placement-aware starts, perpendicular, constant commanded push length, unique
+actions, wall-clip rejection at the sampling stage:
+
+| cell | slates | envs | transitions | wall clock | verified |
+|---|---|---|---|---|---|
+| `n20_L10mm` | 50 | 128 | 19,200 | ~48 min | yes |
+| `n20_L20mm` | 50 | 128 | 19,200 | ~71 min | yes |
+| `n20_L40mm` | 50 | 128 | 19,200 | ~100 min | yes |
+| `n50_L20mm` | **6 of 20** | 64 | 1,152 | ~50 min (interrupted) | yes, salvaged |
+
+Verification for all four (`scripts/probes/verify_slate_cell.py <cell> <L>`):
+same-state spread across envs at step 0 between 0.0 and 4.66e-10 m — matching
+EXP-0012's own independently measured 4.7e-10, i.e. float32 state-restore
+precision; **0** duplicate (start, heading) pairs at 1 mm / 5 deg; realized push
+length constant to ~1e-5 m with **0%** short pushes; 0 failed rows; 0 unresolved
+resampling failures.
+
+**What remains:** `n50_L20mm` slates 6-20 (the user approved 20 states, one
+length, as a reduced-scope overnight cell), and the n=10 arm, which was never
+piloted.
+
+**How to resume — read this before relaunching.**
+
+```
+setsid nohup python scripts/run_probe.py --tag n50_L20mm_b --threads 4 -- \
+  python -m Genesis.same_state_slate_collection \
+  --n-cubes 50 --n-envs 64 --n-states 14 --n-steps 3 \
+  --placement-aware --no-pile-aware --push-length 0.020 \
+  --seed 1 --output-root data/slates_multistep --tag n50_L20mm_b \
+  > /dev/null 2>&1 < /dev/null & disown
+```
+
+Four things that command encodes, each of which is a trap if ignored:
+
+1. **A new `--tag`, not the existing one.** The driver's batch counter is
+   `files_in_dir / 3`, so appending into `n50_L20mm/` would continue the
+   numbering and break the `batch_idx == slate_idx * n_steps + step_idx`
+   invariant that grouping depends on. Collect into a sibling cell and treat the
+   two as one dataset at analysis time.
+2. **A different `--seed`.** The state library is settled from `--seed`, so
+   re-running with `--seed 0` regenerates *the same* initial states — the 6
+   already collected would be duplicated rather than extended.
+3. **`setsid nohup ... & disown`, not a bare `run_probe.py`.** `scripts/run_probe.py`
+   does not detach its child from the launching shell's process group, so a long
+   collection dies when that shell exits. This actually happened here and cost
+   ~50 min of GPU on a restarted `n20_L20mm`. **Recommended fix: `setsid` (or
+   equivalent) inside `run_probe.py`**, which is exactly what it exists to
+   provide.
+4. **`--placement-aware --no-pile-aware`.** They are mutually exclusive in code:
+   `generate_action_samples` returns on the `pile_aware` branch before
+   `placement_aware` ever runs, so passing both silently gives you pile-aware
+   sampling.
+
+**If a run is interrupted:** `manifest.json` is written only at the very end, and
+the on-disk schema carries no step index, so a killed cell leaves batch files no
+loader can group. `scripts/probes/rebuild_slate_manifest.py <cell> --apply`
+reconstructs it from the verified deterministic mapping, drops any trailing
+incomplete slate, and stamps `rebuilt: true` so a salvaged cell is
+distinguishable from a clean one. That is how `n50_L20mm` above became usable.
+
+**Cost model, measured on this GPU (RTX 4070 Laptop, heap spawn, placement-aware):**
+cost is roughly **linear in push length** at fixed object count (48 / 71 / 100
+min for 10 / 20 / 40 mm at n=20, 128 envs) but **~20x per transition from n=20 to
+n=50** (>4.2 s/env-transition at n=50/64 envs against 0.107 s at n=20/128).
+`Genesis/configs/measured/throughput_optimal.yaml` predicts 0.182 s/transition
+at n=50 and is **not applicable** — it was measured on scattered piles with
+pile-aware sampling. The wall is the solver, not the sampler
+(`Genesis/placement_sampling.py` scales with env and yaw count, only weakly with
+particle count), and it sits on a cliff this repo already documented elsewhere:
+0.36 s/transition at n=20 vs 9.93 s at n=30 on heaps in `cube_spectrum_collection`.
+
+**These cells are NOT drop-in comparable with `Genesis/data/slates/n20_heap_5mm`.**
+Two deliberate differences: placement-aware starts are collision-free at
+touchdown, and with `pile_aware=False` there is no contact-triggered early stop —
+hence 0% short pushes here against ~5% in the older slates. Any comparison
+against an EXP-0024/EXP-0026 number carries `provenance` until that is checked.
+
+**Doc updates this collection earns** (not yet made): `docs/piled_collection.md`
+§4 covers only pile-aware cost scaling and should carry the placement-aware heap
+costs above; `docs/scaling_to_200_objects.md` §3/§3.1 should state that its
+env-count table was measured on scattered piles with pile-aware sampling, since
+both paths report through the same `n_envs` key and the gap at n=50 is the
+difference between "fits in an evening" and "does not".
+
 ### EXP-C — optimizer-in-the-loop utility (T2, the decisive one)
 
 **Claim.** When each model is asked to *find* a good action over the continuous
