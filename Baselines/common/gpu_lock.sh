@@ -9,6 +9,18 @@
 # Waits (up to 6 h) for the lock rather than failing, so an agent that queues
 # behind another agent's training simply blocks instead of crashing.
 set -euo pipefail
+
+# Agents invoke this from the repo root but the wrapper eats a caller-set
+# PYTHONPATH surprisingly often (it is a fresh `bash`, and `PYTHONPATH=. cmd`
+# prefix assignments do not survive being passed as arguments here). Every
+# baseline imports `Baselines.*` and `training.*` by absolute package path, so
+# default it to the repo root rather than let each agent rediscover
+# `ModuleNotFoundError: No module named 'Baselines'` the hard way -- which is
+# exactly what killed B2-nfd's first run at 01:46.
+REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
+export PYTHONPATH="${PYTHONPATH:-$REPO_ROOT}"
+case ":$PYTHONPATH:" in *":$REPO_ROOT:"*) ;; *) export PYTHONPATH="$REPO_ROOT:$PYTHONPATH" ;; esac
+
 LOCK=/tmp/pile_manipulation_gpu.lock
 exec 9>"$LOCK"
 echo "[gpu_lock] $(date +%H:%M:%S) waiting for GPU lock: $*" >&2

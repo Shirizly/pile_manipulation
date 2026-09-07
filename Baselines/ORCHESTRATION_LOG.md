@@ -122,6 +122,33 @@ serialises through `gpu_lock.sh`):
 
 | **B3-schenck-impl** | Schenck CNN, **single-tower ablation only** (16x Conv 32@3x3 + ReLU, no pooling, Conv 1@1x1, residual output, L2). Two-tower scoop-and-dump + inter-tower mass channel deliberately out of scope. Told to reuse B2's action rasterisation rather than invent a third one. | `Baselines/SchenckCNN/**` | running |
 
+### Bug fixed in shared infrastructure — `gpu_lock.sh` ate `PYTHONPATH`
+
+**B2-nfd's first training died 24 s after acquiring the lock** with
+`ModuleNotFoundError: No module named 'Baselines'`, leaving `Baselines/NFD/runs/`
+empty. Cause: `gpu_lock.sh` starts a fresh `bash`, and a caller's
+`PYTHONPATH=. cmd` prefix assignment does not survive being passed to it as
+arguments. Every baseline imports `Baselines.*` and `training.*` by absolute
+package path, so this would have hit every agent in turn.
+
+**Fixed in `Baselines/common/gpu_lock.sh`**: it now resolves the repo root from
+its own location and exports it into `PYTHONPATH` itself (idempotently, and
+without clobbering a caller-set value). Verified: `bash
+Baselines/common/gpu_lock.sh python -c "import Baselines.NFD.nfd_lib"` succeeds,
+and a 1-epoch NFD run completes end to end through the wrapper.
+
+Worth recording because the failure was silent in the worst way — the wrapper
+reported "acquired", the process exited 0 from the shell's point of view, and
+the only evidence was an empty `runs/` directory. **A training that produces no
+checkpoint did not train, whatever the exit code says.** Check for artefacts,
+not status.
+
+(A second, unrelated crash — `val_pct: 0` making `Trainer.from_config`'s val
+split empty, raising `ValueError: No configs found for dataset.` — B2 had
+already found and fixed itself by setting `val_pct/test_pct: 5`. Held-out
+scoring is entirely on the disjoint `_eval` cells, so an in-train val split
+only affects monitoring, exactly as in the UNet-FiLM precedent.)
+
 ### Operational pattern — the ORCHESTRATOR owns the waiting
 
 Instructing agents to block in-turn did NOT work. B1 and B2 both ended their
