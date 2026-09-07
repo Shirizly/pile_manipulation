@@ -348,3 +348,23 @@ under `ind-corner` -- no new predictions needed, ~1 min CPU). Not run here
 because this correction's budget (~1.5h, shared with EXP-0024_v2's own
 re-test) was spent on the model-comparison prediction EXP-0024_v2 exists to
 answer, which the coordinator's message named as the priority.
+
+## Reproducibility hazard, 2026-09-07: the pile-relative goals are not pinned
+
+The `*-pile` functionals place their target on a centroid **recomputed from
+whatever data the run loads**, so the target can move between runs. Two
+independent runs of the identical cell disagree by more than their own
+uncertainty: dataset A, `ind-square8-pile`, linear, `slateK_exact` at K=4 came
+out **0.704** in one run and **0.7649** in the other; `ind-stripe-thin-pile`
+**0.663** vs **0.7145**. Bootstrap half-widths are ~0.03, so this is a
+configuration difference, not sampling noise — for an 8x8 px target a one-pixel
+shift is material.
+
+**What this does and does not touch.** The *direction* and *magnitude class* of
+every conclusion here survive it: linear capture falls from ~0.90-0.96 to
+0.63-0.87 under both runs' placements, so "the near-ceiling level is an artifact
+of the smooth cost" is robust. The A-vs-B gap-direction split also reproduces
+(+0.0706 vs +0.0709 on A; negative on B in both). But **no individual
+sharp-functional number in this record should be cited to three decimals** until
+the target is pinned. Tracked as `goal-placement-pinned` in INVARIANTS.md
+(**broken**).
