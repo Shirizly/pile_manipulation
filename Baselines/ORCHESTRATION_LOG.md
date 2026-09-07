@@ -120,7 +120,16 @@ serialises through `gpu_lock.sh`):
 | **B1-gnn-impl** | Dynamic-resolution GNN, N=20 constant nodes, no regressor. Own dataset over the raw `.pt` files feeding the unmodified `model/gnn_dyn.py`; geometry sanity-check before training; predict particles then rasterise via `common.data.rasterize_particles`. | `Baselines/GNN/**` | running |
 | **B2-nfd-impl** | NFD non-FiLM on `UNetModels_modular.UNet`. Faithful **3-channel** action encoding first, then the 2-channel-union ablation. | `Baselines/NFD/**` | running |
 
-Schenck CNN is wave B's third item, spawned once one of the above frees up.
+| **B3-schenck-impl** | Schenck CNN, **single-tower ablation only** (16x Conv 32@3x3 + ReLU, no pooling, Conv 1@1x1, residual output, L2). Two-tower scoop-and-dump + inter-tower mass channel deliberately out of scope. Told to reuse B2's action rasterisation rather than invent a third one. | `Baselines/SchenckCNN/**` | running |
+
+### Operational lesson — agents must not end their turn mid-training
+
+B1 launched a 500-epoch run in the background and then **ended its turn**,
+which stops the agent and requires a manual resume. The training itself was
+unaffected (it is a detached process holding the GPU lock), but the agent has
+to be woken to score it. B2 and B3 were briefed explicitly not to do this:
+either run training in the foreground with a generous timeout, or poll until it
+exits. Anyone spawning further agents should carry that instruction forward.
 
 ### What wave A established
 
