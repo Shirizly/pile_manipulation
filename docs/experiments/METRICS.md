@@ -166,6 +166,95 @@ relative to a true 4-distinct-candidate slate. No verdict in the register turns
 on that, but a `slate4` and a `slateK` value must not be set side by side
 without saying which sampler produced them.
 
+## Weight-field functional family — `lyapunov_weights` goal keys
+
+Every `dV`/`slate4`/`slateK`/`slateK_exact` number above is computed from
+`V = d^T y / ||y||_1` (`control_utility_test.py::lyapunov(occ, d)`), where `d`
+is a WEIGHT FIELD from `lyapunov_weights(grid_res, goal, device)`. Until
+EXP-0024_v2/EXP-0026_v2, `goal` was always `center`/`corner`/`stripe` — three
+target REGIONS, but always the same FUNCTIONAL FORM (a Euclidean distance
+transform, normalised to its own max). A distance transform is low-pass by
+construction (smooth everywhere except right at the target boundary), so
+every number above measures action selection through a cost that may not be
+able to see fine spatial detail — which is exactly the frequency band C-044
+says the UNet's advantage over the linear operator lives in. EXP-0024_v2
+tests this directly by adding a FUNCTIONAL-SHARPNESS axis, independent of
+target size, and EXP-0026_v2 re-scores the register's degradation arms
+through it.
+
+**New goal keys** (`center`/`corner`/`stripe` are unchanged, byte-identical):
+
+```
+distclip-corner-r{2,4,8}   min(dist_to_corner_halfplane_px, r) / r
+                            -- a tolerance knob at a FIXED target (the corner
+                            half-plane): r large -> smooth, converging to
+                            `corner`; r -> 0 -> an indicator.
+ind-corner                  1 outside the corner half-plane, 0 inside
+                            -- the r -> 0 limit of distclip-corner-r*, same
+                            fixed target as `corner`.
+ind-square8                 1 outside an 8x8 px square (offset one
+                            side-length in from the corner: rows/cols
+                            [H/8 : 2H/8]), 0 inside -- the SHARP, SMALL-target
+                            form.
+dist-square8                distance transform to the SAME 8x8 px square
+                            -- isolates target SIZE from functional
+                            sharpness: same functional form as `corner`,
+                            much smaller target.
+```
+
+**Measured spectral concentration** (`scripts/probes/spectral_concentration.py`:
+fraction of `|FFT(field - mean(field))|^2` within radius r, in grid units, of
+DC, on a 64x64 grid — demeaning is required, since every field here has a
+large, shape-independent DC component that would otherwise swamp the ratio):
+
+| weight field | r<=1 | r<=4 | r<=8 |
+|---|---|---|---|
+| `corner` (dist-corner, what every pre-2026-09-07 record uses) | 0.629 | 0.883 | 0.941 |
+| `distclip-corner-r8` | 0.619 | 0.926 | 0.966 |
+| `distclip-corner-r4` | 0.582 | 0.906 | 0.964 |
+| `distclip-corner-r2` | 0.557 | 0.886 | 0.952 |
+| `ind-corner` | 0.541 | 0.870 | 0.937 |
+| `dist-square8` (target-size control) | 0.683 | 0.908 | 0.953 |
+| `ind-square8` (sharp; DEGENERATE, see below) | 0.060 | 0.514 | 0.819 |
+
+`distclip-corner-r8` -> `r4` -> `r2` -> `ind-corner` is monotone at a FIXED
+target: sharpening the functional lowers r<=1 concentration from 0.619 to
+0.541. `dist-square8` sits essentially at `corner`'s own concentration
+(0.683 vs 0.629) despite an 8x linear target shrink — **shrinking a
+distance-transform target does not sharpen it; switching functional form
+does.** This is the load-bearing fact the functional/size split rests on,
+and it is measured, not assumed.
+
+**Degeneracy warning, found the hard way**: `ind-square8` is exactly
+degenerate (`dv_true` == 0 for every candidate) on both datasets tested
+(`Genesis/data/slates/n20_heap_5mm`, `Genesis/data/slates_multistep/n20_L20mm`
+step-0) — the target sits far enough from these piles' reachable footprint
+that no single push crosses its 8x8 px boundary. This is the small-target
+mirror of C-040's centred-target degeneracy: a target can fail either by
+being symmetric with a centred pile (`center`, C-040: `dV`≈0 because equal
+mass enters and leaves) or by being small and remote enough that `dV`=0 by
+construction for every candidate (`ind-square8`). **Screen with
+`scripts/probes/functional_degeneracy_screen.py` BEFORE computing any
+slateK/slateK_exact number on a new target/functional** — it reports
+`dv_true` mean/sd, %helpful, %|dv|<1e-9, #distinct values, and the fraction
+of slates clearing the same per-slate variation threshold
+`exp0026_kcurve_exact.py` itself uses to skip a slate.
+
+**What EXP-0024_v2/EXP-0026_v2 found using this family**: sharpening the
+functional at a fixed target (`corner` -> `ind-corner`) moves the linear
+operator's `slateK_exact` down by at most ~5 points (never below 0.92) and
+does not widen the paired UNet-linear gap — C-044/C-045 are
+functional-independent over the range tested. But the register's
+degradation-arm story (C-035/C-039/C-046 — systematic perturbations are
+K-invariant, only independent-per-candidate noise degrades with selection
+pressure) is NOT functional-independent: under `ind-corner` the systematic/
+independent split narrows sharply on `n20_heap_5mm` and partially inverts on
+`n20_L20mm` (displacement becomes the largest K-decliner, hf-noise goes
+flat). See those two records for the numbers; `slateK_exact` computed under
+any goal OTHER than `corner`/`center`/`stripe` should be read as "under this
+functional", not as a general control-utility fact, until more of the
+register has been re-scored this way.
+
 ## `slateK`, `regret_dv`, `pick_pctile` — selection under pressure
 
 From `scripts/probes/exp0026_kcurve.py`. The same candidate-slate idea as
