@@ -12,17 +12,57 @@ Source of truth: `fit_linear_foresight.py::metrics`.
 
 ## THE TWO STANDARD METRICS
 
-**Report these in every record.** Both go UP when better. Where the metric
+**Report these in every record.** Both go UP when better. (`slateN`
+replaced `slate4` as the standard on 2026-09-08; see below.) Where the metric
 itself is the object of study (FSS, R², a profile), report these as a reference
 row anyway, so results stay comparable across the register.
 
 | key | definition | 0 means | 1 means |
 |---|---|---|---|
 | **`accuracy`** | `1 − rms(model) / rms(persistence)`, swept region, same norm top and bottom | no better than predicting nothing moved | perfect |
-| **`slate4`** | fraction of the oracle's advantage over a random pick that the model captures, within a candidate slate of 4 | no better than random | as good as the oracle |
+| **`slateN`** | fraction of the oracle's advantage over a random pick that the model captures, choosing from **every candidate the pool holds** (N distinct actions, no replacement) | no better than random | as good as the oracle |
 
 Negative values are meaningful in both: worse than doing nothing, and worse than
 choosing at random, respectively.
+
+### `slateN` is the standard, not `slate4` (changed 2026-09-08)
+
+An MPC step chooses among **every** candidate it generated — hundreds or
+thousands — not among four of them. So the standard control metric is `slateN`:
+the capture fraction at K = the pool's full size, with candidates drawn
+**without replacement** wherever any sampling is involved. `slate4` and
+`slate16` are retained as legacy keys so pre-2026-09-08 records stay checkable,
+and `control_utility_test.rank_metrics` still reproduces them exactly under
+`replace=True`; they are not to be quoted as the headline any more.
+
+**Three things `slateN` must be reported with, because it has two real
+weaknesses and hiding them would trade one bad default for another:**
+
+1. **Ties, and the effective sample size.** At K = N the metric is
+   deterministic per pool, and two decent models very often pick the *same*
+   action: measured tie rates are 15/20 pools (10 mm), 9/20 (20 mm), 10/20
+   (40 mm), 16/50 (old slates). Effective n collapses to 5–11 pools and a
+   paired t that reads 5.5 at K=4 reads 0.75 at K=N. **`slateN` is the most
+   faithful point on the curve and the least statistically powerful one**, so
+   always report wins / losses / **ties** and the paired sem beside it. A
+   "no difference at `slateN`" is usually a statement about power.
+2. **It is not comparable across pools of different size.** N is 32 on
+   `slates/n20_heap_5mm` and 128 on the `slates_multistep` cells, so "the
+   largest available" is a different quantity per dataset. For any
+   cross-scenario comparison — which is what a model/scenario map is — also
+   report a **fixed-K reference point common to the datasets being compared**
+   (K=32 for everything collected so far).
+3. **Capture fractions are not comparable across scenarios at all**, whatever
+   K. EXP-0028 measured absolute regret at 0.00086 / 0.00096 / 0.00162
+   (10/20/40 mm) while the available spread differed by up to 17.9x, so
+   between-cell differences in capture are mostly denominator scale. Report
+   **`regret_dv` in Lyapunov units** beside `slateN` whenever cells are set
+   side by side.
+
+Prefer the closed form (`slateK_exact`, below) wherever the per-pool ordering
+is available: it is exact at every K, costs nothing, and makes the whole curve
+free — so reporting `slateN` plus a fixed-K reference is a formatting choice,
+not an extra computation.
 
 **Why two.** Image accuracy and control utility have been measured
 dissociating three times in this project — EXP-0008 (noise destroys ranking at
@@ -140,25 +180,31 @@ Reported alongside but rarely the headline. `frobenius` sums over N² pixels and
 is **not comparable across resolutions**; it exists only to sit beside Suh &
 Tedrake's Table 1 at 32×32.
 
-## `dV` ranking metrics — `spearman`, `slate4`, `partial`
+## `dV` ranking metrics — `spearman`, `slateN`, `slate4` (legacy), `partial`
 
 From `control_utility_test.py::rank_metrics`. These score **action selection**,
 not image accuracy, and can disagree with the above — that disagreement is the
 subject of C-030/C-035/C-044.
 
 - `spearman` — rank correlation between predicted and true `dV` over candidates.
-- `slate4` — of the oracle's advantage over a random pick within a slate of 4,
-  the fraction the model captures. `1.0` = oracle, `0.0` = random, negative =
-  worse than random.
+- `slateN` — **the standard** (see the top of this file): of the oracle's
+  advantage over a random pick, the fraction the model captures choosing among
+  all N candidates the pool holds, drawn without replacement. `1.0` = oracle,
+  `0.0` = random, negative = worse than random. `rank_metrics` returns it under
+  the key `N` (whose value is the pool size it used) alongside the legacy keys.
+- `slate4`, `slate16` — **legacy**, kept so pre-2026-09-08 records stay
+  checkable. Not to be quoted as a headline.
 - `partial` — the above with the state's own `V₀` and contact score regressed
   out, because cross-state slates confound "good action" with "easy state".
   **Prefer same-state slates** (`Genesis/data/slates/`) where available:
   EXP-0012 measured the cross-state confound as inflating noise-related ranking
   damage about two-fold.
 
-**`slate4` draws its 4 candidates WITH replacement.** `rank_metrics` builds
-slates with `torch.randint`, so a "slate of 4" is 4 draws from the candidate
-pool and holds ~3.44 distinct actions on average; `slate16` holds ~13. Measured
+**Every `slate4` recorded before 2026-09-08 drew its 4 candidates WITH
+replacement.** `rank_metrics` built slates with `torch.randint`, so a "slate of
+4" was 4 draws from the candidate pool and held ~3.44 distinct actions on
+average; `slate16` held ~13. It now draws without replacement by default and
+reproduces the old behaviour only under `replace=True`. Measured
 cost of the difference (EXP-0026, same 49 slates, same predictions): linear
 0.9503 with replacement vs 0.9583 without, UNet 0.9688 vs 0.9743, mean-delta
 0.7956 vs 0.8063 — every `slate4` in this register is **0.5–1.1 points low**

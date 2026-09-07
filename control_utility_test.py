@@ -203,8 +203,25 @@ def _partial(x, y, z):
     return float((a * b).mean() / (a.std().clamp_min(1e-9) * b.std().clamp_min(1e-9)))
 
 
-def rank_metrics(dv_pred, dv_true, control=None):
-    """Correlations, sign agreement, and a slate-selection regret."""
+def rank_metrics(dv_pred, dv_true, control=None, replace=False):
+    """Correlations, sign agreement, and a slate-selection regret.
+
+    `replace` controls how candidate slates are drawn.
+
+    **`False` (the default since 2026-09-08) draws WITHOUT replacement**, so a
+    "slate of K" really holds K distinct candidate actions, and `slateN` at
+    K = pool size is the exact top-1-of-everything test. It also emits `N`,
+    the largest slate the pool supports -- `slateN` is the standard MPC
+    metric (docs/experiments/METRICS.md), because an MPC step chooses among
+    every candidate it generated, not among four of them.
+
+    **`True` reproduces the pre-2026-09-08 behaviour**, which used
+    `torch.randint` and therefore sampled WITH replacement: a "slate of 4"
+    held ~3.44 distinct actions and a "slate of 16" ~13. Every `slate4` in
+    the register before that date was computed this way and is 0.5-1.1 points
+    low as a result (measured, EXP-0026). Pass `replace=True` only to
+    reproduce a historical number, and say so when you do.
+    """
     p = dv_pred - dv_pred.mean()
     t = dv_true - dv_true.mean()
     pear = float((p * t).mean() / (p.std().clamp_min(1e-9) * t.std().clamp_min(1e-9)))
@@ -224,8 +241,18 @@ def rank_metrics(dv_pred, dv_true, control=None):
     g = torch.Generator(device='cpu').manual_seed(0)
     n = dv_true.shape[0]
     out = {}
-    for K in (4, 16):
-        idx = torch.randint(0, n, (2000, K), generator=g).to(dv_true.device)
+    # K=N (the whole pool) is the standard; 4 and 16 are kept as legacy
+    # reference points so old records stay checkable.
+    for K in (4, 16, n):
+        if K > n:
+            continue
+        if replace:
+            idx = torch.randint(0, n, (2000, K), generator=g).to(dv_true.device)
+        elif K >= n:
+            idx = torch.arange(n, device=dv_true.device).unsqueeze(0)
+        else:
+            idx = torch.stack([torch.randperm(n, generator=g)[:K]
+                               for _ in range(2000)]).to(dv_true.device)
         cand_true = dv_true[idx]
         cand_pred = dv_pred[idx]
         chosen = cand_true.gather(1, cand_pred.argmin(dim=1, keepdim=True)).squeeze(1)
@@ -233,6 +260,7 @@ def rank_metrics(dv_pred, dv_true, control=None):
         rand = cand_true.mean(dim=1)
         denom = (rand - oracle).clamp_min(1e-9)
         out[K] = float(((rand - chosen) / denom).mean())
+    out["N"] = n            # the pool size slateN was computed at
     part = _partial(dv_pred, dv_true, control) if control else float('nan')
     return pear, spear, sign, out, part
 
