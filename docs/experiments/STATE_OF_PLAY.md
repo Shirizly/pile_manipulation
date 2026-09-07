@@ -1,6 +1,6 @@
 # State of play — generated, do not hand-edit
 
-`python scripts/summarise_register.py` · 33 claims · 25 live records · 4 superseded
+`python scripts/summarise_register.py` · 33 claims · 27 live records · 4 superseded
 
 ## Claims by status
 
@@ -36,16 +36,12 @@
 | C-034 | very-low | P2 (`docs/ideas_log_signal_vs_detail.md` §5): under synthetic degradation of the operator's cube n20 prediction, rms and Lyapunov-dV control utility c | EXP-0008 `docs/ideas_log_signal_vs_detail.md` §5 `swept-regi |
 | C-036 | low | Neither ridge shrinkage nor rank truncation trades predictive accuracy for control utility. lambda*_rms = 10 and lambda*_control = 1..10; rank*_rms =  | — EXP-0013 `canonical-warp`, `swept-region-metric`, `episode |
 
-### contested (6)
+### contested (2)
 
 | id | grade | claim | evidence |
 |---|---|---|---|
 | C-004 | very-low | Non-negativity beats ridge for the pixel operator (their Fig. 7). Re-run 2026-09-06 at FULL episode count (EXP-0023), superseding EXP-0010's 2-of-8/2- | EXP-0010 (capped; superseded read) EXP-0023 (full data, all  |
 | C-007 | low | In scalar targets, essentially all the nonlinearity is one variable: how much material the blade meets. Narrowed 2026-09-05, target-dependent (EXP-001 | EXP-0019 (mean-displacement arm) EXP-0019 (max-displacement  |
-| C-030 | low | Narrowed 2026-09-05. A signal-sensitive metric ranks models for MPC better than pixel rms does. Both strong forms are refuted (EXP-0007: the fine band | — EXP-0007, EXP-0008, EXP-0017, EXP-0024_v2 (a genuinely sha |
-| C-044 | low | The UNet's advantage over the linear operator is entirely high-frequency. On coarse structure surviving a sigma=1 blur the two model classes are equiv | EXP-0022, EXP-0024 (control measured directly), EXP-0026 (K- |
-| C-045 | low | Corrected 2026-09-06 (paired test). The UNet's image-accuracy edge over the linear operator DOES survive into control, but is small against a near-sat | EXP-0024 (+ reviewer paired re-analysis), EXP-0026 (K=2..31, |
-| C-046 | low | New 2026-09-06. Selection pressure amplifies a prediction error's control cost only when the error is independent across candidates. Sweeping the cand | EXP-0026 (K-sweep over 18 arms, 50 slates, paired), EXP-0026 |
 
 ### open (4)
 
@@ -61,6 +57,20 @@
 | id | grade | claim | evidence |
 |---|---|---|---|
 | C-022 | — | *(duplicate of C-015 as originally filed; merged 2026-09-05)* | — — |
+
+### diff\ (1)
+
+| id | grade | claim | evidence |
+|---|---|---|---|
+| C-045 | =1.5e-8) and | Corrected 2026-09-06 (paired test). The UNet's image-accuracy edge over the linear operator DOES survive into control, but is small against a near-sat | R_K\ (Lyapunov units) L10mm pays is within ~2x of L20mm/L40m |
+
+### narrowed (3)
+
+| id | grade | claim | evidence |
+|---|---|---|---|
+| C-030 | low | Narrowed 2026-09-05. A signal-sensitive metric ranks models for MPC better than pixel rms does. Both strong forms are refuted (EXP-0007: the fine band | — EXP-0007, EXP-0008, EXP-0017, EXP-0024_v2 (a genuinely sha |
+| C-044 | low | The UNet's advantage over the linear operator is entirely high-frequency. On coarse structure surviving a sigma=1 blur the two model classes are equiv | EXP-0022, EXP-0024 (control measured directly), EXP-0026 (K- |
+| C-046 | low | New 2026-09-06. Selection pressure amplifies a prediction error's control cost only when the error is independent across candidates. Sweeping the cand | EXP-0026 (K-sweep over 18 arms, 50 slates, paired), EXP-0026 |
 
 ## Records
 
@@ -91,6 +101,8 @@
 | EXP-0026 | refuted | low | imprecision,untested-dependency | The K=4 objection fails: from top-1-of-4 to top-1-of-31 the ridge oper |
 | EXP-0026_v1 | supported | very-low | imprecision,provenance,untested-dependency | C-046 (selection pressure amplifies only independent-per-candidate err |
 | EXP-0026_v2 | refuted | very-low | imprecision,inconsistency,untested-dependency | C-046's clean "systematic degradation arms are K-invariant, only indep |
+| EXP-0027 | supported | high | — | warp-only's positive image accuracy at L20mm/L40mm (+0.0254/+0.0442, E |
+| EXP-0028 | supported | high | — | L10mm's accuracy=-0.44 / slateK_exact=0.91 dissociation (EXP-0024_v1)  |
 
 ### Superseded
 
@@ -103,7 +115,7 @@
 
 | grade | n | records (downgrade-domain count) |
 |---|---|---|
-| high | 2 | EXP-0001(0), EXP-0020(0) |
+| high | 4 | EXP-0001(0), EXP-0020(0), EXP-0027(0), EXP-0028(0) |
 | moderate | 4 | EXP-0002(1), EXP-0005(1), EXP-0016(1), EXP-0017(1) |
 | low | 12 | EXP-0003(2), EXP-0006(2), EXP-0007(2), EXP-0008(2), EXP-0010(2), EXP-0012(2), EXP-0013(2), EXP-0019(2), EXP-0022(2), EXP-0024(2), EXP-0025(2), EXP-0026(2) |
 | very-low | 7 | EXP-0018(4), EXP-0021(4), EXP-0023(3), EXP-0024_v1(3), EXP-0024_v2(3), EXP-0026_v1(3), EXP-0026_v2(3) |

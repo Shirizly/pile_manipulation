@@ -86,10 +86,24 @@ Keep the plan; it becomes the record's frontmatter almost verbatim.
 
 Copy `references/experiment-template.md`. Field meanings:
 
-- **`claim`** — one sentence that could be false. "Blur helps" is not a claim.
-  "At matched blur, mask and density views differ by <5 points of explained
-  variance on both materials" is. If you cannot name a measurement that would
-  make it false, it is not ready to test.
+- **`claim`** — one sentence that could be false, **and that names the
+  conditions it is claimed under**. "Blur helps" is not a claim. "At matched
+  blur, mask and density views differ by <5 points of explained variance on
+  both materials" is. If you cannot name a measurement that would make it
+  false, it is not ready to test.
+
+  **Name the scope: dataset, objective/metric, and the design knobs the result
+  could plausibly depend on.** This is not pedantry, it is the difference
+  between a claim that gets narrowed later and one that gets "refuted" later
+  for no reason but its own over-reach. A real case from this repo: every
+  control claim (C-030, C-035, C-044, C-045, C-046) was stated as being about
+  *control*, while every measurement behind it used one cost functional whose
+  weight field has 63% of its spatial-variation energy in the lowest frequency
+  bin. When a spatially selective objective was finally tried and the numbers
+  moved, there was no way to tell from the claim text whether the earlier work
+  was wrong or merely narrower — because the claim never said what it was
+  conditional on. Had the scope been in the sentence, the later result would
+  have *extended* the map instead of appearing to demolish it.
 - **`prediction.supports` / `.refutes`** — observable outcomes *with
   thresholds*, written before the run. **Name the exact quantity**, including
   its normalisation and what it is measured against — not just a direction. "X
@@ -153,6 +167,42 @@ Verdict is one of: **`supported`** · **`refuted`** · **`inconclusive`** (effec
 inside the noise floor, or the design did not discriminate) · **`invalidated`**
 (the result stands as measured, but an input is now known broken — distinct
 from refuted, and the distinction matters when re-running).
+
+### `narrowed` is a claim status, and usually the right one
+
+Record **verdicts** stay the four above. Claim **statuses** in `REGISTER.md`
+additionally include **`narrowed`**: the measurement stands, nothing about it
+was wrong, and its generality is smaller than the claim asserted. Distinguish:
+
+| status | when |
+|---|---|
+| `narrowed` | the result reproduces under the conditions it was measured in, and a new condition changes it. Nothing is wrong; the scope was unstated or overstated |
+| `contested` | evidence genuinely conflicts **under matched conditions** — two comparable measurements disagree and no condition explains the difference |
+| `invalidated` | an input is known broken (a bug, a confound, a wrong floor). The measurement itself does not stand |
+
+### Words to use, and one to stop reaching for
+
+**Reserve "artifact" for a measurement that was wrong** — a bug, a confound, a
+borrowed noise floor, a mis-placed target. This repo has real examples: the
+transposed occupancy/plate channels, and a goal whose target never overlapped
+the pile. In those cases the number never meant what it appeared to mean.
+
+**A result that holds under one condition and not another is not an artifact.**
+It is a real effect with a governing condition, and the useful report names the
+condition: "holds under a coarse objective, not under a selective one" tells
+the next session where to look. "Was an artifact" tells them to throw away work
+that is still valid inside its range, and quietly discards the information
+about *which* variable governs the effect — usually the most valuable thing the
+experiment produced.
+
+Likewise **`refuted` is for a claim that fails under its own stated
+conditions.** If a claim never stated its conditions and later fails outside
+them, the honest entry is `narrowed`, plus a note that the original claim was
+under-specified — which is a lesson about claim-writing, not about the
+measurement. (This cuts both ways: an under-specified claim should not be able
+to survive contact with evidence by being retroactively reinterpreted as
+conditional. Fix the scope requirement at claim-writing time, above, and this
+does not arise.)
 
 **Grade is computed, never chosen.** Start at `high`; drop one level per
 downgrade domain present. `high → moderate → low → very-low`. The validator
