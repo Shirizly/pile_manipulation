@@ -1,0 +1,55 @@
+cache=runs_exp0026/dv_cache_sharp.pt goal=ind-stripe-thin-pile n_slates=50 provenance=49c285b1 dirty=False
+
+=== pool spread of dv_true (Lyapunov units), n=50 slates ===
+  max-min:  mean=0.34403 median=0.34949 p10=0.27560 p90=0.40733
+  mean-min: mean=0.15296 median=0.15172 p10=0.10490 p90=0.19778
+
+--- model: persistence ---
+  agreement rate: 0.020 (1/50 slates)
+  loss|top1 (Lyapunov units): mean=0.14523 sem=0.01121 median=0.13922 max=0.35849
+  disagreement-slate ratio (loss/spread) distribution: median=0.377 p25=0.283 p75=0.548 (n=49)
+    thr=0.02: near-tie=0.000 large-loss=0.980
+    thr=0.05: near-tie=0.020 large-loss=0.960
+    thr=0.10: near-tie=0.020 large-loss=0.960
+    thr=0.20: near-tie=0.100 large-loss=0.880
+    thr=0.30: near-tie=0.300 large-loss=0.680
+  |R_4| ranked: worst slate=(27, 0.14390436354548042), typical slate=(37, 0.08116924952915133)
+  smallest-ratio disagreement slate (candidate for the 'near-tie' figure): (17, 0.04163851771392507, 0.011278212070465088)
+
+--- model: mean-delta ---
+  agreement rate: 0.100 (5/50 slates)
+  loss|top1 (Lyapunov units): mean=0.07332 sem=0.00861 median=0.05251 max=0.20632
+  disagreement-slate ratio (loss/spread) distribution: median=0.218 p25=0.110 p75=0.362 (n=45)
+    thr=0.02: near-tie=0.060 large-loss=0.840
+    thr=0.05: near-tie=0.100 large-loss=0.800
+    thr=0.10: near-tie=0.200 large-loss=0.700
+    thr=0.20: near-tie=0.420 large-loss=0.480
+    thr=0.30: near-tie=0.580 large-loss=0.320
+  |R_4| ranked: worst slate=(27, 0.06706353313930839), typical slate=(16, 0.02923088205006552)
+  smallest-ratio disagreement slate (candidate for the 'near-tie' figure): (35, 0.002355537026103734, 0.0007186532020568848)
+
+--- model: linear ---
+  agreement rate: 0.160 (8/50 slates)
+  loss|top1 (Lyapunov units): mean=0.06734 sem=0.00814 median=0.05625 max=0.19512
+  disagreement-slate ratio (loss/spread) distribution: median=0.198 p25=0.122 p75=0.354 (n=42)
+    thr=0.02: near-tie=0.000 large-loss=0.840
+    thr=0.05: near-tie=0.040 large-loss=0.800
+    thr=0.10: near-tie=0.120 large-loss=0.720
+    thr=0.20: near-tie=0.420 large-loss=0.420
+    thr=0.30: near-tie=0.600 large-loss=0.240
+  |R_4| ranked: worst slate=(25, 0.04423802554010682), typical slate=(44, 0.02169018516915791)
+  smallest-ratio disagreement slate (candidate for the 'near-tie' figure): (13, 0.029565201062380215, 0.009009003639221191)
+
+--- model: UNet ---
+  agreement rate: 0.220 (11/50 slates)
+  loss|top1 (Lyapunov units): mean=0.05234 sem=0.00718 median=0.03800 max=0.17894
+  disagreement-slate ratio (loss/spread) distribution: median=0.210 p25=0.082 p75=0.260 (n=39)
+    thr=0.02: near-tie=0.040 large-loss=0.740
+    thr=0.05: near-tie=0.100 large-loss=0.680
+    thr=0.10: near-tie=0.260 large-loss=0.520
+    thr=0.20: near-tie=0.360 large-loss=0.420
+    thr=0.30: near-tie=0.620 large-loss=0.160
+  |R_4| ranked: worst slate=(19, 0.04230326210398297), typical slate=(10, 0.015393300160550169)
+  smallest-ratio disagreement slate (candidate for the 'near-tie' figure): (48, 0.0, 0.0)
+
+wrote runs_exp0026/survey/A_stripe.json

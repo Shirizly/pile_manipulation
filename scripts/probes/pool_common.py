@@ -121,6 +121,31 @@ def _wrapper_and_file_index(cfg_path: str, split: str = "train"):
     return wrapper, raw, file_to_rows
 
 
+def _source_file_for_slate(cache, slate_id):
+    """`cache["slate_files"]` uses TWO different conventions depending on
+    which script wrote the cache, and both are on disk today:
+
+      * `exp0026_selection_pressure.py` (dataset A / n20_heap_5mm): one data
+        file IS one slate, so it stores the split's file list once, in
+        run-index order, and `ep` (the slate id) IS the run index -- so the
+        file for slate `s` is `slate_files[s]` directly.
+      * `expB_multistep_eval.py` (dataset B / n20_L*mm, multi-step): a slate
+        spans one step-0 batch file shared by every candidate, but a run in
+        that eval split also has steps 1-2, so it stores the resolved
+        filename PER ROW: `slate_files[row]`.
+
+    Disambiguated by length: per-row iff `len(slate_files) == len(ep)`
+    (always true for B, false for A unless a cell happened to have exactly
+    one candidate per slate, which no cell here does).
+    """
+    sf = cache["slate_files"]
+    ep = cache["ep"]
+    if len(sf) == ep.numel():
+        sel = (ep == slate_id).nonzero(as_tuple=True)[0]
+        return sf[int(sel[0])]
+    return sf[int(slate_id)]
+
+
 def load_occ0_for_slate(cache, slate_id) -> torch.Tensor:
     """The step-0 occupancy every candidate of ``slate_id`` shares.
 
@@ -130,9 +155,7 @@ def load_occ0_for_slate(cache, slate_id) -> torch.Tensor:
     """
     cfg_path = _eval_cfg_path(cache)
     wrapper, raw, file_to_rows = _wrapper_and_file_index(cfg_path)
-    ep = cache["ep"]
-    sel = (ep == slate_id).nonzero(as_tuple=True)[0]
-    fname = cache["slate_files"][int(sel[0])]
+    fname = _source_file_for_slate(cache, slate_id)
     rows = file_to_rows.get(fname)
     if not rows:
         raise KeyError(f"no raw row found for source file {fname!r} "

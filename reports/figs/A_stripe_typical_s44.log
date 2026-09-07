@@ -1,0 +1,13 @@
+=== pool_inspect: runs_exp0026/dv_cache_sharp.pt goal=ind-stripe-thin-pile slate=44 n_candidates=32 ===
+provenance=49c285b1 dirty=False
+dv_true: mean(pool)=+0.09175  min(oracle)=-0.04350  max=+0.27924  spread(max-min)=0.32274
+  persistence    picks candidate    0  realised dv_true=+0.19936  predicted dv=+0.00000  regret vs oracle=+0.24286
+  mean-delta     picks candidate   12  realised dv_true=-0.00637  predicted dv=-0.00771  regret vs oracle=+0.03713
+  linear         picks candidate    4  realised dv_true=+0.03056  predicted dv=+0.00928  regret vs oracle=+0.07406
+  UNet           picks candidate   16  realised dv_true=-0.02172  predicted dv=-0.03786  regret vs oracle=+0.02178
+  persistence    true percentile of top-1/2/3 picks: 0.062 / 0.656 / 0.594  (0=truly best)
+  mean-delta     true percentile of top-1/2/3 picks: 0.094 / 0.188 / 0.062  (0=truly best)
+  linear         true percentile of top-1/2/3 picks: 0.219 / 0.250 / 0.062  (0=truly best)
+  UNet           true percentile of top-1/2/3 picks: 0.062 / 0.281 / 0.031  (0=truly best)
+
+wrote reports/figs/A_stripe_typical_s44.png

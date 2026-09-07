@@ -1,0 +1,13 @@
+=== pool_inspect: runs_expB/n20_L20mm_sharp_dv_cache.pt goal=corner slate=17 n_candidates=128 ===
+provenance=eb390fd2 dirty=True
+dv_true: mean(pool)=+0.00034  min(oracle)=-0.08143  max=+0.09318  spread(max-min)=0.17462
+  persistence    picks candidate    0  realised dv_true=+0.00000  predicted dv=+0.00000  regret vs oracle=+0.08143
+  mean-delta     picks candidate  111  realised dv_true=+0.00000  predicted dv=-0.01786  regret vs oracle=+0.08143
+  linear         picks candidate   17  realised dv_true=-0.07352  predicted dv=-0.05095  regret vs oracle=+0.00792
+  UNet           picks candidate   47  realised dv_true=-0.08143  predicted dv=-0.05979  regret vs oracle=+0.00000
+  persistence    true percentile of top-1/2/3 picks: 0.297 / 0.422 / 0.953  (0=truly best)
+  mean-delta     true percentile of top-1/2/3 picks: 0.422 / 0.422 / 0.422  (0=truly best)
+  linear         true percentile of top-1/2/3 picks: 0.008 / 0.000 / 0.016  (0=truly best)
+  UNet           true percentile of top-1/2/3 picks: 0.000 / 0.008 / 0.016  (0=truly best)
+
+wrote reports/figs/B_corner_worstlinear_s17.png

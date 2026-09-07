@@ -1,0 +1,13 @@
+=== pool_inspect: runs_expB/n20_L20mm_sharp_dv_cache.pt goal=ind-stripe-thin-pile slate=42 n_candidates=128 ===
+provenance=eb390fd2 dirty=True
+dv_true: mean(pool)=-0.06877  min(oracle)=-0.37798  max=+0.07163  spread(max-min)=0.44962
+  persistence    picks candidate    0  realised dv_true=-0.22720  predicted dv=+0.00000  regret vs oracle=+0.15079
+  mean-delta     picks candidate   73  realised dv_true=-0.34647  predicted dv=-0.09759  regret vs oracle=+0.03152
+  linear         picks candidate    5  realised dv_true=-0.37798  predicted dv=-0.24291  regret vs oracle=+0.00000
+  UNet           picks candidate    5  realised dv_true=-0.37798  predicted dv=-0.26832  regret vs oracle=+0.00000
+  persistence    true percentile of top-1/2/3 picks: 0.656 / 0.336 / 0.734  (0=truly best)
+  mean-delta     true percentile of top-1/2/3 picks: 0.008 / 0.000 / 0.016  (0=truly best)
+  linear         true percentile of top-1/2/3 picks: 0.000 / 0.008 / 0.016  (0=truly best)
+  UNet           true percentile of top-1/2/3 picks: 0.000 / 0.016 / 0.023  (0=truly best)
+
+wrote reports/figs/B_stripe_worstlinear_s42.png
