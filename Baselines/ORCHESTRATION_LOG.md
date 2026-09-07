@@ -69,6 +69,26 @@ register, and is reused, not reimplemented.
 Note these were trained **per-cell**; ours are pooled, so a small difference in
 either direction is expected and is not by itself evidence about architecture.
 
+## Facts implementers should not have to rediscover
+
+- **Training entry point** is `python -m training.train --config <cfg>` with the
+  schema in `configs/training/expB_unetfilm_slates_multistep_n20_L20mm.yaml`
+  (read it; it is the closest working precedent). Blocks: `model` / `dataset` /
+  `training` / `inference` / `output`.
+- **The existing UNet's inputs** are `in_channels: 2` (occupancy + an action
+  delta channel built by `transforms/functional.py::build_action_delta`) and
+  `cond_dim: 3` physics. Its recipe is 100 epochs, batch 32, Adam lr 1e-4,
+  StepLR(50, 0.75), mixed precision, grad clip 1.0, loss
+  `eulerian_combined` (mse 1.0 + mass 0.2).
+- **Measured training cost**: the per-cell UNet ran 90 epochs in 34.5 min on
+  11 520 transitions -> ~23 s/epoch. Pooled L20+L40 is 23 040 transitions, so
+  budget **~45-80 min per 100-epoch UNet-scale run**. Three such models fit
+  comfortably in one night on the single GPU; there is no need to cut epochs.
+- **Grid**: box 0.128 m across, `resolution_scale: 0.5` -> 64x64.
+- **Frame conventions are a known hazard** (claim C-018: occupancy and action
+  channels once placed world x on opposite grid axes). `docs/INTERFACES.md`
+  owns them. Do not invent a new rasteriser or a new axis convention; reuse.
+
 ## Hardware constraint
 
 One RTX 4070 Laptop, **8 GB**. Two trainings at once will OOM and take both
