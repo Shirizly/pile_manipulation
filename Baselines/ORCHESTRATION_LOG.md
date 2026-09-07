@@ -109,8 +109,44 @@ Wave A (spawned 2026-09-08, all Sonnet, all running concurrently — none needs 
 | **A1-gnn-spec** | Design doc for the dynamic-resolution GNN: graph construction, exact layer sizes from `gnn_dyn.py` + the vendored checkpoint, how the pusher enters the graph, and a **format mapping from their PyFlex `*_particles.npy` / `actions.p` to our batched `.pt`**. No resolution regressor. | `Baselines/GNN/SPEC.md`, `LOG.md` | running |
 | **A2-grid-specs** | Design docs for NFD (non-FiLM, on top of the existing UNet code) and the Schenck CNN. Must settle what NFD's action encoding actually is and whether FiLM came from the paper or from this repo. | `Baselines/NFD/SPEC.md`, `Baselines/SchenckCNN/SPEC.md`, both `LOG.md` | running |
 
-Wave B (implementation + training, **gated on A4's self-test going green**; GPU work
-serialises through `gpu_lock.sh`): GNN, then NFD, then Schenck CNN.
+**Wave A closed 2026-09-08. All three agents delivered; A4's self-test passed,
+so the harness is trusted.**
+
+Wave B (implementation + training; both spawned concurrently, GPU work
+serialises through `gpu_lock.sh`):
+
+| agent | scope | writes | status |
+|---|---|---|---|
+| **B1-gnn-impl** | Dynamic-resolution GNN, N=20 constant nodes, no regressor. Own dataset over the raw `.pt` files feeding the unmodified `model/gnn_dyn.py`; geometry sanity-check before training; predict particles then rasterise via `common.data.rasterize_particles`. | `Baselines/GNN/**` | running |
+| **B2-nfd-impl** | NFD non-FiLM on `UNetModels_modular.UNet`. Faithful **3-channel** action encoding first, then the 2-channel-union ablation. | `Baselines/NFD/**` | running |
+
+Schenck CNN is wave B's third item, spawned once one of the above frees up.
+
+### What wave A established
+
+- **NFD's action encoding is the live architectural question.** The paper
+  renders the pusher twice — start pose and end pose — as **two separate
+  channels** (`in_channels=3`). This repo's pipeline unions them into ONE
+  channel with a 0.5/1.0 intensity trick (`in_channels=2`). `draw_plate_soft`
+  is already called twice per sample, so the faithful form is nearly free.
+  B2 runs both arms.
+- **FiLM is this repo's addition, not the paper's** — no conditioning vector
+  appears anywhere in NFD, and `NFDUNetFilm.py`'s own docstring cites Perez et
+  al. AAAI'18. Better still, the physics vector it conditions on is
+  **dataset-wide constant** here, not per-sample, so dropping FiLM costs
+  essentially nothing on this data. The user's preference for the modular UNet
+  is a faithfulness *gain*, not a compromise.
+- **NFD's loss is plain squared Frobenius (~MSE)**, no mass term. The repo's
+  current best model adds `mass: 0.2` beyond the paper.
+- **The GNN is tiny** — 38,403 params, 64-dim hidden, 3 message-passing rounds
+  (`pstep=3`, hardcoded, not in any config). The pusher is NOT a node: the
+  push becomes a per-node `s_delta` vector field masked to the swept lane, and
+  it also shapes graph topology, since edges are built on the *anticipated
+  post-action* positions `s_cur + s_delta`.
+- **Schenck** is worth reproducing only as its single-tower ablation (~16-layer
+  plain 3x3 conv stack, no pooling, residual output, L2). The headline
+  two-tower scoop-and-dump architecture exists to separate lift/carry/pour
+  phases our plate push does not have.
 
 Wave C (exploratory, lowest priority, only if B is healthy): Gaussian Splatting
 VMPC from rendered rasters of the stored states. The user's framing: render the
