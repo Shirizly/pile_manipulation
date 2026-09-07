@@ -1,4 +1,75 @@
-# GNN baseline — agent A1-gnn-spec log
+# GNN baseline — LOG
+
+## SUMMARY (agent B1-gnn-impl, implementation phase, 2026-09-08)
+
+**Status: implemented, training in progress / scored.** (Update this line as
+the run progresses; see "Running notes" below for the live trail if this
+agent crashes mid-run.)
+
+**Files delivered (all new, per SPEC.md section 7 — none of the vendored
+`Baselines/GNN/{dataset,train,model}/*` files were touched):**
+- `Baselines/GNN/geometry.py` — `compute_s_delta` (SPEC.md section 6 recipe,
+  heading from `p_stop - p_start` only, never `angles`), and the three
+  chosen constants: `PUSHER_W=0.02` (sourced from `plate.size`),
+  `SOFTNESS=0.01` (kept from the reference), `ADJ_THRESH=0.012` (chosen
+  after the geometry check below), `PARTICLE_DENS=1000.0` (fixed constant,
+  per SPEC.md hazard 3).
+- `Baselines/GNN/scripts/check_geometry.py` — the pre-training sanity check
+  SPEC.md section 8 demands. Results below.
+- `Baselines/GNN/dataset/dataset_genesis_gnn.py` — `GenesisGNNDataset`,
+  reads raw `_*_data.pt` files directly (NOT `dataset/dataset_gnn_dyn.py`),
+  flattens each file's 128 rows to independent single-step examples.
+- `Baselines/GNN/train/train_genesis_gnn_dyn.py` — Adam(lr=1e-3,
+  betas=(0.9,0.999)) + StepLR(100, 0.5), single-step (`n_rollout=1`) MSE
+  loss on xyz only, batch 128, checkpoints every 10 epochs to
+  `Baselines/GNN/runs/{ckpt_best,ckpt_last}.pth` + `history.json`.
+- `Baselines/GNN/predictor.py` — `build_predictor()` for
+  `Baselines/common/eval_baseline.py`; loads a checkpoint, runs
+  `model.predict_one_step`, reattaches the INPUT quaternion (model has no
+  orientation head), rasterises per-row via
+  `Baselines.common.data.rasterize_particles` (harness's own routine, not
+  reimplemented).
+
+**Geometry sanity check (`check_geometry.py`, run BEFORE training):**
+- s_delta mask lights up sensibly, not saturated/empty: for `n20_L20mm`
+  (20mm push), ~5-16 of 20 cubes get non-trivial `s_delta` per candidate
+  (mean 7.1), matching the short push's narrow longitudinal window
+  (`x_loc` in `(0, 0.02m)`); for `n20_L40mm` (40mm push), 16-20 of 20 cubes
+  are active (mean 19.1) — the whole pile falls inside the longer window,
+  which is the expected behaviour of a hard longitudinal gate whose length
+  scales with push length, not a bug.
+- Printed the per-cube `(x_loc, y_loc, l_mask, w_mask)` breakdown directly
+  (not just a lumped "distance to segment", which conflates the hard
+  longitudinal gate with the soft lateral one and is misleading — caught
+  this myself mid-check and rewrote it): cubes with `|y_loc| < PUSHER_W
+  (0.02m)` correctly get `w_mask≈1.0`; cubes outside decay smoothly over
+  the `SOFTNESS=0.01m` scale. No axis swap, no all-or-nothing collapse.
+- Adjacency degree distribution swept over `adj_thresh ∈
+  {0.008,0.010,0.012,0.015,0.020}` m (all built on `s_cur + s_delta`, exactly
+  `PropNetDiffDenModel.predict_one_step`'s own construction, not
+  reimplemented — `check_geometry.py` mirrors only the adjacency half to
+  avoid a full forward pass): min in-degree is 2-4 at every value tested
+  (never an isolated node), and `adj_thresh=0.012` is NOT saturated at the
+  hard top-10 cap (`frac_at_cap` 0.47 for L20mm, 0.81 for L40mm — a real
+  distance-threshold effect, not "always top-10-NN regardless of the
+  literal value", the failure mode SPEC.md hazard 2 warned about).
+  **Chose `adj_thresh=0.012` m** — matches SPEC.md's own recommended range
+  (2-3x cube edge = 0.010-0.015m) and sits in the middle of a healthy,
+  non-degenerate part of the sweep.
+
+**Training recipe chosen:** 500 epochs, batch 128, Adam lr=1e-3, pooled
+train pool (23,040 transitions), StepLR(100,0.5). Measured ~2.5s/epoch on
+the shared GPU including a full validation pass on the pooled eval split
+(15,360 transitions) — a 500-epoch run is ~20 min, well inside budget (the
+38k-parameter model trains far faster than SPEC.md's own conservative
+estimate). Smoke-tested first (`--smoke`, 2 epochs) before committing to
+the full run, per the task's priority-order rule.
+
+---
+
+# GNN baseline — agent A1-gnn-spec log (design phase, superseded by the
+# implementation above where the two disagree — SPEC.md's own
+# ORCHESTRATOR AMENDMENT already documents the one place they did)
 
 ## Summary
 
