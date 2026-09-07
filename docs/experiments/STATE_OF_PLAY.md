@@ -1,10 +1,10 @@
 # State of play — generated, do not hand-edit
 
-`python scripts/summarise_register.py` · 33 claims · 27 live records · 4 superseded
+`python scripts/summarise_register.py` · 33 claims · 28 live records · 4 superseded
 
 ## Claims by status
 
-### supported (17)
+### supported (16)
 
 | id | grade | claim | evidence |
 |---|---|---|---|
@@ -19,7 +19,6 @@
 | C-018 | high | The dataset's occupancy channel and its plate/action channel placed world x on opposite grid axes — and the convention the fix standardised on (`dim0= | EXP-0001, EXP-0020 — (establishes `grid-convention`, `world- |
 | C-020 | low | Confirmed by retrain, 2026-09-05, then generalised across 7 cells same day. The scattered-monolayer UNet's near-blindness to its action channel (EXP-0 | EXP-0014 (EXP-0004 pre-fix, inconclusive), EXP-0021 (7 cells |
 | C-031 | very-low | On cubes, blur moves the operator's error ~4x more than the choice of view does (33 points vs 8 across σ 0→1.5) | EXP-0003 `canonical-warp`, `warp-blend`, `swept-region-metri |
-| C-035 | low | The dissociation is by error TYPE, and rms/accuracy gets two of three wrong. CONFIRMED CONFOUND-FREE (EXP-0025, same-state slates, n=50 states). At ma | EXP-0008 (reviewer re-analysis, cross-state), EXP-0025 (same |
 | C-037 | moderate | Narrowed and confirmed, 2026-09-05. The rms/control-utility dissociation holds ONLY at rank=1, not across rank 1-128. Rank-1 beats mean-delta on swept | EXP-0013, EXP-0017 (5 seeds x res 32, 3 seeds x res 64, both |
 | C-039 | moderate | Completed at n=50, 2026-09-05. Cross-state candidate slates inflate the measured ranking damage from high-frequency prediction noise about two-fold (8 | EXP-0012 (1597 transitions, 50 verified same-state slates) — |
 | C-040 | moderate | A centred convex target is DEGENERATE for a centred pile: `dV = 0` identically, since no mass lies outside the mask before or after. Off-centre target | EXP-0012 (2 of 50 slates showed any variation under `center` |
@@ -72,6 +71,12 @@
 | C-044 | low | The UNet's advantage over the linear operator is entirely high-frequency. On coarse structure surviving a sigma=1 blur the two model classes are equiv | EXP-0022, EXP-0024 (control measured directly), EXP-0026 (K- |
 | C-046 | low | New 2026-09-06. Selection pressure amplifies a prediction error's control cost only when the error is independent across candidates. Sweeping the cand | EXP-0026 (K-sweep over 18 arms, 50 slates, paired), EXP-0026 |
 
+### ? (1)
+
+| id | grade | claim | evidence |
+|---|---|---|---|
+| C-035 | y | The dissociation is by error TYPE, and rms/accuracy gets two of three wrong. CONFIRMED CONFOUND-FREE (EXP-0025, same-state slates, n=50 states). At ma |  _1` is linear in occupancy to first order, so only the comp |
+
 ## Records
 
 | id | verdict | grade | downgrades | title |
@@ -103,6 +108,7 @@
 | EXP-0026_v2 | refuted | very-low | imprecision,inconsistency,untested-dependency | C-046's clean "systematic degradation arms are K-invariant, only indep |
 | EXP-0027 | supported | high | — | warp-only's positive image accuracy at L20mm/L40mm (+0.0254/+0.0442, E |
 | EXP-0028 | supported | high | — | L10mm's accuracy=-0.44 / slateK_exact=0.91 dissociation (EXP-0024_v1)  |
+| EXP-0029 | supported | moderate | untested-dependency | L10mm's accuracy=-0.44 / slateK_exact=0.91 dissociation has a mechanis |
 
 ### Superseded
 
@@ -116,14 +122,14 @@
 | grade | n | records (downgrade-domain count) |
 |---|---|---|
 | high | 4 | EXP-0001(0), EXP-0020(0), EXP-0027(0), EXP-0028(0) |
-| moderate | 4 | EXP-0002(1), EXP-0005(1), EXP-0016(1), EXP-0017(1) |
+| moderate | 5 | EXP-0002(1), EXP-0005(1), EXP-0016(1), EXP-0017(1), EXP-0029(1) |
 | low | 12 | EXP-0003(2), EXP-0006(2), EXP-0007(2), EXP-0008(2), EXP-0010(2), EXP-0012(2), EXP-0013(2), EXP-0019(2), EXP-0022(2), EXP-0024(2), EXP-0025(2), EXP-0026(2) |
 | very-low | 7 | EXP-0018(4), EXP-0021(4), EXP-0023(3), EXP-0024_v1(3), EXP-0024_v2(3), EXP-0026_v1(3), EXP-0026_v2(3) |
 
 | downgrade domain | records |
 |---|---|
 | imprecision | 21 |
-| untested-dependency | 11 |
+| untested-dependency | 12 |
 | indirectness | 5 |
 | incomplete-design | 5 |
 | inconsistency | 5 |

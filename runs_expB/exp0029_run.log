@@ -1,0 +1,146 @@
+=== EXP-0029: L10mm mechanism diagnostics ===
+provenance={'commit': 'a446807e', 'commit_full': 'a446807eefaf97655c6a62eaca0cc2b30a3b0cfd', 'dirty': False, 'dirty_files': [], 'branch': 'VisualForesight'}
+
+########## L10mm ##########
+  L10mm: loaded 2560 step-0 transitions, 20 slates, grid 64x64
+
+=== D1 [L10mm]: swept-region error energy projected onto cost direction ===
+model                 ||e||^2       proj E  frac(pooled)  frac(mean)   lin r  lin MAD/sd
+mean-delta         19586.8340    92.645874       0.00473     0.00634  0.9604      0.3891
+linear             14701.8594    59.182289       0.00403     0.00410  0.8962      0.4618
+warp-only          20189.2891    98.267090       0.00487     0.00207  0.9494      0.1557
+UNet               10128.6680    57.726929       0.00570     0.00617  0.8869      0.2294
+heuristic-cumulative   18874.5391    98.794739       0.00523     0.00393  0.9258      0.1646
+heuristic-spread   18258.7578   101.086227       0.00554     0.00247  0.8866      0.2001
+
+=== D1 cross-check [L10mm]: independent reload vs cached dv_pred (goal=corner) ===
+  mean-delta   indep: mean=+0.00401 sd=0.00487  |  cached: mean=+0.00401 sd=0.00487
+  linear       indep: mean=+0.00255 sd=0.00536  |  cached: mean=+0.00255 sd=0.00536
+  UNet         indep: mean=-0.00014 sd=0.00428  |  cached: mean=-0.00014 sd=0.00428
+
+=== D2 [L10mm]: geometry-only heuristics, same metric suite ===
+  heuristic-cumulative accuracy=+0.0081  K=4:0.4900  K=16:0.6540  K=32:0.6993  K=64:0.6979  K=128:0.6675
+  heuristic-spread     accuracy=+0.0363  K=4:0.6100  K=16:0.7344  K=32:0.7519  K=64:0.7461  K=128:0.7504
+
+=== D3 [L10mm]: shuffle null (permute dv_pred within slate, 200 draws/slate) ===
+  mean-delta           K=4  real=+0.1830 shuffled=-0.0007 (sem 0.0020)   K=128 real=-0.0426 shuffled=-0.0002 (sem 0.0036)
+  linear               K=4  real=+0.7934 shuffled=+0.0006 (sem 0.0020)   K=128 real=+0.9132 shuffled=-0.0045 (sem 0.0030)
+  UNet                 K=4  real=+0.8608 shuffled=-0.0009 (sem 0.0015)   K=128 real=+0.8898 shuffled=-0.0042 (sem 0.0038)
+  warp-only            K=4  real=+0.0588 shuffled=-0.0017 (sem 0.0013)   K=128 real=+0.0375 shuffled=+0.0023 (sem 0.0031)
+  heuristic-cumulative K=4  real=+0.4900 shuffled=-0.0014 (sem 0.0021)   K=128 real=+0.6675 shuffled=-0.0005 (sem 0.0023)
+  oracle               K=4  real=+1.0000 shuffled=+0.0042 (sem 0.0064)   K=128 real=+1.0000 shuffled=-0.0025 (sem 0.0030)
+
+=== D4 [L10mm]: UNet vs linear paired test, and per-pool detail ===
+  K=   4  UNet-linear mean=+0.0675 sem=0.0192 t=+3.51 wins=18/20 losses=2 ties=0
+  K= 128  UNet-linear mean=-0.0235 sem=0.0462 t=-0.51 wins=2/20 losses=3 ties=15
+  dv_true spread (max-min) across 20 pools: mean=0.041777 median=0.037525 min=0.024831 max=0.065216 sd=0.012762
+  per-pool K=128 capture -- linear: mean=0.9132 sd=0.1669 min=0.4902 max=1.0000
+  per-pool K=128 capture -- UNet:   mean=0.8898 sd=0.1852 min=0.3369 max=1.0000
+  per-pool table (slate, spread, linear_K128, UNet_K128):
+       5  0.029405  +1.0000  +1.0000
+       7  0.024831  +1.0000  +1.0000
+       9  0.034442  +0.7226  +0.7226
+      12  0.056913  +0.7801  +0.7801
+      13  0.038440  +1.0000  +1.0000
+      14  0.036220  +1.0000  +1.0000
+      15  0.036610  +0.4902  +0.6194
+      17  0.060649  +1.0000  +1.0000
+      25  0.048854  +0.5064  +1.0000
+      29  0.051552  +1.0000  +0.6431
+      31  0.062128  +1.0000  +1.0000
+      32  0.031892  +1.0000  +1.0000
+      33  0.065216  +1.0000  +1.0000
+      39  0.034341  +1.0000  +1.0000
+      40  0.027500  +1.0000  +1.0000
+      41  0.028781  +0.7744  +0.7744
+      42  0.039667  +0.9906  +0.3369
+      44  0.031645  +1.0000  +1.0000
+      48  0.056020  +1.0000  +1.0000
+      49  0.040428  +1.0000  +0.9185
+
+=== step-0-only image accuracy [L10mm] (reference; register's headline uses all 3 steps) ===
+  persistence          accuracy=+0.0000
+  mean-delta           accuracy=-0.5161
+  linear               accuracy=-0.4319
+  warp-only            accuracy=-0.5226
+  UNet                 accuracy=+0.2451
+  heuristic-cumulative accuracy=+0.0081
+  heuristic-spread     accuracy=+0.0363
+
+########## L20mm ##########
+  L20mm: loaded 2560 step-0 transitions, 20 slates, grid 64x64
+
+=== D1 [L20mm]: swept-region error energy projected onto cost direction ===
+model                 ||e||^2       proj E  frac(pooled)  frac(mean)   lin r  lin MAD/sd
+mean-delta         87674.1094  1086.828857       0.01240     0.02310  0.9743      0.4913
+linear             46218.5781   293.338226       0.00635     0.00626  0.9193      0.4630
+warp-only         106750.9531  1872.178223       0.01754     0.01034  0.9810      0.1597
+UNet               39112.7227   280.735779       0.00718     0.00743  0.8959      0.3691
+heuristic-cumulative  108268.3594  1637.506104       0.01512     0.00972  0.9679      0.2455
+heuristic-spread  102141.1406  1577.926758       0.01545     0.00968  0.9435      0.3677
+
+=== D1 cross-check [L20mm]: independent reload vs cached dv_pred (goal=corner) ===
+  mean-delta   indep: mean=+0.01535 sd=0.02322  |  cached: mean=+0.01535 sd=0.02322
+  linear       indep: mean=+0.01098 sd=0.02560  |  cached: mean=+0.01098 sd=0.02560
+  UNet         indep: mean=+0.00592 sd=0.02522  |  cached: mean=+0.00592 sd=0.02522
+
+=== D2 [L20mm]: geometry-only heuristics, same metric suite ===
+  heuristic-cumulative accuracy=+0.0665  K=4:0.7537  K=16:0.7674  K=32:0.7899  K=64:0.8195  K=128:0.8811
+  heuristic-spread     accuracy=+0.0936  K=4:0.7542  K=16:0.7768  K=32:0.8166  K=64:0.8568  K=128:0.8789
+
+=== D3 [L20mm]: shuffle null (permute dv_pred within slate, 200 draws/slate) ===
+  mean-delta           K=4  real=+0.5515 shuffled=-0.0007 (sem 0.0012)   K=128 real=+0.2871 shuffled=+0.0101 (sem 0.0078)
+  linear               K=4  real=+0.9533 shuffled=-0.0004 (sem 0.0016)   K=128 real=+0.9670 shuffled=-0.0028 (sem 0.0067)
+  UNet                 K=4  real=+0.9706 shuffled=-0.0001 (sem 0.0015)   K=128 real=+0.9821 shuffled=-0.0083 (sem 0.0062)
+  warp-only            K=4  real=-0.0119 shuffled=+0.0008 (sem 0.0023)   K=128 real=-0.0076 shuffled=+0.0043 (sem 0.0067)
+  heuristic-cumulative K=4  real=+0.7537 shuffled=-0.0005 (sem 0.0016)   K=128 real=+0.8811 shuffled=+0.0075 (sem 0.0058)
+  oracle               K=4  real=+1.0000 shuffled=-0.0016 (sem 0.0016)   K=128 real=+1.0000 shuffled=-0.0004 (sem 0.0078)
+
+=== step-0-only image accuracy [L20mm] (reference; register's headline uses all 3 steps) ===
+  persistence          accuracy=+0.0000
+  mean-delta           accuracy=+0.1061
+  linear               accuracy=+0.3158
+  warp-only            accuracy=+0.0399
+  UNet                 accuracy=+0.4204
+  heuristic-cumulative accuracy=+0.0665
+  heuristic-spread     accuracy=+0.0936
+
+########## L40mm ##########
+  L40mm: loaded 2560 step-0 transitions, 20 slates, grid 64x64
+
+=== D1 [L40mm]: swept-region error energy projected onto cost direction ===
+model                 ||e||^2       proj E  frac(pooled)  frac(mean)   lin r  lin MAD/sd
+mean-delta        239545.9375  8016.634766       0.03347     0.03023  0.9470      0.5039
+linear             84494.6250   657.271851       0.00778     0.00742  0.7873      0.7296
+warp-only         361851.8125 23733.029297       0.06559     0.06030  0.9867      0.2041
+UNet               80996.4688   522.222534       0.00645     0.00633  0.8025      0.6216
+heuristic-cumulative  299781.8125 13799.203125       0.04603     0.04505  0.9778      0.3260
+heuristic-spread  267499.1875 11680.791016       0.04367     0.04285  0.9535      0.5961
+
+=== D1 cross-check [L40mm]: independent reload vs cached dv_pred (goal=corner) ===
+  mean-delta   indep: mean=+0.04929 sd=0.05010  |  cached: mean=+0.04929 sd=0.05010
+  linear       indep: mean=+0.07921 sd=0.08868  |  cached: mean=+0.07921 sd=0.08868
+  UNet         indep: mean=+0.07710 sd=0.09530  |  cached: mean=+0.07710 sd=0.09530
+
+=== D2 [L40mm]: geometry-only heuristics, same metric suite ===
+  heuristic-cumulative accuracy=+0.1392  K=4:0.9469  K=16:0.9584  K=32:0.9620  K=64:0.9630  K=128:0.9651
+  heuristic-spread     accuracy=+0.1867  K=4:0.9166  K=16:0.9479  K=32:0.9612  K=64:0.9671  K=128:0.9714
+
+=== D3 [L40mm]: shuffle null (permute dv_pred within slate, 200 draws/slate) ===
+  mean-delta           K=4  real=+0.8555 shuffled=-0.0014 (sem 0.0018)   K=128 real=+0.7166 shuffled=-0.0042 (sem 0.0123)
+  linear               K=4  real=+0.9820 shuffled=+0.0001 (sem 0.0017)   K=128 real=+0.9790 shuffled=-0.0185 (sem 0.0086)
+  UNet                 K=4  real=+0.9917 shuffled=-0.0007 (sem 0.0014)   K=128 real=+0.9924 shuffled=+0.0100 (sem 0.0066)
+  warp-only            K=4  real=-0.0114 shuffled=+0.0040 (sem 0.0015)   K=128 real=+0.1373 shuffled=-0.0095 (sem 0.0097)
+  heuristic-cumulative K=4  real=+0.9469 shuffled=-0.0005 (sem 0.0013)   K=128 real=+0.9651 shuffled=+0.0101 (sem 0.0092)
+  oracle               K=4  real=+1.0000 shuffled=-0.0018 (sem 0.0017)   K=128 real=+1.0000 shuffled=+0.0056 (sem 0.0096)
+
+=== step-0-only image accuracy [L40mm] (reference; register's headline uses all 3 steps) ===
+  persistence          accuracy=+0.0000
+  mean-delta           accuracy=+0.2313
+  linear               accuracy=+0.5444
+  warp-only            accuracy=+0.0596
+  UNet                 accuracy=+0.5542
+  heuristic-cumulative accuracy=+0.1392
+  heuristic-spread     accuracy=+0.1867
+
+wrote runs_expB/exp0029_results.json
