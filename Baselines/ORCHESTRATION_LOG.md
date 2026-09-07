@@ -122,6 +122,23 @@ serialises through `gpu_lock.sh`):
 
 | **B3-schenck-impl** | Schenck CNN, **single-tower ablation only** (16x Conv 32@3x3 + ReLU, no pooling, Conv 1@1x1, residual output, L2). Two-tower scoop-and-dump + inter-tower mass channel deliberately out of scope. Told to reuse B2's action rasterisation rather than invent a third one. | `Baselines/SchenckCNN/**` | running |
 
+### Operational pattern — the ORCHESTRATOR owns the waiting
+
+Instructing agents to block in-turn did NOT work. B1 and B2 both ended their
+turns while their training was queued or running, and B2 did so again
+immediately after being explicitly told not to — it was ~180k tokens deep, and
+a context-heavy agent bails out of long waits regardless of instruction.
+
+**The pattern that works:** the orchestrator runs one background waiter per
+training process (`while kill -0 <pid>; do sleep 30; done`) and wakes the
+owning agent only when there is *work to do*, never work to *wait for*. Agent
+resumes then carry short, concrete instructions (score these two cells, run the
+K-curve, commit) with no waiting in them.
+
+Corollary for anyone extending this: do not spend agent budget on polling. An
+agent woken to do 10 minutes of scoring is cheap; an agent sitting in a poll
+loop burns context and then quits anyway.
+
 ### Operational lesson — agents must not end their turn mid-training
 
 B1 launched a 500-epoch run in the background and then **ended its turn**,
