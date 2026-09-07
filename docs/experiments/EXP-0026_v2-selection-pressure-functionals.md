@@ -264,8 +264,7 @@ also `dist-corner`-only.
   the winner's-curse account directly rather than inferring it from which
   arms happen to decline.
 - **Dataset C** (L10mm, L40mm) would show whether the inversion seen on B
-  (n20_L20mm) is push-length-specific or general -- not run this session,
-  named under `incomplete-design` in EXP-0024_v2.
+  (n20_L20mm) is push-length-specific or general -- not run this session.
 
 ## Threats
 
@@ -301,3 +300,51 @@ also `dist-corner`-only.
   confirming that script's design goal (cache once, sweep cheaply) extends
   cleanly to a second scoring axis (functional) that its authors did not
   anticipate.
+
+## Coordinator correction, 2026-09-07: `ind-corner` never left the low-frequency regime either
+
+Everything above this section used `ind-corner` as "the sharpest functional
+tested" -- but `ind-corner`'s target is a half-plane (rows/cols [0:H/2)), and
+a half-plane indicator is a single step edge spanning the whole image, still
+a low-frequency weight field (r<=1 spectral energy 0.541, barely below
+dist-corner's 0.629). A coordinator review of the companion record,
+EXP-0024_v2, found its one attempt at a genuinely small, sharp target
+(`ind-square8`) was placed at a FIXED, corner-relative location (rows/cols
+8-15) that never overlapped the pile's actual support (measured centroid
+~(31.5, 31.5), support rows/cols 25-39 on both datasets) -- a placement bug,
+not a reachability limit, misdiagnosed as the latter in the first pass. That
+correction (`pile_centroid_and_support`, three new pile-centred goals) is
+EXP-0024_v2's own fix; it changes THAT record's model-comparison verdict
+substantially. It does not change this record's own arm-by-arm conclusion
+above, which already found the split functional-dependent using `ind-corner`
+alone -- if anything the correction strengthens that conclusion, since
+`ind-corner` turns out to be a MILDER sharpening than this record assumed.
+
+**What the pile-centred goals add here, briefly** (full numbers in
+EXP-0024_v2; not re-run for every degradation arm in this record, budget-
+limited): at `ind-square8-pile`/`ind-stripe-thin-pile` (r<=1 energy
+0.060/0.132), the UNDEGRADED linear operator's own `slateK_exact` collapses
+to 0.57-0.77 across both datasets -- 20-40 points below its `dist-corner`
+value and well below even its `ind-corner` value (0.92-0.97). This means
+`ind-corner`'s arm-by-arm split, reported above as "the sharp functional,"
+is itself measured in a regime much closer to `dist-corner` than to the
+genuinely sharp end EXP-0024_v2 now reaches. **The arm-by-arm degradation
+sweep has NOT been re-run at the pile-centred functionals** (13 arms x 2
+functionals x 2 datasets x multiple K, a real budget item, not attempted in
+this correction pass) -- so whether the split narrows further, stays
+narrowed, or does something else entirely at r<=1<0.15 is an open question
+this record's own evidence does not answer. Read every number above as
+describing the `dist-corner` -> `ind-corner` step specifically (r<=1 energy
+0.629 -> 0.541), a much smaller step than the axis's full range (down to
+0.060), not as having characterised the sharp end.
+
+### What would resolve this
+
+Re-run `exp0026_kcurve_exact.py --models <arm-list>` against
+`runs_exp0024_v2/dv_cache_A.pt` and `runs_expB/n20_L20mm_v2_dv_cache.pt` at
+`--goal ind-square8-pile` and `--goal ind-stripe-thin-pile` (both caches
+already carry every degradation arm under these goals, exactly as they do
+under `ind-corner` -- no new predictions needed, ~1 min CPU). Not run here
+because this correction's budget (~1.5h, shared with EXP-0024_v2's own
+re-test) was spent on the model-comparison prediction EXP-0024_v2 exists to
+answer, which the coordinator's message named as the priority.

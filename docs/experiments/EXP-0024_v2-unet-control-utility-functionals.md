@@ -1,33 +1,41 @@
 ---
 id: EXP-0024_v2
 title: >
-  Every control-utility number in this register (C-030/C-035/C-039/C-044/
-  C-045/C-046) comes from ONE cost functional, V = d^T y / ||y||_1 with d a
-  distance transform -- low-pass by construction. Sharpening the functional
-  at a FIXED target (distclip-corner-r{2,4,8} -> ind-corner) on EXP-0024's
-  own n20_heap_5mm slates and EXP-B's n20_L20mm cell: linear slateK_exact
-  never falls below 0.92 and the paired UNet-linear gap does not grow --
-  if anything it shrinks. The sharpest planned cell (ind-square8, a small
-  off-centre target) is DEGENERATE on both datasets: a single push never
-  moves material across an 8x8 px boundary, so dV=0 for every candidate
+  CORRECTED 2026-09-07 (coordinator review). The first pass of this record
+  wrongly diagnosed `ind-square8` as degenerate because "a single push
+  never crosses an 8x8 px boundary"; the real cause is a PLACEMENT BUG --
+  the target (rows/cols 8-15) never overlapped the pile's actual support
+  (measured centroid ~(31.5,31.5), support rows/cols 25-39). With that
+  fixed (three new pile-relative goals, centred on a data-measured
+  centroid, never hard-coded), the sharp end of the axis is now genuinely
+  tested and the answer is NOT "functional-independent": on n20_heap_5mm
+  the linear operator collapses to 0.57-0.63 slateK_exact and the
+  UNet-linear gap grows up to ~7x; on n20_L20mm the linear operator ALSO
+  collapses (to 0.65-0.77) but the gap goes NEGATIVE -- UNet becomes worse
+  than linear at the sharpest functional tested. Both halves are
+  well-powered and neither is explained by a diagnosed confound
 tier: T1
 mode: confirmatory
 date: 2026-09-07
 hypothesis: C-045
 claim: >
   C-044/C-045/C-046 all rest on rank_metrics/slateK_exact computed from a
-  distance-transform Lyapunov cost, which is low-pass by construction
-  (measured: 0.629 of its |FFT|^2 sits within radius 1 of DC on a 64x64
-  grid, demeaned). If the "linear operator near the ceiling, UNet's edge
-  small" finding is an artifact of this cost being unable to see the
-  fine-detail band the UNet's own advantage lives in (C-044), sharpening the
-  functional at a FIXED target should erode the linear operator's capture
-  and grow the UNet-linear gap. `lyapunov_weights` is extended with a
-  sharpness family (distclip-corner-r{2,4,8}, ind-corner) that keeps the
-  TARGET fixed (the corner half-plane) and only changes the functional FORM,
-  plus a target-SIZE control (dist-square8) that keeps the functional a
-  distance transform but shrinks the target -- isolating which axis, if
-  either, does the work.
+  distance-transform Lyapunov cost, which is low-pass by construction. If
+  the "linear operator near the ceiling, UNet's edge small" finding is an
+  artifact of this cost being unable to see the fine-detail band the
+  UNet's own advantage lives in (C-044), sharpening the functional at a
+  FIXED, PILE-INTERSECTING target should erode the linear operator's
+  capture and change the UNet-linear gap. The first version of this record
+  varied functional sharpness only on a HALF-PLANE target (`corner`), which
+  a coordinator review found could never reach the intended regime: a
+  half-plane indicator is a single step edge spanning the whole image --
+  still a low-frequency weight field (r<=1 energy only fell from 0.629 to
+  0.541) -- and its one attempt at a genuinely small, sharp target
+  (`ind-square8`) was placed at a FIXED location that never overlapped the
+  pile's actual support, giving a trivial zero (V==1 identically, `dV`==0
+  for a placement reason, not a "sharpness" reason). This version adds
+  targets sized and shaped to intersect the pile's DATA-MEASURED location,
+  reaching r<=1 energy 0.060-0.216.
 prediction:
   supports: >
     as the weight field sharpens (r<=1 energy falling from 0.629 toward
@@ -42,410 +50,395 @@ prediction:
     than currently claimed.
   discriminating: true
 provenance:
-  commit: db8f9a28
+  commit: 49c285b1
   dirty: false
   dirty_note: >
-    control_utility_test.py, scripts/probes/exp0026_selection_pressure.py,
-    scripts/probes/expB_multistep_eval.py and the two new probe scripts
-    (spectral_concentration.py, functional_degeneracy_screen.py) were
-    committed at db8f9a28 BEFORE any of this record's numbers were produced
-    -- the prediction above is this commit's own diff, so it reconstructs
-    the exact code that ran. No retraining and no new data collection: every
-    number here reuses EXP-0024's UNet checkpoint (runs_exp0024/unetfilm_cube_spectrum_n20)
-    and EXP-0024_v1's L20mm checkpoint (runs_expB/unetfilm_slates_multistep_n20_L20mm)
-    unmodified.
-  data_commit: >
-    Identical to EXP-0024/EXP-0026 (Genesis/data/slates/n20_heap_5mm,
-    006004d0..dbf21ba2) and EXP-0024_v1/EXP-0026_v1
-    (Genesis/data/slates_multistep/n20_L20mm, 8c006d88) -- no new data.
+    control_utility_test.py (pile_centroid_and_support, the three
+    pile-relative goal keys), exp0026_selection_pressure.py/
+    expB_multistep_eval.py (compute the centroid from occ0 and thread
+    pile_center through) and spectral_concentration.py (the new fields'
+    table) were committed at 49c285b1 before the caches below were rebuilt
+    against the clean tree (an earlier pass ran against a dirty tree while
+    the fix was being written; every number quoted here was regenerated
+    after the commit and is bit-identical to the dirty-tree pass, confirming
+    determinism, but only the clean-tree numbers are used). No retraining:
+    same checkpoints as the first pass (runs_exp0024/unetfilm_cube_spectrum_n20,
+    runs_expB/unetfilm_slates_multistep_n20_L20mm).
+  data_commit: "Identical to the first pass -- no new data collection."
   script: >
     scripts/probes/exp0026_selection_pressure.py --goals (dataset A),
     scripts/probes/expB_multistep_eval.py --goals (dataset B), both with
-    --degradations; scripts/probes/exp0026_kcurve_exact.py and
-    scripts/probes/exp0026_kcurve.py (unchanged) for the K-sweep;
-    scripts/probes/spectral_concentration.py (new) for the weight-field
-    spectral table; scripts/probes/functional_degeneracy_screen.py (new)
-    for the pre-metric screen.
+    --degradations, now also computing pile_centroid_and_support(occ0) and
+    passing pile_center to lyapunov_weights for any goal ending "-pile";
+    scripts/probes/exp0026_kcurve_exact.py and exp0026_kcurve.py (unchanged)
+    for the K-sweep; scripts/probes/spectral_concentration.py (extended);
+    scripts/probes/functional_degeneracy_screen.py (unchanged).
   data: ["runs_exp0024_v2/dv_cache_A.pt (50 slates x up to 32 candidates,
-          n20_heap_5mm, 8 goals incl. 6 new)",
+          n20_heap_5mm, 11 goals)",
          "runs_expB/n20_L20mm_v2_dv_cache.pt (20 slates x 128 candidates,
-          step-0 subset of n20_L20mm, same 8 goals)"]
+          step-0 subset of n20_L20mm, 11 goals)"]
   code_path: >
-    registry.dataset_registry PileSweepData (type: genesis) throughout --
-    EXP-0024/EXP-0026/EXP-0024_v1's own code path, unchanged. The only new
-    code is in control_utility_test.py::lyapunov_weights (new goal keys,
-    center/corner/stripe left byte-identical -- verified: dv_true for
-    goal=corner on dataset A reproduces EXP-0026's own numbers to 4 decimals,
-    e.g. slateK_exact(linear, K=4)=0.9767 matching the self-test value in
-    exp0026_kcurve_exact.py) and the two new probe scripts, which do not
-    touch the model/fit/evaluation code path at all.
-  seed: >
-    Identical to EXP-0024/EXP-0026 (dataset A) and EXP-0024_v1 (dataset B,
-    slate-level split seed 0). K-sweep bootstrap/sampler seed 0
-    (exp0026_kcurve.py/exp0026_kcurve_exact.py defaults). Degradation-arm
-    noise seed 1234 (unchanged, EXP-0025's own).
-  split: >
-    Dataset A: all 50 n20_heap_5mm slates (genesis_cube_spectrum_n20_slates_all.yaml,
-    split="train", val_pct=0/test_pct=0), EXP-0026's own convention. Dataset
-    B: EXP-0024_v1's 30-train/20-eval slate-level split on n20_L20mm,
-    step-0-only for control ranking (128 real candidates/slate).
-  runtime: "~4 min CPU total (2 dv-cache builds, ~8 kcurve_exact/kcurve sweeps per dataset, 1 spectral-concentration pass, 2 degeneracy screens) -- no GPU, no retraining."
+    registry.dataset_registry PileSweepData (type: genesis) throughout,
+    unchanged. `pile_centroid_and_support` pools occ0 (the exact tensor the
+    dv cache already loads) and computes a mass centroid + bounding box --
+    no new data path, no new representation.
+  seed: "Identical to the first pass (dataset split seeds, K-sweep seed 0, degradation-arm noise seed 1234)."
+  split: "Identical to the first pass -- dataset A all 50 n20_heap_5mm slates; dataset B EXP-0024_v1's 30/20 split, step-0 subset of n20_L20mm."
+  runtime: "~5 min CPU total (2 dv-cache rebuilds, ~8 kcurve_exact/kcurve sweeps per dataset, 1 spectral-concentration pass, 2 degeneracy screens) -- no GPU."
 budget:
-  declared: "~3h wall-clock, ~250k tokens (shared with EXP-0026_v2 -- one collection/analysis pass across both records, per the task)"
-  spent: "~1h40min wall-clock, ~90k tokens for the collection+analysis; remainder spent on this record and its companion, METRICS.md/REGISTER.md updates"
+  declared: "~1.5h wall-clock for this correction pass (coordinator-set), on top of the original ~3h/250k token budget shared with EXP-0026_v2"
+  spent: "~55 min wall-clock for this correction pass"
   outcome: within
 design:
   varied:
     functional: ["dist-corner (baseline, r<=1 energy 0.629)",
-                 "distclip-corner-r8 (0.619)", "distclip-corner-r4 (0.582)",
-                 "distclip-corner-r2 (0.557)", "ind-corner (0.541)",
-                 "dist-square8 (0.683, target-SIZE control, same functional form as dist-corner)",
-                 "ind-square8 (0.060, DEGENERATE -- see Numbers)"]
+                 "distclip-corner-r8/r4/r2 (0.619/0.582/0.557)",
+                 "ind-corner (0.541)", "dist-square8 (0.683, size control)",
+                 "ind-square8 (0.060, PLACEMENT-DEGENERATE -- corrected diagnosis, see Numbers)",
+                 "ind-square8-pile (0.060, pile-centred, WORKS)",
+                 "ind-square16-pile (0.216, pile-centred, DEGENERATE -- near-total containment, see Numbers)",
+                 "ind-stripe-thin-pile (0.132, pile-centred, WORKS)"]
     dataset: ["A: n20_heap_5mm (K<=31, 50 slates)", "B: n20_L20mm step-0 (K<=128, 20 slates x 128 real candidates)"]
     K: [2, 4, 8, 16, 24or32, 64, 128or31]
   held_fixed:
     predictions: "identical to EXP-0024's fit/checkpoint (dataset A) and EXP-0024_v1's fit/checkpoint (dataset B) -- nothing about the models changes; only the weight field d/w and (secondarily) K vary"
-    target_shape_for_corner_family: "the corner half-plane mask (rows/cols [0:H/2)), identical across dist-corner/distclip-r*/ind-corner -- only the functional applied to that SAME mask changes"
-    target_for_square_family: "an 8x8 px square (H//8 side), offset one side-length in from the corner (rows/cols [H/8:2H/8)) -- identical across dist-square8/ind-square8, only the functional changes"
-    metric: "slateK_exact/worstK/rank_profile (docs/experiments/METRICS.md, closed form) at K=2..31 (A) or K=2..128 (B), sampled slateK at K=4 as the slate4 bridge"
+    pile_center: "computed once per dataset from occ0, pooled over ALL candidates in that dataset's cache -- (31.577, 31.319) for A, (31.265, 31.546) for B, both from pile_centroid_and_support, never hard-coded"
+    metric: "slateK_exact/worstK/rank_profile (docs/experiments/METRICS.md, closed form) at K=2..31 (A) or K=2..128 (B), sampled slateK/regret_dv/pick_pctile at K=4 and K=max as the bridge"
   baselines: [persistence, mean-delta, oracle]
-  metric: "slateK_exact (headline), worstK, rank_profile, plus sampled slateK (slate4 bridge), all per docs/experiments/METRICS.md"
+  metric: "slateK_exact (headline), worstK, rank_profile, regret_dv, pick_pctile, plus sampled slate4/slateK bridge, all per docs/experiments/METRICS.md"
 noise_floor: >
-  Paired across slates (50 for A, 20 for B), sem of the per-slate
-  UNet-linear difference -- never the across-slate sd, per every prior
-  record's own correction. Because the axis under test here is FUNCTIONAL,
-  not model, the load-bearing comparison is a SECOND-ORDER pairing: for each
-  slate, (gap under functional X) - (gap under dist-corner), paired across
-  the SAME 50 (or 20) slates, so a functional's effect on the gap is tested
-  against its own noise floor, not against the gap's absolute noise floor
-  (which would overstate how confidently two functionals' gaps differ, since
-  both inherit the same per-slate difficulty variance). This is the same
-  second-order pairing logic EXP-0024_v1's push-length comparisons needed
-  and did not have; it is used here because the task requires attributing
-  an effect to the functional axis specifically.
+  Same second-order pairing as the first pass: for each slate, (gap under
+  functional X) - (gap under dist-corner), paired across the SAME 50 (or
+  20) slates, so a functional's effect on the gap is tested against its own
+  noise floor rather than the gap's absolute one.
 depends_on: [grid-convention, rasteriser-identity, canonical-warp, warp-blend,
              swept-region-metric, episode-split, settled-state]
 establishes: []
 result: >
-  SPECTRAL TABLE (measured, scripts/probes/spectral_concentration.py,
-  64x64, DC-demeaned): dist-corner 0.629/0.883/0.941 (r<=1/4/8); dist-square8
-  0.683/0.908/0.953; ind-corner 0.541/0.870/0.937; ind-square8
-  0.060/0.514/0.819; distclip-r8/r4/r2 0.619/0.582/0.557 at r<=1 -- a clean
-  monotone sharpening at FIXED target from distclip-r8 down to ind-corner,
-  confirming dist-square8 barely moves off dist-corner's own concentration
-  despite an 8x wide->8px target shrink (size is not the lever, exactly the
-  task's premise). DEGENERACY SCREEN: ind-square8 is degenerate on BOTH
-  datasets (dv_true == 0 for all 1597/2560 candidates -- a single push never
-  crosses an 8x8 px boundary this far from the pile's reachable footprint);
-  center is degenerate as always (C-040); every other functional passes
-  (40-53% helpful, sd 0.02-0.29, 50/50 or 20/20 slates clearing the
-  variation threshold). PREDICTION: the "supports" branch is REFUTED on both
-  datasets. Linear slateK_exact at the sharpest non-degenerate functional
-  (ind-corner) never drops below 0.90: 0.9739 (K=4) -> 0.9233 (K=31) on A;
-  0.9431 (K=4) -> 0.9346 (K=128) on B -- both comfortably above the 0.90
-  supports-threshold (though A's K=31 value dips just under the refutes
-  threshold of 0.95, to 0.9233 -- noted, not treated as supporting evidence,
-  since the gap clause below still fails decisively for supports). The
-  paired UNet-linear gap does NOT grow with sharpness -- it is flat to
-  slightly SMALLER: dataset A K=4, dist-corner +0.0103 (sem 0.0016) ->
-  ind-corner +0.0071 (sem 0.0019), gap-vs-corner -0.0032 (sem 0.0021,
-  t=-1.54); dataset B K=4, dist-corner +0.0173 (sem 0.0032) -> ind-corner
-  +0.0136 (sem 0.0035), gap-vs-corner -0.0037 (sem 0.0036, t=-1.04). No
-  functional at either dataset produced a POSITIVE, sem-clearing
-  gap-vs-corner difference at any K tested -- the largest positive point
-  estimate was dataset A's dist-square8 at K=31 (+0.0063, sem 0.0154,
-  t=0.41), inside noise. VERDICT: refuted.
-verdict: refuted
-downgrades: [imprecision, untested-dependency, incomplete-design]
+  CORRECTED DIAGNOSIS: `ind-square8`'s degeneracy is a PLACEMENT BUG, not a
+  reachability limit. Measured (`pile_centroid_and_support`, pooled occ0):
+  pile support rows 25-39, cols 25-39 on BOTH datasets (centroid ~(31.5,
+  31.5)) -- `ind-square8`'s fixed target (rows/cols 8-15) is entirely
+  disjoint from this, so the target is empty at every state, V==1
+  identically, and dV==0 follows trivially (a saturated indicator, C-040's
+  failure mode in new clothes). DEGENERACY SCREEN on the three new
+  pile-relative goals: `ind-square8-pile` PASSES on both datasets (A: 2.9%
+  helpful, sd 0.119, 1507 distinct values, 50/50 slates clear -- skewed but
+  not degenerate by the numeric screen; B: 37.3% helpful, sd 0.103, 20/20
+  clear). `ind-stripe-thin-pile` PASSES cleanly on both (A: 14.3% helpful,
+  sd 0.111; B: 43.6% helpful, sd 0.075). `ind-square16-pile` FAILS on BOTH
+  (0.0% helpful on A and B -- the 16x16 px target is large enough,
+  relative to the pile's own ~14x14 px support, to nearly contain it, so
+  every dispersing push increases cost almost deterministically; excluded
+  from the verdict). THE PREDICTION IS NOW GENUINELY TESTED, and splits by
+  dataset. Linear slateK_exact falls WELL below 0.90 on every working sharp
+  cell: dataset A `ind-square8-pile` 0.7649 (K=4) -> 0.6294 (K=31);
+  `ind-stripe-thin-pile` 0.7145 -> 0.5680; dataset B `ind-square8-pile`
+  0.8689 (K=4) -> 0.7192 (K=128); `ind-stripe-thin-pile` 0.8322 -> 0.7693.
+  The FIRST clause of "supports" is decisively confirmed everywhere. The
+  SECOND clause (gap doubles) holds on dataset A (`ind-stripe-thin-pile`
+  K=4 gap +0.0706 vs dist-corner's +0.0103, a 6.84x ratio, gap-vs-corner
+  t=+4.05; `ind-square8-pile` K=31 gap +0.1051 vs +0.0176, 5.97x, t=+1.77)
+  but FAILS on dataset B, where the gap REVERSES SIGN (`ind-square8-pile`
+  K=4 gap -0.0155, sem 0.0065, t=-2.39 vs dist-corner's +0.0173,
+  gap-vs-corner t=-4.30; `ind-stripe-thin-pile` K=4 gap -0.0101, t=-0.93).
+  Neither "supports" nor "refutes" describes both datasets. VERDICT:
+  inconclusive -- the discriminating test worked and both halves are
+  well-powered, but the two datasets disagree on the gap's direction with
+  no diagnosed confound (unlike EXP-0024_v1's warp-limited L10mm) to
+  explain the disagreement away.
+verdict: inconclusive
+downgrades: [imprecision, untested-dependency, inconsistency]
 grade: very-low
 supersedes: []
 invalidated_by: null
 ---
 
-**Tier note.** Same reason as EXP-0024/EXP-0024_v1/EXP-0026/EXP-0026_v1: a
-prediction block was written and the analysis code committed (db8f9a28)
-before any number below was produced, but this is filed T1 rather than T2
-because it depends on `settled-state`, `unchecked` for the rigid-cube path.
+**Tier note.** Same reason as every record in this family: T1 rather than
+T2 because of the `settled-state` dependency, despite a pre-registered
+prediction.
+
+## Correction, 2026-09-07: the original diagnosis was wrong
+
+The first version of this record reported `ind-square8` as degenerate
+"because a single push never crosses an 8x8 px boundary this far from the
+pile's reachable footprint" -- a reachability claim. **A coordinator review
+found the actual cause: the target simply never overlapped the pile.**
+`ind-square8`'s mask sat at rows/cols [8:16] (an "eighth-side square" offset
+one side-length in from the corner, chosen to avoid the array-boundary
+placement issue documented in the first pass). Measuring the pile's actual
+location directly (`pile_centroid_and_support`, pooling occ0 over every
+candidate in each dataset) gives support rows 25-39, cols 25-39 on BOTH
+`n20_heap_5mm` and `n20_L20mm` -- disjoint from [8:16] on both axes. The
+target was never reachable not because a push is too short, but because it
+was never IN THE PILE'S NEIGHBOURHOOD at all: `V = d^T y / ||y||_1` with `d`
+an indicator of an always-empty region is `1 - 0/mass = 1` identically, so
+`dV = 0` follows without any physics being tested. This is C-040's
+degeneracy (a target whose relationship to the pile makes `dV` trivially
+zero) wearing different clothes -- saturated at "always full" there,
+"always empty" here.
+
+**Consequence, corrected**: the sharp end of the functional-sharpness axis
+was UNTESTED by the first pass, not refuted. This version tests it properly
+with three new goals, each requiring an explicit `pile_center` computed from
+the data (`pile_centroid_and_support(occ0)`, never hard-coded), so the
+target genuinely intersects the pile's own footprint.
 
 ## Why this test discriminates
 
-Every one of C-030/C-035/C-039/C-044/C-045/C-046 is computed from
-`V = d^T y / ||y||_1` with `d` a distance transform to a goal region --
-`center`/`corner`/`stripe`, unchanged since EXP-0008. A distance transform is
-low-pass by construction: away from the target boundary it is smooth almost
-everywhere, so a metric built on it may simply be unable to register the
-high-frequency content the UNet's whole image-accuracy advantage lives in
-(C-044). If so, "the linear operator is near the ceiling and the UNet's edge
-is small" (C-045) is a fact about THIS COST, not about control in general.
-This design breaks the confound the register has never separated: functional
-SHARPNESS (distance transform -> clipped distance transform -> indicator) and
-target SIZE (a half-plane vs an 8x8 px square) are varied INDEPENDENTLY, at
-the SAME predictions, the SAME slates, the SAME checkpoints as the records
-under test -- so a result here is directly comparable to theirs, not a new
-task that could differ for unrelated reasons.
+Unchanged from the first pass: every one of C-030/C-035/C-039/C-044/
+C-045/C-046 is computed from a distance-transform Lyapunov cost, low-pass
+by construction. What changes here is that the first pass's sharpness axis
+(`corner` -> `distclip-corner-r*` -> `ind-corner`) never left a HALF-PLANE
+target -- a single step edge spanning the whole image is itself a
+low-frequency weight field (r<=1 energy only fell from 0.629 to 0.541,
+never below ~0.5), so it could not distinguish "sharpening the functional
+doesn't matter" from "this design never got sharp enough to see." Adding a
+target sized to the pile itself (8x8 or a 4px stripe, against a ~14x14 px
+pile) reaches r<=1 energy 0.060-0.132 -- the regime the pre-registered
+prediction actually names ("<0.10").
 
 ## What was actually run
 
-**`lyapunov_weights` extended** (`control_utility_test.py`): `center`/`corner`/
-`stripe` keep the exact code path they always had (verified: dataset A's
-`corner` numbers reproduce EXP-0026's own slateK_exact self-test value,
-0.9767 at K=4, to 4 decimals). New keys: `distclip-corner-r{2,4,8}` (distance
-transform to the corner half-plane mask, clipped at r px and renormalised,
-`min(dist,r)/r`); `ind-corner` (indicator of the same mask, the r->0 limit);
-`ind-square8`/`dist-square8` (indicator / distance transform to an 8x8 px
-square offset one side-length in from the corner -- flush-corner placement
-was tried first and rejected: a distance transform's actual values, unlike
-an indicator's `|FFT|`, are NOT shift-invariant on a finite non-periodic
-domain, and a corner-flush square understated its own concentration by
-sitting where most of the grid is on one side of it; the offset placement's
-measured spectrum matches this task's own reference table to 3 decimals).
+**`pile_centroid_and_support(occ, thresh=1e-6)`** (new, `control_utility_test.py`):
+pools an occupancy tensor's leading dims, takes the mean field, and returns
+the mass centroid `(cy, cx)` and the tight bounding box of rows/cols whose
+pooled mass exceeds `thresh`. Run on dataset A's 1597 candidates and dataset
+B's 2560 step-0 candidates independently: both give support rows/cols
+25-39 (14 px wide) and centroid within 0.3 px of (31.5, 31.5) -- i.e. the
+pile sits almost exactly centred in the 64x64 grid on both datasets, which
+is also why `center` (rows/cols 16-48, entirely containing this support) is
+degenerate (C-040: the whole pile is always "inside", nothing to score).
 
-**Spectral concentration** (`scripts/probes/spectral_concentration.py`, new):
-fraction of `|FFT(field - mean(field))|^2` within radius r (grid units) of
-DC, 64x64. Demeaning is necessary and load-bearing: without it every field
-here (mean far from zero) reads as ~85-98% concentrated at DC regardless of
-shape, because the mean itself dominates raw power. After demeaning, this
-script's numbers match the task's own reference table on 4 of 5 rows to 3
-decimals (dist-corner 0.629/0.883/0.941; ind-corner 0.541/0.870/0.937;
-ind-square8 0.060/0.514/0.819; dist-square8, once the square is offset rather
-than corner-flush, 0.683/0.908/0.953) -- confirming the reference table's own
-methodology before trusting this record's new distclip-r* rows.
+**Three new goal keys** (`control_utility_test.py::lyapunov_weights`, all
+require `pile_center`): `ind-square8-pile`/`ind-square16-pile` (8x8 / 16x16
+px indicator centred on `pile_center`, clamped to stay in-bounds);
+`ind-stripe-thin-pile` (4-px-wide, full-image-width indicator stripe
+centred on `pile_center`'s row). `exp0026_selection_pressure.py`/
+`expB_multistep_eval.py` compute the centroid from each dataset's own occ0
+once (only if any requested goal ends `-pile`) and pass it through.
 
-**Degeneracy screen** (`scripts/probes/functional_degeneracy_screen.py`,
-new), run BEFORE any slateK/slateK_exact number, per the task's explicit
-requirement: reports dv_true mean/sd, %helpful, %|dv|<1e-9, #distinct dv
-values, and slates clearing the same per-slate variation threshold
-`exp0026_kcurve_exact.py` itself uses (std >= 1e-9) to skip a slate.
+**Spectral concentration**: unchanged methodology, extended to the three
+new fields. Confirmed position-invariant as expected (an indicator's
+`|FFT|` does not depend on which in-bounds `pile_center` is used -- verified
+`ind-square8-pile` reproduces `ind-square8`'s own 0.060/0.514/0.819 to the
+digit, despite sitting at a completely different location).
 
-**dv caches**: `exp0026_selection_pressure.py --goals` (dataset A, all 50
-slates, `--degradations`) and `expB_multistep_eval.py --goals` (dataset B,
-step-0 subset of the 20 eval slates, `--degradations`) -- both scripts
-unchanged apart from the new `--goals` argument, which defaults to
-`corner,center` (so every existing invocation is byte-identical) and loops
-`lyapunov_weights` over whatever list is passed. No retraining, no new fit:
-dataset A reuses `runs_exp0024/unetfilm_cube_spectrum_n20`; dataset B reuses
-`runs_expB/unetfilm_slates_multistep_n20_L20mm` (EXP-0024_v1's checkpoint).
-
-**K-sweep**: `exp0026_kcurve_exact.py` (closed-form slateK_exact/worstK/
-rank_profile, unchanged) and `exp0026_kcurve.py` (sampled slate4 bridge,
-unchanged) against each new goal in both caches.
+**Degeneracy screen, K-sweep**: identical scripts/methodology to the first
+pass, run against the rebuilt caches.
 
 ## Numbers
 
 **Spectral concentration** (64x64, demeaned |FFT|^2, fraction within radius
-r of DC):
+r of DC) -- new rows only, the six from the first pass are unchanged:
 
 | weight field | r<=1 | r<=4 | r<=8 |
 |---|---|---|---|
-| dist-corner (baseline, "corner") | 0.629 | 0.883 | 0.941 |
-| distclip-corner-r8 | 0.619 | 0.926 | 0.966 |
-| distclip-corner-r4 | 0.582 | 0.906 | 0.964 |
-| distclip-corner-r2 | 0.557 | 0.886 | 0.952 |
-| **ind-corner** | **0.541** | 0.870 | 0.937 |
-| dist-square8 (size control) | 0.683 | 0.908 | 0.953 |
-| **ind-square8** (DEGENERATE, see below) | **0.060** | 0.514 | 0.819 |
+| ind-square8-pile | 0.060 | 0.514 | 0.819 |
+| ind-square16-pile | 0.216 | 0.803 | 0.900 |
+| ind-stripe-thin-pile | 0.132 | 0.488 | 0.797 |
 
-Monotone at fixed target from r8 down to ind-corner (0.619 -> 0.582 -> 0.557
--> 0.541), confirming distclip is a real sharpness knob. dist-square8 sits
-essentially at dist-corner's own concentration (0.683 vs 0.629, barely
-higher) despite an 8x linear target shrink -- the task's premise, reproduced
-here independently: **shrinking a distance-transform target does not
-sharpen it; switching functional form does.**
+**Pile location** (`pile_centroid_and_support`, pooled occ0): A centroid
+(31.577, 31.319), support rows/cols (25, 39, 25, 39). B centroid (31.265,
+31.546), support rows/cols (25, 39, 25, 39). Essentially identical on both
+datasets -- the pile is centred in the tray by construction in both
+collections.
 
-**Degeneracy screen** (`functional_degeneracy_screen.py`, pooled over both
-datasets' candidates):
+**Degeneracy screen** (`functional_degeneracy_screen.py`):
 
-| goal | dataset | n | mean dv_true | sd | %helpful | %\|dv\|<eps | slates clearing |
-|---|---|---|---|---|---|---|---|
-| corner | A | 1597 | +0.0189 | 0.0514 | 38% | 0.0% | 50/50 |
-| corner | B | 2560 | -0.0003 | 0.0234 | 49% | 18.4% | 20/20 |
-| center | A/B | — | ~0 | ~0.001-0.004 | 0% | 99% | 11/50, 13/20 | **DEGENERATE (C-040, as always)** |
-| **ind-square8** | **A** | 1597 | **0.0000** | **0.0000** | **0%** | **100%** | **0/50** | **DEGENERATE** |
-| **ind-square8** | **B** | 2560 | **0.0000** | **0.0000** | **0%** | **100%** | **0/20** | **DEGENERATE** |
-| dist-square8 | A | 1597 | -0.0046 | 0.0557 | 53% | 0.0% | 50/50 |
-| dist-square8 | B | 2560 | -0.0040 | 0.0247 | 53% | 18.1% | 20/20 |
-| ind-corner | A | 1597 | -0.0247 | 0.2611 | 49% | 0.1% | 50/50 |
-| ind-corner | B | 2560 | -0.0202 | 0.1280 | 47% | 20.2% | 20/20 |
-| distclip-corner-r2/r4/r8 | A/B | — | -0.014..+0.071 | 0.12-0.29 | 40-51% | 0-20% | 50/50, 20/20 |
+| goal | dataset | n | mean dv_true | sd | %helpful | %\|dv\|<eps | slates clearing | status |
+|---|---|---|---|---|---|---|---|---|
+| ind-square8 (old, corner-relative) | A | 1597 | 0.0000 | 0.0000 | 0% | 100% | 0/50 | DEGENERATE (placement bug, corrected) |
+| ind-square8 (old, corner-relative) | B | 2560 | 0.0000 | 0.0000 | 0% | 100% | 0/20 | DEGENERATE (placement bug, corrected) |
+| **ind-square8-pile** | A | 1597 | +0.2171 | 0.1192 | **2.9%** | 0.0% | 50/50 | ok (skewed -- see caveat below) |
+| **ind-square8-pile** | B | 2560 | +0.0266 | 0.1027 | 37.3% | 18.9% | 20/20 | ok |
+| ind-square16-pile | A | 1597 | +0.2891 | 0.1351 | **0.0%** | 0.3% | 50/50 | **DEGENERATE** |
+| ind-square16-pile | B | 2560 | +0.0617 | 0.0963 | **0.0%** | 50.4% | 20/20 | **DEGENERATE** |
+| **ind-stripe-thin-pile** | A | 1597 | +0.1101 | 0.1111 | 14.3% | 0.2% | 50/50 | ok |
+| **ind-stripe-thin-pile** | B | 2560 | -0.0057 | 0.0751 | 43.6% | 19.3% | 20/20 | ok |
 
-**`ind-square8` fails the screen identically on both datasets, exactly the
-failure mode the task predicted**: `dv_true` is exactly 0 for every single
-candidate (1597/1597 on A, 2560/2560 on B). The target (8x8 px, offset one
-side-length from the corner) sits far enough from these piles' reachable
-footprint that no single push -- of ~32 sampler-drawn candidates on A or 128
-real candidates on B -- ever moves material across its boundary. This is
-reported as degenerate and **excluded from every conclusion below**, not
-dropped quietly; it is also why the task's "run ind-square8 first" ordering
-produced a null result rather than the sharpest data point, and that gap in
-the design is real (see `incomplete-design`, below).
+`ind-square16-pile` fails on both datasets in the same way `center` does
+(C-040): a target large enough to nearly contain the pile's own support
+makes almost every dispersing push increase cost, so `%helpful` rounds to
+0.0% on both -- reported and excluded, not silently dropped.
+`ind-square8-pile` on dataset A passes the numeric screen (2.9% > the 1%
+cutoff) but is heavily skewed toward "harmful" -- caveated below, not
+excluded, since it still has real variance (1507 distinct values, 50/50
+slates clear) and a skewed sign distribution does not by itself prevent a
+meaningful ranking test.
 
-**`slateK_exact`, linear, at K=4 and K=max, by functional** (r<=1 spectral
-energy in parentheses):
+**`slateK_exact`, linear, at K=4 and K=max**:
 
 | functional (r<=1) | A K=4 | A K=31 | B K=4 | B K=128 |
 |---|---|---|---|---|
 | dist-corner (0.629) | 0.9767 | 0.9581 | 0.9533 | 0.9670 |
-| distclip-r8 (0.619) | 0.9809 | 0.9598 | 0.9605 | 0.9718 |
-| distclip-r4 (0.582) | 0.9799 | 0.9491 | 0.9564 | 0.9710 |
-| distclip-r2 (0.557) | 0.9755 | 0.9252 | 0.9484 | 0.9570 |
-| **ind-corner (0.541)** | **0.9739** | **0.9233** | **0.9431** | **0.9346** |
-| dist-square8 (0.683, size ctrl) | 0.9766 | 0.9328 | 0.9475 | 0.9567 |
+| ind-corner (0.541) | 0.9739 | 0.9233 | 0.9431 | 0.9346 |
+| **ind-square8-pile (0.060)** | **0.7649** | **0.6294** | **0.8689** | **0.7192** |
+| **ind-stripe-thin-pile (0.132)** | **0.7145** | **0.5680** | **0.8322** | **0.7693** |
 
-Linear **never drops below 0.92** anywhere in this table -- far above the
-0.90 supports-threshold. UNet tracks linear closely at every cell (e.g.
-ind-corner: A 0.9810->0.9397, B 0.9566->0.9056) -- both models sharpen and
-soften together, which is exactly what a flat gap looks like.
+Linear's capture collapses at the genuinely sharp end -- 0.57-0.77 across
+all four (dataset x functional) working cells, well below the 0.90
+supports-threshold everywhere, and below it even at K=4 on both datasets
+for `ind-stripe-thin-pile`. UNet:
+
+| functional | A K=4 | A K=31 | B K=4 | B K=128 |
+|---|---|---|---|---|
+| ind-square8-pile | 0.7866 | 0.7346 | 0.8534 | 0.6532 |
+| ind-stripe-thin-pile | 0.7851 | 0.6725 | 0.8221 | 0.7244 |
+
+UNet also collapses on dataset B (0.85->0.65 for square8-pile, 0.82->0.72
+for stripe) -- BELOW linear's own K=128 value for `ind-square8-pile`
+(0.6532 vs 0.7192), the sign flip driving the negative gap below.
 
 **Paired UNet-linear gap, and gap-vs-dist-corner (second-order pairing)**:
 
-| functional | A, K=4 gap (sem, t) | A, gap-vs-corner (sem, t) | B, K=4 gap (sem, t) | B, gap-vs-corner (sem, t) |
-|---|---|---|---|---|
-| dist-corner | +0.0103 (0.0016, 6.51) | — | +0.0173 (0.0032, 5.47) | — |
-| distclip-r8 | +0.0062 (0.0013, 4.82) | -0.0041 (0.0009, -4.51) | +0.0108 (0.0025, 4.36) | -0.0065 (0.0020, -3.31) |
-| distclip-r4 | +0.0055 (0.0013, 4.21) | -0.0048 (0.0016, -3.01) | +0.0110 (0.0033, 3.31) | -0.0063 (0.0035, -1.79) |
-| distclip-r2 | +0.0069 (0.0016, 4.18) | -0.0034 (0.0020, -1.75) | +0.0136 (0.0035, 3.93) | -0.0037 (0.0036, -1.04) |
-| ind-corner | +0.0071 (0.0019, 3.79) | -0.0032 (0.0021, -1.54) | +0.0136 (0.0035, 3.83) | -0.0037 (0.0036, -1.04) |
-| dist-square8 | +0.0114 (0.0019, 5.93) | +0.0011 (0.0018, +0.58) | +0.0156 (0.0035, 4.43) | -0.0017 (0.0034, -0.50) |
+| dataset | functional | K | gap (own sem, t) | dist-corner gap | ratio | gap-vs-corner (sem, t) |
+|---|---|---|---|---|---|---|
+| A | ind-square8-pile | 4 | +0.0217 (0.0126, 1.72) | +0.0103 | 2.10x | +0.0113 (0.0126, +0.90) |
+| A | ind-square8-pile | 31 | +0.1051 (0.0506, 2.08) | +0.0176 | 5.97x | +0.0875 (0.0494, +1.77) |
+| A | ind-stripe-thin-pile | 4 | +0.0706 (0.0151, 4.67) | +0.0103 | 6.84x | +0.0603 (0.0149, **+4.05**) |
+| A | ind-stripe-thin-pile | 31 | +0.1045 (0.0456, 2.29) | +0.0176 | 5.94x | +0.0869 (0.0437, +1.99) |
+| B | ind-square8-pile | 4 | **-0.0155** (0.0065, -2.39) | +0.0173 | -0.89x | -0.0327 (0.0076, **-4.30**) |
+| B | ind-square8-pile | 128 | -0.0659 (0.0425, -1.55) | +0.0151 | -4.35x | -0.0811 (0.0472, -1.72) |
+| B | ind-stripe-thin-pile | 4 | **-0.0101** (0.0108, -0.93) | +0.0173 | -0.58x | -0.0274 (0.0115, **-2.37**) |
+| B | ind-stripe-thin-pile | 128 | -0.0449 (0.0651, -0.69) | +0.0151 | -2.97x | -0.0601 (0.0706, -0.85) |
 
-At K=max (A K=31, B K=128) every gap-vs-corner difference stays inside
-|t|<=1.8 (A) / |t|<=1.6 (B) -- no functional grows the gap outside noise at
-either K=4 or K=max, and several (distclip-r8, distclip-r4 at K=4) show the
-gap **significantly SMALLER** than at dist-corner, the opposite direction
-"supports" needed.
+On dataset A the gap grows with sharpness, clearing its own gap-vs-corner
+sem decisively for `ind-stripe-thin-pile` at K=4 (t=+4.05) and reaching
+~6x at K=31 (t=+1.77-1.99, the same K=max under-powering EXP-0024_v1's
+reviewer amendment already flagged). On dataset B the gap **reverses
+sign and clears its own sem in the negative direction** at K=4 for both
+functionals (t=-4.30, t=-2.37) -- UNet is measurably WORSE than the linear
+operator here, the opposite of every other cell in this register.
 
-**worstK at K=4** (adversarial pool, linear/UNet): dataset A dist-corner
-0.471/0.316 -> ind-corner 0.327/0.270 (both fall, roughly together);
-dataset B dist-corner 1.030/0.741 -> ind-corner 0.418/0.369. worstK shrinks
-with sharpness on both datasets -- read as the adversarial-pool value itself
-being sensitive to the functional's own scale/shape, not as new evidence
-either way for the model-comparison question (both models move together).
+**worstK at K=4** (adversarial pool): A `ind-square8-pile` linear 0.9971 /
+UNet 0.9573 (UNet still better, worst-case); A `ind-stripe-thin-pile`
+linear 1.1983 / UNet 1.0957 (UNet better); B `ind-square8-pile` linear
+1.0883 / UNet **1.2460** (UNet WORSE, matching the average-case reversal);
+B `ind-stripe-thin-pile` linear 1.0207 / UNet 1.1059 (UNet worse again).
+worstK agrees with the average-case sign flip on B and the average-case
+advantage on A -- not a metric artifact confined to one statistic.
 
-**rank_profile** (linear, ranks 1-4, no bottom-quartile pathology at either
-sharpness level): dataset A dist-corner 0.035/0.058/0.076/0.095 -> ind-corner
-0.045/0.073/0.088/0.087; dataset B dist-corner 0.004/0.011/0.024/0.030 ->
-ind-corner 0.009/0.012/0.023/0.031 -- both flat-ish, confirming the flat
-slateK_exact curves are trustworthy under the sharper functional too, exactly
-the check METRICS.md prescribes.
-
-**Sampled `slate4` bridge** (with-replacement, matching the register's own
-convention): dataset A linear/UNet dist-corner 0.958/0.974 -> ind-corner
-0.957/0.965; dataset B dist-corner 0.897/0.932 -> ind-corner 0.862/0.891 --
-same story as the closed-form numbers, both models sharpen together and the
-gap does not open up.
+**Sampled `slate4`/`slateK` bridge** (with replacement, `regret_dv`/
+`pick_pctile` alongside): dataset A `ind-square8-pile` linear/UNet
+0.704/0.728 (K=4) -> 0.630/0.735 (K=31), regret_dv linear 0.0174->0.0537,
+UNet 0.0157->0.0361 (UNet's absolute regret stays lower at K=31 despite the
+closed-form capture numbers being close, since regret's denominator moves
+too); dataset B `ind-square8-pile` linear/UNet 0.803/0.782 (K=4) ->
+0.719/0.653 (K=128), regret_dv linear 0.0105->0.0480, UNet 0.0119->0.0588
+(UNet's regret is now WORSE in absolute terms too, not just in the bounded
+ratio) -- the reversal on dataset B is real by both the bounded and
+unbounded metric, not an artifact of `slateK_exact`'s own normalisation.
 
 ## What this means
 
-**C-044/C-045 are NOT artifacts of the cost functional's low-pass shape.**
-Sharpening the weight field's spectrum from 0.629 to 0.541 (r<=1 energy) at a
-FIXED target, on two independent datasets (32 sampler-drawn and 128 real
-candidates), moves the linear operator's own capture fraction down by at
-most ~5 points at the largest K tested (never below 0.92) and does not widen
-the UNet-linear gap -- if anything the gap is flat to modestly narrower under
-the sharper functionals at K=4, with two cells clearing their own paired sem
-in that (unpredicted) direction. **The register's "the linear operator
-already captures most of the oracle's advantage, and the UNet's edge is
-small" conclusion (C-045) is functional-independent over the range this
-design could test**, and should be read as considerably more robust than a
-single-functional record could show, not narrower.
+**The original "functional-independent" conclusion is WITHDRAWN for the
+genuinely sharp regime.** It was correct only for the range the first
+pass actually tested (r<=1 energy 0.541-0.683, a half-plane target at
+varying steepness) -- within that range, sharpening indeed barely moved
+anything, and that finding stands unchanged (see the first pass's Numbers,
+reproduced above for the dist-corner/ind-corner rows). But that range never
+reached the regime the pre-registered prediction named ("<0.10"), because a
+half-plane's own geometry -- a single edge spanning the whole image -- is
+inherently low-frequency regardless of how steep the transition is made.
+**Geometry, not just functional steepness, sets how sharp a weight field
+can get**, and this record's targets (an 8x8 px blob or a 4px stripe sized
+to the pile itself) are the first in this family to reach r<=1 < 0.15.
 
-**The sharpest planned cell failed before it could test anything.** `ind-
-square8` -- the intended sharpest point on the axis (r<=1 energy 0.060, an
-order of magnitude sharper than ind-corner's 0.541) -- is degenerate on both
-datasets: no single push in either collection ever moves material across an
-8x8 px boundary sited one side-length from the corner. This is not a
-methodological accident; it is the mechanism the task itself named ("a push
-moves 1-2 cubes across the boundary, so dV may be zero for most candidates"),
-realised in its extreme form (zero for ALL candidates) because the target
-sits outside what a single ~10-20mm push can reach from these piles'
-starting footprint. **The register cannot currently test the sharpest end of
-this axis (r<=1 < ~0.5) with a small, local target under a single-push
-design** -- see "What would change the verdict."
+**At the genuinely sharp end, the linear operator's near-ceiling
+performance does NOT survive.** slateK_exact falls to 0.57-0.77 across
+every working cell -- a 20-40 point drop from its dist-corner value of
+0.95-0.98. This is the first evidence in the register that the "linear
+operator captures ~95% of the oracle's advantage" finding (C-045) is
+functional-dependent after all, once the functional is sharp AND
+pile-intersecting rather than merely a steep half-plane.
 
-**dist-square8 is the cleanest confirmation of the task's premise.** At
-r<=1=0.683, it is marginally SHARPER than dist-corner (0.629) despite an 8x
-target-size shrink, and its slateK_exact/gap numbers track dist-corner's own
-almost exactly (A: 0.9766 vs 0.9767 at K=4; B: 0.9475 vs 0.9533) -- target
-size alone moves essentially nothing, exactly as the spectral table predicts
-and as this record's independent measurement confirms.
+**Whether the UNet benefits from this is dataset-dependent, and this
+record cannot resolve why.** On `n20_heap_5mm` (dataset A, EXP-0024's
+original checkpoint/fit, 32 sampler-drawn candidates) the UNet's edge grows
+substantially and significantly at K=4 for the stripe functional (6.84x,
+t=4.05). On `n20_L20mm` (dataset B, EXP-0024_v1's checkpoint, 128 REAL
+candidates, per-length in-distribution training) the UNet's edge not only
+fails to grow, it reverses sign with high confidence at K=4 for both
+functionals (t=-2.39, t=-4.30) -- the linear operator becomes the BETTER
+model once the cost is sharp enough to reward fine detail, exactly
+backwards from the "UNet's fine-detail advantage should show up more under
+a sharp cost" mechanism C-044 proposes. **Both results are well-powered
+(clear t-statistics at K=4, the least tie-inflated K); neither is explained
+by a diagnosed confound the way EXP-0024_v1's L10mm warp-limited regime
+explained away that record's one discrepant cell.** This is reported as a
+genuine, unresolved disagreement, not smoothed into either a "supports" or
+"refutes" reading.
 
 ## What would change the verdict
 
-- **A workable sharp+small-target cell.** `ind-square8`'s failure mode is a
-  reachability problem, not a fundamental one: a target still small (sharp)
-  but sited where the pile's pushed material actually goes (e.g. adjacent to
-  the pile's own footprint, or reachable within the collection's push
-  length) would test the r<=1<0.2 range this record could not. Cost: no new
-  collection needed if an existing dataset's pile footprint is characterised
-  first (~10 min CPU to locate a reachable small region, then re-run this
-  record's pipeline unchanged).
-- **Push length as a second axis.** EXP-0024_v1 found push length itself
-  changes the canonical-frame pipeline's validity (L10mm warp-limited); a
-  functional x push-length grid (this record's functionals against
-  L10mm/L40mm, deferred to budget below) would show whether the "functional
-  barely matters" finding is itself push-length-dependent.
-- **A seed sweep**, as every prior record in this family -- one checkpoint,
-  one fit per dataset here too.
+- **A mechanism for the A/B disagreement.** Candidate hypotheses, untested
+  here: (a) dataset A's UNet was trained on `cube_spectrum/n20` (blind to
+  this exact slate collection) while dataset B's was trained
+  in-distribution on `n20_L20mm` itself -- a sharp, pile-local cost might
+  reward whichever model's errors happen to be spatially correlated with
+  the SPECIFIC training distribution in a way a smooth cost cannot see; (b)
+  the two datasets' pushes differ in length/sampler (contact-aware
+  sampler-drawn vs placement-aware real candidates) in a way that
+  interacts with a small, pile-local target differently. Testing either
+  requires a third dataset or a controlled swap (same checkpoint, both
+  slate collections), out of this correction's budget.
+- **`ind-square8-pile`'s skew on dataset A** (97% of candidates increase
+  cost) means its ranking signal there is thinner than `ind-stripe-thin-pile`'s;
+  a stripe or blob NOT centred exactly on the pile centroid (offset so
+  roughly half of candidates are net-helpful) would give a better-balanced
+  same-target sharp cell to compare against dataset B's better-balanced
+  36-44% helpful.
+- **`ind-square16-pile`'s degeneracy** could potentially be worked around
+  with an OFF-centre 16x16 target (still sharp, but not large enough
+  relative to the pile to risk near-total containment) -- not attempted
+  here, budget-limited.
 
 ## Threats
 
-- `imprecision`: one UNet training seed, one linear fit per dataset
-  (inherited unchanged from EXP-0024/EXP-0024_v1 -- no new training here).
-  The second-order (gap-vs-dist-corner) sem is itself only as good as 50 (A)
-  or 20 (B) slates' worth of paired differences.
-- `untested-dependency`: `settled-state` unchecked for the rigid-cube path,
-  inherited unchanged.
-- `incomplete-design`: the task's own priority order named `ind-square8` as
-  "the sharp form; run this one first" -- it ran first, and is degenerate on
-  both datasets (measured cost: near-zero, ~1 min CPU per dataset to
-  discover), so the sharpest planned functional contributes no data to the
-  verdict. The distclip sweep and `ind-corner` still cover a real, monotone
-  sharpness range (0.629 down to 0.541) and carry the verdict, but the task's
-  own "supports" threshold (r<=1 falling toward <0.10) was never reached.
-  Dataset C (L10mm, L40mm) was not run this session -- explicitly
-  deprioritised by the task ("Lower priority... if budget remains") and the
-  budget was spent on writing up A/B instead; named here rather than
-  silently omitted.
+- `imprecision`: one UNet training seed, one linear fit per dataset,
+  unchanged from the first pass.
+- `untested-dependency`: `settled-state` unchecked for the rigid-cube path.
+- `inconsistency`: dataset A and dataset B disagree on the sign of the
+  UNet-linear gap at the sharp end, both at a level that clears its own
+  paired sem (t=+4.05 on A, t=-4.30 on B for the K=4 comparisons), with no
+  diagnosed confound distinguishing them -- reported as the finding, not
+  resolved. This is the reason the verdict is `inconclusive` rather than
+  `supported` or `refuted`.
 - Considered and dismissed: `provenance` -- every number reuses EXP-0024/
   EXP-0024_v1's own checkpoints and fits through their own unmodified code
-  path; the only new code (`lyapunov_weights`'s new goal keys, the two new
-  probe scripts) does not touch model inference, fitting, or the metric
-  implementations at all, and `corner`'s own numbers reproduce EXP-0026's
-  published self-test value to 4 decimals.
-- Considered and dismissed: `selection` -- every functional named in the
-  task's design was run and is reported, including the two that failed
-  (`ind-square8` degenerate, `center` degenerate as always) and the two
-  cells (out of many) where the gap moved in the unpredicted direction
-  (narrower, not wider) at a level clearing its own sem.
+  path; the only new code (`pile_centroid_and_support`, the three new goal
+  keys, the two probe scripts' centroid-computation lines) is a measurement
+  and a mask placement, not a change to model inference, fitting, or the
+  metric implementations. The rebuilt caches reproduce the first pass's own
+  `corner`/`ind-corner`/etc. numbers to the digit (dirty-tree pass vs
+  clean-tree pass, bit-identical, confirming determinism).
+- Considered and dismissed: `selection` -- all three new goals are
+  reported, including the one that failed the screen (`ind-square16-pile`)
+  and the dataset (B) whose result is least convenient for a clean
+  "sharpening helps the UNet" narrative.
 
 ## Unrelated findings
 
-- A distance transform's raw values (unlike an indicator's) are NOT
-  shift-invariant on a finite, non-periodic grid: `distance_transform_edt`
-  computes genuine Euclidean distances bounded by the actual array, so a
-  small target's distance field depends on where it sits relative to the
-  array edges (a corner-flush square "sees" the whole rest of the grid on
-  one side and understates its own spectral concentration), while an
-  indicator's `|FFT|` is exactly position-invariant because a within-bounds
-  translation is a circular shift for a discrete Fourier transform. This
-  cost about 10 minutes of rabbit-holing before the offset placement in
-  `lyapunov_weights` was found to match this task's own reference table to 3
-  decimals -- worth remembering for the next weight-field addition.
-- Raw (non-demeaned) spectral concentration is nearly useless for comparing
-  these fields: every one of them reads as 85-98% concentrated at DC before
-  demeaning, because a distance transform's or an indicator's MEAN dominates
-  its power almost independently of shape. `spectral_concentration.py`
-  demeans before computing the ratio for exactly this reason, and the
-  difference is large enough (e.g. `ind-square8` raw 0.985 vs demeaned 0.060
-  -- literally opposite conclusions) that any future spectral-concentration
-  script for this project should demean by default.
-
-## Reviewer note, expected before this record ships: the K=31/K=128 `t`-comparison inherits EXP-0024_v1's amendment
-
-The gap-vs-corner `t` values at K=max in this record are computed the same
-way EXP-0024_v1's reviewer amendment flagged as underpowered at large K (many
-slates tied, effective n well under the nominal 50/20). This record's K=max
-gap-vs-corner numbers are reported for completeness and are NOT the basis for
-the verdict, which rests on the K=4 comparison (where ties are zero on both
-datasets for every functional) and on the unambiguous "linear never drops
-below 0.90" fact, which does not depend on the paired-difference test
-resolving at all.
+- The pile in BOTH `n20_heap_5mm` and `n20_L20mm` sits almost exactly
+  centred in the 64x64 grid (centroid within 0.3 px of (31.5, 31.5), a
+  ~14x14 px support) -- this is WHY `center` (rows/cols 16-48) has been
+  degenerate in every record that has used it (C-040): the target contains
+  the pile's entire reachable footprint, so nothing can leave it. The two
+  datasets' near-identical centroid and support size, despite different
+  collection procedures (contact-aware sampler-drawn vs placement-aware
+  real candidates), was not something either prior record measured
+  directly.
+- An indicator's spectral concentration is confirmed position-invariant a
+  second time, now across a much larger displacement (corner-relative
+  [8:16] vs pile-relative [~24:32]): `ind-square8-pile` reproduces
+  `ind-square8`'s own 0.060/0.514/0.819 to 3 decimals despite sitting
+  roughly 20 px away. This makes `pile_centroid_and_support`'s exact
+  centroid non-load-bearing for the SPECTRAL table (any in-bounds
+  placement gives the same numbers) even though it is essential for the
+  `dV` numbers themselves (which very much depend on where the mass
+  actually is).
+- `worstK` (the adversarial-pool metric) agrees with the average-case sign
+  flip on dataset B and the average-case advantage on dataset A at every
+  sharp functional tested -- the reversal is not confined to one summary
+  statistic's own normalisation quirk.
