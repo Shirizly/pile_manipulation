@@ -1,0 +1,45 @@
+# EXP-B multistep: training split for n20_L20mm (30 of 50 slates, all 3
+# steps, symlinked by scripts/probes/prepare_slate_multistep_split.py into
+# Genesis/data/slates_multistep/n20_L20mm_train/ -- see that script for the
+# slate-level split rule (seed 0, sorted slate index) and
+# docs/plan_selection_pressure_validation.md's "EXP-B collection status" for
+# why these cells are not drop-in comparable with slates/n20_heap_5mm
+# (placement-aware collision-free starts, no contact-triggered early stop,
+# 0% short pushes here vs ~5% there).
+#
+# val_pct/test_pct=0: with 90 files (30 slates x 3 steps) all sharing one
+# physics key, a generic split would carve val/test at (slate,step)
+# granularity, not slate granularity -- exactly the leak the slate-level
+# split exists to avoid. All 90 batches go to training; UNet training uses
+# a fixed 100-epoch schedule with patience=100 (early stopping disabled), so
+# no in-loop validation split is required for the trained weights to be
+# well-defined. Held-out scoring is entirely on the disjoint *_eval cell.
+type: genesis
+
+paths:
+  - slates_multistep/n20_L20mm_train
+
+val_pct: 0
+test_pct: 0
+
+resolution_scale: 0.5   # box 0.128 m -> 64x64, matching EXP-0024/EXP-0026
+
+# Placement-aware collection has NO contact-triggered early stop (pile_aware:
+# false), so realized push length is constant (verified:
+# scripts/probes/verify_slate_cell.py reports 0% short pushes at all 3
+# lengths). No push-length filter is needed; kept anyway as a guard well
+# below the commanded length, matching the *_eval config.
+min_push_length_m: 0.0198
+
+include_physics: true
+
+transforms:
+  - type: ensure_representation
+    representation: eulerian
+  - type: eulerian_aliases
+
+physics:
+  normalization:
+    friction: {min: 0.05, max: 0.50}
+    density: {min: 750.0, max: 5000.0}
+    box_friction: {min: 0.05, max: 0.50}
