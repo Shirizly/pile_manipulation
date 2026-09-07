@@ -28,6 +28,7 @@ is *working, plugged-in, measured* models — not good numbers.
 | Papers | 1. Dynamic-Resolution GNN · 2. NFD (UNet, **non-FiLM**) · 3. Gaussian Splatting VMPC (**from rasters of the stored states**, attempt-and-skip) · 4. Schenck "Learning Robotic Manipulation of Granular Media" CNN. Optimal-Transport paper: out of scope. |
 | Git | Commit freely on `baselines/overnight`. No push, no merge to `main`. |
 | Models | Sonnet for every subagent. |
+| GNN scope | **No resolution regressor.** GNN only, at a CONSTANT node count (user, 2026-09-08). Our cells are exactly 20 cubes, so one node per cube, N=20 fixed. `Baselines/GNN/train/train_res_rgr.py`, `data_gen/res_rgr_data.py`, `dataset/dataset_res_rgr.py`, `model/res_regressor.py` are OUT OF SCOPE. |
 
 **Layout.** Every baseline lives entirely under `Baselines/<NAME>/`, with its
 own `LOG.md` (summary at the top, running notes below). Shared code is in
@@ -78,9 +79,23 @@ wait), so agents may run concurrently while GPU work serialises.
 
 ## Agent roster
 
-| agent | scope | log | status |
+Wave A (spawned 2026-09-08, all Sonnet, all running concurrently — none needs the GPU):
+
+| agent | scope | writes | status |
 |---|---|---|---|
-| _(filled in as agents are spawned)_ | | | |
+| **A4-common** | Shared infrastructure. Pooled L20+L40 train config; `data.py` (particle view + occupancy view, occupancy produced through the EXISTING registry path so grids are byte-identical to the register); `eval_baseline.py` = `expB_multistep_eval.py` generalised to a pluggable predictor. Gated on a **self-test that must reproduce `runs_expB/n20_L20mm_accuracy.json`** (mean-delta 0.08569, linear 0.30053) and the existing `slateK_exact`. | `Baselines/common/`, `configs/dataset/*L20L40*` | running |
+| **A1-gnn-spec** | Design doc for the dynamic-resolution GNN: graph construction, exact layer sizes from `gnn_dyn.py` + the vendored checkpoint, how the pusher enters the graph, and a **format mapping from their PyFlex `*_particles.npy` / `actions.p` to our batched `.pt`**. No resolution regressor. | `Baselines/GNN/SPEC.md`, `LOG.md` | running |
+| **A2-grid-specs** | Design docs for NFD (non-FiLM, on top of the existing UNet code) and the Schenck CNN. Must settle what NFD's action encoding actually is and whether FiLM came from the paper or from this repo. | `Baselines/NFD/SPEC.md`, `Baselines/SchenckCNN/SPEC.md`, both `LOG.md` | running |
+
+Wave B (implementation + training, **gated on A4's self-test going green**; GPU work
+serialises through `gpu_lock.sh`): GNN, then NFD, then Schenck CNN.
+
+Wave C (exploratory, lowest priority, only if B is healthy): Gaussian Splatting
+VMPC from rendered rasters of the stored states. The user's framing: render the
+stored cube poses to images (`simple_mpc/adapters.py`'s `_w2c` already carries
+the camera projection the Eulerian adapter uses), then run the paper's pipeline
+on those. Attempt-and-skip: if it does not make sense on this data, say so and
+stop rather than burning the night on it.
 
 ---
 
