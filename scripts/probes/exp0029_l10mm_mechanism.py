@@ -264,15 +264,31 @@ def d2_geometry(cell: str, c: dict, preds: dict, dw: torch.Tensor, recon_cache: 
     return out
 
 
-def d3_shuffle(cell: str, recon_cache: dict, models: list[str], seed: int = 0):
-    print(f"\n=== D3 [{cell}]: shuffle null (permute dv_pred within slate) ===")
+def d3_shuffle(cell: str, recon_cache: dict, models: list[str], seed: int = 0,
+              n_shuffles: int = 200):
+    """Permute dv_pred within each slate and recompute slateK_exact.
+
+    A SINGLE permutation draw at K=n_slate is a single realisation of a
+    random variable whose expectation is 0 (w_r(K=n) puts all its weight on
+    the model's rank-1 pick, so permuting dv_pred re-labels which candidate
+    is 'rank 1' uniformly at random; the expected true value of a uniformly
+    random candidate is mean(t), giving slateK_exact -> 0 exactly under
+    expectation) -- but with only ~20 slates, one draw per slate is a noisy
+    estimate of that expectation, not the expectation itself. Averaging
+    `n_shuffles` independent draws PER SLATE first, then averaging across
+    slates (same order as every other metric in this register: per-slate
+    values averaged, never a pooled ratio of sums), gives a low-variance
+    estimate of the true null rather than a single noisy draw that could be
+    mistaken for a leak."""
+    print(f"\n=== D3 [{cell}]: shuffle null (permute dv_pred within slate, "
+          f"{n_shuffles} draws/slate) ===")
     rng = np.random.default_rng(seed)
     ep = recon_cache["ep"]
     dv = recon_cache["dv"]["corner"]
     dv_true_all = dv["dv_true"]
     out = {}
     for m in models:
-        exact_real, exact_shuf = [], []
+        real4, real128, shuf4, shuf128, shuf4_sd, shuf128_sd = [], [], [], [], [], []
         for e in ep.unique().tolist():
             sel = (ep == e).nonzero(as_tuple=True)[0]
             if sel.numel() < 8:
@@ -281,21 +297,38 @@ def d3_shuffle(cell: str, recon_cache: dict, models: list[str], seed: int = 0):
             if float(t.std()) < 1e-9:
                 continue
             p = t.clone() if m == "oracle" else dv[m][sel]
-            perm = torch.from_numpy(rng.permutation(p.numpy().copy()))
             ex_real, _w, _pr = per_slate_exact(p, t, [4, 128])
-            ex_shuf, _w2, _pr2 = per_slate_exact(perm, t, [4, 128])
-            if 4 in ex_real:
-                exact_real.append((ex_real.get(4, float("nan")), ex_real.get(128, float("nan"))))
-                exact_shuf.append((ex_shuf.get(4, float("nan")), ex_shuf.get(128, float("nan"))))
-        real4 = np.array([x[0] for x in exact_real])
-        real128 = np.array([x[1] for x in exact_real])
-        shuf4 = np.array([x[0] for x in exact_shuf])
-        shuf128 = np.array([x[1] for x in exact_shuf])
+            if 4 not in ex_real:
+                continue
+            real4.append(ex_real.get(4, float("nan")))
+            real128.append(ex_real.get(128, float("nan")))
+            p_np = p.numpy().copy()
+            draws4, draws128 = [], []
+            for _ in range(n_shuffles):
+                perm = torch.from_numpy(rng.permutation(p_np))
+                ex_shuf, _w2, _pr2 = per_slate_exact(perm, t, [4, 128])
+                draws4.append(ex_shuf.get(4, float("nan")))
+                draws128.append(ex_shuf.get(128, float("nan")))
+            shuf4.append(float(np.nanmean(draws4)))
+            shuf128.append(float(np.nanmean(draws128)))
+            shuf4_sd.append(float(np.nanstd(draws4)))
+            shuf128_sd.append(float(np.nanstd(draws128)))
+        real4, real128 = np.array(real4), np.array(real128)
+        shuf4, shuf128 = np.array(shuf4), np.array(shuf128)
+        n_sl = len(real4)
+        # sem of the ACROSS-SLATE mean of the (already within-slate-averaged)
+        # shuffled capture -- this is the uncertainty on the number reported,
+        # not the single-draw spread.
+        sem4 = float(np.nanstd(shuf4, ddof=1) / np.sqrt(n_sl)) if n_sl > 1 else float("nan")
+        sem128 = float(np.nanstd(shuf128, ddof=1) / np.sqrt(n_sl)) if n_sl > 1 else float("nan")
         out[m] = dict(real_K4=float(np.nanmean(real4)), shuffled_K4=float(np.nanmean(shuf4)),
+                      shuffled_K4_sem=sem4,
                       real_K128=float(np.nanmean(real128)), shuffled_K128=float(np.nanmean(shuf128)),
-                      n_slates=len(real4))
-        print(f"  {m:20s} K=4  real={out[m]['real_K4']:.4f} shuffled={out[m]['shuffled_K4']:+.4f}   "
-              f"K=128 real={out[m]['real_K128']:.4f} shuffled={out[m]['shuffled_K128']:+.4f}")
+                      shuffled_K128_sem=sem128, n_slates=n_sl)
+        print(f"  {m:20s} K=4  real={out[m]['real_K4']:+.4f} "
+              f"shuffled={out[m]['shuffled_K4']:+.4f} (sem {sem4:.4f})   "
+              f"K=128 real={out[m]['real_K128']:+.4f} "
+              f"shuffled={out[m]['shuffled_K128']:+.4f} (sem {sem128:.4f})")
     return out
 
 
