@@ -71,6 +71,15 @@ def main():
         "distclip-corner-r2": lyapunov_weights((H, W), "distclip-corner-r2", "cpu").numpy(),
         "distclip-corner-r4": lyapunov_weights((H, W), "distclip-corner-r4", "cpu").numpy(),
         "distclip-corner-r8": lyapunov_weights((H, W), "distclip-corner-r8", "cpu").numpy(),
+        # Pile-relative goals: an indicator's |FFT| is exactly position-invariant
+        # (a within-bounds translation is a circular shift for a DFT), so the
+        # concentration below does not depend on which pile_center is used --
+        # any placement clear of the array boundary gives the same numbers as
+        # the data-measured centroid (~31.5, 31.5) these goals actually use at
+        # run time.
+        "ind-square8-pile": lyapunov_weights((H, W), "ind-square8-pile", "cpu", pile_center=(32, 32)).numpy(),
+        "ind-square16-pile": lyapunov_weights((H, W), "ind-square16-pile", "cpu", pile_center=(32, 32)).numpy(),
+        "ind-stripe-thin-pile": lyapunov_weights((H, W), "ind-stripe-thin-pile", "cpu", pile_center=(32, 32)).numpy(),
     }
     print(f"{'weight field':58s} " + "  ".join(f"r<={r}" for r in RADII))
     for name, f in fields.items():

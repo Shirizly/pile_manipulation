@@ -35,7 +35,7 @@ from fit_linear_foresight import (
 from registry.dataset_registry import build_dataset
 from scripts.probes.exp0009_rerun import predict_meandelta
 from scripts.probes.exp0021_eval import load_unet, unet_forward
-from control_utility_test import lyapunov, lyapunov_weights
+from control_utility_test import lyapunov, lyapunov_weights, pile_centroid_and_support
 from utils import git_provenance
 
 R, CR, RIDGE = 64, 1.0, 1.0  # EXP-0024's fit for this dataset/slate pairing
@@ -191,8 +191,13 @@ def main():
            "config": {"dataset_cfg": args.dataset_cfg, "slate_cfg": args.slate_cfg,
                       "run_dir": args.run_dir, "R": R, "crop": CR, "ridge": RIDGE},
            "dv": {}}
-    for goal in [g.strip() for g in args.goals.split(",") if g.strip()]:
-        dw = lyapunov_weights((H, W), goal, "cpu")
+    goals = [g.strip() for g in args.goals.split(",") if g.strip()]
+    pile_center, pile_support = None, None
+    if any(g.endswith("-pile") for g in goals):
+        pile_center, pile_support = pile_centroid_and_support(occ0)
+        print(f"pile centroid (row,col)={pile_center}, support (r0,r1,c0,c1)={pile_support}")
+    for goal in goals:
+        dw = lyapunov_weights((H, W), goal, "cpu", pile_center=pile_center)
         v0 = lyapunov(occ0, dw)
         dv_true = lyapunov(occ1, dw) - v0
         g = {"dv_true": dv_true, "v0": v0}

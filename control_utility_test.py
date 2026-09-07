@@ -40,7 +40,40 @@ from fit_linear_foresight import (
 from loro_foresight import gaussian_blur
 
 
-def lyapunov_weights(grid_res, goal, device):
+def pile_centroid_and_support(occ, thresh=1e-6):
+    """Mass centroid (row, col) and bounding box of a pooled occupancy set.
+
+    Coordinator correction, 2026-09-07: `ind-square8`'s degeneracy was
+    mis-diagnosed as "a single push never crosses this small a boundary"
+    when the real cause is that its FIXED, corner-relative placement never
+    overlaps the pile's support at all -- a placement bug (C-040's failure
+    mode wearing new clothes: a saturated indicator, here saturated at 1
+    rather than 0 because the target is always empty instead of always
+    full). This computes where the pile ACTUALLY is, from the data, so a
+    pile-relative goal's target can be placed to genuinely intersect it.
+
+    `occ` is (N, ..., H, W) -- any leading dims are pooled. Returns
+    ((cy, cx), (r0, r1, c0, c1)) where the bounding box is the tight range
+    of rows/cols whose pooled mass exceeds `thresh` (matching the threshold
+    `functional_degeneracy_screen.py`-style checks use elsewhere in this
+    file for "is there any signal here").
+    """
+    flat = occ.reshape(-1, occ.shape[-2], occ.shape[-1])
+    mean_field = flat.mean(dim=0)
+    H, W = mean_field.shape
+    rows = (mean_field.sum(dim=1) > thresh).nonzero(as_tuple=True)[0]
+    cols = (mean_field.sum(dim=0) > thresh).nonzero(as_tuple=True)[0]
+    r0, r1 = int(rows.min()), int(rows.max()) + 1
+    c0, c1 = int(cols.min()), int(cols.max()) + 1
+    yy, xx = torch.meshgrid(torch.arange(H, dtype=torch.float32),
+                             torch.arange(W, dtype=torch.float32), indexing="ij")
+    tot = mean_field.sum().clamp_min(1e-12)
+    cy = float((mean_field * yy).sum() / tot)
+    cx = float((mean_field * xx).sum() / tot)
+    return (cy, cx), (r0, r1, c0, c1)
+
+
+def lyapunov_weights(grid_res, goal, device, pile_center=None):
     """Weight field `d` (or `w`) for a target set, normalised to [0, 1].
 
     `goal` is one of the three original keys, byte-identical to before:
@@ -75,6 +108,22 @@ def lyapunov_weights(grid_res, goal, device):
           target SIZE from functional sharpness: shrinking a distance
           transform's target does not sharpen its spectrum (measured), so
           this is the control that shows size alone is not the lever.
+
+    `ind-square8` (above) turned out to be a mis-diagnosed degeneracy, not a
+    reachability limit: its fixed, corner-relative placement never overlaps
+    the pile's own support (measured centroid ~(31.5, 31.5) on a 64x64 grid,
+    support rows/cols 25-38 -- see `pile_centroid_and_support`), so `dV` is
+    identically 0 for a trivial reason (the target is always empty) rather
+    than because sharp targets are inherently hard to hit. The following
+    keys require `pile_center=(cy, cx)`, computed from the ACTUAL data (never
+    hard-coded), so the target genuinely intersects the pile:
+
+      ind-square8-pile   -- 8x8 px indicator centred on `pile_center`.
+      ind-square16-pile  -- 16x16 px indicator centred on `pile_center` (a
+          larger sharp target, in case 8x8 gives too discrete a `dV`).
+      ind-stripe-thin-pile -- a 4-px-wide indicator stripe (full image
+          width) centred on `pile_center`'s row -- structured rather than
+          blobby, crossing the pile rather than sitting inside it.
     """
     from scipy.ndimage import distance_transform_edt
 
@@ -92,6 +141,23 @@ def lyapunov_weights(grid_res, goal, device):
     elif goal in ("ind-square8", "dist-square8"):
         side_h, side_w = max(1, H // 8), max(1, W // 8)
         mask[side_h:2 * side_h, side_w:2 * side_w] = True
+    elif goal in ("ind-square8-pile", "ind-square16-pile"):
+        if pile_center is None:
+            raise ValueError(f"{goal} requires pile_center=(cy, cx), "
+                              f"computed from data via pile_centroid_and_support")
+        side = 8 if goal == "ind-square8-pile" else 16
+        cy, cx = pile_center
+        r0 = max(0, min(H - side, int(round(cy - side / 2))))
+        c0 = max(0, min(W - side, int(round(cx - side / 2))))
+        mask[r0:r0 + side, c0:c0 + side] = True
+    elif goal == "ind-stripe-thin-pile":
+        if pile_center is None:
+            raise ValueError(f"{goal} requires pile_center=(cy, cx), "
+                              f"computed from data via pile_centroid_and_support")
+        cy, _cx = pile_center
+        thickness = 4
+        r0 = max(0, min(H - thickness, int(round(cy - thickness / 2))))
+        mask[r0:r0 + thickness, :] = True
     else:
         raise ValueError(goal)
 
