@@ -1,6 +1,6 @@
 # State of play — generated, do not hand-edit
 
-`python scripts/summarise_register.py` · 33 claims · 21 live records · 4 superseded
+`python scripts/summarise_register.py` · 33 claims · 23 live records · 4 superseded
 
 ## Claims by status
 
@@ -27,7 +27,7 @@
 | C-042 | very-low | New 2026-09-05. The pre-registered concern that a UNet's swept-region advantage over persistence on scattered monolayers comes mainly from predicting  | EXP-0021 (7 cells x 2 strata) `grid-convention`, `rasteriser |
 | C-044 | low | The UNet's advantage over the linear operator is entirely high-frequency. On coarse structure surviving a sigma=1 blur the two model classes are equiv | EXP-0022, EXP-0024 (control measured directly), EXP-0026 (K- |
 | C-045 | low | Corrected 2026-09-06 (paired test). The UNet's image-accuracy edge over the linear operator DOES survive into control, but is small against a near-sat | EXP-0024 (+ reviewer paired re-analysis), EXP-0026 (K=2..31, |
-| C-046 | low | New 2026-09-06. Selection pressure amplifies a prediction error's control cost only when the error is independent across candidates. Sweeping the cand | EXP-0026 (K-sweep over 18 arms, 50 slates, paired) — `swept- |
+| C-046 | low | New 2026-09-06. Selection pressure amplifies a prediction error's control cost only when the error is independent across candidates. Sweeping the cand | EXP-0026 (K-sweep over 18 arms, 50 slates, paired), EXP-0026 |
 
 ### refuted (5)
 
@@ -85,8 +85,10 @@
 | EXP-0022 | supported | low | imprecision,indirectness | The UNet's win over the linear operator is entirely high-frequency; on |
 | EXP-0023 | supported | very-low | imprecision,incomplete-design,inconsistency | Two full-power repeats: (1) the mask-vs-depth channel confound resolve |
 | EXP-0024 | supported | low | imprecision,untested-dependency | Does the UNet's fine-detail image-accuracy advantage over the linear o |
+| EXP-0024_v1 | supported | very-low | imprecision,provenance,untested-dependency | EXP-0024/EXP-0026 re-run on Genesis/data/slates_multistep/n20_L{10,20, |
 | EXP-0025 | supported | low | imprecision,untested-dependency | EXP-0008's full degradation spectrum re-run on same-state slates (n=50 |
 | EXP-0026 | refuted | low | imprecision,untested-dependency | The K=4 objection fails: from top-1-of-4 to top-1-of-31 the ridge oper |
+| EXP-0026_v1 | supported | very-low | imprecision,provenance,untested-dependency | C-046 (selection pressure amplifies only independent-per-candidate err |
 
 ### Superseded
 
@@ -102,14 +104,14 @@
 | high | 2 | EXP-0001(0), EXP-0020(0) |
 | moderate | 4 | EXP-0002(1), EXP-0005(1), EXP-0016(1), EXP-0017(1) |
 | low | 12 | EXP-0003(2), EXP-0006(2), EXP-0007(2), EXP-0008(2), EXP-0010(2), EXP-0012(2), EXP-0013(2), EXP-0019(2), EXP-0022(2), EXP-0024(2), EXP-0025(2), EXP-0026(2) |
-| very-low | 3 | EXP-0018(4), EXP-0021(4), EXP-0023(3) |
+| very-low | 5 | EXP-0018(4), EXP-0021(4), EXP-0023(3), EXP-0024_v1(3), EXP-0026_v1(3) |
 
 | downgrade domain | records |
 |---|---|
-| imprecision | 17 |
-| untested-dependency | 7 |
+| imprecision | 19 |
+| untested-dependency | 9 |
 | indirectness | 5 |
 | incomplete-design | 5 |
 | inconsistency | 3 |
+| provenance | 3 |
 | selection | 1 |
-| provenance | 1 |
