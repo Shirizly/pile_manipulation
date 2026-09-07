@@ -1,11 +1,92 @@
 # Baselines/NFD — LOG
 
-Agent: A2-grid-specs. Branch `baselines/overnight`. Task: design-only spec
-for a non-FiLM NFD baseline, built on `model/UNetModels_modular.py::UNet`
-(`unet-modular` registry entry), per the user's explicit scope correction
-(originally briefed against "the UNet files" generically, then pinned to
-`UNetModels_modular.UNet`, not `NFDUNetFiLM`). No training performed, no
-existing repo file modified.
+Agent: A2-grid-specs (design), then B2-nfd-impl (implementation/training/
+scoring). Branch `baselines/overnight`. Task: non-FiLM NFD baseline, built on
+`model/UNetModels_modular.py::UNet` (`unet-modular` registry entry), per the
+user's explicit scope correction (originally briefed against "the UNet
+files" generically, then pinned to `UNetModels_modular.UNet`, not
+`NFDUNetFiLM`).
+
+---
+
+## B2-nfd-impl HANDOFF (implementation phase, read this first)
+
+**Status: implementing.** Files added, all under `Baselines/NFD/` (nothing
+outside touched): `nfd_lib.py` (dataset+model registrations), `train_nfd.py`
+(thin Trainer driver), `predictor.py` (eval-harness plug-in),
+`configs/nfd_train_3ch.yaml` (primary), `configs/nfd_train_2ch_ablation.yaml`
+(ablation, second in line per task priority).
+
+**Design decisions made while implementing (not in SPEC.md, discovered by
+reading code directly):**
+
+1. **The existing `unet-modular` factory in `registry/model_registry.py`
+   never forwards `final_kernel_size`** from its config dict — its
+   `structure_parameters` dict literally has no such key, so
+   `final_kernel_size: 1` (needed for Fig.7's 1x1 final conv) is
+   unreachable through that path no matter what the training config says.
+   Fix: `nfd_lib.py` registers a NEW model type `nfd-unet3ch` whose factory
+   builds `UNetModels_modular.UNet` directly with the full structure dict
+   (features/in_channels/final_kernel_size/residual/bottleneck_type all
+   forwarded), wrapped in the existing `EulerianTrainingWrapper`. This is a
+   new registration under `Baselines/NFD/`, not an edit to
+   `registry/model_registry.py`. Verified: `UNet({"features":[4,8,16],
+   "in_channels":3, "final_kernel_size":1, "bottleneck_type":"None",
+   "residual":True})` instantiated through this factory gives exactly
+   30,541 params (matches SPEC.md's hand-instantiated count) and
+   `final_conv` is `Conv2d(4,1,kernel_size=(1,1))`, confirmed by printing
+   the module.
+2. **3-channel input, without touching `Genesis/training/dataset.py`:**
+   `PileSweepData3Ch(PileSweepData)` in `nfd_lib.py` overrides only
+   `_create_grids` (allocates 3 channels instead of 2) and `_draw_plate`
+   (writes `draw_plate_soft(..., intensity=1.0)` into channels 1 and 2
+   separately, no `1-(1-occ1)*(1-occ2)` union). `__getitem__`,
+   `_extract_sample_in_pxl`, `_draw_particle_grid` are inherited
+   unmodified, so occupancy rasterisation/axis convention/physics
+   normalisation stay byte-identical to the register's own numbers.
+   Registered as dataset type `nfd-genesis-3ch`.
+3. **Checkpoint gotcha for the pooled config:** the pooled train dataset
+   config has `val_pct: 0, test_pct: 0` (per `ORCHESTRATION_LOG.md`'s scope
+   decision). `training/trainer.py`'s "best" checkpoint tracking uses an
+   EMPTY val loader → `val_loss` is identically `0.0` from epoch 1 onward →
+   `unet_best.pth` freezes at epoch-1 weights and never updates again
+   (`0.0 < 0.0` is False every subsequent epoch). The actually-trained
+   weights are in `unet.pth` (written unconditionally at the very end of
+   `Trainer.run()`) or the last periodic `unet_epoch_N.pth`. Both
+   `predictor.py` factories default to `unet.pth` — **do not use
+   `unet_best.pth` for this baseline's scoring.**
+4. **`EulerianCombinedLoss` (the only loss machinery `training/losses.py`
+   offers) always computes `mse` against `sigmoid(logit)`**, never the raw
+   field — this is a real, unavoidable (read-only file) deviation from
+   SPEC.md §1.5's "plain regression on a continuous field, linear output,
+   no sigmoid" recommendation. Trained with `loss.type: eulerian_combined,
+   mse: 1.0`, everything else 0 (closest reachable approximation to "plain
+   MSE, no mass term"), and `predictor.py` applies `torch.sigmoid` to the
+   model's raw output before returning it to the eval harness (same
+   convention every other UNet-family predictor in this repo already
+   uses, per `Baselines/common/LOG.md` point 2). Flagged, not silently
+   absorbed.
+5. **Channel-convention check (task step 2) PASSED.** Verified two ways
+   against `Baselines/NFD/configs/nfd_train_3ch.yaml`'s dataset, `pme` env:
+   - `occ0` (channel 0) is `torch.allclose`-identical between the new
+     3-channel dataset and the existing validated `genesis` (2-channel)
+     dataset for the same indices — confirms nothing about occupancy
+     construction changed.
+   - Per-channel **centroid** of channel 1 vs the world→pixel-converted
+     `p_start`, and of channel 2 vs `p_stop` (`PileSweepData.get_raw_action`
+     + `raw.to_pxl`/`raw.ctr_in_PXL`, dim0=world_x/dim1=world_y convention,
+     the same one `_draw_particle_grid`'s docstring documents for occ0),
+     agree to **<0.006 px** across 7 sampled transitions spanning the pool.
+     (An earlier attempt using footprint-IoU-at-a-fixed-threshold gave a
+     misleading ~0.5 IoU — a red herring caused by comparing a
+     full-intensity render against the old code's intentionally
+     *asymmetric* 0.5/1.0-intensity union at one fixed absolute threshold,
+     not a location bug; centroid comparison, which is invariant to a
+     uniform intensity rescaling, resolved it cleanly.)
+
+**Not yet done at time of this note:** training run, eval-harness scoring,
+`exp0026_kcurve_exact.py`, ablation. See "Running notes" below for
+what's in flight.
 
 ---
 

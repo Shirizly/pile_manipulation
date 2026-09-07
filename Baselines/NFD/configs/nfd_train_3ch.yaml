@@ -1,0 +1,71 @@
+# NFD (non-FiLM) primary run -- faithful action encoding.
+#
+# Per SPEC.md: in_channels=3 ([occ0, r(p_start), r(p_stop)], each a SEPARATE
+# full-intensity draw_plate_soft render -- NOT the repo's 2-channel 0.5/1.0
+# union), features=[4,8,16] (Fig.7's encoder widths, bottleneck auto-doubles
+# to 32), final_kernel_size=1 (Fig.7's last conv is 1x1), bottleneck_type=None
+# (plain DoubleConv bottleneck, no SE/FC/Transformer extra), plain MSE loss
+# (mse: 1.0, everything else 0 -- no mass term, contra the repo's current
+# best model). residual=true is a flagged deviation from Fig.7 (no residual
+# symbol shown) but matches unet-modular's own default and the current best
+# model's convention -- see SPEC.md sec 1.4/R4; ablate if time allows.
+#
+# Dataset: pooled L20mm+L40mm train (ORCHESTRATION_LOG.md scope decision),
+# same paths/val_pct/test_pct/resolution_scale/min_push_length_m as
+# configs/dataset/genesis_slates_multistep_n20_L20L40_train.yaml, just with
+# type: nfd-genesis-3ch (3-channel action) instead of type: genesis.
+model:
+  type: nfd-unet3ch
+  in_channels: 3
+  out_channels: 1
+  features: [4, 8, 16]
+  kernel_size: 3
+  final_kernel_size: 1
+  activation: relu
+  residual: true
+  bottleneck_type: "None"
+  bottleneck_kwargs: {}
+  uses_physics: false
+
+dataset:
+  type: nfd-genesis-3ch
+  paths:
+    - slates_multistep/n20_L20mm_train
+    - slates_multistep/n20_L40mm_train
+  val_pct: 0
+  test_pct: 0
+  resolution_scale: 0.5
+  include_physics: false
+  min_push_length_m: 0.0198
+  transforms:
+    - type: ensure_representation
+      representation: eulerian
+    - type: eulerian_aliases
+
+training:
+  epochs: 100
+  batch_size: 32
+  lr: 0.0001
+  lr_scheduler:
+    type: StepLR
+    step_size: 50
+    gamma: 0.75
+  augmentation: true
+  patience: 100
+  mixed_precision: true
+  grad_clip_norm: 1.0
+  save_every_n_epochs: 10
+  num_workers: 4
+  loss:
+    type: eulerian_combined
+    mse: 1.0
+    mass: 0.0
+    dice: 0.0
+    bce: 0.0
+    sharpness: 0.0
+    tv: 0.0
+    add: 0.0
+    remove: 0.0
+
+output:
+  log_dir: Baselines/NFD/runs/nfd_3ch
