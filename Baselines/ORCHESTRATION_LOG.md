@@ -28,6 +28,7 @@ is *working, plugged-in, measured* models — not good numbers.
 | Papers | 1. Dynamic-Resolution GNN · 2. NFD (UNet, **non-FiLM**) · 3. Gaussian Splatting VMPC (**from rasters of the stored states**, attempt-and-skip) · 4. Schenck "Learning Robotic Manipulation of Granular Media" CNN. Optimal-Transport paper: out of scope. |
 | Git | Commit freely on `baselines/overnight`. No push, no merge to `main`. |
 | Models | Sonnet for every subagent. |
+| NFD base | **`model/UNetModels_modular.py` (`UNet`, registry `unet-modular`), NOT `model/NFDUNetFilm.py`** (user, 2026-09-08). Consequence: `unet-modular` is `forward(x)` only and consumes no physics vector, so the action must enter **entirely through input channels** — this makes NFD's action-encoding question load-bearing. `NFDUNetFiLM` stays in the tables only as the number to beat (0.419/0.504). |
 | GNN scope | **No resolution regressor.** GNN only, at a CONSTANT node count (user, 2026-09-08). Our cells are exactly 20 cubes, so one node per cube, N=20 fixed. `Baselines/GNN/train/train_res_rgr.py`, `data_gen/res_rgr_data.py`, `dataset/dataset_res_rgr.py`, `model/res_regressor.py` are OUT OF SCOPE. |
 
 **Layout.** Every baseline lives entirely under `Baselines/<NAME>/`, with its
@@ -136,3 +137,7 @@ _(answered ones move to the decisions table above)_
   `simple_mpc/adapters.py` already carries a `GNNAdapter` — so the
   dynamic-resolution integration is a *training-data and training-loop*
   problem, not a porting problem.
+- **2026-09-08, wave A running.** User redirected the NFD baseline onto
+  `UNetModels_modular` mid-flight; A2-grid-specs was messaged with the
+  corrected target and the `unet-modular` config-key list before it finished,
+  so no rework was needed.
