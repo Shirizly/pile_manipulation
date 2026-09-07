@@ -104,7 +104,8 @@ Wave A (spawned 2026-09-08, all Sonnet, all running concurrently — none needs 
 
 | agent | scope | writes | status |
 |---|---|---|---|
-| **A4-common** | Shared infrastructure. Pooled L20+L40 train config; `data.py` (particle view + occupancy view, occupancy produced through the EXISTING registry path so grids are byte-identical to the register); `eval_baseline.py` = `expB_multistep_eval.py` generalised to a pluggable predictor. Gated on a **self-test that must reproduce `runs_expB/n20_L20mm_accuracy.json`** (mean-delta 0.08569, linear 0.30053) and the existing `slateK_exact`. | `Baselines/common/`, `configs/dataset/*L20L40*` | running |
+| **A4-common** | DONE — **self-test PASSED**, reproduces `runs_expB/n20_L20mm_accuracy.json` exactly (mean-delta 0.08569, linear 0.30053, all three per-step rows) and `slateK_exact` at every K via `exp0026_kcurve_exact.py` run unmodified. The harness is trustworthy. |
+| _(A4 original scope)_ | Shared infrastructure. Pooled L20+L40 train config; `data.py` (particle view + occupancy view, occupancy produced through the EXISTING registry path so grids are byte-identical to the register); `eval_baseline.py` = `expB_multistep_eval.py` generalised to a pluggable predictor. Gated on a **self-test that must reproduce `runs_expB/n20_L20mm_accuracy.json`** (mean-delta 0.08569, linear 0.30053) and the existing `slateK_exact`. | `Baselines/common/`, `configs/dataset/*L20L40*` | running |
 | **A1-gnn-spec** | Design doc for the dynamic-resolution GNN: graph construction, exact layer sizes from `gnn_dyn.py` + the vendored checkpoint, how the pusher enters the graph, and a **format mapping from their PyFlex `*_particles.npy` / `actions.p` to our batched `.pt`**. No resolution regressor. | `Baselines/GNN/SPEC.md`, `LOG.md` | running |
 | **A2-grid-specs** | Design docs for NFD (non-FiLM, on top of the existing UNet code) and the Schenck CNN. Must settle what NFD's action encoding actually is and whether FiLM came from the paper or from this repo. | `Baselines/NFD/SPEC.md`, `Baselines/SchenckCNN/SPEC.md`, both `LOG.md` | running |
 
@@ -125,6 +126,24 @@ stop rather than burning the night on it.
 _(answered ones move to the decisions table above)_
 
 - None outstanding at spawn time.
+
+## Verified data facts (orchestrator, measured — not inferred)
+
+Checked directly because both bear on every baseline and this repo has a
+history of frame-convention bugs (C-018):
+
+1. **Step chaining.** Env `i` at step `k+1` starts from env `i`'s own outcome
+   at step `k` (position agreement 1.4e-4 m max). So the action executed at
+   step `k` by env `i` is row `i` of that step's batch, and **multi-step
+   rollout training is reconstructable** — this RETRACTS hazard 3 of
+   `Baselines/GNN/SPEC.md`, amended in place.
+2. **Same-state structure.** Step 0's 128 envs share one start state to 1.5e-11;
+   by step 1 they have diverged (spread 0.95). This is why control utility is
+   scored at step 0 only.
+3. **`angles` is the blade FACE orientation**, `angles - atan2(p_stop-p_start)
+   == 90 deg (mod 180 deg)`, sd 1.9e-7. Mod 180, not 360 — so **the heading
+   cannot be recovered from `angles`**. Always take the heading from
+   `p_stop - p_start`. Confirms and sharpens hazard 1 of the GNN spec.
 
 ---
 

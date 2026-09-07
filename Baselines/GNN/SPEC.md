@@ -433,3 +433,61 @@ and touching a vendored file the instructions say not to modify.
    `adj_thresh`, `SOFTNESS`) right for metre-scale coordinates rather than
    in anything architectural — which is exactly why §8 recommends a cheap
    visualization check before committing to a full run.
+
+---
+
+## ORCHESTRATOR AMENDMENT — 2026-09-08, after numerical verification
+
+Two of this spec's ranked hazards were checked directly against the data. One
+is confirmed and sharpened; one is **wrong and is retracted**.
+
+### RETRACTED — "multi-step rollout is not reconstructable" (was hazard 3)
+
+The spec claims the 50x3x128 layout does not record which of a slate's 128
+candidate actions was executed to produce the next step. It does, implicitly,
+and the rule is trivial: **env `i` at step `k+1` starts from env `i`'s own
+outcome at step `k`, so the action executed by env `i` at step `k` is simply
+row `i` of that step's batch.** Each of the 128 envs runs its own independent
+rollout; the slate structure exists only at step 0, where all 128 envs share
+one start state.
+
+Measured on `n20_L20mm`, slate 0 (`_0/_1/_2_data.pt`):
+
+```
+step0 states_ vs step1 states   POSITION  max 1.4e-4 m,  mean 4e-7 m
+step0 states_ vs step1 states   QUATERNION max 2.2e-2   (sign/settle only)
+step0 state spread across the 128 envs   1.5e-11   <- same-state slate
+step1 state spread across the 128 envs   9.5e-1    <- fully diverged
+```
+
+The 0.14 mm position gap is inter-step settling, not a different state.
+
+**Consequence for the implementer:** the paper's own multi-step rollout recipe
+IS available — chain `(states[i], action[i]) -> states_[i]` across the three
+step files of a slate at fixed `i`. Single-step training (`n_rollout=1`) is
+still the recommended *starting* point on time-budget grounds, but treat
+multi-step as an available upgrade rather than as blocked. This is also exactly
+why control utility is scored at **step 0 only** — steps 1-2 are diverged
+rollouts, not same-state candidate slates.
+
+### CONFIRMED AND SHARPENED — the `angles` convention (was hazard 1)
+
+Verified exactly, sd 1.9e-7 over 128 candidates:
+
+```
+angles - atan2(p_stop - p_start)  ==  90 deg   (mod 180 deg)
+```
+
+So `angles` is the **blade face orientation**, perpendicular to the push
+heading, as the spec says. Sharpening, because it matters:
+
+- The relation holds **mod 180 deg**, not mod 360 — the raw difference is
+  90 deg for some candidates and 270 deg for others. A blade is symmetric
+  under a 180 deg rotation, so this is harmless for constructing blade
+  geometry.
+- But it means **the heading cannot be recovered from `angles`** — the sign is
+  not there. **Always derive the push heading from `p_stop - p_start`, never
+  from `angles`.** Use `angles` only where a face orientation is wanted.
+
+This is the C-018 failure mode (`docs/experiments/REGISTER.md`) waiting to
+happen again; treat it as a hard rule, not a preference.
