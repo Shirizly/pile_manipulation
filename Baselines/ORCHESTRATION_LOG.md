@@ -58,37 +58,57 @@ Everything else — the Lyapunov weight fields, the swept-region mask, the
 combinatorial K-weights — is already written, already validated against the
 register, and is reused, not reimplemented.
 
-## Reference numbers to beat (existing, per-cell UNet-FiLM, `runs_expB/*_accuracy.json`)
+## Reference numbers — READ THIS BEFORE QUOTING ANY COMPARISON
+
+**There are TWO reference tables and they are not interchangeable.** The first
+scored baseline (GNN, L20mm, 02:05) made the trap concrete.
+
+### (a) Per-cell references — the pre-existing register numbers
+
+From `runs_expB/*_accuracy.json`, each fit/trained on its OWN cell only:
 
 | model | `accuracy` L20mm | `accuracy` L40mm |
 |---|---|---|
 | persistence | 0.000 | 0.000 |
 | mean-delta | 0.086 | 0.138 |
 | linear operator | 0.301 | 0.447 |
-| UNet-FiLM (per-cell) | **0.419** | **0.504** |
+| UNet-FiLM (per-cell) | 0.419 | 0.504 |
 
-Note these were trained **per-cell**; ours are pooled, so a small difference in
-either direction is expected and is not by itself evidence about architecture.
+### (b) Pooled references — the ones our baselines must be compared against
 
-## Facts implementers should not have to rediscover
+`Baselines/common/eval_baseline.py` refits mean-delta and the linear operator on
+the **pooled L20+L40 train set**, which is what our baselines train on. Measured
+on L20mm eval:
 
-- **Training entry point** is `python -m training.train --config <cfg>` with the
-  schema in `configs/training/expB_unetfilm_slates_multistep_n20_L20mm.yaml`
-  (read it; it is the closest working precedent). Blocks: `model` / `dataset` /
-  `training` / `inference` / `output`.
-- **The existing UNet's inputs** are `in_channels: 2` (occupancy + an action
-  delta channel built by `transforms/functional.py::build_action_delta`) and
-  `cond_dim: 3` physics. Its recipe is 100 epochs, batch 32, Adam lr 1e-4,
-  StepLR(50, 0.75), mixed precision, grad clip 1.0, loss
-  `eulerian_combined` (mse 1.0 + mass 0.2).
-- **Measured training cost**: the per-cell UNet ran 90 epochs in 34.5 min on
-  11 520 transitions -> ~23 s/epoch. Pooled L20+L40 is 23 040 transitions, so
-  budget **~45-80 min per 100-epoch UNet-scale run**. Three such models fit
-  comfortably in one night on the single GPU; there is no need to cut epochs.
-- **Grid**: box 0.128 m across, `resolution_scale: 0.5` -> 64x64.
-- **Frame conventions are a known hazard** (claim C-018: occupancy and action
-  channels once placed world x on opposite grid axes). `docs/INTERFACES.md`
-  owns them. Do not invent a new rasteriser or a new axis convention; reuse.
+| model | per-cell fit | **pooled fit** |
+|---|---|---|
+| mean-delta | 0.086 | **0.054** |
+| linear operator | 0.301 | **0.200** |
+
+**Pooling costs the linear operator 10 accuracy points on L20mm** (0.301 ->
+0.200). That is not noise and not a bug: one linear map cannot serve two push
+lengths, so it fits a compromise. Every baseline's own
+`<tag>_accuracy.json` carries the correct pooled comparators in the same file
+as its own score — **use those rows, they are matched by construction.**
+
+**Do not quote a pooled model against a per-cell reference.** Doing so would
+have made the GNN look like it lost to the linear operator (0.253 vs 0.301)
+when in the matched comparison it beats it (0.253 vs 0.200). This is
+`docs/experiments/METRICS.md`'s standing warning — "compare within a
+configuration; across configurations, say so" — biting immediately.
+
+**Open question this raises for the user** (see the open-questions section): if
+pooling costs this much, per-cell training may be the better default even
+though it halves the data. The UNet-FiLM 0.419/0.504 row is per-cell, so the
+gap between our pooled baselines and "the number to beat" is partly an
+artefact of the pooling decision, not of architecture.
+
+### `goal=center` is degenerate here — use `corner`
+
+The harness reports `goal=center: helpful 0%` on these slates. That is claim
+**C-040** (`docs/experiments/REGISTER.md`): a centred convex target is
+degenerate for a centred pile, `dV = 0` identically. **Report control utility
+under `corner`**, the register's standard, and treat `center` as a null check.
 
 ## Hardware constraint
 
