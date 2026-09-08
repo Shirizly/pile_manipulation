@@ -19,10 +19,10 @@ conda activate pme && PYTHONPATH=. python Baselines/common/benchmark_time.py --f
 any output at all otherwise.)
 
 
-> **PROVISIONAL -- taken while the GPU was contended.** NFD and Schenck were both training concurrently on this card when these numbers were recorded (see `contention_details` in `timing_results.json`). Absolute latencies below are almost certainly inflated versus an idle card, and the inflation is not uniform across models (queueing depends on the other jobs' own kernel sizes) -- **do not use these to rank models by cost/candidate**, only to sanity-check the harness's methodology and units. Re-run with the command above once training finishes.
+GPU was idle (contention gate passed) when these numbers were recorded.
 
 
-Recorded: 2026-09-08T00:27:41.879195+00:00 UTC. Commit: `d456b24a` (dirty).
+Recorded: 2026-09-08T03:41:20.248668+00:00 UTC. Commit: `63f298fb`.
 
 
 ## Model size
@@ -41,21 +41,21 @@ Median [IQR], over 15 repeats (5 warm-up discarded).
 
 | model | K=1 (us/candidate) | K=32 (us/candidate) | K=128 (us/candidate) | K=1024 (us/candidate) |
 |---|---|---|---|---|
-| mean-delta | 1158.3 [1152.4, 1176.2] | 175.1 [174.3, 176.2] | 74.0 [72.8, 75.2] | 59.5 [59.1, 60.1] |
-| linear | 5170.0 [5142.7, 5242.5] | 301.1 [298.7, 303.5] | 183.9 [183.2, 185.6] | 162.8 [158.8, 164.7] |
-| gnn | 20245.4 [19680.7, 21432.8] | 3350.0 [3274.9, 3376.4] | 2954.5 [2945.8, 2982.1] | 2932.0 [2909.0, 2937.1] |
-| nfd_unet3ch | 5262.3 [5214.9, 7285.6] | 199.6 [193.7, 248.9] | 88.1 [84.0, 100.8] | 94.9 [93.4, 101.5] |
-| schenck_singlenet | 5474.1 [5323.8, 6857.1] | 678.1 [627.2, 723.7] | 920.2 [907.9, 935.0] | 892.7 [889.2, 906.1] |
+| mean-delta | 872.4 [869.1, 880.5] | 171.6 [132.4, 172.1] | 70.5 [70.1, 72.0] | 57.0 [56.8, 57.3] |
+| linear | 5043.3 [5017.9, 5069.6] | 296.4 [294.8, 297.3] | 180.1 [179.2, 181.3] | 162.6 [162.1, 163.0] |
+| gnn | 2951.5 [2947.9, 2964.0] | 866.6 [860.9, 875.8] | 832.4 [829.9, 833.9] | 820.2 [818.7, 824.0] |
+| nfd_unet3ch | 2166.3 [2143.0, 2174.4] | 80.6 [80.0, 81.7] | 38.9 [38.8, 39.0] | 37.2 [36.9, 37.3] |
+| schenck_singlenet | 1418.8 [1401.5, 1440.3] | 203.5 [201.6, 205.8] | 384.2 [381.4, 385.0] | 382.5 [371.4, 387.9] |
 
 ## Total batch latency vs. pool size K
 
 | model | K=1 (ms) | K=32 (ms) | K=128 (ms) | K=1024 (ms) |
 |---|---|---|---|---|
-| mean-delta | 1.16 [1.15, 1.18] | 5.60 [5.58, 5.64] | 9.47 [9.32, 9.63] | 60.96 [60.55, 61.54] |
-| linear | 5.17 [5.14, 5.24] | 9.63 [9.56, 9.71] | 23.54 [23.45, 23.76] | 166.66 [162.66, 168.70] |
-| gnn | 20.25 [19.68, 21.43] | 107.20 [104.80, 108.05] | 378.17 [377.06, 381.71] | 3002.35 [2978.81, 3007.63] |
-| nfd_unet3ch | 5.26 [5.21, 7.29] | 6.39 [6.20, 7.97] | 11.28 [10.75, 12.91] | 97.21 [95.68, 103.95] |
-| schenck_singlenet | 5.47 [5.32, 6.86] | 21.70 [20.07, 23.16] | 117.79 [116.21, 119.68] | 914.16 [910.54, 927.81] |
+| mean-delta | 0.87 [0.87, 0.88] | 5.49 [4.24, 5.51] | 9.02 [8.97, 9.21] | 58.35 [58.15, 58.70] |
+| linear | 5.04 [5.02, 5.07] | 9.48 [9.43, 9.51] | 23.06 [22.94, 23.21] | 166.52 [165.98, 166.94] |
+| gnn | 2.95 [2.95, 2.96] | 27.73 [27.55, 28.03] | 106.54 [106.23, 106.74] | 839.90 [838.36, 843.77] |
+| nfd_unet3ch | 2.17 [2.14, 2.17] | 2.58 [2.56, 2.61] | 4.98 [4.96, 4.99] | 38.06 [37.83, 38.22] |
+| schenck_singlenet | 1.42 [1.40, 1.44] | 6.51 [6.45, 6.58] | 49.18 [48.82, 49.28] | 391.69 [380.30, 397.25] |
 
 ## Reading this table
 - **Per-candidate us** is the number that matters for choosing a pool

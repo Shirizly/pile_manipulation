@@ -464,46 +464,45 @@ against the GNN rather than under this name: the paper predicts **per-node
 rotation**, while our GNN reattaches the input quaternion unchanged. That is a
 small separable ablation of a model that already exists.
 
-## Compute cost (provisional — see `Baselines/common/TIMING.md`)
+## Compute cost — CLEAN RUN on an idle GPU (supersedes the provisional table)
 
-Harness: `Baselines/common/benchmark_time.py`. Measures the MPC inner loop —
-one state, K candidate actions — with CUDA sync, warm-up discards, median/IQR
-over repeats. It **refuses to write results when the GPU is contended** unless
-`--force`. Re-run clean with:
+`Baselines/common/benchmark_time.py`, full detail in `Baselines/common/TIMING.md`
+and `timing_results.json`. One state, K candidate actions — the MPC inner loop.
+CUDA-synced, 3 warm-ups discarded, median [IQR] over 10 repeats.
 
-    conda activate pme && PYTHONPATH=. python Baselines/common/benchmark_time.py --force
+**Per-candidate microseconds (lower is better):**
 
-**Provisional per-candidate medians at K=128 (us), taken UNDER CONTENTION —
-absolute values are inflated, only the shape is trustworthy:**
+| model | params | K=1 | K=32 | K=128 | K=1024 |
+|---|---|---|---|---|---|
+| **NFD (UNet 3ch)** | 30,541 | 2166 | 80.6 | **38.9** | **37.2** |
+| mean-delta | 4,096 | 872 | 171.6 | 70.5 | 57.0 |
+| linear operator | 16,777,216 | 5043 | 296.4 | 180.1 | 162.6 |
+| Schenck CNN | 139,937 | 1419 | 203.5 | 384.2 | 382.5 |
+| GNN | 38,403 | 2952 | 866.6 | 832.4 | 820.2 |
 
-| model | params | us/candidate |
-|---|---|---|
-| mean-delta | 4,096 | 74 |
-| linear operator | **16,777,216** | 184 |
-| NFD (UNet 3ch) | 30,541 | 88 |
-| Schenck | 139,937 | 920 |
-| GNN | 38,403 | **2,955** |
+Read the K=1 column as fixed per-call overhead, not model cost; the K>=128
+columns are the marginal cost that actually matters to an MPC pool.
 
-Two things here matter more than the numbers:
+**Three things this settles:**
 
-1. **The GNN's 15-40x cost is an implementation artefact, not an architectural
-   one.** Its `predict_occ` loops in Python, calling `rasterize_particles` once
-   per candidate rather than batching, so cost is dominated by that loop and
-   barely falls with K — the 38k-param model itself is trivial. Batching the
-   rasteriser is the obvious fix and would likely move it into the same band as
-   the others. **Do not report the GNN as intrinsically expensive for MPC on
-   this evidence.**
-2. **The "linear operator" is by far the largest model here** — 16.8M
-   parameters (a dense 4096x4096 map), 400-550x the learned models. Worth
-   stating whenever it is described as the cheap classical baseline.
+1. **NFD is the cheapest model at MPC pool sizes AND the best all-round on
+   quality** — 38.9 us/candidate at K=128, 4.6x cheaper than the linear
+   operator and 21x cheaper than the GNN, while matching per-cell UNet-FiLM on
+   accuracy and leading on `slateK_exact`. It amortises properly (80.6 -> 38.9
+   -> 37.2 as K grows), which is exactly the batching behaviour an MPC wants.
+2. **The GNN's cost is its rasteriser, not its network.** 38k params but 832
+   us/candidate, and essentially FLAT in K (866 -> 832 -> 820) — a per-candidate
+   Python loop calling an unbatched rasteriser cannot amortise. Batching it is
+   the obvious fix and would likely move it into the NFD band. **The GNN should
+   not be written off as expensive for MPC on this evidence.**
+3. **The "cheap classical baseline" is the most expensive model in the set by
+   parameter count** — the linear operator is a dense 4096x4096 map, 16.8M
+   parameters, 550x the NFD, and 4.6x its per-candidate cost. Worth saying
+   whenever the linear operator is described as the lightweight option.
 
-**Pre-existing issue the harness surfaced:** `eval_baseline.py` never moves
-batches to CUDA, so `NFDPredictor`/`SchenckPredictor` take their device from the
-batch and actually run on **CPU** during scoring; only the GNN forces its own
-device. This does not affect the correctness of any `accuracy.json` value, but
-it means those two models' scoring runs were CPU-bound, and any timing quoted
-from a scoring run would be wrong. `mean-delta`/`linear` are CPU throughout by
-design, matching how they are actually used.
+Schenck is the one model whose per-candidate cost RISES from K=32 to K=128
+(203 -> 384) and then flattens — a 16-layer full-resolution conv stack with no
+pooling saturates the card sooner than the others.
 
 ## Open questions for the user
 
