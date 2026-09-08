@@ -2,9 +2,110 @@
 
 ## SUMMARY (agent B1-gnn-impl, implementation phase, 2026-09-08)
 
-**Status: implemented, training in progress / scored.** (Update this line as
-the run progresses; see "Running notes" below for the live trail if this
-agent crashes mid-run.)
+**Status: DONE. Trained, scored on both eval cells, beats the linear
+operator (its closest pooled-fit competitor) on `accuracy` on both cells
+and on `slateK_exact`/`regret_dv`/`worstK` at nearly every K.**
+
+### Headline numbers
+
+All rows below are **pooled-train fits** (mean-delta/linear refit on the
+same L20+L40 pool the GNN trains on, via `Baselines/common/eval_baseline.py`
+— NOT the per-cell numbers in `ORCHESTRATION_LOG.md`'s original reference
+table, which used a different, per-cell-only fit and are ~5-10 points
+higher for `linear`/`mean-delta` on this account alone. Comparing gnn's
+0.253 against the per-cell 0.301 would misread a win as a loss — see that
+file's corrected "Reference numbers" section.)
+
+**`accuracy`** (`Baselines/GNN/runs/gnn_{L20mm,L40mm}_accuracy.json`):
+
+| model | L20mm | L40mm |
+|---|---|---|
+| persistence | 0.000 | 0.000 |
+| mean-delta (pooled fit) | 0.054 | 0.118 |
+| linear (pooled fit) | 0.200 | 0.381 |
+| **gnn** | **0.253** | **0.399** |
+| oracle | 1.000 | 1.000 |
+
+GNN beats the pooled linear operator by +0.053 (L20mm) and +0.018 (L40mm).
+Also notable: GNN's per-step accuracy **rises** across the 3 rollout steps
+(L20mm: 0.239→0.251→0.270; L40mm: 0.455→0.376→0.322 — L40mm falls like
+every other model, but less steeply than linear's 0.465→0.354→0.252) while
+every reference row on L20mm falls. Plausible reading: the GNN's
+message-passing graph re-derives local structure from `s_cur` at every
+step rather than extrapolating a single global operator, so it degrades
+more gracefully off-distribution (steps 1-2 are diverged rollouts, not
+same-state slates, per `ORCHESTRATOR AMENDMENT`) — not independently
+verified, flagged as a hypothesis.
+
+**`slateK_exact` / `regret_dv` / `worstK`** at K=32 and K=128, goal=`corner`
+only (goal=`center` is claim C-040's known degeneracy — centred target,
+centred pile, `dV=0` identically, "helpful 0%" is not a model failure,
+confirmed in both cells' eval_baseline.py output):
+
+| metric | model | L20mm K=32 | L20mm K=128 | L40mm K=32 | L40mm K=128 |
+|---|---|---|---|---|---|
+| slateK_exact ↑ | linear | 0.9524 | 0.9521 | 0.9787 | **0.9887** |
+| slateK_exact ↑ | **gnn** | **0.9729** | **0.9658** | **0.9892** | 0.9870 |
+| regret_dv ↓ | linear | 0.0020 | 0.0025 | 0.0028 | **0.0016** |
+| regret_dv ↓ | **gnn** | **0.0012** | **0.0018** | **0.0015** | 0.0031 |
+| worstK ↓ | linear | 0.7074 | 0.0099 | 0.6601 | **0.0048** |
+| worstK ↓ | **gnn** | **0.5279** | **-0.0223** | **0.4236** | 0.0060 |
+
+**Honest caveat — a real crossover, not a bug.** GNN wins clearly at every
+K on L20mm and at K≤64 on L40mm. But at **K=128 on L40mm specifically**,
+linear edges narrowly ahead on all three control-ranking metrics
+(slateK_exact 0.9887 vs 0.9870; regret_dv 0.0016 vs 0.0031; worstK 0.0048
+vs 0.0060) even though GNN still leads that same cell's `accuracy` (0.399
+vs 0.381) and every smaller-K ranking metric. K=128 is the full 128-
+candidate pool (the "pick literally the single best of everything" limit,
+where `slateK`'s own denominator structure per METRICS.md gets noisy at
+the tail) — investigated only enough to confirm both dV caches' step-0
+subsets have the correct 20 slates x 128 candidates structure and the
+crossover is not a plumbing artifact; not chased further given the
+overnight time budget. Reported as-is rather than cherry-picking K.
+
+**Ranking correlation (rho, within-slate, from `exp0026_kcurve.py`'s
+bivariate-normal diagnostic):** gnn 0.948 (L20mm) vs linear 0.877 — GNN's
+predicted-dV ranking tracks true dV noticeably more tightly than the
+linear operator's.
+
+### Geometry/training choices (recap; see full detail further down)
+
+- `adj_thresh = 0.012` m, `pusher_w = 0.02` m (sourced from the blade's own
+  `plate.size` in a cell's `_0_config.yaml`), `softness = 0.01` m (kept
+  from the reference recipe), `particle_dens` fixed at 1000.0 (not
+  measured/sampled) — all chosen/verified by `check_geometry.py` BEFORE
+  training (see below), not guessed.
+- Heading is derived ONLY from `p_stop - p_start`; `angles` is never read
+  (confirmed hazard: it's the blade face orientation, recoverable only mod
+  180°, not the travel heading — see SPEC.md and ORCHESTRATION_LOG.md).
+- Trained single-step (`n_rollout=1`) on the pooled 23,040-transition
+  L20mm+L40mm train split, 500 epochs, Adam lr=1e-3, batch 128,
+  StepLR(100,0.5); best checkpoint at epoch 400, val_mse 3.05e-6 (mild,
+  unremarkable overfit — final train_mse 2.38e-6 vs val_mse 3.07e-6).
+  ~1206s (20 min) total wall-clock on the shared GPU.
+- Model has no orientation head (by construction, `model/gnn_dyn.py`only
+  predicts xyz) — `predictor.py` reattaches the INPUT frame's quaternion
+  unchanged before rasterising, rather than inventing one. This is a
+  known capability gap flagged in SPEC.md hazard/§6, not a bug.
+
+### Hazards the next agent should know
+
+1. **Per-cell vs pooled reference numbers are NOT directly comparable** —
+   see the "Headline numbers" note above. Always compare against
+   `Baselines/GNN/runs/gnn_*_accuracy.json`'s own `mean-delta`/`linear`
+   rows (refit on the same pool the model being judged trained on), not
+   `ORCHESTRATION_LOG.md`'s original per-cell table.
+2. **`Baselines/common/gpu_lock.sh` changed mid-run** (from a single
+   exclusive flock to a 3-slot semaphore) while this agent was mid-flight
+   — a transient race during that edit caused one early invocation to
+   fail with a bash syntax error (file caught mid-write); retrying a
+   moment later worked fine. Not this baseline's bug; flagged in case
+   another agent hits the same transient during a concurrent edit.
+3. **goal=`center`'s `dv_true` is identically ~0 (helpful 0%)** for both
+   cells — this is claim C-040's known degeneracy (centred goal + already
+   roughly-centred pile), not something wrong with the GNN or the harness.
+   Score/report `goal=corner` for control-ranking metrics.
 
 **Files delivered (all new, per SPEC.md section 7 — none of the vendored
 `Baselines/GNN/{dataset,train,model}/*` files were touched):**

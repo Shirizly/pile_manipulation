@@ -1,0 +1,48 @@
+{
+  "tag": "gnn_L40mm",
+  "provenance": {
+    "commit": "a6c1d58c",
+    "commit_full": "a6c1d58c4468cf523652368b89288fbc096d6b1e",
+    "dirty": true,
+    "dirty_files": [
+      "Baselines/NFD/configs/nfd_train_2ch_ablation.yaml",
+      "Baselines/NFD/configs/nfd_train_3ch.yaml",
+      "Baselines/NFD/predictor.py",
+      "Baselines/SchenckCNN/LOG.md"
+    ],
+    "branch": "baselines/overnight"
+  },
+  "n_eval": 7680,
+  "accuracy": {
+    "persistence": 0.0,
+    "mean-delta": 0.11823928356170654,
+    "linear": 0.38111335039138794,
+    "gnn": 0.3991153836250305,
+    "oracle": 1.0
+  },
+  "accuracy_by_step": {
+    "0": {
+      "persistence": 0.0,
+      "mean-delta": 0.17593419551849365,
+      "linear": 0.46537476778030396,
+      "gnn": 0.45472919940948486,
+      "oracle": 1.0
+    },
+    "1": {
+      "persistence": 0.0,
+      "mean-delta": 0.104644775390625,
+      "linear": 0.3544941544532776,
+      "gnn": 0.3758205771446228,
+      "oracle": 1.0
+    },
+    "2": {
+      "persistence": 0.0,
+      "mean-delta": 0.02404022216796875,
+      "linear": 0.2524595856666565,
+      "gnn": 0.3217514753341675,
+      "oracle": 1.0
+    }
+  },
+  "n_slates_step0": 20,
+  "n_step0": 2560
+}
