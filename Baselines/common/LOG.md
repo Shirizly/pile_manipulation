@@ -126,3 +126,67 @@ PASSED.**
   alongside the reference rows.
 - Committed `data.py` + pooled config first (agents were blocked on data.py
   in particular); `eval_baseline.py` committed once its self-test passed.
+
+## D1-timing: MPC candidate-pool timing harness
+
+Agent: D1-timing. Added `Baselines/common/benchmark_time.py` -- measures the
+wall-clock cost of `predict_occ` over a batch of K candidate actions from ONE
+state (the MPC inner-loop shape), for K in {1,32,128,1024}, over every
+predictor the scorer can plug in (`mean-delta`, `linear`, `gnn`,
+`nfd_unet3ch`, `schenck_singlenet`). Reuses `eval_baseline.py`'s
+`PredictorBatch` and `Baselines.common.data.load_cell` directly rather than
+inventing a second batch format; the reference operators are fit with
+`eval_baseline.py`'s own `fit_operator`/`canonicalise`/`predict_world`/
+`predict_meandelta` calls (same `R`/`CR`/`RIDGE`), just on the smaller
+single-cell `L20mm_train` set since fitting speed doesn't matter here (it's
+one-time setup, not a timed region).
+
+**Methodology**: `torch.cuda.synchronize()` before/after each timed call,
+>=3 (default 5) discarded warm-up iterations, >=10 (default 15) timed
+repeats, median+IQR reported (not mean/single-sample). Device is verified
+per model AFTER the call (`next(model.parameters()).device`), not assumed.
+
+**Real bug this caught**: the harness's own `--device cuda` default broke
+`mean-delta`/`linear` on first run (`RuntimeError: ... cuda:0 and cpu`) --
+their fitted operators (`A`/`bmd`) are CPU tensors (never ported to GPU, see
+`eval_baseline.py`), but the candidate batch was built on CUDA for the
+neural predictors. Fixed by pulling `occ0`/`actions` back to `.cpu()` inside
+those two predictors' closures rather than moving `A`/`bmd` per call.
+
+**A pre-existing device inconsistency this surfaced, not introduced**: as
+`eval_baseline.py` actually invokes them today, `NFDPredictor`/
+`SchenckPredictor` derive their compute device from `batch.occ0.device`,
+and `Baselines.common.data.load_cell` never moves tensors to CUDA -- so
+those two currently run on CPU in the scorer regardless of checkpoint
+training device. Only `GNNPredictor` forces its own (cuda-if-available)
+device internally. This harness's `--device` flag lets NFD/Schenck be timed
+on GPU (to represent an eventual production path) without changing
+`eval_baseline.py`; flagged here since it means today's *scored* numbers
+(`accuracy.json`) for NFD/Schenck were computed on CPU, not GPU -- worth
+knowing if anyone benchmarks scoring wall-clock itself, distinct from this
+harness's own predict_occ timing.
+
+**GPU-contention gate**: checks `torch.cuda.mem_get_info()` (>10% of the 8 GB
+card used is suspicious for these sub-200k-parameter models) and scans `ps`
+for this repo's own training entry points
+(`train_nfd.py`/`train_schenck.py`/`training/train.py`/`gpu_lock.sh`).
+Refuses to write any output without `--force`. Verified live: NFD
+(`train_nfd.py`, pid 522056) and Schenck (`train_schenck.py`, pid 523474)
+were both training concurrently throughout this agent's run, and the gate
+correctly refused by default and required `--force` to record.
+
+**Numbers in `Baselines/common/TIMING.md`/`timing_results.json` right now
+are PROVISIONAL** (recorded under the contention above, via `--force`) --
+labelled as such in `TIMING.md`, which documents the one-line re-run command
+for an idle GPU. Provisional per-candidate medians (us, K=128): mean-delta
+74.0, linear 183.9, gnn 2954.5, nfd_unet3ch 88.1, schenck_singlenet 920.2.
+Qualitative shape likely to survive an idle re-run even if absolute numbers
+don't: GNN's Python-loop particle rasterisation (`rasterize_particles`,
+one OpenCV call per candidate, not batched) makes it by far the most
+expensive per candidate and the least K-dependent; mean-delta/linear (CPU)
+and the UNet-family (GPU) are far cheaper and their per-candidate cost keeps
+dropping with K since their whole `predict_occ` is one batched tensor op.
+
+Files added: `Baselines/common/benchmark_time.py`,
+`Baselines/common/timing_results.json`, `Baselines/common/TIMING.md`. Did
+not touch `eval_baseline.py`/`data.py`/`gpu_lock.sh`.

@@ -1,0 +1,370 @@
+{
+  "timestamp": "2026-09-08T00:27:41.879195+00:00",
+  "provenance": {
+    "commit": "d456b24a",
+    "commit_full": "d456b24a441bf6686d6bbfea0880e21bd5935a5e",
+    "dirty": true,
+    "dirty_files": [
+      "Baselines/NFD/configs/nfd_train_2ch_ablation.yaml",
+      "Baselines/NFD/configs/nfd_train_3ch.yaml",
+      "Baselines/NFD/predictor.py",
+      "Baselines/SchenckCNN/LOG.md"
+    ],
+    "branch": "baselines/overnight"
+  },
+  "contended": true,
+  "contention_details": {
+    "cuda_available": true,
+    "free_bytes": 7298940928,
+    "total_bytes": 8186822656,
+    "used_frac": 0.1085,
+    "other_training_processes": [
+      " 448326 /bin/bash -c source /home/alon/.claude/shell-snapshots/snapshot-bash-1788704943695-b299yp.sh 2>/dev/null || true && shopt -u extglob 2>/dev/null || true && { \\builtin unalias -- 'unsetenv'; \\builtin unset -f -- 'unsetenv'; } >/dev/null 2>&1 || true && eval 'while pgrep -f \"training.train configs/training/expB_unetfilm_slates_multistep_n20_L20mm\" > /dev/null 2>&1; do sleep 60; done; echo \"L20mm training finished\"; ls -la /home/alon/Code/pile_manipulation/runs_expB/unetfilm_slates_multistep_n20_L20mm/unet_best.pth 2>/dev/null | awk '\"'\"'{print \"checkpoint:\", $5, \"bytes\"}'\"'\"'; tail -1 /home/alon/Code/pile_manipulation/runs/expB_train_L20mm.log | tr '\"'\"'\\r'\"'\"' '\"'\"'\\n'\"'\"' | tail -1 | cut -c1-90' < /dev/null && pwd -P >| /tmp/claude-0088-cwd",
+      " 521780 bash Baselines/common/gpu_lock.sh python Baselines/NFD/train_nfd.py Baselines/NFD/configs/nfd_train_3ch.yaml",
+      " 521955 /bin/bash -c source /home/alon/.claude/shell-snapshots/snapshot-bash-1788821835048-cddgpx.sh 2>/dev/null || true && shopt -u extglob 2>/dev/null || true && { \\builtin unalias -- 'unsetenv'; \\builtin unset -f -- 'unsetenv'; } >/dev/null 2>&1 || true && eval 'source /home/alon/anaconda3/etc/profile.d/conda.sh && conda activate pme && bash Baselines/common/gpu_lock.sh python Baselines/SchenckCNN/train_schenck.py --epochs 100 --ckpt-every 10 --out Baselines/SchenckCNN/runs/schenck.pth 2>&1 | tee /tmp/claude-1000/-home-alon-Code-pile-manipulation/ab71672e-e1ed-47ee-b76a-a50456968c32/scratchpad/schenck_fulltrain.log' < /dev/null && pwd -P >| /tmp/claude-034e-cwd",
+      " 522056 python Baselines/NFD/train_nfd.py Baselines/NFD/configs/nfd_train_3ch.yaml",
+      " 523465 bash Baselines/common/gpu_lock.sh python Baselines/SchenckCNN/train_schenck.py --epochs 100 --ckpt-every 10 --out Baselines/SchenckCNN/runs/schenck.pth",
+      " 523474 python Baselines/SchenckCNN/train_schenck.py --epochs 100 --ckpt-every 10 --out Baselines/SchenckCNN/runs/schenck.pth",
+      " 526800 python Baselines/NFD/train_nfd.py Baselines/NFD/configs/nfd_train_3ch.yaml",
+      " 526801 python Baselines/NFD/train_nfd.py Baselines/NFD/configs/nfd_train_3ch.yaml",
+      " 526802 python Baselines/NFD/train_nfd.py Baselines/NFD/configs/nfd_train_3ch.yaml",
+      " 526803 python Baselines/NFD/train_nfd.py Baselines/NFD/configs/nfd_train_3ch.yaml"
+    ]
+  },
+  "device_requested": "cuda",
+  "ks": [
+    1,
+    32,
+    128,
+    1024
+  ],
+  "warmup": 5,
+  "repeats": 15,
+  "results": {
+    "mean-delta": {
+      "error": null,
+      "ckpt_path": null,
+      "device_actual": "cpu",
+      "param_count": 4096,
+      "ckpt_bytes": null,
+      "by_k": {
+        "1": {
+          "total_ms": {
+            "median": 1.1582750012166798,
+            "q1": 1.1523620050866157,
+            "q3": 1.1762119829654694,
+            "n": 15
+          },
+          "per_candidate_us": {
+            "median": 1158.2750012166798,
+            "q1": 1152.3620050866157,
+            "q3": 1176.2119829654694,
+            "n": 15
+          }
+        },
+        "32": {
+          "total_ms": {
+            "median": 5.602705001365393,
+            "q1": 5.577820003964007,
+            "q3": 5.639055016217753,
+            "n": 15
+          },
+          "per_candidate_us": {
+            "median": 175.08453129266854,
+            "q1": 174.30687512387522,
+            "q3": 176.2204692568048,
+            "n": 15
+          }
+        },
+        "128": {
+          "total_ms": {
+            "median": 9.47353703668341,
+            "q1": 9.321544028352946,
+            "q3": 9.630386513890699,
+            "n": 15
+          },
+          "per_candidate_us": {
+            "median": 74.01200809908914,
+            "q1": 72.82456272150739,
+            "q3": 75.23739463977108,
+            "n": 15
+          }
+        },
+        "1024": {
+          "total_ms": {
+            "median": 60.955182008910924,
+            "q1": 60.5456854973454,
+            "q3": 61.535301501862705,
+            "n": 15
+          },
+          "per_candidate_us": {
+            "median": 59.526544930577074,
+            "q1": 59.12664599350137,
+            "q3": 60.0930678729128,
+            "n": 15
+          }
+        }
+      }
+    },
+    "linear": {
+      "error": null,
+      "ckpt_path": null,
+      "device_actual": "cpu",
+      "param_count": 16777216,
+      "ckpt_bytes": null,
+      "by_k": {
+        "1": {
+          "total_ms": {
+            "median": 5.170039017684758,
+            "q1": 5.142736510606483,
+            "q3": 5.242520535830408,
+            "n": 15
+          },
+          "per_candidate_us": {
+            "median": 5170.039017684758,
+            "q1": 5142.736510606483,
+            "q3": 5242.520535830408,
+            "n": 15
+          }
+        },
+        "32": {
+          "total_ms": {
+            "median": 9.63430805131793,
+            "q1": 9.557282493915409,
+            "q3": 9.71280550584197,
+            "n": 15
+          },
+          "per_candidate_us": {
+            "median": 301.0721266036853,
+            "q1": 298.6650779348565,
+            "q3": 303.5251720575616,
+            "n": 15
+          }
+        },
+        "128": {
+          "total_ms": {
+            "median": 23.535983986221254,
+            "q1": 23.449147993233055,
+            "q3": 23.75730048515834,
+            "n": 15
+          },
+          "per_candidate_us": {
+            "median": 183.87487489235355,
+            "q1": 183.19646869713324,
+            "q3": 185.60391004029952,
+            "n": 15
+          }
+        },
+        "1024": {
+          "total_ms": {
+            "median": 166.65952099720016,
+            "q1": 162.65987648512237,
+            "q3": 168.69871152448468,
+            "n": 15
+          },
+          "per_candidate_us": {
+            "median": 162.75343847382828,
+            "q1": 158.8475356300023,
+            "q3": 164.74483547312957,
+            "n": 15
+          }
+        }
+      }
+    },
+    "gnn": {
+      "error": null,
+      "ckpt_path": "Baselines/GNN/runs/ckpt_best.pth",
+      "device_actual": "cuda:0",
+      "param_count": 38403,
+      "ckpt_bytes": 161629,
+      "by_k": {
+        "1": {
+          "total_ms": {
+            "median": 20.245364983566105,
+            "q1": 19.680688477819785,
+            "q3": 21.43284003250301,
+            "n": 15
+          },
+          "per_candidate_us": {
+            "median": 20245.364983566105,
+            "q1": 19680.688477819785,
+            "q3": 21432.84003250301,
+            "n": 15
+          }
+        },
+        "32": {
+          "total_ms": {
+            "median": 107.19850996974856,
+            "q1": 104.79616597876884,
+            "q3": 108.04630850907415,
+            "n": 15
+          },
+          "per_candidate_us": {
+            "median": 3349.9534365546424,
+            "q1": 3274.8801868365263,
+            "q3": 3376.4471409085672,
+            "n": 15
+          }
+        },
+        "128": {
+          "total_ms": {
+            "median": 378.1744840089232,
+            "q1": 377.0607314945664,
+            "q3": 381.7073924874421,
+            "n": 15
+          },
+          "per_candidate_us": {
+            "median": 2954.4881563197123,
+            "q1": 2945.7869648013,
+            "q3": 2982.0890038081416,
+            "n": 15
+          }
+        },
+        "1024": {
+          "total_ms": {
+            "median": 3002.3508069571108,
+            "q1": 2978.8054785167333,
+            "q3": 3007.6313395111356,
+            "n": 15
+          },
+          "per_candidate_us": {
+            "median": 2931.9832099190535,
+            "q1": 2908.9897251139973,
+            "q3": 2937.1399799913434,
+            "n": 15
+          }
+        }
+      }
+    },
+    "nfd_unet3ch": {
+      "error": null,
+      "ckpt_path": "Baselines/NFD/runs/nfd_3ch/unet_best.pth",
+      "device_actual": "cuda:0",
+      "param_count": 30541,
+      "ckpt_bytes": 155923,
+      "by_k": {
+        "1": {
+          "total_ms": {
+            "median": 5.262302001938224,
+            "q1": 5.214897508267313,
+            "q3": 7.2856079787015915,
+            "n": 15
+          },
+          "per_candidate_us": {
+            "median": 5262.302001938224,
+            "q1": 5214.897508267313,
+            "q3": 7285.6079787015915,
+            "n": 15
+          }
+        },
+        "32": {
+          "total_ms": {
+            "median": 6.387620000168681,
+            "q1": 6.197596521815285,
+            "q3": 7.965870521729812,
+            "n": 15
+          },
+          "per_candidate_us": {
+            "median": 199.61312500527129,
+            "q1": 193.67489130672766,
+            "q3": 248.93345380405663,
+            "n": 15
+          }
+        },
+        "128": {
+          "total_ms": {
+            "median": 11.281186016276479,
+            "q1": 10.750273999292403,
+            "q3": 12.906878517242149,
+            "n": 15
+          },
+          "per_candidate_us": {
+            "median": 88.13426575215999,
+            "q1": 83.9865156194719,
+            "q3": 100.83498841595429,
+            "n": 15
+          }
+        },
+        "1024": {
+          "total_ms": {
+            "median": 97.20504301367328,
+            "q1": 95.67625500494614,
+            "q3": 103.95460951258428,
+            "n": 15
+          },
+          "per_candidate_us": {
+            "median": 94.92679981804031,
+            "q1": 93.43384277826772,
+            "q3": 101.51817335213309,
+            "n": 15
+          }
+        }
+      }
+    },
+    "schenck_singlenet": {
+      "error": null,
+      "ckpt_path": "Baselines/SchenckCNN/runs/schenck.pth",
+      "device_actual": "cuda:0",
+      "param_count": 139937,
+      "ckpt_bytes": 571261,
+      "by_k": {
+        "1": {
+          "total_ms": {
+            "median": 5.474125035107136,
+            "q1": 5.323768476955593,
+            "q3": 6.857084023067728,
+            "n": 15
+          },
+          "per_candidate_us": {
+            "median": 5474.125035107136,
+            "q1": 5323.768476955593,
+            "q3": 6857.084023067728,
+            "n": 15
+          }
+        },
+        "32": {
+          "total_ms": {
+            "median": 21.697700954973698,
+            "q1": 20.06962601444684,
+            "q3": 23.158224998041987,
+            "n": 15
+          },
+          "per_candidate_us": {
+            "median": 678.053154842928,
+            "q1": 627.1758129514637,
+            "q3": 723.6945311888121,
+            "n": 15
+          }
+        },
+        "128": {
+          "total_ms": {
+            "median": 117.7863260381855,
+            "q1": 116.21196148917079,
+            "q3": 119.67956947046332,
+            "n": 15
+          },
+          "per_candidate_us": {
+            "median": 920.2056721733243,
+            "q1": 907.9059491341468,
+            "q3": 934.9966364879947,
+            "n": 15
+          }
+        },
+        "1024": {
+          "total_ms": {
+            "median": 914.1595090040937,
+            "q1": 910.5391690100078,
+            "q3": 927.8103505203035,
+            "n": 15
+          },
+          "per_candidate_us": {
+            "median": 892.7338955118103,
+            "q1": 889.1984072363357,
+            "q3": 906.0647954299839,
+            "n": 15
+          }
+        }
+      }
+    }
+  }
+}
