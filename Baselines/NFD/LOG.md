@@ -11,11 +11,13 @@ files" generically, then pinned to `UNetModels_modular.UNet`, not
 
 ## B2-nfd-impl HANDOFF (implementation phase, read this first)
 
-**Status: implementing.** Files added, all under `Baselines/NFD/` (nothing
-outside touched): `nfd_lib.py` (dataset+model registrations), `train_nfd.py`
-(thin Trainer driver), `predictor.py` (eval-harness plug-in),
-`configs/nfd_train_3ch.yaml` (primary), `configs/nfd_train_2ch_ablation.yaml`
-(ablation, second in line per task priority).
+**Status: DONE.** Working model trained and scored on both eval cells
+(primary 3-channel run), plus the 2-channel ablation trained and scored.
+Files added, all under `Baselines/NFD/` (nothing outside touched):
+`nfd_lib.py` (dataset+model registrations), `train_nfd.py` (thin Trainer
+driver), `predictor.py` (eval-harness plug-in), `configs/nfd_train_3ch.yaml`
+(primary), `configs/nfd_train_2ch_ablation.yaml` (ablation). Headline
+numbers and the ablation result are in the tables further down this file.
 
 **Design decisions made while implementing (not in SPEC.md, discovered by
 reading code directly):**
@@ -335,5 +337,44 @@ run, any modification to `model/UNetModels_modular.py`,
   `--ks 2,4,8,16,32,64,128`, `--goal corner`. See numbers table above.
   Outputs: `Baselines/NFD/runs/nfd_{L20mm,L40mm}_{accuracy.json,
   dv_cache.pt,kcurve_exact.json,kcurve_sampled.json}`.
-- Next: 2-channel ablation (`nfd_train_2ch_ablation.yaml`), strictly after
-  this commit, per task priority order.
+- 2-channel ablation (`nfd_train_2ch_ablation.yaml`) trained after the
+  primary run's commit, per task priority order: 100 epochs, GPU uncontended
+  this time (other agents' jobs had finished), ~1h27m wall clock (vs ~2h02m
+  for the primary run, entirely explained by GPU contention, not the
+  1-channel-narrower input). Best val loss 0.006459 (epoch 99), test
+  `hard_iou`=0.706 — essentially identical to the 3-channel run's 0.706.
+  Scored both eval cells (`Baselines.NFD.predictor:build_predictor_2ch_ablation`)
+  and ran `exp0026_kcurve_exact.py`. See ablation table below.
+
+## Ablation result: 3-channel (faithful) vs 2-channel (repo's own union)
+
+Same architecture/recipe/loss throughout (`features=[4,8,16]`,
+`final_kernel_size=1`, `bottleneck_type=None`, `residual=true`, plain MSE,
+100 epochs, pooled L20mm+L40mm train, `val_pct/test_pct=5/5`) — only the
+action-channel encoding differs (`nfd-genesis-3ch` dataset, in_channels=3
+vs the existing `genesis` dataset, in_channels=2).
+
+| metric | L20mm 3ch | L20mm 2ch | L40mm 3ch | L40mm 2ch |
+|---|---|---|---|---|
+| `accuracy` | 0.4158 | **0.4211** | 0.5124 | **0.5145** |
+| `slateK_exact` K=32 | 0.9751 | **0.9767** | 0.9893 | **0.9900** |
+| `slateK_exact` K=128 | **0.9646** | 0.9580 | **0.9925** | 0.9904 |
+| test `hard_iou` | 0.706 | 0.706 | — | — |
+
+**Honest finding: at this model scale (30.5K params) and dataset size
+(~23K pooled transitions), the 3-channel split action encoding does NOT show
+a measurable, consistent advantage over the repo's existing 2-channel
+0.5/1.0-intensity union.** Differences are small in both directions (2ch
+slightly ahead on raw `accuracy` and `slateK_exact` at K=32; 3ch slightly
+ahead at K=128) and well within what a single training seed's noise could
+produce — this is a null result, not a "3ch wins" or "2ch wins" result, and
+it should be reported as such rather than rounded toward either direction.
+
+This does NOT contradict SPEC.md's Appendix-C.4 evidence (DVF vs
+"DVF-Improved", a ~3-4x error reduction) — that ablation compares a
+**vector-based** action representation against a **field-based** one; both
+arms trained here are already field-based (`draw_plate_soft` renders in
+both), so this ablation tests a narrower, different question (union vs.
+split within an already-field-based encoding) and the paper gives no
+evidence either way on that specific question. Do not cite this result as
+evidence about the paper's actual headline claim.
