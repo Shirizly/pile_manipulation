@@ -256,6 +256,41 @@ stop rather than burning the night on it.
 
 ---
 
+## RESULTS
+
+All figures are **pooled-trained** models scored on held-out eval cells, with
+the **pooled** reference rows (see the reference-numbers section — do not
+compare these against the per-cell register table).
+
+### `accuracy` (swept region, all 3 steps, n=7680 per cell)
+
+| model | L20mm | L40mm |
+|---|---|---|
+| persistence | 0.0000 | — |
+| mean-delta (pooled fit) | 0.0544 | — |
+| linear operator (pooled fit) | 0.2004 | — |
+| **GNN (dynamic-resolution, N=20)** | **0.2527** | pending |
+| NFD 3-channel | training | training |
+| Schenck CNN | training | training |
+
+### Control utility, `goal=corner`, step-0 slates (20 slates x 128 candidates)
+
+| model | `slateK_exact` K=128 | K=2 | `regret_dv` K=128 | spearman |
+|---|---|---|---|---|
+| linear operator | 0.952 | 0.919 | 0.0025 | 0.877 |
+| **GNN** | **0.966** | **0.955** | **0.0018** | **0.948** |
+
+**The GNN wins on both axes**, which is not the usual pattern in this register —
+C-030/C-035/C-044 are largely a record of image accuracy and control utility
+*dissociating*. Here the GNN is ahead on accuracy (+5 pts over pooled linear),
+ahead on `slateK_exact` at every K, and lower-regret at every K.
+
+One structural detail worth keeping: **the GNN is the only model whose accuracy
+RISES across rollout steps** (0.239 -> 0.251 -> 0.270) while every reference row
+falls (linear 0.214 -> 0.197 -> 0.190). A particle-space model does not
+accumulate the grid-space blur that a field model does, which is the obvious
+hypothesis and is cheap to test later.
+
 ## Open questions for the user
 
 _(answered ones move to the decisions table above)_
