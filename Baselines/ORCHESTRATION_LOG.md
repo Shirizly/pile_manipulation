@@ -526,11 +526,27 @@ columns are the marginal cost that actually matters to an MPC pool.
    equivalent), but per-candidate cost only fell **832 -> 685 us at K=128, ~18%**,
    and it is still nearly flat in K (851 -> 685 -> 672). The GNN remains ~18x
    NFD. So the earlier claim in this log that batching "would likely move it
-   into the NFD band" is **retracted**: most of the cost lies elsewhere
-   (graph construction per candidate — edges are rebuilt on anticipated
-   post-action positions, so topology is action-dependent and cannot be shared
-   across candidates the way a conv stack's weights are). That is an
-   architectural property, not an implementation slip.
+   into the NFD band" is **retracted**. The remaining cost is **20 separate
+   per-particle `cv2.fillPoly` calls per candidate** — the batching removed the
+   Python loop over candidates and vectorised the coordinate/quaternion maths,
+   but each candidate's own per-particle CPU rasterisation is untouched.
+   (An earlier orchestrator guess that graph construction was the cause is also
+   wrong — the agent's measurement locates it in cv2, not the network or the
+   graph.) Collapsing the 20 calls into one is the obvious next step and is
+   **not safe naively** — see the fillPoly trap below.
+
+   **A real trap, caught before it corrupted any score:** collapsing the 20
+   per-particle `fillPoly` calls into a single multi-polygon call looks
+   equivalent and is not. `cv2.fillPoly` fills a polygon list under an
+   **even-odd rule**, which XORs overlapping regions — and these cube piles
+   overlap constantly, so overlapping cubes would have been erased to zero.
+   `Baselines/GNN/scripts/verify_rasterizer.py` caught it before it reached
+   scoring. Any future attempt at this needs a union-aware fill, not a
+   polygon list.
+
+   Equivalence of the batched path was verified **bit-identical** (max abs
+   diff 0.0) against the original on 400 real eval candidates, and both cells
+   re-scored unchanged (L20mm 0.25271278619766235 to full float precision).
 3. **The "cheap classical baseline" is the most expensive model in the set by
    parameter count** — the linear operator is a dense 4096x4096 map, 16.8M
    parameters, 550x the NFD, and 4.6x its per-candidate cost. Worth saying
