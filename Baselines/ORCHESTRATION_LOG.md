@@ -363,6 +363,25 @@ n to 5-11 pools). Do not read it as a real ordering either way.
 **NFD is the best all-round baseline of the three**: near-top accuracy, top or
 near-top control utility on both cells, no dissociation, and ~30k parameters.
 
+### The 3-channel action encoding is a NULL RESULT — correcting an earlier claim
+
+Wave A framed the 2-channel union as the repo losing information the paper
+keeps, and this log called it "the live architectural question". **Measured, it
+is not.** Same recipe, same architecture, only the action encoding changed:
+
+| | `accuracy` L20 / L40 | `slateK_exact` K=128 L20 / L40 |
+|---|---|---|
+| 3-channel (paper-faithful) | 0.4158 / 0.5124 | 0.9646 / 0.9925 |
+| 2-channel (repo's union) | **0.4211 / 0.5145** | 0.9580 / 0.9904 |
+
+Val loss 0.006445 (3ch) vs 0.006459 (2ch). The union is very slightly ahead on
+accuracy, the split very slightly ahead on control, and every gap is far inside
+what 20 slates can resolve. **The split buys nothing measurable at this model
+and dataset scale**; the repo's existing encoding was not costing anything.
+
+Recorded because the opposite was asserted earlier in this log on the strength
+of reading the paper alone. Running the ablation is why we know.
+
 ### Schenck CNN — best accuracy so far, but it dissociates at K=128
 
 **Accuracy 0.512 / 0.559 beats the per-cell UNet-FiLM (0.419 / 0.504) on both
