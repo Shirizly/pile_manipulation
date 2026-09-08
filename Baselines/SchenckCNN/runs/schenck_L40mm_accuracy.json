@@ -1,0 +1,48 @@
+{
+  "tag": "schenck_L40mm",
+  "provenance": {
+    "commit": "7a2583d2",
+    "commit_full": "7a2583d26aa78067c688b0c0a7ee3553449fb2d6",
+    "dirty": true,
+    "dirty_files": [
+      "Baselines/NFD/configs/nfd_train_2ch_ablation.yaml",
+      "Baselines/NFD/configs/nfd_train_3ch.yaml",
+      "Baselines/NFD/predictor.py",
+      "Baselines/SchenckCNN/LOG.md"
+    ],
+    "branch": "baselines/overnight"
+  },
+  "n_eval": 7680,
+  "accuracy": {
+    "persistence": 0.0,
+    "mean-delta": 0.11823928356170654,
+    "linear": 0.38111335039138794,
+    "schenck_singlenet": 0.5593002438545227,
+    "oracle": 1.0
+  },
+  "accuracy_by_step": {
+    "0": {
+      "persistence": 0.0,
+      "mean-delta": 0.17593419551849365,
+      "linear": 0.46537476778030396,
+      "schenck_singlenet": 0.6028757095336914,
+      "oracle": 1.0
+    },
+    "1": {
+      "persistence": 0.0,
+      "mean-delta": 0.104644775390625,
+      "linear": 0.3544941544532776,
+      "schenck_singlenet": 0.5339361429214478,
+      "oracle": 1.0
+    },
+    "2": {
+      "persistence": 0.0,
+      "mean-delta": 0.02404022216796875,
+      "linear": 0.2524595856666565,
+      "schenck_singlenet": 0.5080597400665283,
+      "oracle": 1.0
+    }
+  },
+  "n_slates_step0": 20,
+  "n_step0": 2560
+}
