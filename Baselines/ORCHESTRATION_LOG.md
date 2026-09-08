@@ -321,9 +321,10 @@ compare these against the per-cell register table).
 | persistence | 0.0000 | 0.0000 |
 | mean-delta (pooled fit) | 0.0544 | 0.118 |
 | linear operator (pooled fit) | 0.2004 | 0.381 |
-| **GNN (dynamic-resolution, N=20)** | **0.2527** | **0.399** |
+| **GNN (dynamic-resolution, N=20)** | 0.2527 | 0.399 |
+| **Schenck CNN (single-tower, 4ch)** | **0.5117** | **0.5593** |
 | NFD 3-channel | training | training |
-| Schenck CNN | training | training |
+| _(per-cell UNet-FiLM, not pooled — context only)_ | _0.419_ | _0.504_ |
 
 ### Control utility, `goal=corner`, step-0 slates (20 slates x 128 candidates)
 
@@ -333,6 +334,33 @@ compare these against the per-cell register table).
 | **GNN** | L20mm | **0.966** | **0.0012** | **0.0018** | **0.948** |
 | linear | L40mm | — | — | **0.0016** | — |
 | GNN | L40mm | — | — | 0.0031 | — |
+
+### Schenck CNN — best accuracy so far, but it dissociates at K=128
+
+**Accuracy 0.512 / 0.559 beats the per-cell UNet-FiLM (0.419 / 0.504) on both
+cells despite training pooled rather than per-cell** — i.e. it wins against a
+model given the easier task. On raw image accuracy this is the strongest
+baseline in the set.
+
+Control utility does not follow, on L20mm:
+
+| | `slateK_exact` K=32 | K=128 | `regret_dv` K=32 | K=128 |
+|---|---|---|---|---|
+| Schenck L20mm | 0.9826 | **0.9455** | 0.0007 | 0.0027 |
+| Schenck L40mm | 0.9900 | 0.9938 | 0.0013 | 0.0009 |
+
+At K=128 on L20mm it falls to 0.9455 — **below the per-cell switched-linear
+(0.9670) and below the GNN (0.966), while having roughly double their image
+accuracy.** That is a textbook instance of this register's central finding
+(C-030/C-035/C-044): image accuracy and control utility dissociate, and the
+dissociation bites hardest under maximum selection pressure. Note it does NOT
+appear on L40mm, where K=128 is the model's best point (0.9938).
+
+Config: 4 input channels — occupancy, two separate full-intensity plate renders
+at `p_start`/`p_stop` (reused from NFD's faithful branch), plus a tiled constant
+`angle` channel per the paper's angle-tiling recipe. 139,937 params, Adam 5e-4,
+loss 0.0172 -> 0.0049. Axis-convention check passed on both an x-dominant and a
+y-dominant push before training. No hyperparameter search was run.
 
 ### Reading the GNN result honestly
 
