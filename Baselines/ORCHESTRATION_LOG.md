@@ -302,12 +302,9 @@ exits. Anyone spawning further agents should carry that instruction forward.
   two-tower scoop-and-dump architecture exists to separate lift/carry/pour
   phases our plate push does not have.
 
-Wave C (exploratory, lowest priority, only if B is healthy): Gaussian Splatting
-VMPC from rendered rasters of the stored states. The user's framing: render the
-stored cube poses to images (`simple_mpc/adapters.py`'s `_w2c` already carries
-the camera projection the Eulerian adapter uses), then run the paper's pipeline
-on those. Attempt-and-skip: if it does not make sense on this data, say so and
-stop rather than burning the night on it.
+Wave C — Gaussian Splatting VMPC: **ASSESSED AND SKIPPED, 2026-09-08.**
+Full reasoning in `Baselines/GaussianSplatting/ASSESSMENT.md`; the short version
+is below. Cost ~25 tool calls and no GPU, which is what a gated task is for.
 
 ---
 
@@ -365,6 +362,32 @@ the blade's `plate.size` in a cell config, not from the paper's normalised
 units), `softness = 0.01 m`. The `s_delta` mask was visually confirmed to light
 a few cubes for a 20 mm push and nearly all 20 for a 40 mm push — a longer
 sweep window, not a bug. Tooling: `Baselines/GNN/scripts/check_geometry.py`.
+
+## Wave C verdict — Gaussian Splatting: SKIP (and why that is a real finding)
+
+In the paper, 3DGS is a **state representation**, fitted per frame from
+calibrated multi-view RGBD. The **dynamics model on top of it is a
+PropNet/DPI-Net-style GNN** predicting per-node translation and rotation under
+a Chamfer loss, and its cost function is a KDE-style density field —
+structurally the same idea as our occupancy-based goal reward.
+
+Our data has no images at all (verified: `*_data.pt` carries only poses and
+pushes), and this codebase uses a single camera throughout — there is no
+multi-view rig to reconstruct from. Neither `gsplat` nor
+`diff-gaussian-rasterization` is installed in `pme`.
+
+**The disqualifying finding is not "too hard" — it is that it collapses.**
+Because every cube's pose and 5 mm size are known exactly, the reconstruction
+step is the *identity map*. Take that shortcut and the paper's dynamics model
+is architecturally the same interaction-network GNN we have already built,
+trained and scored in `Baselines/GNN/`. Building it again under a different
+name would have produced a second copy of an existing row, at the cost of
+several GPU-hours.
+
+**The one genuine difference is worth keeping as a cheap follow-up**, filed
+against the GNN rather than under this name: the paper predicts **per-node
+rotation**, while our GNN reattaches the input quaternion unchanged. That is a
+small separable ablation of a model that already exists.
 
 ## Open questions for the user
 
