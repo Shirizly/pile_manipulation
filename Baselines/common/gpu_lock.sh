@@ -1,29 +1,48 @@
 #!/usr/bin/env bash
 # Serialise GPU jobs across concurrently-running baseline agents.
-# There is ONE 8 GB RTX 4070 Laptop GPU on this machine; two trainings at once
-# will OOM and take both down. Every training/eval run that touches CUDA goes
-# through here:
 #
 #     Baselines/common/gpu_lock.sh python -m training.train --config ...
 #
-# Waits (up to 6 h) for the lock rather than failing, so an agent that queues
-# behind another agent's training simply blocks instead of crashing.
+# WHY A COUNTING SEMAPHORE AND NOT AN EXCLUSIVE LOCK (changed 2026-09-08).
+# This started as `flock` on one file, on the assumption that two jobs on one
+# 8 GB card would OOM. Measured, that assumption was wrong by an order of
+# magnitude: every baseline here is tiny (NFD UNet ~30k params, GNN ~38k,
+# Schenck ~140k), and a live 100-epoch NFD training was using 0.39 GB of
+# 8.19 GB. The exclusive lock stopped being a safety device and became the
+# critical path -- a 90-minute training was blocking a 5-minute EVALUATION.
+#
+# So: N_SLOTS concurrent jobs, each holding one of N lock files. Still bounded,
+# so a genuinely large future model cannot be swamped by unbounded concurrency,
+# but no longer serialising work that has no reason to serialise.
+#
+# Evaluation/scoring runs do not need this wrapper at all -- they are short and
+# small. Use it for training.
 set -euo pipefail
 
-# Agents invoke this from the repo root but the wrapper eats a caller-set
-# PYTHONPATH surprisingly often (it is a fresh `bash`, and `PYTHONPATH=. cmd`
-# prefix assignments do not survive being passed as arguments here). Every
-# baseline imports `Baselines.*` and `training.*` by absolute package path, so
-# default it to the repo root rather than let each agent rediscover
-# `ModuleNotFoundError: No module named 'Baselines'` the hard way -- which is
-# exactly what killed B2-nfd's first run at 01:46.
+# A fresh `bash` here drops a caller's `PYTHONPATH=. cmd` prefix assignment, and
+# every baseline imports `Baselines.*` / `training.*` by absolute package path.
+# Not exporting it killed B2-nfd's first run instantly with ModuleNotFoundError,
+# so the wrapper owns this rather than each agent rediscovering it.
 REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 export PYTHONPATH="${PYTHONPATH:-$REPO_ROOT}"
 case ":$PYTHONPATH:" in *":$REPO_ROOT:"*) ;; *) export PYTHONPATH="$REPO_ROOT:$PYTHONPATH" ;; esac
 
-LOCK=/tmp/pile_manipulation_gpu.lock
-exec 9>"$LOCK"
-echo "[gpu_lock] $(date +%H:%M:%S) waiting for GPU lock: $*" >&2
-flock -w 21600 9 || { echo "[gpu_lock] timed out waiting for GPU" >&2; exit 75; }
-echo "[gpu_lock] $(date +%H:%M:%S) acquired; running: $*" >&2
-"$@"
+N_SLOTS="${GPU_LOCK_SLOTS:-3}"
+DEADLINE=$(( $(date +%s) + 21600 ))   # 6 h
+
+echo "[gpu_lock] $(date +%H:%M:%S) seeking 1 of $N_SLOTS slots: $*" >&2
+while :; do
+  for slot in $(seq 1 "$N_SLOTS"); do
+    exec 9>"/tmp/pile_manipulation_gpu.slot${slot}.lock"
+    if flock -n 9; then
+      echo "[gpu_lock] $(date +%H:%M:%S) acquired slot $slot; running: $*" >&2
+      "$@"
+      exit $?
+    fi
+    exec 9>&-
+  done
+  if [ "$(date +%s)" -ge "$DEADLINE" ]; then
+    echo "[gpu_lock] timed out waiting for a GPU slot" >&2; exit 75
+  fi
+  sleep 5
+done

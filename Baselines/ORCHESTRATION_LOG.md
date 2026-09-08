@@ -149,6 +149,32 @@ already found and fixed itself by setting `val_pct/test_pct: 5`. Held-out
 scoring is entirely on the disjoint `_eval` cells, so an in-train val split
 only affects monitoring, exactly as in the UNet-FiLM precedent.)
 
+### The exclusive GPU lock was wrong — replaced with a 3-slot semaphore
+
+The lock was built on the assumption that two jobs on one 8 GB card would OOM.
+**Measured, that was wrong by an order of magnitude.** With a 100-epoch NFD
+training live, the card reported **0.39 GB in use of 8.19 GB** — every baseline
+here is tiny (NFD UNet ~30k params, GNN ~38k, Schenck ~140k).
+
+The lock had stopped being a safety device and become the critical path: at
+02:02 a **90-minute NFD training was blocking a ~5-minute GNN EVALUATION**, and
+Schenck's whole training behind that. Serialising three jobs that together want
+~1.2 GB of an 8 GB card buys nothing and costs the night.
+
+`gpu_lock.sh` is now a **counting semaphore, `GPU_LOCK_SLOTS` (default 3)** —
+still bounded, so a genuinely large future model cannot be swamped by unbounded
+concurrency, but no longer serialising work with no reason to serialise.
+**Evaluation runs do not need the wrapper at all**; use it for training.
+
+Requeued by hand at 02:03 so the change took effect immediately rather than
+after NFD drained: Schenck's blocked training was killed and relaunched under
+the semaphore (now running *alongside* NFD), and the GNN's blocked evaluation
+was run directly without the wrapper.
+
+Generalisable lesson: **measure the resource before designing the contention
+policy around it.** The cost of the wrong policy here was pure wall-clock, and
+it was invisible until someone looked at `mem_get_info`.
+
 ### Operational pattern — the ORCHESTRATOR owns the waiting
 
 Instructing agents to block in-turn did NOT work. B1 and B2 both ended their
