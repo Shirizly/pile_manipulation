@@ -32,8 +32,19 @@ dataset:
   paths:
     - slates_multistep/n20_L20mm_train
     - slates_multistep/n20_L40mm_train
-  val_pct: 0
-  test_pct: 0
+  # val_pct/test_pct=0 (copied from configs/dataset/genesis_slates_multistep_
+  # n20_L20L40_train.yaml, the shared pooled config) makes PileSweepData
+  # raise "No configs found for dataset." for the val/test splits --
+  # training.trainer.Trainer.from_config ALWAYS calls build_dataset for
+  # train/val/test unconditionally (training/trainer.py:244-246), unlike
+  # Baselines/common/data.py's load_cell, which only ever requests "train".
+  # Confirmed by hitting this exact crash on a 2-epoch smoke test. Fixed
+  # here (not in the shared config, which is out of scope) with a small
+  # non-zero val/test split -- also matches SPEC.md sec 4's own recommendation
+  # ("val_pct: 10 ... so early stopping is meaningful") which the original
+  # copy-paste from the 0/0 pooled config had overridden.
+  val_pct: 5
+  test_pct: 5
   resolution_scale: 0.5
   include_physics: false
   min_push_length_m: 0.0198

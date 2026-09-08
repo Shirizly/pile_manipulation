@@ -10,13 +10,16 @@ split's OWN ``raw`` PileSweepData instance, built through the plain 2-channel
 ourselves via the same ``draw_plate_soft`` primitive instead of touching that
 instance's grids).
 
-Checkpoint note: the pooled train dataset config has val_pct=0/test_pct=0
-(ORCHESTRATION_LOG.md), so ``training/trainer.py``'s "best" checkpoint logic
-degenerates (empty val loader -> val_loss identically 0.0 every epoch after
-epoch 1 -> "unet_best.pth" freezes at epoch-1 weights, never updates again).
-The actually-trained weights are in ``unet.pth`` (written once at the very
-end of ``Trainer.run()``, unconditionally) or the last ``unet_epoch_N.pth`` --
-NOT ``unet_best.pth``. Both factories below default to ``unet.pth``.
+Checkpoint note: ``Trainer.from_config`` always builds train/val/test
+datasets (unlike ``Baselines.common.data.load_cell``, which only ever
+requests "train"), so a val_pct=0/test_pct=0 dataset config (the shared
+pooled ``configs/dataset/genesis_slates_multistep_n20_L20L40_train.yaml``)
+makes ``PileSweepData`` raise ``ValueError("No configs found for
+dataset.")`` for the val/test splits -- hit directly on a 2-epoch smoke test.
+Fixed in this baseline's own configs (``configs/nfd_train_3ch.yaml`` /
+``nfd_train_2ch_ablation.yaml``) with a small ``val_pct: 5, test_pct: 5``
+instead, so ``unet_best.pth`` (tracked against a real, if small, validation
+slice) is meaningful and is what both factories below load by default.
 
 Model output is a raw logit (repo-wide convention -- ``EulerianCombinedLoss``
 always trains against ``sigmoid(logit)``, see ``training/losses.py``), so
@@ -37,8 +40,8 @@ _STRUCTURE_3CH = dict(
 )
 _STRUCTURE_2CH = dict(_STRUCTURE_3CH, in_channels=2)
 
-CKPT_3CH = "Baselines/NFD/runs/nfd_3ch/unet.pth"
-CKPT_2CH = "Baselines/NFD/runs/nfd_2ch_ablation/unet.pth"
+CKPT_3CH = "Baselines/NFD/runs/nfd_3ch/unet_best.pth"
+CKPT_2CH = "Baselines/NFD/runs/nfd_2ch_ablation/unet_best.pth"
 
 
 def _plate_geometry_px(raw) -> tuple[float, float, float]:

@@ -26,8 +26,13 @@ dataset:
   paths:
     - slates_multistep/n20_L20mm_train
     - slates_multistep/n20_L40mm_train
-  val_pct: 0
-  test_pct: 0
+  # See nfd_train_3ch.yaml's comment: val_pct/test_pct=0 crashes
+  # Trainer.from_config (it always builds a val/test split, unlike
+  # Baselines/common/data.py). Small non-zero split used here for the same
+  # reason, kept identical to the primary run so the ablation isolates only
+  # the channel encoding.
+  val_pct: 5
+  test_pct: 5
   resolution_scale: 0.5
   include_physics: false
   min_push_length_m: 0.0198

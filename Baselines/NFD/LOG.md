@@ -84,9 +84,80 @@ reading code directly):**
      not a location bug; centroid comparison, which is invariant to a
      uniform intensity rescaling, resolved it cleanly.)
 
-**Not yet done at time of this note:** training run, eval-harness scoring,
-`exp0026_kcurve_exact.py`, ablation. See "Running notes" below for
-what's in flight.
+**Training + scoring: DONE.** Primary 3-channel run trained 100/100 epochs
+(`Baselines/NFD/runs/nfd_3ch/`, ~2h02m wall clock, shared GPU with two other
+agents' jobs queued behind/around it via `gpu_lock.sh`): train loss
+0.0658→0.00658, val loss →0.00650 (best 0.006445 at epoch 86, `unet_best.pth`
+— this is what `predictor.py` loads), test `hard_iou`=0.706, `hard_dice`=0.815.
+Loss curve genuinely monotonic-ish (not a lock-timeout no-op) — confirmed by
+reading the full epoch-by-epoch log, not just the exit code.
+
+**Scored results (`Baselines/common/eval_baseline.py`, pooled-train-fit
+reference operators, per-cell eval):**
+
+| metric | L20mm | L40mm | reference (per-cell UNet-FiLM) |
+|---|---|---|---|
+| `accuracy` (all 3 steps) | **0.4158** | **0.5124** | 0.419 / 0.504 |
+| `accuracy` step0 only | 0.4166 | 0.5594 | — |
+| `slateK_exact`, K=32 | 0.9751 | 0.9893 | per-cell linear 0.9670/0.9790 (K=128) |
+| `slateK_exact`, K=128 | 0.9646 | 0.9925 | GNN 0.966 (K=128, L20mm); Schenck 0.9455 (K=128, L20mm) |
+| `worstK`, K=32 | 0.4564 | 0.4495 | (lower is worse; linear 0.7074/0.6601 at K=32) |
+| `worstK`, K=128 | -0.0157 | -0.0000 | (near-0/negative = near-oracle at this K, same as linear/oracle) |
+| `regret_dv` (sampled), K=32 | 0.0010 | 0.0014 | linear 0.0020/0.0028 |
+| `regret_dv` (sampled), K=128 | 0.0017 | 0.0010 | linear 0.0025/0.0016 |
+
+All numbers `goal=corner` (per coordinator: `goal=center` is C-040's known
+`dv_true≈0` degeneracy on this eval split — confirmed here too, `helpful 0%`
+on both cells — not a useful discriminator, not reported as a finding).
+
+**Honest read: this pooled, non-FiLM, 30.5K-parameter NFD MATCHES/slightly
+EXCEEDS the per-cell UNet-FiLM reference on raw `accuracy`** (0.4158 vs 0.419
+on L20mm — within noise; 0.5124 vs 0.504 on L40mm — a genuine small win),
+and its `slateK_exact` at K=128 is competitive with or better than every
+other peer baseline scored so far (GNN 0.966, Schenck 0.9455, per-cell
+switched-linear 0.9670/0.9790) despite NFD being pooled (harder regime) and
+non-FiLM (repo's own convention, dropped per SPEC.md's argument that FiLM's
+conditioning vector is dataset-wide constant here). Do not over-read this as
+"NFD beats FiLM" in general — same caveat the orchestration log already
+states: pooled-vs-per-cell is a confound, not isolated here. Schenck's CNN
+has a notably higher raw `accuracy` (0.512/0.559) but a WORSE `slateK_exact`
+at K=128 on L20mm (0.9455 < this run's 0.9646) — the same
+kind of accuracy/ranking-quality dissociation the register already
+documents for L10mm (C-045); flagged for the reader, not re-litigated here
+since it isn't this baseline's claim to make.
+
+**Two things stated explicitly per coordinator's request:**
+1. **Device during scoring: CPU.** `Baselines/common/eval_baseline.py` never
+   calls `.cuda()`/`.to("cuda")` anywhere in its pipeline, and
+   `Baselines.common.data.load_cell` builds all tensors via
+   `torch.stack`/`torch.tensor` with no device argument -- so `batch.occ0`
+   (and everything else in `PredictorBatch`) is on CPU, and
+   `NFDPredictor.predict_occ`'s `self.model.to(device)` follows that batch's
+   device, i.e. also CPU. Scoring both cells (23,040-transition operator fit
+   + 7,680-row scoring, each) took well under a minute of wall time on CPU
+   for the 30.5K-parameter UNet -- no GPU/`gpu_lock.sh` needed for scoring,
+   consistent with `Baselines/common/LOG.md` point 3's own note that this
+   whole harness is CPU work.
+2. **3-channel input convention check: PASSED** (see the earlier section of
+   this log for the two checks: `occ0` byte-identical to the existing
+   validated 2-channel dataset; per-channel centroid of channels 1/2 matches
+   world-to-pixel-converted `p_start`/`p_stop` to <0.006 px across 7 sampled
+   transitions spanning the pool).
+
+**Gotcha hit and fixed (worth flagging for other agents using the pooled
+config pattern):** the shared pooled dataset config style
+(`configs/dataset/genesis_slates_multistep_n20_L20L40_train.yaml`, val_pct=0/
+test_pct=0) crashes `training.trainer.Trainer.from_config` outright
+(`PileSweepData` raises `ValueError("No configs found for dataset.")` on
+the empty val/test split) because `Trainer.from_config` unconditionally
+builds train/val/test datasets, unlike `Baselines.common.data.load_cell`
+(which only ever requests "train"). This baseline's own dataset config
+blocks (`Baselines/NFD/configs/nfd_train_3ch.yaml` /
+`nfd_train_2ch_ablation.yaml`) use `val_pct: 5, test_pct: 5` instead — fixes
+the crash and gives a real (if small) validation slice for early-stopping/
+best-checkpoint tracking, matching SPEC.md's own recommendation. Any other
+agent driving `training/trainer.py::Trainer` (not `Baselines.common.data`)
+off a val_pct=0/test_pct=0 dataset config will hit the same crash.
 
 ---
 
@@ -194,3 +265,75 @@ run, any modification to `model/UNetModels_modular.py`,
   `unet-modular`'s `forward(x)` takes no physics so the action must be
   channel-only; still resolve whether FiLM is paper or repo. Applied to the
   spec before finishing — see SPEC.md's "Scope correction" note at the top.
+
+## B2-nfd-impl running notes (implementation/training/scoring phase)
+
+- Read `Baselines/ORCHESTRATION_LOG.md`, `SPEC.md`, `Baselines/common/LOG.md`
+  first per brief. Then read `registry/model_registry.py` (confirmed
+  `unet-modular`'s factory never forwards `final_kernel_size`),
+  `model/UNetModels_modular.py` (full `UNet`/`DoubleConv` implementation),
+  `registry/dataset_registry.py` (`_build_genesis_dataset`,
+  `EulerianDatasetWrapper`), `Genesis/training/dataset.py`
+  (`PileSweepData.__init__`/`_create_grids`/`_draw_plate`/`__getitem__`,
+  confirmed the exact union line `1 - (1-occ1)*(1-occ2)`),
+  `Baselines/common/data.py` and `eval_baseline.py` (predictor contract,
+  `PredictorBatch` fields, confirmed `p_start`/`p_stop` are WORLD metres not
+  pixels), `training/trainer.py` (confirmed checkpoint naming, `state_dict()`
+  has no "model." prefix, augmentation is channel-count-agnostic,
+  `_get_log_dir`/`_try_resume` semantics), `training/losses.py`
+  (confirmed `EulerianCombinedLoss` always sigmoids before computing `mse`),
+  `transforms/functional.py::draw_plate_soft` (signature/convention),
+  `transforms/representation.py` (confirmed channel-count-agnostic).
+- Wrote `nfd_lib.py` (`PileSweepData3Ch` + both registrations),
+  `train_nfd.py`, `predictor.py`, both configs. Verified by direct
+  instantiation: 30,541 params (matches SPEC.md exactly), forward pass
+  `(B,3,64,64)→(B,1,64,64)`, `final_conv` is `Conv2d(4,1,kernel_size=(1,1))`.
+- Channel-convention check (task step 2): built the 3-channel dataset,
+  compared `occ0` against the existing validated `genesis` (2-channel)
+  dataset for the same indices (`torch.allclose`, exact match) and compared
+  channel 1/2 centroids against `p_start`/`p_stop` converted to pixels via
+  `raw.get_raw_action`/`raw.to_pxl`/`raw.ctr_in_PXL` — <0.006 px error across
+  7 samples. An earlier footprint-IoU-at-fixed-threshold attempt gave a
+  misleadingly low ~0.5 IoU; diagnosed as an artifact of comparing a
+  full-intensity render against the old code's intentionally asymmetric
+  0.5/1.0-intensity union at one absolute threshold, not a location bug —
+  resolved by switching to a threshold-free centroid comparison.
+- Dry-ran the full `eval_baseline.py` harness (train-cfg fit + L20mm score)
+  against a randomly-initialized (untrained) checkpoint before spending any
+  GPU time, to catch predictor-plumbing bugs cheaply on CPU — ran clean
+  (accuracy came out very negative, as expected for random weights; no
+  crash). This is what caught nothing wrong with the predictor itself.
+- **Bug found and fixed on the first real smoke-test attempt (2 epochs):**
+  `Trainer.from_config` unconditionally builds train/val/test datasets;
+  with `val_pct: 0, test_pct: 0` (copied from the shared pooled dataset
+  config), `PileSweepData` raises `ValueError("No configs found for
+  dataset.")` building the empty val split. Fixed by setting `val_pct: 5,
+  test_pct: 5` in this baseline's own dataset config blocks (not the shared
+  file) — also switched `predictor.py`'s default checkpoint from `unet.pth`
+  to `unet_best.pth` now that validation is real. Re-ran the 2-epoch smoke
+  test after the fix — trained cleanly (loss 0.062→0.018, val 0.024→0.016).
+- Hit one transient `gpu_lock.sh: syntax error` / `unexpected EOF` on two
+  separate invocations — both traced to another agent concurrently editing
+  that shared file while my process read it mid-write (confirmed: the file
+  is syntactically valid both times when checked with `bash -n` right after,
+  and one of the concurrent edits was itself a comment addressed to
+  "B2-nfd" fixing a PYTHONPATH issue). Not a bug in this baseline's own
+  code; retried and it went through.
+- Launched the real 100-epoch run against `nfd_train_3ch.yaml` (default
+  `output.log_dir: Baselines/NFD/runs/nfd_3ch`); it queued behind another
+  agent's GNN training on `gpu_lock.sh` for ~2 min then ran for ~2h02m wall
+  clock (per-epoch time varied 51s-205s depending on GPU contention from
+  concurrently-queued Schenck/GNN-eval jobs). Confirmed genuine training
+  (not a lock-timeout no-op) by reading the full per-epoch log: loss
+  monotonically dropped 0.0617→0.00658, val IoU rose to 0.74, `unet_best.pth`
+  saved at epoch 86.
+- Scored both eval cells (`eval_baseline.py`, CPU, no `gpu_lock.sh` needed —
+  see "device" note above) and ran BOTH `scripts/probes/exp0026_kcurve_exact.py`
+  (closed-form `slateK_exact`/`worstK`/`rank_profile`) and
+  `scripts/probes/exp0026_kcurve.py` (sampled `regret_dv`/`pick_pctile`) on
+  each dV cache, `--models persistence,mean-delta,linear,nfd_unet3ch,oracle`,
+  `--ks 2,4,8,16,32,64,128`, `--goal corner`. See numbers table above.
+  Outputs: `Baselines/NFD/runs/nfd_{L20mm,L40mm}_{accuracy.json,
+  dv_cache.pt,kcurve_exact.json,kcurve_sampled.json}`.
+- Next: 2-channel ablation (`nfd_train_2ch_ablation.yaml`), strictly after
+  this commit, per task priority order.
