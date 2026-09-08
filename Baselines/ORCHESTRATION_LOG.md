@@ -7,6 +7,35 @@ off `VisualForesight` @ `9481c3e7`. Started 2026-09-08.
 
 ## SUMMARY FOR HANDOFF
 
+### Bottom line (2026-09-08, overnight run complete)
+
+**Three of the four in-scope papers were reproduced, trained on the pooled
+L20+L40 data, and scored on both held-out eval cells with the register's
+standard metrics. The fourth was assessed and correctly skipped.**
+
+| model | paper | `accuracy` L20/L40 | `slateK_exact` K=128 L20/L40 | us/candidate @K=128 |
+|---|---|---|---|---|
+| **NFD (UNet-modular, non-FiLM)** | Neural Field Dynamics | 0.416 / 0.512 | **0.965 / 0.993** | **38.9** |
+| **Schenck CNN (single-tower)** | Learning Robotic Manip. of Granular Media | **0.512 / 0.559** | 0.946 / 0.994 | 384 |
+| **GNN (N=20, no res-regressor)** | Dynamic-Resolution Model Learning | 0.253 / 0.399 | 0.966 / — | 832 |
+| _linear (switched, per-cell)_ | Suh & Tedrake (existing) | _0.301 / 0.447_ | _0.967 / 0.979_ | _180_ |
+| _UNet-FiLM (per-cell, existing)_ | — | _0.419 / 0.504_ | _0.982 / 0.992_ | — |
+| _Gaussian Splatting VMPC_ | — | **skipped — collapses to the GNN** | | |
+
+**The recommendation, if one model has to be picked for MPC work: NFD.** It is
+simultaneously the cheapest at MPC pool sizes (38.9 us/candidate, 4.6x cheaper
+than the linear operator), top or near-top on control utility at every K on
+both cells, level with the per-cell UNet-FiLM on accuracy despite being trained
+pooled and without FiLM, and 30.5k parameters.
+
+**Two claims made earlier in this log were overturned by measurement** and are
+corrected in place below — the NFD 3-channel action encoding (a null result,
+not the expected win) and the GNN's multi-step reconstructability (it IS
+reconstructable). Both corrections are worth more than the results they
+qualify.
+
+**Everything is on branch `baselines/overnight`, committed, nothing pushed.**
+
 **Goal.** Reproduce, as baselines, the dynamics models from the reference
 papers in `docs/reference_papers/`, train them on the *limited* multistep
 slate data, and score them with the register's standard metrics. This is
