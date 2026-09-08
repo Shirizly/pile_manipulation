@@ -323,7 +323,7 @@ compare these against the per-cell register table).
 | linear operator (pooled fit) | 0.2004 | 0.381 |
 | **GNN (dynamic-resolution, N=20)** | 0.2527 | 0.399 |
 | **Schenck CNN (single-tower, 4ch)** | **0.5117** | **0.5593** |
-| NFD 3-channel | training | training |
+| **NFD (UNet-modular, 3ch, no FiLM, no mass loss)** | 0.4158 | 0.5124 |
 | _(per-cell UNet-FiLM, not pooled — context only)_ | _0.419_ | _0.504_ |
 
 ### Control utility, `goal=corner`, step-0 slates (20 slates x 128 candidates)
@@ -334,6 +334,34 @@ compare these against the per-cell register table).
 | **GNN** | L20mm | **0.966** | **0.0012** | **0.0018** | **0.948** |
 | linear | L40mm | — | — | **0.0016** | — |
 | GNN | L40mm | — | — | 0.0031 | — |
+
+### NFD (non-FiLM, 3-channel) — matches the FiLM model it replaced
+
+`accuracy` 0.4158 / 0.5124 against the per-cell UNet-FiLM's 0.419 / 0.504 —
+**level on L20mm and slightly ahead on L40mm, while trained POOLED rather than
+per-cell, without FiLM, and without the repo's extra `mass` loss term.** So the
+paper-faithful, simpler model gives up nothing to the repo's elaborated one.
+That is the cleanest confirmation of the wave-A finding that FiLM was a repo
+addition conditioning on a dataset-wide constant.
+
+Control utility, `goal=corner`:
+
+| | `slateK_exact` K=32 | K=128 |
+|---|---|---|
+| NFD L20mm | **0.9751** | **0.9646** |
+| linear (pooled) L20mm | 0.9524 | 0.9521 |
+| NFD L40mm | **0.9893** | **0.9925** |
+| linear (pooled) L40mm | 0.9787 | 0.9887 |
+
+NFD beats the pooled linear operator at every K on both cells, and on L40mm
+(0.9925 at K=128) it edges the per-cell UNet-FiLM's 0.9924 and the per-cell
+switched-linear's 0.9790. On L20mm its 0.9646 sits just under the per-cell
+switched-linear's 0.9670 — a 0.2-point gap on 20 slates, which is well inside
+the noise this metric carries at K=128 (METRICS.md: ties collapse the effective
+n to 5-11 pools). Do not read it as a real ordering either way.
+
+**NFD is the best all-round baseline of the three**: near-top accuracy, top or
+near-top control utility on both cells, no dissociation, and ~30k parameters.
 
 ### Schenck CNN — best accuracy so far, but it dissociates at K=128
 
