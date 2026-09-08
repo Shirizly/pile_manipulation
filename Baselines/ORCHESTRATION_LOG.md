@@ -507,7 +507,7 @@ CUDA-synced, 3 warm-ups discarded, median [IQR] over 10 repeats.
 | mean-delta | 4,096 | 872 | 171.6 | 70.5 | 57.0 |
 | linear operator | 16,777,216 | 5043 | 296.4 | 180.1 | 162.6 |
 | Schenck CNN | 139,937 | 1419 | 203.5 | 384.2 | 382.5 |
-| GNN | 38,403 | 2952 | 866.6 | 832.4 | 820.2 |
+| GNN (after rasteriser batching) | 38,403 | 2296 | 850.9 | 685.3 | 671.9 |
 
 Read the K=1 column as fixed per-call overhead, not model cost; the K>=128
 columns are the marginal cost that actually matters to an MPC pool.
@@ -519,11 +519,18 @@ columns are the marginal cost that actually matters to an MPC pool.
    operator and 21x cheaper than the GNN, while matching per-cell UNet-FiLM on
    accuracy and leading on `slateK_exact`. It amortises properly (80.6 -> 38.9
    -> 37.2 as K grows), which is exactly the batching behaviour an MPC wants.
-2. **The GNN's cost is its rasteriser, not its network.** 38k params but 832
-   us/candidate, and essentially FLAT in K (866 -> 832 -> 820) — a per-candidate
-   Python loop calling an unbatched rasteriser cannot amortise. Batching it is
-   the obvious fix and would likely move it into the NFD band. **The GNN should
-   not be written off as expensive for MPC on this evidence.**
+2. **The GNN's cost is NOT mostly its rasteriser — prediction tested and
+   largely wrong.** The unbatched per-candidate Python loop was the obvious
+   suspect (flat cost in K), so it was batched and re-measured. Accuracy is
+   unchanged on both cells (0.2527 / 0.3991, confirming the batched grids stay
+   equivalent), but per-candidate cost only fell **832 -> 685 us at K=128, ~18%**,
+   and it is still nearly flat in K (851 -> 685 -> 672). The GNN remains ~18x
+   NFD. So the earlier claim in this log that batching "would likely move it
+   into the NFD band" is **retracted**: most of the cost lies elsewhere
+   (graph construction per candidate — edges are rebuilt on anticipated
+   post-action positions, so topology is action-dependent and cannot be shared
+   across candidates the way a conv stack's weights are). That is an
+   architectural property, not an implementation slip.
 3. **The "cheap classical baseline" is the most expensive model in the set by
    parameter count** — the linear operator is a dense 4096x4096 map, 16.8M
    parameters, 550x the NFD, and 4.6x its per-candidate cost. Worth saying
