@@ -97,11 +97,44 @@ when in the matched comparison it beats it (0.253 vs 0.200). This is
 `docs/experiments/METRICS.md`'s standing warning — "compare within a
 configuration; across configurations, say so" — biting immediately.
 
-**Open question this raises for the user** (see the open-questions section): if
-pooling costs this much, per-cell training may be the better default even
-though it halves the data. The UNet-FiLM 0.419/0.504 row is per-cell, so the
-gap between our pooled baselines and "the number to beat" is partly an
-artefact of the pooling decision, not of architecture.
+**RESOLVED by the user, 2026-09-08** — and the resolution is the more
+interesting framing, so read this rather than treating pooling as a handicap to
+be corrected:
+
+> *"it is fine if only the switched-linear uses separate models for push
+> lengths, it creates a certain weakness in the switched-linear, that it can't
+> optimize on length itself."*
+
+So **do not handicap the switched-linear to make the comparison symmetric.**
+Per-cell fitting is the switched-linear method operating *as intended* — that is
+what "switched" means. Report it at its best, and state the cost it pays for
+that: **a per-length model cannot treat push length as a decision variable.**
+An MPC using it can only choose among the lengths it has models for, and cannot
+optimise length continuously or generalise to an unseen one. Every learned
+baseline here takes the action (length included) as input and covers both
+lengths with ONE model.
+
+The headline comparison is therefore: **one pooled learned model vs the
+switched-linear's best per-cell model**, with the switched-linear's structural
+limitation named alongside. Keep the pooled-linear row too — it isolates how
+much of the linear operator's strength comes from switching rather than from
+linearity — but it is a diagnostic, not the headline.
+
+### The switched-linear at its intended operating point (per-cell, from `runs_expB/*_kcurve_exact.json`, goal=corner, 20 slates)
+
+| | `accuracy` | `slateK_exact` K=32 | K=128 | `worstK` K=4 |
+|---|---|---|---|---|
+| **L20mm** mean-delta | 0.086 | 0.3483 | 0.2871 | 1.9016 |
+| **L20mm** linear (switched) | 0.301 | 0.9718 | 0.9670 | 1.0299 |
+| **L20mm** UNet-FiLM | 0.419 | 0.9777 | 0.9821 | 0.7406 |
+| **L40mm** mean-delta | 0.138 | 0.8007 | 0.7166 | 1.5865 |
+| **L40mm** linear (switched) | 0.447 | 0.9797 | 0.9790 | 0.6150 |
+| **L40mm** UNet-FiLM | 0.504 | 0.9919 | 0.9924 | 0.4847 |
+
+**Against this, the GNN's L20mm `slateK_exact` of 0.966 with ONE model matches
+the switched-linear's 0.967 achieved with TWO** (and beats the single pooled
+linear map's 0.952). On image accuracy the GNN is still behind the switched
+per-cell linear (0.253 vs 0.301) — reported plainly, not smoothed over.
 
 ### `goal=center` is degenerate here — use `corner`
 
