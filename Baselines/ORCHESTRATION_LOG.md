@@ -195,6 +195,13 @@ Generalisable lesson: **measure the resource before designing the contention
 policy around it.** The cost of the wrong policy here was pure wall-clock, and
 it was invisible until someone looked at `mem_get_info`.
 
+### Do not edit a running script in place
+
+Rewriting `gpu_lock.sh` while other processes were about to `bash` it caused a
+transient syntax error in one agent's job (a partial read of the file), which
+self-resolved on retry. Harmless here, but the safe form is write-new +
+`mv` (atomic rename), not in-place rewrite.
+
 ### Operational pattern — the ORCHESTRATOR owns the waiting
 
 Instructing agents to block in-turn did NOT work. B1 and B2 both ended their
@@ -266,30 +273,50 @@ compare these against the per-cell register table).
 
 | model | L20mm | L40mm |
 |---|---|---|
-| persistence | 0.0000 | — |
-| mean-delta (pooled fit) | 0.0544 | — |
-| linear operator (pooled fit) | 0.2004 | — |
-| **GNN (dynamic-resolution, N=20)** | **0.2527** | pending |
+| persistence | 0.0000 | 0.0000 |
+| mean-delta (pooled fit) | 0.0544 | 0.118 |
+| linear operator (pooled fit) | 0.2004 | 0.381 |
+| **GNN (dynamic-resolution, N=20)** | **0.2527** | **0.399** |
 | NFD 3-channel | training | training |
 | Schenck CNN | training | training |
 
 ### Control utility, `goal=corner`, step-0 slates (20 slates x 128 candidates)
 
-| model | `slateK_exact` K=128 | K=2 | `regret_dv` K=128 | spearman |
-|---|---|---|---|---|
-| linear operator | 0.952 | 0.919 | 0.0025 | 0.877 |
-| **GNN** | **0.966** | **0.955** | **0.0018** | **0.948** |
+| model | cell | `slateK_exact` K=128 | `regret_dv` K=32 | `regret_dv` K=128 | spearman |
+|---|---|---|---|---|---|
+| linear | L20mm | 0.952 | 0.0020 | 0.0025 | 0.877 |
+| **GNN** | L20mm | **0.966** | **0.0012** | **0.0018** | **0.948** |
+| linear | L40mm | — | — | **0.0016** | — |
+| GNN | L40mm | — | — | 0.0031 | — |
 
-**The GNN wins on both axes**, which is not the usual pattern in this register —
-C-030/C-035/C-044 are largely a record of image accuracy and control utility
-*dissociating*. Here the GNN is ahead on accuracy (+5 pts over pooled linear),
-ahead on `slateK_exact` at every K, and lower-regret at every K.
+### Reading the GNN result honestly
 
-One structural detail worth keeping: **the GNN is the only model whose accuracy
-RISES across rollout steps** (0.239 -> 0.251 -> 0.270) while every reference row
-falls (linear 0.214 -> 0.197 -> 0.190). A particle-space model does not
-accumulate the grid-space blur that a field model does, which is the obvious
-hypothesis and is cheap to test later.
+**On L20mm the GNN wins on both axes** — accuracy +5.2 pts over the pooled
+linear operator, `slateK_exact` higher at every K, regret lower at every K,
+spearman 0.948 vs 0.877. That is *not* the usual pattern in this register,
+which is largely a record of image accuracy and control utility dissociating
+(C-030/C-035/C-044).
+
+**On L40mm it does not.** The accuracy margin shrinks to +1.8 pts (0.399 vs
+0.381), and at K=128 the linear operator is *better on ranking* — `regret_dv`
+0.0016 vs the GNN's 0.0031 — while still trailing on accuracy. So the
+dissociation the register keeps finding reappears at the longer push length,
+in the direction the register would predict. This is reported as measured; it
+is one cell at one K and should not be over-read, but it must not be dropped
+from the summary either.
+
+Plain reading: **the GNN is a working, competitive dynamics model that clearly
+beats the linear operator on the shorter push, and is roughly a wash with it on
+the longer push once control utility rather than image error is the criterion.**
+
+### Geometry constants (verified before training, not guessed)
+
+`adj_thresh = 0.012 m` (2-3x cube edge; checked min in-degree 2-4, never
+isolated, never saturated at the top-10 cap), `pusher_w = 0.02 m` (sourced from
+the blade's `plate.size` in a cell config, not from the paper's normalised
+units), `softness = 0.01 m`. The `s_delta` mask was visually confirmed to light
+a few cubes for a 20 mm push and nearly all 20 for a 40 mm push — a longer
+sweep window, not a bug. Tooling: `Baselines/GNN/scripts/check_geometry.py`.
 
 ## Open questions for the user
 
