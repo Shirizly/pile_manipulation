@@ -191,9 +191,24 @@ after NFD drained: Schenck's blocked training was killed and relaunched under
 the semaphore (now running *alongside* NFD), and the GNN's blocked evaluation
 was run directly without the wrapper.
 
-Generalisable lesson: **measure the resource before designing the contention
-policy around it.** The cost of the wrong policy here was pure wall-clock, and
-it was invisible until someone looked at `mem_get_info`.
+**Correction, measured after the change (02:12).** The semaphore did NOT buy
+throughput, and the original reasoning was only half right. Memory was never
+the binding constraint (0.89 GB with three jobs live), but **compute is** —
+NFD's epoch time went 54 s -> 90 s -> 128 s as the second and third job joined,
+i.e. roughly 1/N each. Total GPU throughput is about the same either way.
+
+What the semaphore actually bought is **latency for short jobs**: a 5-minute
+evaluation no longer waits 90 minutes behind a training. That was the real
+problem and it is genuinely fixed. But do not expect N trainings to finish in
+the time of one.
+
+Generalisable lesson, restated correctly: **measure the resource before
+designing the contention policy, and be clear which resource you are
+contending for.** Memory determines whether jobs CAN coexist; compute
+determines whether coexisting HELPS. Here the answer was "yes they can, and it
+helps only the short ones". For the real, larger models this repo is headed
+toward, both constraints will bind and `GPU_LOCK_SLOTS=1` may be right again —
+the knob is there.
 
 ### Do not edit a running script in place
 
