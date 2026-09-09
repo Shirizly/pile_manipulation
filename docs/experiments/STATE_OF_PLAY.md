@@ -1,10 +1,10 @@
 # State of play — generated, do not hand-edit
 
-`python scripts/summarise_register.py` · 33 claims · 28 live records · 4 superseded
+`python scripts/summarise_register.py` · 34 claims · 29 live records · 4 superseded
 
 ## Claims by status
 
-### supported (16)
+### supported (17)
 
 | id | grade | claim | evidence |
 |---|---|---|---|
@@ -24,6 +24,7 @@
 | C-040 | moderate | A centred convex target is DEGENERATE for a centred pile: `dV = 0` identically, since no mass lies outside the mask before or after. Off-centre target | EXP-0012 (2 of 50 slates showed any variation under `center` |
 | C-041 | low | Narrowed 2026-09-05. The UNet beats the linear operator in 14/14 cells on a sharp target (by 4.4-10.9 points). Scored on a common blurred (sigma=1) ta | EXP-0021 (sharp), EXP-0022 (the narrowing), EXP-0024 (contro |
 | C-042 | very-low | New 2026-09-05. The pre-registered concern that a UNet's swept-region advantage over persistence on scattered monolayers comes mainly from predicting  | EXP-0021 (7 cells x 2 strata) `grid-convention`, `rasteriser |
+| C-047 | low | GNN and NFD (3ch, non-FiLM), trained on `Genesis/data/overnight_randlen` (broad spawn modes, N in {20,50}, randomised push length, density 450/frictio | EXP-0030 none `episode-split`, `swept-region-metric`, `canon |
 
 ### refuted (5)
 
@@ -109,6 +110,7 @@
 | EXP-0027 | supported | high | — | warp-only's positive image accuracy at L20mm/L40mm (+0.0254/+0.0442, E |
 | EXP-0028 | supported | high | — | L10mm's accuracy=-0.44 / slateK_exact=0.91 dissociation (EXP-0024_v1)  |
 | EXP-0029 | supported | moderate | untested-dependency | L10mm's accuracy=-0.44 / slateK_exact=0.91 dissociation has a mechanis |
+| EXP-0030 | supported | low | incomplete-design,untested-dependency | GNN and NFD, trained on the overnight_randlen corpus (broad spawn mode |
 
 ### Superseded
 
@@ -123,15 +125,15 @@
 |---|---|---|
 | high | 4 | EXP-0001(0), EXP-0020(0), EXP-0027(0), EXP-0028(0) |
 | moderate | 5 | EXP-0002(1), EXP-0005(1), EXP-0016(1), EXP-0017(1), EXP-0029(1) |
-| low | 12 | EXP-0003(2), EXP-0006(2), EXP-0007(2), EXP-0008(2), EXP-0010(2), EXP-0012(2), EXP-0013(2), EXP-0019(2), EXP-0022(2), EXP-0024(2), EXP-0025(2), EXP-0026(2) |
+| low | 13 | EXP-0003(2), EXP-0006(2), EXP-0007(2), EXP-0008(2), EXP-0010(2), EXP-0012(2), EXP-0013(2), EXP-0019(2), EXP-0022(2), EXP-0024(2), EXP-0025(2), EXP-0026(2), EXP-0030(2) |
 | very-low | 7 | EXP-0018(4), EXP-0021(4), EXP-0023(3), EXP-0024_v1(3), EXP-0024_v2(3), EXP-0026_v1(3), EXP-0026_v2(3) |
 
 | downgrade domain | records |
 |---|---|
 | imprecision | 21 |
-| untested-dependency | 12 |
+| untested-dependency | 13 |
+| incomplete-design | 6 |
 | indirectness | 5 |
-| incomplete-design | 5 |
 | inconsistency | 5 |
 | provenance | 3 |
 | selection | 1 |
