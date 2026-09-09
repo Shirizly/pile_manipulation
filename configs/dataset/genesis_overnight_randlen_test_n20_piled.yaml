@@ -1,0 +1,27 @@
+# EXP-0030 (spawn-mode stratification follow-up): held-out FILE-level test
+# split of the overnight_randlen corpus, PILED spawn mode only, n20 (5 files
+# -- Genesis/data/overnight_randlen_test/split_manifest.json's piled_n20
+# test_idx). Modelled on genesis_overnight_randlen_test_n20.yaml (which pools
+# all 3 n20 spawn groups into 15 pools), but restricted to ONE spawn group so
+# `ind-stripe-thin-pile`'s pile-centroid target is computed from, and scored
+# against, this spawn mode's own piles rather than an average over all three
+# (see the write-up in EXP-0030's appended section for why pooling is wrong
+# for a pile-relative goal).
+#
+# n50 excluded, same reason as the pooled config: Baselines/common/data.py's
+# load_cell hard-assumes states shape (n,20,7).
+#
+# NEW config -- does not touch any config used by prior runs.
+type: genesis
+
+paths:
+  - overnight_randlen_test/piled_n20
+
+val_pct: 0
+test_pct: 0
+
+resolution_scale: 0.5
+
+min_push_length_m: 0.0001
+
+include_physics: false

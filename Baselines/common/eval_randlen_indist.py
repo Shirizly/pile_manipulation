@@ -46,7 +46,7 @@ import json
 
 import torch
 
-from control_utility_test import lyapunov, lyapunov_weights
+from control_utility_test import lyapunov, lyapunov_weights, pile_centroid_and_support
 from fit_linear_foresight import (
     actions_to_pixels, canonicalise, fit_operator, predict_world,
 )
@@ -137,8 +137,23 @@ def main():
              "config": {"train_cfg": args.train_cfg, "test_cfg": args.test_cfg,
                         "run_dir": None, "R": R, "crop": CR, "ridge": RIDGE},
              "dv": {}}
-    for goal in [g.strip() for g in args.goals.split(",") if g.strip()]:
-        dw = lyapunov_weights((H, W), goal, "cpu")
+    goal_list = [g.strip() for g in args.goals.split(",") if g.strip()]
+    pile_center, pile_support = None, None
+    if any(g.endswith("-pile") for g in goal_list):
+        # Same "compute from the loaded data, never hard-code" rule
+        # Baselines/common/eval_baseline.py follows for the slate cells
+        # (goal-placement-pinned, INVARIANTS.md, is broken precisely because
+        # this centroid is recomputed per run/per pool set -- documented, not
+        # fixed here). Computed once over THIS call's step-0 occ0, i.e. over
+        # whatever test-cfg was loaded -- pooled across all 3 n20 spawn
+        # groups for the original pooled config, or over ONE spawn group's 5
+        # held-out files for the per-stratum configs added for the spawn-mode
+        # stratification follow-up, so each stratum gets a target on its own
+        # pile rather than an average over all three.
+        pile_center, pile_support = pile_centroid_and_support(occ0_s0)
+        print(f"pile centroid (row,col)={pile_center}, support (r0,r1,c0,c1)={pile_support}")
+    for goal in goal_list:
+        dw = lyapunov_weights((H, W), goal, "cpu", pile_center=pile_center)
         v0 = lyapunov(occ0_s0, dw)
         dv_true = lyapunov(occ1_s0, dw) - v0
         g = {"dv_true": dv_true, "v0": v0}
