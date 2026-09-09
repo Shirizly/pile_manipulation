@@ -1,0 +1,25 @@
+# EXP-0030: TRAIN-side n20 split of overnight_randlen (mixed/piled/scattered,
+# n_particles=20), used ONLY to fit the persistence/mean-delta/linear
+# reference operators for the held-out in-distribution regret check
+# (Baselines/common/eval_randlen_indist.py) -- the SAME role
+# genesis_slates_multistep_n20_L20L40_train.yaml plays for the slate cells,
+# kept as a separate config because it is a different corpus.
+#
+# NOT used to train the GNN/NFD baselines themselves (those use ALL 5 groups,
+# n20+n50, via nfd_train_3ch_randlen.yaml's own `paths` / the GNN train
+# script's --train-roots).
+type: genesis
+
+paths:
+  - overnight_randlen_train/mixed_n20
+  - overnight_randlen_train/piled_n20
+  - overnight_randlen_train/scattered_n20
+
+val_pct: 0
+test_pct: 0
+
+resolution_scale: 0.5
+
+min_push_length_m: 0.0001
+
+include_physics: false
