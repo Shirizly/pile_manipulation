@@ -116,11 +116,22 @@ actions:
 #   * Ranking whole 4-push SEQUENCES is legitimate at the pool level, since all
 #     128 chains start from the same state.
 
-materials:                                # unverified: ~40 configs sampled, not all 213
+materials:                                # verified 2026-09-10, exhaustive over all 213 configs
   density: 450.0
-  friction: [0.3, 0.5, 0.7]
+  particle_friction: 0.7                  # material friction
+  box_friction: 0.5
+  plate_friction: 0.3
   particle_size: 0.005
   shape: cube
+  # CORRECTION 2026-09-10. An earlier version of this file recorded
+  # `friction: [0.3, 0.5, 0.7]`, read from a grep over sampled configs and
+  # marked `unverified`. That was wrong and the error is worth keeping visible:
+  # those are THREE DIFFERENT FIELDS -- particle, box and plate friction --
+  # each CONSTANT across the corpus, not one field taking three values. An
+  # exhaustive scan of all 213 configs (EXP-0030) found no material variation
+  # anywhere in the corpus. So randomised push length is the ONLY axis that
+  # varies here; anyone reading the old line would have expected a friction
+  # sweep that does not exist.
   # NOTE the eval slates (Genesis/data/slates_multistep/*) are density 1000,
   # friction 0.3. Training here and testing there is a material shift as well
   # as a length shift. Stated for the record; whether it matters depends on the
