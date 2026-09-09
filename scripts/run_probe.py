@@ -22,6 +22,22 @@ Also stamps `utils.git_provenance()` beside the log, so the code state a run
 happened under is recorded at run time rather than reconstructed afterwards
 (12 of 15 existing records name a script that did not exist at the sha they
 record).
+
+4. **A command recorded only on success.** `runs/<tag>.json` used to be written
+   after the process exited, so every killed, OOMed or suspended run left a log
+   with no invocation beside it -- `runs/n50_L20mm.log` is exactly that, a
+   `.pid` and a log from a collection that was stopped, and no record of the
+   command that produced it. Those are precisely the runs whose command you
+   need. Now the meta is written **before** `Popen` with `status: running` and
+   rewritten on exit, and every run also appends to an append-only ledger
+   `runs/COMMANDS.jsonl` (start and end events, joined on `run_id`). A ledger
+   entry with a start and no end means the job was interrupted, which is
+   information rather than an absence.
+
+Pass `--exp EXP-0024_v1` to file the run against a record, and
+`--artifact-dir <dir>` to drop a `COMMAND.txt` in the run's own output
+directory, so the invocation travels with the data when that directory is
+copied or shared.
 """
 from __future__ import annotations
 
@@ -29,11 +45,25 @@ import argparse
 import json
 import os
 import pathlib
+import shlex
 import subprocess
 import sys
 import time
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
+LEDGER = ROOT / "runs" / "COMMANDS.jsonl"
+
+
+def ledger_append(entry: dict) -> None:
+    """Append one event to the command ledger. Append-only, never rewritten.
+
+    Two runs finishing at the same moment would lose an update under
+    read-modify-write, so completion is a second `event: end` record joined to
+    its start on `run_id` rather than an edit of the first line.
+    """
+    LEDGER.parent.mkdir(parents=True, exist_ok=True)
+    with open(LEDGER, "a") as fh:
+        fh.write(json.dumps(entry) + "\n")
 
 
 def main() -> int:
@@ -46,6 +76,15 @@ def main() -> int:
                          "BLAS jobs took the load average to 37 on 20 cores and "
                          "starved an agent's entire budget.")
     ap.add_argument("--timeout", type=int, default=0, help="seconds; 0 = none")
+    ap.add_argument("--exp", default="unfiled",
+                    help="record this run belongs to, e.g. EXP-0024_v1. "
+                         "'unfiled' is accepted -- an unfiled command is worth "
+                         "more than no command -- but name one when you can.")
+    ap.add_argument("--artifact-dir", default=None,
+                    help="the run's own output directory. A COMMAND.txt is "
+                         "written there so the invocation travels with the data; "
+                         "a central ledger is useless once an output dir is "
+                         "copied somewhere else.")
     ap.add_argument("cmd", nargs=argparse.REMAINDER,
                     help="the command, after a literal --")
     a = ap.parse_args()
@@ -76,6 +115,34 @@ def main() -> int:
         prov = {"commit": "unknown", "error": repr(exc)}
 
     t0 = time.time()
+    ts = time.strftime("%Y-%m-%dT%H:%M:%S")
+    run_id = f"{a.tag}-{ts}-{os.getpid()}"
+
+    # --- write the command BEFORE the run, not after ------------------------
+    # A command recorded only on success is missing from exactly the runs whose
+    # command you need: the killed, the OOMed, the suspended.
+    started = {"run_id": run_id, "event": "start", "ts": ts, "tag": a.tag,
+               "exp": a.exp, "cmd": cmd, "out": a.artifact_dir,
+               "log": str(log.relative_to(ROOT)),
+               "commit": prov.get("commit"), "dirty": prov.get("dirty"),
+               "status": "running"}
+    ledger_append(started)
+    meta.write_text(json.dumps({**started, "provenance": prov}, indent=2))
+
+    if a.artifact_dir:
+        art = (ROOT / a.artifact_dir)
+        art.mkdir(parents=True, exist_ok=True)
+        (art / "COMMAND.txt").write_text(
+            "# written by scripts/run_probe.py before the run started\n"
+            f"# run_id {run_id}\n"
+            f"# exp     {a.exp}\n"
+            f"# commit  {prov.get('commit')} dirty={prov.get('dirty')}\n"
+            f"# log     {log.relative_to(ROOT)}\n"
+            # shlex.join, not " ".join: an argument containing spaces or quotes
+            # (a --goals list, a python -c body) must paste back into a shell
+            # unchanged, or the copy is not the command that ran.
+            + shlex.join(cmd) + "\n")
+
     with open(log, "w") as fh:
         p = subprocess.Popen(cmd, stdout=fh, stderr=subprocess.STDOUT,
                              env=env, cwd=ROOT)
@@ -91,9 +158,14 @@ def main() -> int:
             p.kill(); rc = -9
             print(f"[run_probe] TIMEOUT after {a.timeout}s, killed by pid")
 
+    secs = round(time.time() - t0, 1)
+    status = "ok" if rc == 0 else ("killed" if rc < 0 else "failed")
     meta.write_text(json.dumps(
-        {"tag": a.tag, "cmd": cmd, "returncode": rc,
-         "seconds": round(time.time() - t0, 1), "provenance": prov}, indent=2))
+        {**started, "status": status, "returncode": rc,
+         "seconds": secs, "provenance": prov}, indent=2))
+    ledger_append({"run_id": run_id, "event": "end", "tag": a.tag,
+                   "ts": time.strftime("%Y-%m-%dT%H:%M:%S"),
+                   "status": status, "returncode": rc, "seconds": secs})
     pidf.unlink(missing_ok=True)
     print(f"[run_probe] exit {rc} in {time.time() - t0:.0f}s; meta {meta.relative_to(ROOT)}")
     return 0 if rc == 0 else 1

@@ -298,6 +298,62 @@ time instead of reconstructed later. The three hazards below are the reason it
 exists; each one bit repeatedly on 2026-09-05, twice *after* the warning was
 written, which is the evidence that prose was not enough.
 
+## Every command gets logged *before* it runs
+
+`provenance.script` names what ran; it does not name **how**. Several results in
+this register turn on an argument — which slate config, which `--goals`, which
+`--split` — and those were recoverable only for jobs that happened to go
+through `run_probe.py`. Everything else had to be reconstructed later from
+output filenames, which is guesswork wearing a timestamp
+(`docs/experiment_commands.md` marks the reconstructed ones; there are eight).
+
+**Two writes per run, and the first happens at launch, not at completion.**
+
+1. **Append a start event to the ledger `runs/COMMANDS.jsonl`** — append-only,
+   one JSON object per event, written *immediately before the process starts*:
+
+   ```json
+   {"run_id": "n20_L20mm-2026-09-08T14:03:11-4021", "event": "start",
+    "tag": "n20_L20mm", "exp": "EXP-0024_v1", "commit": "9e78da53",
+    "dirty": false, "out": "runs_expB/n20_L20mm",
+    "cmd": ["python", "-u", "-m", "training.train", "..."], "status": "running"}
+   ```
+
+   `exp` may be `"unfiled"` — an unfiled command is still worth more than no
+   command. `cmd` is argv, never a re-typed prose version of it.
+
+2. **Drop a `COMMAND.txt` in the run's own output directory** (`--artifact-dir`),
+   holding the same argv plus the commit sha. The ledger is for the human
+   sweeping the project; this copy is so the command *travels with the data* —
+   output dirs get moved, copied and shared, and a dataset whose invocation
+   lives only in a central file elsewhere becomes unreconstructable the moment
+   it is copied.
+
+**On exit, append an `event: end` record** carrying `status` (`ok` / `failed` /
+`killed`) and `seconds`, joined to its start on `run_id`. Completion is a second
+record rather than an edit of the first, because two runs finishing in the same
+moment would lose an update under read-modify-write. **A start with no end means
+the job was interrupted** — which is information, not an error: a suspended
+machine left two collections in exactly that state, and the ledger is how you
+tell an interrupted run from a finished one without re-deriving it from file
+counts.
+
+**Write-before-run is the whole point.** `runs/<tag>.json` used to be written
+only after the process exited, so every killed, OOMed or suspended run left a
+log with no invocation beside it. `runs/n50_L20mm.log` is exactly that: a
+stopped collection with a `.pid`, a log, and no record of the command that
+produced it — and it is precisely the run whose command you need.
+
+**`run_probe.py` does both writes for you, so route analysis runs through it
+too, not just long ones.** A 25-second re-score whose `--goals` decided the
+result is exactly the case this rule exists for. If you invoke something
+directly, you own the ledger line by hand — and if that feels tedious, use the
+wrapper.
+
+**Never present a reconstructed command as a recorded one.** If you rebuilt an
+invocation from output filenames or a usage docstring, label it as
+reconstructed wherever you write it down.
+
 **Never block on a watcher.** If you launch a long job in the background, do
 not then wait on it, poll it, or set up a monitor and return. Read whatever its
 output file already holds and write up what is in it, or run the job in the
