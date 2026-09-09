@@ -60,7 +60,14 @@ dataset:
     - type: eulerian_aliases
 
 training:
-  epochs: 100
+  # 30, not 100 (nfd_train_3ch.yaml's epoch count) -- measured 1 epoch on an
+  # idle GPU at 207s (89,081 train transitions, batch=32, ~2784 steps/epoch);
+  # 100 epochs would be ~5.75h, out of this experiment's ~5h total budget.
+  # 30 epochs (~1.7h) gives ~83,500 gradient steps, close to the in-
+  # distribution run's 100 x ~684 steps/epoch = 68,400 -- roughly matched by
+  # total updates rather than by epoch count, since this corpus is ~4.3x
+  # larger. See EXP-0030 for the measured epoch time and the projection.
+  epochs: 30
   batch_size: 32
   lr: 0.0001
   lr_scheduler:
