@@ -84,11 +84,37 @@ actions:
   perpendicular_yaw: true                 # unverified (config)
   shared_travel_distance: false           # unverified (config)
   start_sampling: auto                    # unverified (config)
-  samples_per_env: 4                      # unverified, AND SEMANTICALLY OPEN:
-    # 128 envs x 4 = the 512 rows. Whether the 4 are sequential pushes from one
-    # env (a chain, so consecutive rows share a trajectory) or 4 independent
-    # draws is NOT established. It decides what a leak-free split must keep
-    # together. Resolve before trusting any within-file split.
+  samples_per_env: 4                      # RESOLVED 2026-09-09 (user + verified)
+    # The 4 samples are SEQUENTIAL: each env executes a 4-push chain. Rows are
+    # env-major blocked, NOT interleaved -- row r is env (r % 128), step
+    # (r // 128), so states[128 + e] == states_[e] exactly (measured max abs
+    # difference 0.00e+00 on two files). To reconstruct env e's trajectory take
+    # rows e, e+128, e+256, e+384.
+
+# ---------------------------------------------------------------------------
+# THE STRUCTURE THAT WAS NOT OBVIOUS: every file is a SAME-STATE POOL.
+# Verified 2026-09-09: within a file, all 128 envs start step 0 from an
+# IDENTICAL settled state -- measured spread across envs 0.000e+00 m (piled
+# n20) and 1.164e-10 m (scattered n50), i.e. float32 state-restore precision,
+# the same standard Genesis/data/slates_multistep meets and EXP-0012 accepted.
+#
+# So this corpus is not just a training corpus. Structurally it is the same
+# thing as slates_multistep -- one state broadcast to 128 candidate actions --
+# with three differences: push length is randomised, there are 4 steps rather
+# than 3, and it spans more spawn modes and both n=20 and n=50.
+#
+# Consequences worth knowing before you plan anything with it:
+#   * 213 same-state pools of 128 candidates are available for control/regret
+#     scoring, against the 50 pools (20 held out) in slates_multistep. The
+#     large-K model comparison there was underpowered precisely for want of
+#     pools -- 9 to 15 of 20 pools tied outright and the paired t fell to 0.75
+#     (EXP-0024_v1 amendment). This corpus is the obvious remedy.
+#   * Step 0 is the only same-state pool in a file. By step 1 each env has
+#     executed its own push and diverged, exactly as in slates_multistep, so
+#     control ranking uses step-0 rows only; steps 1-3 are training material
+#     and multi-step sequence data.
+#   * Ranking whole 4-push SEQUENCES is legitimate at the pool level, since all
+#     128 chains start from the same state.
 
 materials:                                # unverified: ~40 configs sampled, not all 213
   density: 450.0
