@@ -104,8 +104,18 @@ class NFDPredictor:
 
 
 def build_predictor() -> NFDPredictor:
-    """Primary, faithful 3-channel NFD. --predictor Baselines.NFD.predictor:build_predictor"""
-    return NFDPredictor(CKPT_3CH, channels=3, name="nfd_unet3ch")
+    """Primary, faithful 3-channel NFD. --predictor Baselines.NFD.predictor:build_predictor
+
+    Checkpoint path overridable via the NFD_CKPT env var (same pattern as
+    Baselines/GNN/predictor.py's GNN_CKPT) -- e.g. for EXP-0030's
+    overnight_randlen-trained checkpoint, same architecture/recipe, scored
+    against the same eval slates for a generalisation comparison. `.name`
+    stays "nfd_unet3ch" regardless (matches GNN's own convention: the
+    predictor's identity is the architecture, not the training data; runs
+    are told apart by --tag/--out-prefix, not by predictor name)."""
+    import os
+    ckpt_path = os.environ.get("NFD_CKPT", CKPT_3CH)
+    return NFDPredictor(ckpt_path, channels=3, name="nfd_unet3ch")
 
 
 def build_predictor_2ch_ablation() -> NFDPredictor:

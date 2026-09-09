@@ -79,13 +79,22 @@ def main():
     ap.add_argument("--smoke", action="store_true",
                      help="tiny run (2 epochs) to check the pipeline end-to-end before "
                           "committing to a long run, per ORCHESTRATION_LOG.md priority order.")
+    ap.add_argument("--train-roots", default=None,
+                     help="comma-separated list of directories of _*_data.pt files, "
+                          "overriding the module-level TRAIN_ROOTS default (L20mm+L40mm "
+                          "pooled). Added for EXP-0030 (overnight_randlen corpus) without "
+                          "changing the default behaviour for any existing invocation.")
+    ap.add_argument("--val-roots", default=None,
+                     help="comma-separated list, overriding VAL_ROOTS. See --train-roots.")
     args = ap.parse_args()
 
     os.makedirs(args.out_dir, exist_ok=True)
     device = args.device
 
-    train_ds = GenesisGNNDataset(TRAIN_ROOTS)
-    val_ds = GenesisGNNDataset(VAL_ROOTS)
+    train_roots = args.train_roots.split(",") if args.train_roots else TRAIN_ROOTS
+    val_roots = args.val_roots.split(",") if args.val_roots else VAL_ROOTS
+    train_ds = GenesisGNNDataset(train_roots)
+    val_ds = GenesisGNNDataset(val_roots)
     print(f"train examples: {len(train_ds)}  val examples: {len(val_ds)}")
 
     train_loader = DataLoader(train_ds, batch_size=args.batch_size, shuffle=True,
