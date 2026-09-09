@@ -1,0 +1,134 @@
+# Data dictionary for Genesis/data/overnight_randlen
+#
+# WHY THIS FILE LIVES HERE, NOT IN configs/dataset/
+# It is not a loadable training config -- it describes the corpus, so it
+# travels with the data if the directory is copied or moved. Loadable configs
+# for particular splits belong in configs/dataset/ and should reference this
+# file. Same principle as the COMMAND.txt that scripts/run_probe.py drops in a
+# run's output directory.
+#
+# PROVENANCE OF THIS DESCRIPTION
+# Written 2026-09-09 from direct inspection of the tree and a sample of
+# per-file configs and tensors. Every field below is marked `verified` (I
+# measured it) or `unverified` (read from a config I did not cross-check
+# against the tensors, or sampled rather than exhaustive). A concurrent agent
+# session was characterising this corpus properly at the time of writing;
+# where its measured numbers disagree with an `unverified` field here, its
+# numbers win and this file should be corrected.
+
+corpus:
+  path: Genesis/data/overnight_randlen
+  size_on_disk: 11G                       # verified (du -sh)
+  n_data_files: 213                       # verified
+  transitions_per_file: 512               # verified on 5 randomly sampled files
+  approx_total_transitions: 109056         # 213 x 512, assuming uniformity;
+                                          # unverified -- only 5 files checked
+  collected: overnight 2026-09-08/09       # unverified (from mtimes/branch context)
+
+# ---------------------------------------------------------------------------
+# Layout. Five leaf directories, each holding _{k}_data.pt / _{k}_config.yaml
+# (and _{k}_failed.pt). Note the leaf name encodes spawn detail and is NOT
+# uniform in depth across groups -- a glob of `*/cube/n*/size*/ *_data.pt`
+# will MISS the four groups that have a further subdirectory. Recurse.
+# ---------------------------------------------------------------------------
+groups:                                   # all verified (file counts)
+  - path: mixed/cube/n20/size0.005/pile0.5_layers4
+    spawn: mixed
+    n_particles: 20
+    files: 50
+  - path: piled/cube/n20/size0.005/layers4
+    spawn: piled
+    n_particles: 20
+    files: 50
+  - path: piled/cube/n50/size0.005/layers4
+    spawn: piled
+    n_particles: 50
+    files: 13                             # the one short group
+  - path: scattered/cube/n20/size0.005
+    spawn: scattered
+    n_particles: 20
+    files: 50
+  - path: scattered/cube/n50/size0.005
+    spawn: scattered
+    n_particles: 50
+    files: 50
+
+# ---------------------------------------------------------------------------
+# On-disk schema -- identical to Genesis/data/slates_multistep and readable by
+# registry.dataset_registry (PileSweepData, `type: genesis`) and by
+# occupancy_foresight.load_transition_fields without modification.
+# ---------------------------------------------------------------------------
+schema:                                   # verified
+  states:   [512, n_particles, 7]         # pose before the push
+  states_:  [512, n_particles, 7]         # pose after
+  p_starts: [512, 3]
+  p_stops:  [512, 3]
+  angles:   [512]
+
+# ---------------------------------------------------------------------------
+# THE DEFINING FEATURE: push length is randomised. Every other cube dataset in
+# this repo holds it constant, and much of the register's method assumes so --
+# see docs/plan_selection_pressure_validation.md 5.1 for why the constant-length
+# manifold matters to the action chart and to cross-dataset comparability.
+# ---------------------------------------------------------------------------
+actions:
+  sweep_length: null                      # verified: no fixed length
+  sweep_length_dist:                      # unverified: read from one config
+    main_range: [0.02, 0.07]              # metres
+    tail_prob: 0.1
+    tail_range: [0.01, 0.08]
+  realised_length_m:                      # verified on one n20 piled file
+    min: 0.0005                           # short ones come from early contact
+    median: 0.0424
+    max: 0.0796
+  perpendicular_yaw: true                 # unverified (config)
+  shared_travel_distance: false           # unverified (config)
+  start_sampling: auto                    # unverified (config)
+  samples_per_env: 4                      # unverified, AND SEMANTICALLY OPEN:
+    # 128 envs x 4 = the 512 rows. Whether the 4 are sequential pushes from one
+    # env (a chain, so consecutive rows share a trajectory) or 4 independent
+    # draws is NOT established. It decides what a leak-free split must keep
+    # together. Resolve before trusting any within-file split.
+
+materials:                                # unverified: ~40 configs sampled, not all 213
+  density: 450.0
+  friction: [0.3, 0.5, 0.7]
+  particle_size: 0.005
+  shape: cube
+  # NOTE the eval slates (Genesis/data/slates_multistep/*) are density 1000,
+  # friction 0.3. Training here and testing there is a material shift as well
+  # as a length shift. Stated for the record; whether it matters depends on the
+  # question being asked.
+
+# ---------------------------------------------------------------------------
+# How to use it, and the traps that apply
+# ---------------------------------------------------------------------------
+usage:
+  splitting: >
+    Split at FILE (episode) granularity, never transition-level: transitions
+    within a file share a pile and leak. This is the `episode-split` invariant
+    in docs/experiments/INVARIANTS.md. Record which files were held out.
+    Until `samples_per_env` semantics are resolved (above), assume the 4
+    samples per env may be a chain and keep whole files together.
+  physics_conditioning: >
+    Not relevant to the Baselines models -- they are unconditioned (confirmed
+    by the user, 2026-09-09). If a future conditioned model is trained here,
+    note that PhysicsBounds' default density range is {750, 5000} and this
+    corpus is 450, i.e. below the floor.
+  loading: >
+    Recurse when globbing (see the layout note). A pattern that stops at
+    size0.005/ silently drops mixed/, both piled/ groups, and picks up only the
+    two scattered/ ones.
+  companion_configs: []
+    # Add loadable configs/dataset/*.yaml here as they are written, so a future
+    # session finds them from the data rather than by grep.
+
+related:
+  eval_cells:
+    - Genesis/data/slates_multistep/n20_L20mm      # 50 pools x 128 candidates x 3 steps
+    - Genesis/data/slates_multistep/n20_L40mm
+  docs:
+    - docs/experiment_commands.md                  # exact invocations, per experiment
+    - docs/piled_collection.md                     # what piled/pile-aware collection guarantees
+    - docs/experiments/METRICS.md                  # regret_dv and slateN definitions
+    - Baselines/ORCHESTRATION_LOG.md               # baseline conventions and predictor contract
