@@ -34,9 +34,21 @@ convention exists to avoid).
 
 Usage
 -----
+    GNN_CKPT=Baselines/GNN/runs/gnn_randlen/ckpt_best.pth \\
     PYTHONPATH=. python Baselines/common/eval_randlen_indist.py \\
         --predictor Baselines.GNN.predictor:build_predictor \\
         --tag gnn_randlen_indist --out-prefix Baselines/GNN/runs/gnn_randlen_indist
+
+**`GNN_CKPT`/`NFD_CKPT` must be set explicitly** (read by each predictor's own
+`build_predictor()`, `Baselines/{GNN,NFD}/predictor.py`) -- both default to the
+IN-DISTRIBUTION (pooled L20L40) checkpoint if unset, so an unset env var does
+not fail loudly here: it silently scores the wrong model under the
+`_randlen_` tag/output filenames. Caught during the spawn-mode-stratification
+follow-up (2026-09-10) when a smoke-test run's own printed checkpoint path/
+epoch (`Baselines/GNN/runs/ckpt_best.pth`, epoch=400) did not match the
+randlen-trained checkpoint's path/epoch (`Baselines/GNN/runs/gnn_randlen/
+ckpt_best.pth`, epoch=224) that every prior `_randlen_indist` run in this
+record used -- re-run before anything was written to the record.
 """
 from __future__ import annotations
 
