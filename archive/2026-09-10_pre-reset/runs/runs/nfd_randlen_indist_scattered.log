@@ -1,0 +1,7 @@
+fit reference operators on 69115 train transitions (135 files)
+test: 2559 transitions, 5 held-out files; step-0 subset: 640 (expected 640 if no row was filtered out of a step-0 block)
+pile centroid (row,col)=(29.65997886657715, 30.165496826171875), support (r0,r1,c0,c1)=(0, 63, 0, 63)
+goal=corner: dv_true mean +0.00428 sd 0.02321 helpful 39%
+goal=ind-stripe-thin-pile: dv_true mean -0.00681 sd 0.02832 helpful 40%
+wrote Baselines/NFD/runs/nfd_randlen_indist_scattered_dv_cache.pt
+wrote Baselines/NFD/runs/nfd_randlen_indist_scattered_meta.json

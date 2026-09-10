@@ -1,0 +1,17 @@
+{
+  "tag": "gnn_randlen_scattered",
+  "provenance": {
+    "commit": "652fce1f",
+    "commit_full": "652fce1f43bccbd5ecd7f0eab7224441aa9d87c6",
+    "dirty": false,
+    "dirty_files": [],
+    "branch": "baselines/overnight"
+  },
+  "n": 2559,
+  "n_files": 5,
+  "test_cfg": "configs/dataset/genesis_overnight_randlen_test_n20_scattered.yaml",
+  "accuracy": {
+    "persistence": 0.0,
+    "gnn": 0.16305357217788696
+  }
+}

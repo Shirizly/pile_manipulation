@@ -1,0 +1,17 @@
+16 episodes, 5120 transitions, 20 grains
+
+--- actions ---
+push length: mean 19.36 sd 3.20 mm; full-length 94.5%
+
+--- physics ---
+mass in tray: before 1.0000 (min 1.0000) | after 1.0000 (min 1.0000)
+z range: 11.6 .. 17.8 mm (tray floor 10.0)
+grain displacement: mean 11.31 p95 19.98 max 112.64 mm
+
+--- start-state diversity (episode starts only) ---
+episode-start pile centroid spread: 1.86 mm
+episode-start pile radius: mean 10.5 sd 0.9 mm
+
+--- observation maps ---
+density  : occupied 18/4096 cells, max 2.0
+mask>=2  : occupied 2/4096 cells, max 1.0

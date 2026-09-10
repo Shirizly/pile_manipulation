@@ -1,0 +1,43 @@
+{
+  "tag": "nfd_randlen_L20mm",
+  "provenance": {
+    "commit": "a0f116d3",
+    "commit_full": "a0f116d3b1dd8b830cf16d494c7fe4d5f16c90e5",
+    "dirty": false,
+    "dirty_files": [],
+    "branch": "baselines/overnight"
+  },
+  "n_eval": 7680,
+  "accuracy": {
+    "persistence": 0.0,
+    "mean-delta": 0.05437326431274414,
+    "linear": 0.20044296979904175,
+    "nfd_unet3ch": 0.4071313142776489,
+    "oracle": 1.0
+  },
+  "accuracy_by_step": {
+    "0": {
+      "persistence": 0.0,
+      "mean-delta": 0.0709962248802185,
+      "linear": 0.2137938141822815,
+      "nfd_unet3ch": 0.4000372886657715,
+      "oracle": 1.0
+    },
+    "1": {
+      "persistence": 0.0,
+      "mean-delta": 0.052547335624694824,
+      "linear": 0.19669777154922485,
+      "nfd_unet3ch": 0.40467143058776855,
+      "oracle": 1.0
+    },
+    "2": {
+      "persistence": 0.0,
+      "mean-delta": 0.03820502758026123,
+      "linear": 0.18981176614761353,
+      "nfd_unet3ch": 0.4173782467842102,
+      "oracle": 1.0
+    }
+  },
+  "n_slates_step0": 20,
+  "n_step0": 2560
+}

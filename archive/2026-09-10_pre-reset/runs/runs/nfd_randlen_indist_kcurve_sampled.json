@@ -1,0 +1,41 @@
+{
+  "run_id": "nfd_randlen_indist_kcurve_sampled-2026-09-10T00:24:45-34233",
+  "event": "start",
+  "ts": "2026-09-10T00:24:45",
+  "tag": "nfd_randlen_indist_kcurve_sampled",
+  "exp": "EXP-0030",
+  "cmd": [
+    "/home/alon/anaconda3/envs/pme/bin/python",
+    "-u",
+    "scripts/probes/exp0026_kcurve.py",
+    "Baselines/NFD/runs/nfd_randlen_indist_dv_cache.pt",
+    "--goal",
+    "corner",
+    "--models",
+    "persistence,mean-delta,linear,nfd_unet3ch,oracle",
+    "--ks",
+    "2,4,8,16,32,64,128",
+    "--pairs",
+    "nfd_unet3ch-linear,oracle-linear,linear-mean-delta",
+    "--out",
+    "Baselines/NFD/runs/nfd_randlen_indist_kcurve_sampled.json"
+  ],
+  "out": "Baselines/NFD/runs",
+  "log": "runs/nfd_randlen_indist_kcurve_sampled.log",
+  "commit": "a0f116d3",
+  "dirty": true,
+  "status": "ok",
+  "returncode": 0,
+  "seconds": 13.4,
+  "provenance": {
+    "commit": "a0f116d3",
+    "commit_full": "a0f116d3b1dd8b830cf16d494c7fe4d5f16c90e5",
+    "dirty": true,
+    "dirty_files": [
+      "docs/experiments/EXP-0030-randlen-corpus-generalisation.md",
+      "docs/experiments/REGISTER.md",
+      "docs/experiments/STATE_OF_PLAY.md"
+    ],
+    "branch": "baselines/overnight"
+  }
+}

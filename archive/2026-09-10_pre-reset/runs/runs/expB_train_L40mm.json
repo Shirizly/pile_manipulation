@@ -1,0 +1,20 @@
+{
+  "tag": "expB_train_L40mm",
+  "cmd": [
+    "python",
+    "-u",
+    "-m",
+    "training.train",
+    "configs/training/expB_unetfilm_slates_multistep_n20_L40mm.yaml",
+    "--no-resume"
+  ],
+  "returncode": 0,
+  "seconds": 2213.4,
+  "provenance": {
+    "commit": "4afea641",
+    "commit_full": "4afea6412bd698ba494e153925c5c7ce20da3cbe",
+    "dirty": false,
+    "dirty_files": [],
+    "branch": "VisualForesight"
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "tag": "exp0021_train_all",
+  "cmd": [
+    "bash",
+    "scripts/probes/exp0021_train_all.sh"
+  ],
+  "returncode": 0,
+  "seconds": 2990.1,
+  "provenance": {
+    "commit": "20e07784",
+    "commit_full": "20e077843f7d7247b201b09f994168d97682addb",
+    "dirty": false,
+    "dirty_files": [],
+    "branch": "VisualForesight"
+  }
+}

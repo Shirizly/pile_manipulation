@@ -1,0 +1,43 @@
+{
+  "tag": "gnn_randlen_L40mm",
+  "provenance": {
+    "commit": "a0f116d3",
+    "commit_full": "a0f116d3b1dd8b830cf16d494c7fe4d5f16c90e5",
+    "dirty": false,
+    "dirty_files": [],
+    "branch": "baselines/overnight"
+  },
+  "n_eval": 7680,
+  "accuracy": {
+    "persistence": 0.0,
+    "mean-delta": 0.11823928356170654,
+    "linear": 0.3811134099960327,
+    "gnn": 0.3258761167526245,
+    "oracle": 1.0
+  },
+  "accuracy_by_step": {
+    "0": {
+      "persistence": 0.0,
+      "mean-delta": 0.17593419551849365,
+      "linear": 0.46537476778030396,
+      "gnn": 0.3675892949104309,
+      "oracle": 1.0
+    },
+    "1": {
+      "persistence": 0.0,
+      "mean-delta": 0.104644775390625,
+      "linear": 0.3544941544532776,
+      "gnn": 0.31145066022872925,
+      "oracle": 1.0
+    },
+    "2": {
+      "persistence": 0.0,
+      "mean-delta": 0.02404022216796875,
+      "linear": 0.2524595856666565,
+      "gnn": 0.2638317942619324,
+      "oracle": 1.0
+    }
+  },
+  "n_slates_step0": 20,
+  "n_step0": 2560
+}

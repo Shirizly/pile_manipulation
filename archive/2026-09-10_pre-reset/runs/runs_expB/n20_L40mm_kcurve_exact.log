@@ -1,0 +1,56 @@
+cache=runs_expB/n20_L40mm_dv_cache.pt goal=corner n_slates=20 provenance=4afea641 dirty=False
+
+=== slateK_exact (closed form) ===
+model            K=2        K=4        K=8        K=16       K=32       K=64       K=128    
+persistence      -0.0224    -0.0417    -0.0536    -0.0575    -0.0480    -0.0038    0.1322   
+mean-delta       0.8283     0.8555     0.8504     0.8326     0.8007     0.7641     0.7166   
+linear           0.9807     0.9820     0.9831     0.9817     0.9797     0.9780     0.9790   
+UNet             0.9887     0.9917     0.9932     0.9927     0.9919     0.9916     0.9924   
+oracle           1.0000     1.0000     1.0000     1.0000     1.0000     1.0000     1.0000   
+
+=== worstK (adversarial pool) ===
+model            K=2        K=4        K=8        K=16       K=32       K=64       K=128    
+persistence      2.6099     2.6099     2.6099     2.6032     2.5955     2.5427     0.8674   
+mean-delta       1.5865     1.5865     1.5365     1.4636     1.3037     1.1844     0.2834   
+linear           0.6150     0.6150     0.6150     0.6150     0.6149     0.5400     0.0185   
+UNet             0.4975     0.4847     0.4847     0.4800     0.4538     0.3425     0.0005   
+oracle           -0.0001    -0.0001    -0.0001    -0.0001    -0.0001    -0.0001    -0.0082  
+
+=== rank_profile (true percentile of the model's r-th pick) ===
+model            r=1       r=2       r=3       r=4       r=8       r=16      r=32      r=64      r=128   
+persistence      0.427     0.561     0.623     0.506     0.487     0.441     0.596     0.423     0.473   
+mean-delta       0.195     0.131     0.129     0.200     0.133     0.145     0.294     0.563     0.683   
+linear           0.016     0.025     0.038     0.029     0.076     0.136     0.255     0.503     0.988   
+UNet             0.010     0.014     0.023     0.031     0.066     0.116     0.238     0.493     0.987   
+oracle           0.000     0.005     0.015     0.022     0.055     0.117     0.242     0.492     0.992   
+
+=== paired slateK_exact differences ===
+
+  UNet - linear
+    K=   2 mean=+0.0080 sem=0.0010 t=+7.81 wins=19/20 ties=0
+    K=   4 mean=+0.0097 sem=0.0010 t=+10.23 wins=19/20 ties=0
+    K=   8 mean=+0.0101 sem=0.0009 t=+10.90 wins=19/20 ties=0
+    K=  16 mean=+0.0110 sem=0.0013 t=+8.33 wins=20/20 ties=0
+    K=  32 mean=+0.0122 sem=0.0025 t=+4.87 wins=18/20 ties=0
+    K=  64 mean=+0.0135 sem=0.0042 t=+3.22 wins=16/20 ties=0
+    K= 128 mean=+0.0134 sem=0.0069 t=+1.93 wins=8/20 ties=10
+
+  oracle - linear
+    K=   2 mean=+0.0193 sem=0.0010 t=+19.32 wins=20/20 ties=0
+    K=   4 mean=+0.0180 sem=0.0008 t=+22.60 wins=20/20 ties=0
+    K=   8 mean=+0.0169 sem=0.0006 t=+28.87 wins=20/20 ties=0
+    K=  16 mean=+0.0183 sem=0.0013 t=+14.17 wins=20/20 ties=0
+    K=  32 mean=+0.0203 sem=0.0025 t=+8.28 wins=20/20 ties=0
+    K=  64 mean=+0.0220 sem=0.0041 t=+5.42 wins=20/20 ties=0
+    K= 128 mean=+0.0210 sem=0.0070 t=+3.00 wins=11/20 ties=9
+
+  linear - mean-delta
+    K=   2 mean=+0.1524 sem=0.0076 t=+19.99 wins=20/20 ties=0
+    K=   4 mean=+0.1265 sem=0.0056 t=+22.70 wins=20/20 ties=0
+    K=   8 mean=+0.1327 sem=0.0062 t=+21.24 wins=20/20 ties=0
+    K=  16 mean=+0.1490 sem=0.0097 t=+15.34 wins=20/20 ties=0
+    K=  32 mean=+0.1789 sem=0.0142 t=+12.63 wins=20/20 ties=0
+    K=  64 mean=+0.2140 sem=0.0188 t=+11.37 wins=20/20 ties=0
+    K= 128 mean=+0.2624 sem=0.0239 t=+10.96 wins=20/20 ties=0
+
+wrote runs_expB/n20_L40mm_kcurve_exact.json

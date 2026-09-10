@@ -1,0 +1,23 @@
+loaded 16 episodes; kept 4840 full-length pushes, dropped 280 truncated (5.5%)
+loaded 16 episodes; kept 4840 full-length pushes, dropped 280 truncated (5.5%)
+loaded 16 episodes; kept 4840 full-length pushes, dropped 280 truncated (5.5%)
+
+### cube n20 FULL  res=32 blur=1.0 M=4840 (3632 train / 1208 val, 16 episodes)
+
+--- target = mask-delta ---
+  mean-delta (0 params)        dim=    0  explained over mean-delta = 0.0000  (by construction)
+  mask only                    dim= 1024  explained over mean-delta = 0.7393
+  height only                  dim= 1024  explained over mean-delta = 0.6308
+  density only                 dim= 1024  explained over mean-delta = 0.6557
+  mask + height (2 channel)    dim= 2048  explained over mean-delta = 0.7329
+  mask + density (2 channel)   dim= 2048  explained over mean-delta = 0.7367
+  mask+height+density (3ch)    dim= 3072  explained over mean-delta = 0.7311
+
+--- target = density-delta ---
+  mean-delta (0 params)        dim=    0  explained over mean-delta = 0.0000  (by construction)
+  mask only                    dim= 1024  explained over mean-delta = 0.4150
+  height only                  dim= 1024  explained over mean-delta = 0.4143
+  density only                 dim= 1024  explained over mean-delta = 0.4380
+  mask + height (2 channel)    dim= 2048  explained over mean-delta = 0.4096
+  mask + density (2 channel)   dim= 2048  explained over mean-delta = 0.4284
+  mask+height+density (3ch)    dim= 3072  explained over mean-delta = 0.4114

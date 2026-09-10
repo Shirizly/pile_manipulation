@@ -1,0 +1,24 @@
+=== EXP-B multistep eval: n20_L20mm_sharp ===
+provenance: {'commit': 'eb390fd2', 'commit_full': 'eb390fd2c44bb970563294c9cf26ddacc5e53dce', 'dirty': True, 'dirty_files': ['control_utility_test.py', 'scripts/probes/exp0026_selection_pressure.py', 'scripts/probes/expB_multistep_eval.py', 'scripts/probes/spectral_concentration.py'], 'branch': 'VisualForesight'}
+train: 11520 transitions, grid 64x64, 90 batches
+UNet load: <All keys matched successfully>
+eval: 7680 transitions, 60 batches
+  steps present: [0, 1, 2], step0 transitions: 2560
+
+-- image accuracy (held-out eval slates, all 3 steps, n=7680) --
+  persistence          accuracy=+0.0000  (step0=+0.0000 step1=+0.0000 step2=+0.0000)
+  mean-delta           accuracy=+0.0857  (step0=+0.1061 step1=+0.0829 step2=+0.0664)
+  linear               accuracy=+0.3005  (step0=+0.3158 step1=+0.2974 step2=+0.2872)
+  UNet                 accuracy=+0.4186  (step0=+0.4204 step1=+0.4164 step2=+0.4187)
+  oracle               accuracy=+1.0000  (step0=+1.0000 step1=+1.0000 step2=+1.0000)
+
+step-0 (control-ranking) subset: 2560 transitions, 20 slates (128 candidates/slate)
+finest-band true-signal std over region: 0.17855
+degradation arms: 13 added
+pile centroid (row,col)=(31.265335083007812, 31.546361923217773), support (r0,r1,c0,c1)=(25, 39, 25, 39)
+goal=ind-square8-pile: dv_true mean +0.02660 sd 0.10270 helpful 37%
+goal=ind-square16-pile: dv_true mean +0.06173 sd 0.09626 helpful 0%
+goal=ind-stripe-thin-pile: dv_true mean -0.00567 sd 0.07510 helpful 44%
+goal=corner: dv_true mean -0.00034 sd 0.02338 helpful 49%
+wrote runs_expB/n20_L20mm_sharp_dv_cache.pt
+wrote runs_expB/n20_L20mm_sharp_accuracy.json

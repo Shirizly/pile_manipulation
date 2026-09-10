@@ -1,0 +1,34 @@
+{
+  "run_id": "gnn_randlen_holdout_accuracy_piled-2026-09-10T02:50:49-41676",
+  "event": "start",
+  "ts": "2026-09-10T02:50:49",
+  "tag": "gnn_randlen_holdout_accuracy_piled",
+  "exp": "EXP-0030",
+  "cmd": [
+    "/home/alon/anaconda3/envs/pme/bin/python",
+    "-u",
+    "Baselines/common/eval_randlen_holdout.py",
+    "--predictor",
+    "Baselines.GNN.predictor:build_predictor",
+    "--tag",
+    "gnn_randlen_piled",
+    "--out",
+    "Baselines/GNN/runs/gnn_randlen_holdout_accuracy_piled.json",
+    "--test-cfg",
+    "configs/dataset/genesis_overnight_randlen_test_n20_piled.yaml"
+  ],
+  "out": "Baselines/GNN/runs",
+  "log": "runs/gnn_randlen_holdout_accuracy_piled.log",
+  "commit": "652fce1f",
+  "dirty": false,
+  "status": "ok",
+  "returncode": 0,
+  "seconds": 10.8,
+  "provenance": {
+    "commit": "652fce1f",
+    "commit_full": "652fce1f43bccbd5ecd7f0eab7224441aa9d87c6",
+    "dirty": false,
+    "dirty_files": [],
+    "branch": "baselines/overnight"
+  }
+}

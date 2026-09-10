@@ -1,0 +1,6 @@
+fit reference operators on 69115 train transitions (135 files)
+test: 7679 transitions, 15 held-out files; step-0 subset: 1920 (expected 1920 if no row was filtered out of a step-0 block)
+[GNNPredictor] loaded Baselines/GNN/runs/gnn_randlen/ckpt_best.pth (epoch=224, val_mse=3.4861221214062726e-06)
+goal=corner: dv_true mean +0.00653 sd 0.02891 helpful 37%
+wrote Baselines/GNN/runs/gnn_randlen_indist_dv_cache.pt
+wrote Baselines/GNN/runs/gnn_randlen_indist_meta.json

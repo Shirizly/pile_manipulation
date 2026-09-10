@@ -1,0 +1,43 @@
+{
+  "tag": "n20_L20mm",
+  "provenance": {
+    "commit": "4afea641",
+    "commit_full": "4afea6412bd698ba494e153925c5c7ce20da3cbe",
+    "dirty": false,
+    "dirty_files": [],
+    "branch": "VisualForesight"
+  },
+  "n_eval": 7680,
+  "accuracy": {
+    "persistence": 0.0,
+    "mean-delta": 0.08569306135177612,
+    "linear": 0.3005325198173523,
+    "UNet": 0.4185580611228943,
+    "oracle": 1.0
+  },
+  "accuracy_by_step": {
+    "0": {
+      "persistence": 0.0,
+      "mean-delta": 0.1060711145401001,
+      "linear": 0.3158305287361145,
+      "UNet": 0.42041683197021484,
+      "oracle": 1.0
+    },
+    "1": {
+      "persistence": 0.0,
+      "mean-delta": 0.08290773630142212,
+      "linear": 0.2973703145980835,
+      "UNet": 0.41642749309539795,
+      "oracle": 1.0
+    },
+    "2": {
+      "persistence": 0.0,
+      "mean-delta": 0.06643778085708618,
+      "linear": 0.28718411922454834,
+      "UNet": 0.4187406301498413,
+      "oracle": 1.0
+    }
+  },
+  "n_slates_step0": 20,
+  "n_step0": 2560
+}

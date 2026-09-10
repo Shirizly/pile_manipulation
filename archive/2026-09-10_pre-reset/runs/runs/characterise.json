@@ -1,0 +1,17 @@
+{
+  "tag": "characterise",
+  "cmd": [
+    "python",
+    "-u",
+    "scripts/probes/granularity_characterise.py"
+  ],
+  "returncode": 0,
+  "seconds": 1.1,
+  "provenance": {
+    "commit": "ac3e5788",
+    "commit_full": "ac3e5788aa911de6fcf308f0eb1bde1cadf60189",
+    "dirty": false,
+    "dirty_files": [],
+    "branch": "VisualForesight"
+  }
+}

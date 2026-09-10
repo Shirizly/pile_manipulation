@@ -1,0 +1,204 @@
+==================================================================
+=== evaluating cell: blind_n5  (Sat Sep  5 02:22:41 PM CEST 2026)
+==================================================================
+=== EXP-0021 eval: blind_n5 ===
+train: 1920 transitions, grid 64x64
+test: 320 transitions
+  stratum all: n=320
+  stratum contact>0: n=210
+  UNet load: <All keys matched successfully>
+
+=== blind_n5 / all (n=320), swept-region ===
+  persistence              rms=0.06156  pct_persist= 100.0%  explained=+0.0000
+  mean-delta               rms=0.06569  pct_persist= 106.7%  explained=-0.0670
+  identity(warp only)      rms=0.06253  pct_persist= 101.6%  explained=-0.0158
+  linear-ridge1.0          rms=0.05391  pct_persist=  87.6%  explained=+0.1243
+  unet-true                rms=0.04861  pct_persist=  79.0%  explained=+0.2104
+  unet-shuffled            rms=0.06409  pct_persist= 104.1%  explained=-0.0411
+  unet-zeroed              rms=0.06166  pct_persist= 100.2%  explained=-0.0017
+
+=== blind_n5 / contact>0 (n=210), swept-region ===
+  persistence              rms=0.09236  pct_persist= 100.0%  explained=+0.0000
+  mean-delta               rms=0.09273  pct_persist= 100.4%  explained=-0.0040
+  identity(warp only)      rms=0.09216  pct_persist=  99.8%  explained=+0.0022
+  linear-ridge1.0          rms=0.07573  pct_persist=  82.0%  explained=+0.1801
+  unet-true                rms=0.07171  pct_persist=  77.6%  explained=+0.2236
+  unet-shuffled            rms=0.09402  pct_persist= 101.8%  explained=-0.0180
+  unet-zeroed              rms=0.09235  pct_persist= 100.0%  explained=+0.0001
+
+wrote runs_granularity/exp0021_eval_blind_n5.json
+==================================================================
+=== evaluating cell: blind_n10  (Sat Sep  5 02:22:46 PM CEST 2026)
+==================================================================
+=== EXP-0021 eval: blind_n10 ===
+train: 1920 transitions, grid 64x64
+test: 320 transitions
+  stratum all: n=320
+  stratum contact>0: n=271
+  UNet load: <All keys matched successfully>
+
+=== blind_n10 / all (n=320), swept-region ===
+  persistence              rms=0.10052  pct_persist= 100.0%  explained=+0.0000
+  mean-delta               rms=0.10306  pct_persist= 102.5%  explained=-0.0252
+  identity(warp only)      rms=0.10030  pct_persist=  99.8%  explained=+0.0022
+  linear-ridge1.0          rms=0.08485  pct_persist=  84.4%  explained=+0.1559
+  unet-true                rms=0.07492  pct_persist=  74.5%  explained=+0.2547
+  unet-shuffled            rms=0.10241  pct_persist= 101.9%  explained=-0.0188
+  unet-zeroed              rms=0.10050  pct_persist= 100.0%  explained=+0.0002
+
+=== blind_n10 / contact>0 (n=271), swept-region ===
+  persistence              rms=0.11827  pct_persist= 100.0%  explained=+0.0000
+  mean-delta               rms=0.11699  pct_persist=  98.9%  explained=+0.0108
+  identity(warp only)      rms=0.11664  pct_persist=  98.6%  explained=+0.0138
+  linear-ridge1.0          rms=0.09527  pct_persist=  80.6%  explained=+0.1944
+  unet-true                rms=0.08687  pct_persist=  73.5%  explained=+0.2655
+  unet-shuffled            rms=0.11952  pct_persist= 101.1%  explained=-0.0106
+  unet-zeroed              rms=0.11802  pct_persist=  99.8%  explained=+0.0021
+
+wrote runs_granularity/exp0021_eval_blind_n10.json
+==================================================================
+=== evaluating cell: blind_n20  (Sat Sep  5 02:22:51 PM CEST 2026)
+==================================================================
+=== EXP-0021 eval: blind_n20 ===
+train: 1920 transitions, grid 64x64
+test: 320 transitions
+  stratum all: n=320
+  stratum contact>0: n=314
+  UNet load: <All keys matched successfully>
+
+=== blind_n20 / all (n=320), swept-region ===
+  persistence              rms=0.16731  pct_persist= 100.0%  explained=+0.0000
+  mean-delta               rms=0.15933  pct_persist=  95.2%  explained=+0.0477
+  identity(warp only)      rms=0.16217  pct_persist=  96.9%  explained=+0.0307
+  linear-ridge1.0          rms=0.13262  pct_persist=  79.3%  explained=+0.2073
+  unet-true                rms=0.12064  pct_persist=  72.1%  explained=+0.2789
+  unet-shuffled            rms=0.16469  pct_persist=  98.4%  explained=+0.0157
+  unet-zeroed              rms=0.16642  pct_persist=  99.5%  explained=+0.0053
+
+=== blind_n20 / contact>0 (n=314), swept-region ===
+  persistence              rms=0.17051  pct_persist= 100.0%  explained=+0.0000
+  mean-delta               rms=0.16161  pct_persist=  94.8%  explained=+0.0522
+  identity(warp only)      rms=0.16509  pct_persist=  96.8%  explained=+0.0318
+  linear-ridge1.0          rms=0.13442  pct_persist=  78.8%  explained=+0.2116
+  unet-true                rms=0.12277  pct_persist=  72.0%  explained=+0.2800
+  unet-shuffled            rms=0.16773  pct_persist=  98.4%  explained=+0.0163
+  unet-zeroed              rms=0.16955  pct_persist=  99.4%  explained=+0.0056
+
+wrote runs_granularity/exp0021_eval_blind_n20.json
+==================================================================
+=== evaluating cell: contact_n5  (Sat Sep  5 02:22:58 PM CEST 2026)
+==================================================================
+=== EXP-0021 eval: contact_n5 ===
+train: 1142 transitions, grid 64x64
+test: 206 transitions
+  stratum all: n=206
+  stratum contact>0: n=192
+  UNet load: <All keys matched successfully>
+
+=== contact_n5 / all (n=206), swept-region ===
+  persistence              rms=0.11713  pct_persist= 100.0%  explained=+0.0000
+  mean-delta               rms=0.11720  pct_persist= 100.1%  explained=-0.0006
+  identity(warp only)      rms=0.11527  pct_persist=  98.4%  explained=+0.0158
+  linear-ridge1.0          rms=0.09706  pct_persist=  82.9%  explained=+0.1713
+  unet-true                rms=0.08429  pct_persist=  72.0%  explained=+0.2804
+  unet-shuffled            rms=0.11355  pct_persist=  96.9%  explained=+0.0306
+  unet-zeroed              rms=0.11697  pct_persist=  99.9%  explained=+0.0014
+
+=== contact_n5 / contact>0 (n=192), swept-region ===
+  persistence              rms=0.12567  pct_persist= 100.0%  explained=+0.0000
+  mean-delta               rms=0.12355  pct_persist=  98.3%  explained=+0.0169
+  identity(warp only)      rms=0.12333  pct_persist=  98.1%  explained=+0.0186
+  linear-ridge1.0          rms=0.10231  pct_persist=  81.4%  explained=+0.1859
+  unet-true                rms=0.08969  pct_persist=  71.4%  explained=+0.2863
+  unet-shuffled            rms=0.12133  pct_persist=  96.6%  explained=+0.0345
+  unet-zeroed              rms=0.12544  pct_persist=  99.8%  explained=+0.0018
+
+wrote runs_granularity/exp0021_eval_contact_n5.json
+==================================================================
+=== evaluating cell: contact_n10  (Sat Sep  5 02:23:02 PM CEST 2026)
+==================================================================
+=== EXP-0021 eval: contact_n10 ===
+train: 1418 transitions, grid 64x64
+test: 220 transitions
+  stratum all: n=220
+  stratum contact>0: n=218
+  UNet load: <All keys matched successfully>
+
+=== contact_n10 / all (n=220), swept-region ===
+  persistence              rms=0.17494  pct_persist= 100.0%  explained=+0.0000
+  mean-delta               rms=0.16369  pct_persist=  93.6%  explained=+0.0643
+  identity(warp only)      rms=0.16740  pct_persist=  95.7%  explained=+0.0431
+  linear-ridge1.0          rms=0.13741  pct_persist=  78.5%  explained=+0.2146
+  unet-true                rms=0.11978  pct_persist=  68.5%  explained=+0.3153
+  unet-shuffled            rms=0.16890  pct_persist=  96.5%  explained=+0.0346
+  unet-zeroed              rms=0.17374  pct_persist=  99.3%  explained=+0.0069
+
+=== contact_n10 / contact>0 (n=218), swept-region ===
+  persistence              rms=0.17655  pct_persist= 100.0%  explained=+0.0000
+  mean-delta               rms=0.16472  pct_persist=  93.3%  explained=+0.0670
+  identity(warp only)      rms=0.16870  pct_persist=  95.6%  explained=+0.0445
+  linear-ridge1.0          rms=0.13799  pct_persist=  78.2%  explained=+0.2184
+  unet-true                rms=0.12074  pct_persist=  68.4%  explained=+0.3161
+  unet-shuffled            rms=0.16951  pct_persist=  96.0%  explained=+0.0399
+  unet-zeroed              rms=0.17530  pct_persist=  99.3%  explained=+0.0071
+
+wrote runs_granularity/exp0021_eval_contact_n10.json
+==================================================================
+=== evaluating cell: contact_n20  (Sat Sep  5 02:23:07 PM CEST 2026)
+==================================================================
+=== EXP-0021 eval: contact_n20 ===
+train: 1426 transitions, grid 64x64
+test: 240 transitions
+  stratum all: n=240
+  stratum contact>0: n=239
+  UNet load: <All keys matched successfully>
+
+=== contact_n20 / all (n=240), swept-region ===
+  persistence              rms=0.23665  pct_persist= 100.0%  explained=+0.0000
+  mean-delta               rms=0.21207  pct_persist=  89.6%  explained=+0.1039
+  identity(warp only)      rms=0.22527  pct_persist=  95.2%  explained=+0.0481
+  linear-ridge1.0          rms=0.17686  pct_persist=  74.7%  explained=+0.2527
+  unet-true                rms=0.15540  pct_persist=  65.7%  explained=+0.3434
+  unet-shuffled            rms=0.23284  pct_persist=  98.4%  explained=+0.0162
+  unet-zeroed              rms=0.23468  pct_persist=  99.2%  explained=+0.0083
+
+=== contact_n20 / contact>0 (n=239), swept-region ===
+  persistence              rms=0.23764  pct_persist= 100.0%  explained=+0.0000
+  mean-delta               rms=0.21268  pct_persist=  89.5%  explained=+0.1050
+  identity(warp only)      rms=0.22613  pct_persist=  95.2%  explained=+0.0485
+  linear-ridge1.0          rms=0.17729  pct_persist=  74.6%  explained=+0.2540
+  unet-true                rms=0.15578  pct_persist=  65.6%  explained=+0.3445
+  unet-shuffled            rms=0.23300  pct_persist=  98.0%  explained=+0.0196
+  unet-zeroed              rms=0.23565  pct_persist=  99.2%  explained=+0.0084
+
+wrote runs_granularity/exp0021_eval_contact_n20.json
+==================================================================
+=== evaluating cell: blind_n50  (Sat Sep  5 02:23:13 PM CEST 2026)
+==================================================================
+=== EXP-0021 eval: blind_n50 ===
+train: 1920 transitions, grid 64x64
+test: 320 transitions
+  stratum all: n=320
+  stratum contact>0: n=319
+  UNet load: <All keys matched successfully>
+
+=== blind_n50 / all (n=320), swept-region ===
+  persistence              rms=0.28444  pct_persist= 100.0%  explained=+0.0000
+  mean-delta               rms=0.25049  pct_persist=  88.1%  explained=+0.1194
+  identity(warp only)      rms=0.26870  pct_persist=  94.5%  explained=+0.0554
+  linear-ridge1.0          rms=0.21688  pct_persist=  76.2%  explained=+0.2375
+  unet-true                rms=0.18891  pct_persist=  66.4%  explained=+0.3359
+  unet-shuffled            rms=0.27176  pct_persist=  95.5%  explained=+0.0446
+  unet-zeroed              rms=0.28359  pct_persist=  99.7%  explained=+0.0030
+
+=== blind_n50 / contact>0 (n=319), swept-region ===
+  persistence              rms=0.28534  pct_persist= 100.0%  explained=+0.0000
+  mean-delta               rms=0.25104  pct_persist=  88.0%  explained=+0.1202
+  identity(warp only)      rms=0.26953  pct_persist=  94.5%  explained=+0.0554
+  linear-ridge1.0          rms=0.21735  pct_persist=  76.2%  explained=+0.2383
+  unet-true                rms=0.18942  pct_persist=  66.4%  explained=+0.3361
+  unet-shuffled            rms=0.27259  pct_persist=  95.5%  explained=+0.0447
+  unet-zeroed              rms=0.28448  pct_persist=  99.7%  explained=+0.0030
+
+wrote runs_granularity/exp0021_eval_blind_n50.json
+=== ALL 7 EVALS DONE (Sat Sep  5 02:23:26 PM CEST 2026) ===

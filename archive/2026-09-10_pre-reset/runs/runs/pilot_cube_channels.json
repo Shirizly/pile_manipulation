@@ -1,0 +1,35 @@
+{
+  "tag": "pilot_cube_channels",
+  "cmd": [
+    "python",
+    "-u",
+    "scripts/probes/channels.py",
+    "--glob",
+    "Genesis/data/cube_spectrum/n20/*_data.pt",
+    "--label",
+    "cube n20 PILOT3ep",
+    "--cube-size",
+    "0.005",
+    "--min-push-mm",
+    "19.9",
+    "--max-episodes",
+    "3"
+  ],
+  "returncode": 0,
+  "seconds": 2.5,
+  "provenance": {
+    "commit": "be1b3b0a",
+    "commit_full": "be1b3b0a9cf23e850aa8333d544c8edb9ee5798e",
+    "dirty": true,
+    "dirty_files": [
+      ".claude/skills/experiment-log/SKILL.md",
+      "docs/experiments/EXP-0004-unet-action-ablation.md",
+      "docs/experiments/EXP-0009-grid-fix-pixel-rerun.md",
+      "docs/experiments/EXP-0014-unet-action-ablation-retrain.md",
+      "docs/experiments/EXP-0015-contact-switching-fixed-grid.md",
+      "docs/experiments/METRICS.md",
+      "fit_linear_foresight.py"
+    ],
+    "branch": "VisualForesight"
+  }
+}

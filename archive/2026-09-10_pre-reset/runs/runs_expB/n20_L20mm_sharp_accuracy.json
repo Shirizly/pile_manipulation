@@ -1,0 +1,48 @@
+{
+  "tag": "n20_L20mm_sharp",
+  "provenance": {
+    "commit": "eb390fd2",
+    "commit_full": "eb390fd2c44bb970563294c9cf26ddacc5e53dce",
+    "dirty": true,
+    "dirty_files": [
+      "control_utility_test.py",
+      "scripts/probes/exp0026_selection_pressure.py",
+      "scripts/probes/expB_multistep_eval.py",
+      "scripts/probes/spectral_concentration.py"
+    ],
+    "branch": "VisualForesight"
+  },
+  "n_eval": 7680,
+  "accuracy": {
+    "persistence": 0.0,
+    "mean-delta": 0.08569306135177612,
+    "linear": 0.3005325198173523,
+    "UNet": 0.4185580611228943,
+    "oracle": 1.0
+  },
+  "accuracy_by_step": {
+    "0": {
+      "persistence": 0.0,
+      "mean-delta": 0.1060711145401001,
+      "linear": 0.3158305287361145,
+      "UNet": 0.42041683197021484,
+      "oracle": 1.0
+    },
+    "1": {
+      "persistence": 0.0,
+      "mean-delta": 0.08290773630142212,
+      "linear": 0.2973703145980835,
+      "UNet": 0.41642749309539795,
+      "oracle": 1.0
+    },
+    "2": {
+      "persistence": 0.0,
+      "mean-delta": 0.06643778085708618,
+      "linear": 0.28718411922454834,
+      "UNet": 0.4187406301498413,
+      "oracle": 1.0
+    }
+  },
+  "n_slates_step0": 20,
+  "n_step0": 2560
+}

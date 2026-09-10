@@ -1,0 +1,37 @@
+{
+  "run_id": "nfd_randlen_indist_piled_kcurve_sampled_corner-2026-09-10T02:33:20-39893",
+  "event": "start",
+  "ts": "2026-09-10T02:33:20",
+  "tag": "nfd_randlen_indist_piled_kcurve_sampled_corner",
+  "exp": "EXP-0030",
+  "cmd": [
+    "/home/alon/anaconda3/envs/pme/bin/python",
+    "-u",
+    "scripts/probes/exp0026_kcurve.py",
+    "Baselines/NFD/runs/nfd_randlen_indist_piled_dv_cache.pt",
+    "--goal",
+    "corner",
+    "--models",
+    "persistence,mean-delta,linear,nfd_unet3ch,oracle",
+    "--ks",
+    "2,4,8,16,32,64,128",
+    "--pairs",
+    "nfd_unet3ch-linear,oracle-linear,linear-mean-delta",
+    "--out",
+    "Baselines/NFD/runs/nfd_randlen_indist_piled_kcurve_sampled_corner.json"
+  ],
+  "out": "Baselines/NFD/runs",
+  "log": "runs/nfd_randlen_indist_piled_kcurve_sampled_corner.log",
+  "commit": "652fce1f",
+  "dirty": false,
+  "status": "ok",
+  "returncode": 0,
+  "seconds": 13.0,
+  "provenance": {
+    "commit": "652fce1f",
+    "commit_full": "652fce1f43bccbd5ecd7f0eab7224441aa9d87c6",
+    "dirty": false,
+    "dirty_files": [],
+    "branch": "baselines/overnight"
+  }
+}

@@ -1,0 +1,37 @@
+{
+  "run_id": "gnn_randlen_train-2026-09-09T20:00:52-24556",
+  "event": "start",
+  "ts": "2026-09-09T20:00:52",
+  "tag": "gnn_randlen_train",
+  "exp": "EXP-0030",
+  "cmd": [
+    "bash",
+    "Baselines/common/gpu_lock.sh",
+    "/home/alon/anaconda3/envs/pme/bin/python",
+    "Baselines/GNN/train/train_genesis_gnn_dyn.py",
+    "--epochs",
+    "500",
+    "--batch-size",
+    "128",
+    "--out-dir",
+    "Baselines/GNN/runs/gnn_randlen",
+    "--train-roots",
+    "Genesis/data/overnight_randlen_train/mixed_n20,Genesis/data/overnight_randlen_train/piled_n20,Genesis/data/overnight_randlen_train/scattered_n20",
+    "--val-roots",
+    "Genesis/data/overnight_randlen_test/mixed_n20,Genesis/data/overnight_randlen_test/piled_n20,Genesis/data/overnight_randlen_test/scattered_n20"
+  ],
+  "out": "Baselines/GNN/runs/gnn_randlen",
+  "log": "runs/gnn_randlen_train.log",
+  "commit": "2c51f3d6",
+  "dirty": false,
+  "status": "ok",
+  "returncode": 0,
+  "seconds": 3502.2,
+  "provenance": {
+    "commit": "2c51f3d6",
+    "commit_full": "2c51f3d6040cd00cd50c409b93734f676cd8e589",
+    "dirty": false,
+    "dirty_files": [],
+    "branch": "baselines/overnight"
+  }
+}

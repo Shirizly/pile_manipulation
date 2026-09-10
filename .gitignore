@@ -1,7 +1,5 @@
 .venv/
-__pycache__/
-Genesis/utilities/__pycache__/*
-Genesis/__pycache__/*
+*.pyc
 .github/
 *raw_obs.npy
 Genesis/data/ignore/
@@ -14,7 +12,12 @@ nca_epoch_*.pth
 *.jpeg
 *.avi
 Genesis/data/dry_run/
-
+Genesis/data/overnight*/
+Genesis/data/granularity/
+Genesis/data/cube_spectrum/
+Genesis/data/dinowm_test*/
+Genesis/data/linear_foresight/
+Genesis/data/slates
 # Run artifacts (outputs are reproducible from configs)
 outputs/
 mpc_transitions/

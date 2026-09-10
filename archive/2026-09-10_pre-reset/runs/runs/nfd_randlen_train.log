@@ -1,0 +1,52 @@
+[gpu_lock] 20:00:57 seeking 1 of 3 slots: /home/alon/anaconda3/envs/pme/bin/python Baselines/NFD/train_nfd.py Baselines/NFD/configs/nfd_train_3ch_randlen.yaml --no-resume
+[gpu_lock] 20:00:57 acquired slot 2; running: /home/alon/anaconda3/envs/pme/bin/python Baselines/NFD/train_nfd.py Baselines/NFD/configs/nfd_train_3ch_randlen.yaml --no-resume
+Config: Baselines/NFD/configs/nfd_train_3ch_randlen.yaml
+Device: cuda
+Training on cuda, epochs 0→30, log_dir=Baselines/NFD/runs/nfd_3ch_randlen
+Train: 89081  Val: 4608  Test: 4607
+Epochs:   0%|          | 0/30 [00:00<?, ?it/s]Epochs:   0%|          | 0/30 [05:08<?, ?it/s, trn=0.0545, val=0.0135, iou=0.865, best=1, ni=0]Epoch    1: trn=0.054525  val=0.013452  iou=0.8649  chg_mse=0.300865  best=1
+Epochs:   3%|▎         | 1/30 [05:08<2:29:05, 308.48s/it, trn=0.0545, val=0.0135, iou=0.865, best=1, ni=0]Epochs:   3%|▎         | 1/30 [10:04<2:29:05, 308.48s/it, trn=0.0087, val=0.0071, iou=0.870, best=2, ni=0]Epoch    2: trn=0.008653  val=0.007126  iou=0.8702  chg_mse=0.279068  best=2
+Epochs:   7%|▋         | 2/30 [10:04<2:20:31, 301.12s/it, trn=0.0087, val=0.0071, iou=0.870, best=2, ni=0]Epochs:   7%|▋         | 2/30 [14:49<2:20:31, 301.12s/it, trn=0.0068, val=0.0067, iou=0.875, best=3, ni=0]Epoch    3: trn=0.006781  val=0.006732  iou=0.8753  chg_mse=0.259611  best=3
+Epochs:  10%|█         | 3/30 [14:49<2:12:16, 293.94s/it, trn=0.0068, val=0.0067, iou=0.875, best=3, ni=0]Epochs:  10%|█         | 3/30 [19:35<2:12:16, 293.94s/it, trn=0.0065, val=0.0065, iou=0.878, best=4, ni=0]Epoch    4: trn=0.006497  val=0.006497  iou=0.8783  chg_mse=0.272604  best=4
+Epochs:  13%|█▎        | 4/30 [19:35<2:05:57, 290.66s/it, trn=0.0065, val=0.0065, iou=0.878, best=4, ni=0]Epochs:  13%|█▎        | 4/30 [24:21<2:05:57, 290.66s/it, trn=0.0063, val=0.0063, iou=0.882, best=5, ni=0]Epoch    5: trn=0.006280  val=0.006320  iou=0.8817  chg_mse=0.237002  best=5
+Epochs:  17%|█▋        | 5/30 [24:21<2:00:22, 288.92s/it, trn=0.0063, val=0.0063, iou=0.882, best=5, ni=0]Epochs:  17%|█▋        | 5/30 [29:06<2:00:22, 288.92s/it, trn=0.0062, val=0.0063, iou=0.883, best=6, ni=0]Epoch    6: trn=0.006156  val=0.006277  iou=0.8830  chg_mse=0.253144  best=6
+Epochs:  20%|██        | 6/30 [29:06<1:55:07, 287.79s/it, trn=0.0062, val=0.0063, iou=0.883, best=6, ni=0]Epochs:  20%|██        | 6/30 [33:52<1:55:07, 287.79s/it, trn=0.0061, val=0.0062, iou=0.883, best=7, ni=0]Epoch    7: trn=0.006069  val=0.006227  iou=0.8830  chg_mse=0.252877  best=7
+Epochs:  23%|██▎       | 7/30 [33:52<1:49:59, 286.94s/it, trn=0.0061, val=0.0062, iou=0.883, best=7, ni=0]Epochs:  23%|██▎       | 7/30 [38:38<1:49:59, 286.94s/it, trn=0.0060, val=0.0061, iou=0.885, best=8, ni=0]Epoch    8: trn=0.006002  val=0.006099  iou=0.8852  chg_mse=0.236588  best=8
+Epochs:  27%|██▋       | 8/30 [38:38<1:45:08, 286.74s/it, trn=0.0060, val=0.0061, iou=0.885, best=8, ni=0]Epochs:  27%|██▋       | 8/30 [43:24<1:45:08, 286.74s/it, trn=0.0059, val=0.0060, iou=0.885, best=9, ni=0]Epoch    9: trn=0.005947  val=0.006040  iou=0.8855  chg_mse=0.248248  best=9
+Epochs:  30%|███       | 9/30 [43:24<1:40:16, 286.51s/it, trn=0.0059, val=0.0060, iou=0.885, best=9, ni=0]Epochs:  30%|███       | 9/30 [48:10<1:40:16, 286.51s/it, trn=0.0059, val=0.0061, iou=0.886, best=9, ni=1]Epoch   10: trn=0.005900  val=0.006075  iou=0.8857  chg_mse=0.241348  best=9
+Epochs:  33%|███▎      | 10/30 [48:10<1:35:25, 286.30s/it, trn=0.0059, val=0.0061, iou=0.886, best=9, ni=1]Epochs:  33%|███▎      | 10/30 [52:56<1:35:25, 286.30s/it, trn=0.0059, val=0.0061, iou=0.885, best=9, ni=2]Epoch   11: trn=0.005858  val=0.006106  iou=0.8845  chg_mse=0.245182  best=9
+Epochs:  37%|███▋      | 11/30 [52:56<1:30:39, 286.31s/it, trn=0.0059, val=0.0061, iou=0.885, best=9, ni=2]Epochs:  37%|███▋      | 11/30 [57:42<1:30:39, 286.31s/it, trn=0.0058, val=0.0061, iou=0.885, best=9, ni=3]Epoch   12: trn=0.005823  val=0.006071  iou=0.8846  chg_mse=0.234813  best=9
+Epochs:  40%|████      | 12/30 [57:42<1:25:52, 286.27s/it, trn=0.0058, val=0.0061, iou=0.885, best=9, ni=3]Epochs:  40%|████      | 12/30 [1:01:12<1:25:52, 286.27s/it, trn=0.0058, val=0.0061, iou=0.886, best=9, ni=4]Epoch   13: trn=0.005795  val=0.006057  iou=0.8856  chg_mse=0.245095  best=9
+Epochs:  43%|████▎     | 13/30 [1:01:12<1:14:33, 263.16s/it, trn=0.0058, val=0.0061, iou=0.886, best=9, ni=4]Epochs:  43%|████▎     | 13/30 [1:04:40<1:14:33, 263.16s/it, trn=0.0058, val=0.0060, iou=0.887, best=14, ni=0]Epoch   14: trn=0.005769  val=0.006018  iou=0.8865  chg_mse=0.243355  best=14
+Epochs:  47%|████▋     | 14/30 [1:04:40<1:05:40, 246.29s/it, trn=0.0058, val=0.0060, iou=0.887, best=14, ni=0]Epochs:  47%|████▋     | 14/30 [1:08:40<1:05:40, 246.29s/it, trn=0.0057, val=0.0060, iou=0.888, best=15, ni=0]Epoch   15: trn=0.005746  val=0.005972  iou=0.8876  chg_mse=0.240899  best=15
+Epochs:  50%|█████     | 15/30 [1:08:40<1:01:07, 244.53s/it, trn=0.0057, val=0.0060, iou=0.888, best=15, ni=0]Epochs:  50%|█████     | 15/30 [1:12:40<1:01:07, 244.53s/it, trn=0.0057, val=0.0059, iou=0.888, best=16, ni=0]Epoch   16: trn=0.005726  val=0.005903  iou=0.8880  chg_mse=0.232190  best=16
+Epochs:  53%|█████▎    | 16/30 [1:12:40<56:45, 243.25s/it, trn=0.0057, val=0.0059, iou=0.888, best=16, ni=0]  Epochs:  53%|█████▎    | 16/30 [1:16:02<56:45, 243.25s/it, trn=0.0057, val=0.0058, iou=0.890, best=17, ni=0]Epoch   17: trn=0.005707  val=0.005782  iou=0.8900  chg_mse=0.226088  best=17
+Epochs:  57%|█████▋    | 17/30 [1:16:02<50:01, 230.90s/it, trn=0.0057, val=0.0058, iou=0.890, best=17, ni=0]Epochs:  57%|█████▋    | 17/30 [1:19:24<50:01, 230.90s/it, trn=0.0057, val=0.0059, iou=0.887, best=17, ni=1]Epoch   18: trn=0.005692  val=0.005937  iou=0.8870  chg_mse=0.233257  best=17
+Epochs:  60%|██████    | 18/30 [1:19:24<44:24, 222.08s/it, trn=0.0057, val=0.0059, iou=0.887, best=17, ni=1]Epochs:  60%|██████    | 18/30 [1:23:02<44:24, 222.08s/it, trn=0.0057, val=0.0059, iou=0.889, best=17, ni=2]Epoch   19: trn=0.005675  val=0.005896  iou=0.8889  chg_mse=0.234401  best=17
+Epochs:  63%|██████▎   | 19/30 [1:23:02<40:28, 220.81s/it, trn=0.0057, val=0.0059, iou=0.889, best=17, ni=2]Epochs:  63%|██████▎   | 19/30 [1:26:40<40:28, 220.81s/it, trn=0.0057, val=0.0060, iou=0.888, best=17, ni=3]Epoch   20: trn=0.005661  val=0.005950  iou=0.8877  chg_mse=0.226316  best=17
+Epochs:  67%|██████▋   | 20/30 [1:26:40<36:41, 220.15s/it, trn=0.0057, val=0.0060, iou=0.888, best=17, ni=3]Epochs:  67%|██████▋   | 20/30 [1:30:02<36:41, 220.15s/it, trn=0.0056, val=0.0059, iou=0.888, best=17, ni=4]Epoch   21: trn=0.005647  val=0.005895  iou=0.8879  chg_mse=0.230162  best=17
+Epochs:  70%|███████   | 21/30 [1:30:02<32:12, 214.67s/it, trn=0.0056, val=0.0059, iou=0.888, best=17, ni=4]Epochs:  70%|███████   | 21/30 [1:33:25<32:12, 214.67s/it, trn=0.0056, val=0.0059, iou=0.887, best=17, ni=5]Epoch   22: trn=0.005637  val=0.005923  iou=0.8869  chg_mse=0.242057  best=17
+Epochs:  73%|███████▎  | 22/30 [1:33:25<28:09, 211.18s/it, trn=0.0056, val=0.0059, iou=0.887, best=17, ni=5]Epochs:  73%|███████▎  | 22/30 [1:36:48<28:09, 211.18s/it, trn=0.0056, val=0.0059, iou=0.889, best=17, ni=6]Epoch   23: trn=0.005625  val=0.005897  iou=0.8886  chg_mse=0.225045  best=17
+Epochs:  77%|███████▋  | 23/30 [1:36:48<24:19, 208.55s/it, trn=0.0056, val=0.0059, iou=0.889, best=17, ni=6]Epochs:  77%|███████▋  | 23/30 [1:40:09<24:19, 208.55s/it, trn=0.0056, val=0.0059, iou=0.888, best=17, ni=7]Epoch   24: trn=0.005616  val=0.005868  iou=0.8883  chg_mse=0.240166  best=17
+Epochs:  80%|████████  | 24/30 [1:40:09<20:38, 206.43s/it, trn=0.0056, val=0.0059, iou=0.888, best=17, ni=7]Epochs:  80%|████████  | 24/30 [1:43:31<20:38, 206.43s/it, trn=0.0056, val=0.0059, iou=0.887, best=17, ni=8]Epoch   25: trn=0.005605  val=0.005922  iou=0.8873  chg_mse=0.234215  best=17
+Epochs:  83%|████████▎ | 25/30 [1:43:31<17:04, 204.97s/it, trn=0.0056, val=0.0059, iou=0.887, best=17, ni=8]Epochs:  83%|████████▎ | 25/30 [1:46:52<17:04, 204.97s/it, trn=0.0056, val=0.0059, iou=0.888, best=17, ni=9]Epoch   26: trn=0.005595  val=0.005894  iou=0.8883  chg_mse=0.234046  best=17
+Epochs:  87%|████████▋ | 26/30 [1:46:52<13:35, 203.90s/it, trn=0.0056, val=0.0059, iou=0.888, best=17, ni=9]Epochs:  87%|████████▋ | 26/30 [1:50:14<13:35, 203.90s/it, trn=0.0056, val=0.0058, iou=0.891, best=27, ni=0]Epoch   27: trn=0.005587  val=0.005756  iou=0.8905  chg_mse=0.224981  best=27
+Epochs:  90%|█████████ | 27/30 [1:50:14<10:10, 203.41s/it, trn=0.0056, val=0.0058, iou=0.891, best=27, ni=0]Epochs:  90%|█████████ | 27/30 [1:53:37<10:10, 203.41s/it, trn=0.0056, val=0.0058, iou=0.889, best=27, ni=1]Epoch   28: trn=0.005578  val=0.005826  iou=0.8895  chg_mse=0.222173  best=27
+Epochs:  93%|█████████▎| 28/30 [1:53:37<06:46, 203.06s/it, trn=0.0056, val=0.0058, iou=0.889, best=27, ni=1]Epochs:  93%|█████████▎| 28/30 [1:56:58<06:46, 203.06s/it, trn=0.0056, val=0.0058, iou=0.889, best=27, ni=2]Epoch   29: trn=0.005569  val=0.005827  iou=0.8890  chg_mse=0.237758  best=27
+Epochs:  97%|█████████▋| 29/30 [1:56:58<03:22, 202.53s/it, trn=0.0056, val=0.0058, iou=0.889, best=27, ni=2]Epochs:  97%|█████████▋| 29/30 [2:00:20<03:22, 202.53s/it, trn=0.0056, val=0.0059, iou=0.887, best=27, ni=3]Epoch   30: trn=0.005563  val=0.005937  iou=0.8870  chg_mse=0.241660  best=27
+Epochs: 100%|██████████| 30/30 [2:00:20<00:00, 202.48s/it, trn=0.0056, val=0.0059, iou=0.887, best=27, ni=3]Epochs: 100%|██████████| 30/30 [2:00:20<00:00, 240.70s/it, trn=0.0056, val=0.0059, iou=0.887, best=27, ni=3]
+
+=== Test metrics ===
+  prob_mse: 0.005761
+  zero_mse: 0.070880
+  copy_mse: 0.017508
+  hard_iou: 0.891443
+  hard_dice: 0.940625
+  changed_mse: 0.242702
+  changed_copy_mse: 1.000000
+  changed_pixel_frac: 0.017508
+
+=== Training complete ===
+  Best val loss : 0.005756  (epoch 27)
+  Model card    : Baselines/NFD/runs/nfd_3ch_randlen/model_card.yaml
+  Log dir       : Baselines/NFD/runs/nfd_3ch_randlen

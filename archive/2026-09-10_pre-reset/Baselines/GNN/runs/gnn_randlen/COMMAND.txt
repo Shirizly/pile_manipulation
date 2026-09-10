@@ -1,0 +1,6 @@
+# written by scripts/run_probe.py before the run started
+# run_id gnn_randlen_train-2026-09-09T20:00:52-24556
+# exp     EXP-0030
+# commit  2c51f3d6 dirty=False
+# log     runs/gnn_randlen_train.log
+bash Baselines/common/gpu_lock.sh /home/alon/anaconda3/envs/pme/bin/python Baselines/GNN/train/train_genesis_gnn_dyn.py --epochs 500 --batch-size 128 --out-dir Baselines/GNN/runs/gnn_randlen --train-roots Genesis/data/overnight_randlen_train/mixed_n20,Genesis/data/overnight_randlen_train/piled_n20,Genesis/data/overnight_randlen_train/scattered_n20 --val-roots Genesis/data/overnight_randlen_test/mixed_n20,Genesis/data/overnight_randlen_test/piled_n20,Genesis/data/overnight_randlen_test/scattered_n20

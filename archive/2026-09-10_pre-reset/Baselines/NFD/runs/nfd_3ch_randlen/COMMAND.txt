@@ -1,0 +1,6 @@
+# written by scripts/run_probe.py before the run started
+# run_id nfd_randlen_train-2026-09-09T20:00:57-24667
+# exp     EXP-0030
+# commit  2c51f3d6 dirty=False
+# log     runs/nfd_randlen_train.log
+bash Baselines/common/gpu_lock.sh /home/alon/anaconda3/envs/pme/bin/python Baselines/NFD/train_nfd.py Baselines/NFD/configs/nfd_train_3ch_randlen.yaml --no-resume

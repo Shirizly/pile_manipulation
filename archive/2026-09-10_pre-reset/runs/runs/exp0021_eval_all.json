@@ -1,0 +1,16 @@
+{
+  "tag": "exp0021_eval_all",
+  "cmd": [
+    "bash",
+    "scripts/probes/exp0021_eval_all.sh"
+  ],
+  "returncode": 0,
+  "seconds": 44.5,
+  "provenance": {
+    "commit": "0634e303",
+    "commit_full": "0634e30312b55048de4d4c4f8165d0156862394a",
+    "dirty": false,
+    "dirty_files": [],
+    "branch": "VisualForesight"
+  }
+}

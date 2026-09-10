@@ -1,0 +1,138 @@
+{
+  "tag": "cube_spectrum_n20",
+  "dataset_cfg": "configs/dataset/genesis_cube_spectrum_n20.yaml",
+  "slate_cfg": "configs/dataset/genesis_cube_spectrum_n20_slates.yaml",
+  "run_dir": "runs_exp0024/unetfilm_cube_spectrum_n20",
+  "n_train": 3631,
+  "n_test_image": 596,
+  "n_slate_transitions": 1565,
+  "n_slates": 49,
+  "res": 64,
+  "crop": 1.0,
+  "ridge": 1.0,
+  "results": {
+    "accuracy": {
+      "persistence": 0.0,
+      "mean-delta": 0.34325456619262695,
+      "linear (ridge->identity)": 0.5333282351493835,
+      "UNet": 0.5692911148071289,
+      "oracle": 1.0
+    },
+    "control": {
+      "corner": {
+        "persistence": {
+          "n_slates": 49,
+          "pearson_mean": 0.0,
+          "pearson_sd": 0.0,
+          "spearman_mean": -0.051563053220814586,
+          "spearman_sd": 0.1695417526624926,
+          "sign_mean": 0.0,
+          "sign_sd": 0.0,
+          "slate4_mean": -0.0016411531372684796,
+          "slate4_sd": 0.013519018371069124
+        },
+        "mean-delta": {
+          "n_slates": 49,
+          "pearson_mean": 0.8099973116602216,
+          "pearson_sd": 0.05690914220326029,
+          "spearman_mean": 0.7898791991934484,
+          "spearman_sd": 0.05526866128950908,
+          "sign_mean": 0.8439557272560743,
+          "sign_sd": 0.07022807758487395,
+          "slate4_mean": 0.7955854121519594,
+          "slate4_sd": 0.0594047152818937
+        },
+        "linear (ridge->identity)": {
+          "n_slates": 49,
+          "pearson_mean": 0.9360441602006251,
+          "pearson_sd": 0.015133615282142479,
+          "spearman_mean": 0.920737340742228,
+          "spearman_sd": 0.026432429761628264,
+          "sign_mean": 0.9091301828014607,
+          "sign_sd": 0.05748547911402784,
+          "slate4_mean": 0.9502692684835318,
+          "slate4_sd": 0.020109249785017023
+        },
+        "UNet": {
+          "n_slates": 49,
+          "pearson_mean": 0.9524032887147398,
+          "pearson_sd": 0.008994522234654797,
+          "spearman_mean": 0.9370161915312007,
+          "spearman_sd": 0.01844999634215309,
+          "sign_mean": 0.9308755750558815,
+          "sign_sd": 0.05734533185877873,
+          "slate4_mean": 0.9688047036832693,
+          "slate4_sd": 0.01960404371008387
+        },
+        "oracle": {
+          "n_slates": 49,
+          "pearson_mean": 0.9686882690507539,
+          "pearson_sd": 0.0002416639418196894,
+          "spearman_mean": 0.9686882471551701,
+          "spearman_sd": 0.00024166849267329274,
+          "sign_mean": 1.0,
+          "sign_sd": 0.0,
+          "slate4_mean": 1.0,
+          "slate4_sd": 0.0
+        }
+      },
+      "center": {
+        "persistence": {
+          "n_slates": 11,
+          "pearson_mean": 0.0,
+          "pearson_sd": 0.0,
+          "spearman_mean": 0.8748062523928556,
+          "spearman_sd": 0.10639737543799076,
+          "sign_mean": 0.0,
+          "sign_sd": 0.0,
+          "slate4_mean": 0.0021990205542269077,
+          "slate4_sd": 0.007947319438747663
+        },
+        "mean-delta": {
+          "n_slates": 11,
+          "pearson_mean": 0.16896016260778363,
+          "pearson_sd": 0.22359714442730608,
+          "spearman_mean": 0.11960872838442976,
+          "spearman_sd": 0.16100033982013615,
+          "sign_mean": 1.0,
+          "sign_sd": 0.0,
+          "slate4_mean": 0.09651966409927065,
+          "slate4_sd": 0.06044518114680277
+        },
+        "linear (ridge->identity)": {
+          "n_slates": 11,
+          "pearson_mean": 0.25071916255083954,
+          "pearson_sd": 0.25004312284722097,
+          "spearman_mean": 0.1565728343345902,
+          "spearman_sd": 0.16118471233170184,
+          "sign_mean": 1.0,
+          "sign_sd": 0.0,
+          "slate4_mean": 0.10160408135164868,
+          "slate4_sd": 0.06553500544465231
+        },
+        "UNet": {
+          "n_slates": 11,
+          "pearson_mean": 0.06614920852536504,
+          "pearson_sd": 0.1644024456947728,
+          "spearman_mean": 0.06343620981682431,
+          "spearman_sd": 0.2130829339255412,
+          "sign_mean": 1.0,
+          "sign_sd": 0.0,
+          "slate4_mean": 0.06365875906141644,
+          "slate4_sd": 0.09601338227061089
+        },
+        "oracle": {
+          "n_slates": 11,
+          "pearson_mean": 0.9687499512325634,
+          "pearson_sd": 1.159631911138659e-07,
+          "spearman_mean": 0.9687499403953552,
+          "spearman_sd": 2.541550592846995e-08,
+          "sign_mean": 1.0,
+          "sign_sd": 0.0,
+          "slate4_mean": 0.1492727270180529,
+          "slate4_sd": 0.04864264942335563
+        }
+      }
+    }
+  }
+}

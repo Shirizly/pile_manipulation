@@ -23,15 +23,16 @@ The workflow, field meanings, tiers and grading rule are in the
 template is in its `references/`. Start there rather than copying an existing
 record, which may predate a rule change.
 
-## State as of 2026-09-03
+## State as of 2026-09-10
 
-Backfilled from the linear-foresight work and, at the time, the MPM sand work.
-The sand arm was withdrawn as non-physical on 2026-09-05
-(`docs/rejected_mpm_sand.md`); its evidence is marked `invalidated` in
-`REGISTER.md` rather than deleted, but the `EXP-####` records here (EXP-0001
-through EXP-0006) are cube-only. Two invariants are **broken**
-(`grid-convention`, `rasteriser-identity`) and most are `unchecked`, so most
-records grade `low`. That is an accurate reading of the evidence, not a
-miscalibrated scale — four claims in `REGISTER.md` are already marked
-`invalidated` because of it, and the re-runs that would restore them are listed
-at the bottom of that file.
+Reset from scratch. The prior register, invariant registry, and all
+`EXP-####` records were archived wholesale to
+`archive/2026-09-10_pre-reset/docs/experiments/` — not because any of it was
+found wrong, but to start the claim ledger clean rather than carry forward
+numbers, ids, and dependency chains from a superseded work program. The old
+material is fully intact there if a past claim or invariant needs to be
+looked up or revived.
+
+Nothing has been re-verified yet. Treat every invariant as `unchecked` until
+it is re-registered in `INVARIANTS.md` with a real test, and every claim as
+untested until an `EXP-####` record backs it.

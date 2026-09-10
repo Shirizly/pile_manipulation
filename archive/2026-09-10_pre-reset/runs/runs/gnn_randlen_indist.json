@@ -1,0 +1,38 @@
+{
+  "run_id": "gnn_randlen_indist-2026-09-10T00:16:59-33483",
+  "event": "start",
+  "ts": "2026-09-10T00:16:59",
+  "tag": "gnn_randlen_indist",
+  "exp": "EXP-0030",
+  "cmd": [
+    "/home/alon/anaconda3/envs/pme/bin/python",
+    "-u",
+    "Baselines/common/eval_randlen_indist.py",
+    "--predictor",
+    "Baselines.GNN.predictor:build_predictor",
+    "--tag",
+    "gnn_randlen_indist",
+    "--out-prefix",
+    "Baselines/GNN/runs/gnn_randlen_indist",
+    "--goals",
+    "corner"
+  ],
+  "out": "Baselines/GNN/runs",
+  "log": "runs/gnn_randlen_indist.log",
+  "commit": "a0f116d3",
+  "dirty": true,
+  "status": "ok",
+  "returncode": 0,
+  "seconds": 266.6,
+  "provenance": {
+    "commit": "a0f116d3",
+    "commit_full": "a0f116d3b1dd8b830cf16d494c7fe4d5f16c90e5",
+    "dirty": true,
+    "dirty_files": [
+      "docs/experiments/EXP-0030-randlen-corpus-generalisation.md",
+      "docs/experiments/REGISTER.md",
+      "docs/experiments/STATE_OF_PLAY.md"
+    ],
+    "branch": "baselines/overnight"
+  }
+}

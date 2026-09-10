@@ -1,0 +1,5 @@
+fit reference operators on 69115 train transitions (135 files)
+test: 7679 transitions, 15 held-out files; step-0 subset: 1920 (expected 1920 if no row was filtered out of a step-0 block)
+goal=corner: dv_true mean +0.00653 sd 0.02891 helpful 37%
+wrote Baselines/NFD/runs/nfd_randlen_indist_dv_cache.pt
+wrote Baselines/NFD/runs/nfd_randlen_indist_meta.json

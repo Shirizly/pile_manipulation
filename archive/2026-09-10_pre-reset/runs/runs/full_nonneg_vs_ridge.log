@@ -1,0 +1,57 @@
+  loading Genesis/data/foresight/L040/**/*_data.pt ...
+loaded 8 episodes; kept 2560 full-length pushes, dropped 0 truncated (0.0%)
+  loaded 2560 transitions
+
+=== SCATTERED (L040, n50)  res=32 crop=1.0 blur=1.0 D=1024 M=1920 (OVERdetermined) N_test=640 ===
+model                  rms  %persist  %meandelta   fit s
+persistence        0.10339     100.0       118.9       -
+mean-delta         0.08697      84.1       100.0       -
+nonneg             0.06489      62.8        74.6    43.0
+ridge10            0.06713      64.9        77.2     0.0
+ridge1             0.06970      67.4        80.1     0.0
+ridge100           0.07342      71.0        84.4     0.0
+ridge0.1           0.07411      71.7        85.2     0.0
+winner: nonneg
+  loading Genesis/data/cube_spectrum/n20/*_data.pt ...
+loaded 16 episodes; kept 4840 full-length pushes, dropped 280 truncated (5.5%)
+  loaded 4840 transitions
+
+=== PILED (n20, 2-layer)  res=32 crop=1.0 blur=1.0 D=1024 M=3632 (OVERdetermined) N_test=1208 ===
+model                  rms  %persist  %meandelta   fit s
+persistence        0.26004     100.0       158.9       -
+mean-delta         0.16365      62.9       100.0       -
+ridge10            0.09329      35.9        57.0     0.1
+ridge1             0.09358      36.0        57.2     0.1
+nonneg             0.09390      36.1        57.4    38.9
+ridge0.1           0.09451      36.3        57.8     0.1
+ridge100           0.09708      37.3        59.3     0.1
+winner: ridge10
+
+=== SCATTERED (L040, n50)  res=32 crop=0.5 blur=1.0 D=1024 M=1920 (OVERdetermined) N_test=640 ===
+model                  rms  %persist  %meandelta   fit s
+persistence        0.10339     100.0       116.5       -
+mean-delta         0.08873      85.8       100.0       -
+nonneg             0.05890      57.0        66.4    63.6
+ridge10            0.05996      58.0        67.6     0.1
+ridge1             0.06054      58.6        68.2     0.1
+ridge0.1           0.06210      60.1        70.0     0.0
+ridge100           0.06448      62.4        72.7     0.1
+winner: nonneg
+
+=== PILED (n20, 2-layer)  res=32 crop=0.5 blur=1.0 D=1024 M=3632 (OVERdetermined) N_test=1208 ===
+model                  rms  %persist  %meandelta   fit s
+persistence        0.26004     100.0       152.7       -
+mean-delta         0.17028      65.5       100.0       -
+ridge10            0.09241      35.5        54.3     0.1
+nonneg             0.09253      35.6        54.3    50.4
+ridge1             0.09316      35.8        54.7     0.1
+ridge100           0.09396      36.1        55.2     0.1
+ridge0.1           0.09484      36.5        55.7     0.1
+winner: ridge10
+
+
+=== SUMMARY: winner per configuration ===
+SCATTERED (L040, n50)    res=32 crop=1.0: winner=nonneg      nonneg=62.8%  best-ridge(ridge10)=64.9%
+PILED (n20, 2-layer)     res=32 crop=1.0: winner=ridge10     nonneg=36.1%  best-ridge(ridge10)=35.9%
+SCATTERED (L040, n50)    res=32 crop=0.5: winner=nonneg      nonneg=57.0%  best-ridge(ridge10)=58.0%
+PILED (n20, 2-layer)     res=32 crop=0.5: winner=ridge10     nonneg=35.6%  best-ridge(ridge10)=35.5%

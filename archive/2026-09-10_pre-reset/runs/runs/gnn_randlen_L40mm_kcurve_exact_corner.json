@@ -1,0 +1,37 @@
+{
+  "run_id": "gnn_randlen_L40mm_kcurve_exact_corner-2026-09-09T21:23:07-28750",
+  "event": "start",
+  "ts": "2026-09-09T21:23:07",
+  "tag": "gnn_randlen_L40mm_kcurve_exact_corner",
+  "exp": "EXP-0030",
+  "cmd": [
+    "/home/alon/anaconda3/envs/pme/bin/python",
+    "-u",
+    "scripts/probes/exp0026_kcurve_exact.py",
+    "Baselines/GNN/runs/gnn_randlen_L40mm_dv_cache.pt",
+    "--goal",
+    "corner",
+    "--models",
+    "persistence,mean-delta,linear,gnn,oracle",
+    "--ks",
+    "2,4,8,16,32,64,128",
+    "--pairs",
+    "gnn-linear,oracle-linear,linear-mean-delta",
+    "--out",
+    "Baselines/GNN/runs/gnn_randlen_L40mm_kcurve_exact_corner.json"
+  ],
+  "out": "Baselines/GNN/runs",
+  "log": "runs/gnn_randlen_L40mm_kcurve_exact_corner.log",
+  "commit": "a0f116d3",
+  "dirty": false,
+  "status": "ok",
+  "returncode": 0,
+  "seconds": 1.8,
+  "provenance": {
+    "commit": "a0f116d3",
+    "commit_full": "a0f116d3b1dd8b830cf16d494c7fe4d5f16c90e5",
+    "dirty": false,
+    "dirty_files": [],
+    "branch": "baselines/overnight"
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "tag": "nfd_randlen_piled",
+  "provenance": {
+    "commit": "652fce1f",
+    "commit_full": "652fce1f43bccbd5ecd7f0eab7224441aa9d87c6",
+    "dirty": false,
+    "dirty_files": [],
+    "branch": "baselines/overnight"
+  },
+  "n": 2560,
+  "n_files": 5,
+  "test_cfg": "configs/dataset/genesis_overnight_randlen_test_n20_piled.yaml",
+  "accuracy": {
+    "persistence": 0.0,
+    "nfd_unet3ch": 0.4369816184043884
+  }
+}

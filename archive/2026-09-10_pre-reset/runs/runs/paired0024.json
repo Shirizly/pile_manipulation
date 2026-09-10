@@ -1,0 +1,22 @@
+{
+  "tag": "paired0024",
+  "cmd": [
+    "python",
+    "-u",
+    "scripts/probes/exp0024_control_eval.py",
+    "configs/dataset/genesis_cube_spectrum_n20.yaml",
+    "configs/dataset/genesis_cube_spectrum_n20_slates.yaml",
+    "runs_exp0024/unetfilm_cube_spectrum_n20",
+    "--tag",
+    "paired"
+  ],
+  "returncode": 0,
+  "seconds": 21.8,
+  "provenance": {
+    "commit": "e9af573f",
+    "commit_full": "e9af573f170f973f3749aaab5e3cdd21e70bb88b",
+    "dirty": false,
+    "dirty_files": [],
+    "branch": "VisualForesight"
+  }
+}

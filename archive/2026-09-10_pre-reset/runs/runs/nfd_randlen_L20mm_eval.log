@@ -1,0 +1,19 @@
+=== Baselines/common/eval_baseline: nfd_randlen_L20mm ===
+provenance: {'commit': 'a0f116d3', 'commit_full': 'a0f116d3b1dd8b830cf16d494c7fe4d5f16c90e5', 'dirty': False, 'dirty_files': [], 'branch': 'baselines/overnight'}
+train: 23040 transitions, grid 64x64, 180 batches
+eval: 7680 transitions, 60 batches
+  steps present: [0, 1, 2], step0 transitions: 2560
+
+-- image accuracy (held-out eval slates, all 3 steps, n=7680) --
+  persistence          accuracy=+0.0000  (step0=+0.0000 step1=+0.0000 step2=+0.0000)
+  mean-delta           accuracy=+0.0544  (step0=+0.0710 step1=+0.0525 step2=+0.0382)
+  linear               accuracy=+0.2004  (step0=+0.2138 step1=+0.1967 step2=+0.1898)
+  nfd_unet3ch          accuracy=+0.4071  (step0=+0.4000 step1=+0.4047 step2=+0.4174)
+  oracle               accuracy=+1.0000  (step0=+1.0000 step1=+1.0000 step2=+1.0000)
+
+step-0 (control-ranking) subset: 2560 transitions, 20 slates (128 candidates/slate)
+pile centroid (row,col)=(31.265335083007812, 31.546361923217773), support (r0,r1,c0,c1)=(25, 39, 25, 39)
+goal=corner: dv_true mean -0.00034 sd 0.02338 helpful 49%
+goal=ind-stripe-thin-pile: dv_true mean -0.00567 sd 0.07510 helpful 44%
+wrote Baselines/NFD/runs/nfd_randlen_L20mm_dv_cache.pt
+wrote Baselines/NFD/runs/nfd_randlen_L20mm_accuracy.json

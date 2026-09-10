@@ -1,0 +1,26 @@
+{
+  "tag": "expB_eval_L10mm",
+  "cmd": [
+    "python",
+    "-u",
+    "scripts/probes/expB_multistep_eval.py",
+    "configs/dataset/genesis_slates_multistep_n20_L10mm_train.yaml",
+    "configs/dataset/genesis_slates_multistep_n20_L10mm_eval.yaml",
+    "Genesis/data/slates_multistep/n20_L10mm/manifest.json",
+    "runs_expB/unetfilm_slates_multistep_n20_L10mm",
+    "--tag",
+    "n20_L10mm",
+    "--degradations",
+    "--out-prefix",
+    "runs_expB/n20_L10mm"
+  ],
+  "returncode": 0,
+  "seconds": 115.4,
+  "provenance": {
+    "commit": "46e2db69",
+    "commit_full": "46e2db697f67dbf161dba2e29503c56decbe21c5",
+    "dirty": false,
+    "dirty_files": [],
+    "branch": "VisualForesight"
+  }
+}

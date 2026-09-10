@@ -1,0 +1,5 @@
+[GNNPredictor] loaded Baselines/GNN/runs/gnn_randlen/ckpt_best.pth (epoch=224, val_mse=3.4861221214062726e-06)
+n=2559 transitions (5 held-out files)
+  persistence accuracy: +0.0000
+  gnn                  accuracy: +0.1631
+wrote Baselines/GNN/runs/gnn_randlen_holdout_accuracy_scattered.json

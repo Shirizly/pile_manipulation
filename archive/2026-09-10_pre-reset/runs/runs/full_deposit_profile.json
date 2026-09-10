@@ -1,0 +1,25 @@
+{
+  "tag": "full_deposit_profile",
+  "cmd": [
+    "python",
+    "-u",
+    "scripts/probes/deposit_profile.py"
+  ],
+  "returncode": 0,
+  "seconds": 5.7,
+  "provenance": {
+    "commit": "be1b3b0a",
+    "commit_full": "be1b3b0a9cf23e850aa8333d544c8edb9ee5798e",
+    "dirty": true,
+    "dirty_files": [
+      ".claude/skills/experiment-log/SKILL.md",
+      "docs/experiments/EXP-0004-unet-action-ablation.md",
+      "docs/experiments/EXP-0009-grid-fix-pixel-rerun.md",
+      "docs/experiments/EXP-0014-unet-action-ablation-retrain.md",
+      "docs/experiments/EXP-0015-contact-switching-fixed-grid.md",
+      "docs/experiments/METRICS.md",
+      "fit_linear_foresight.py"
+    ],
+    "branch": "VisualForesight"
+  }
+}

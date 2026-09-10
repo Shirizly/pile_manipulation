@@ -1,0 +1,29 @@
+{
+  "run_id": "nfd_randlen_train-2026-09-09T20:00:57-24667",
+  "event": "start",
+  "ts": "2026-09-09T20:00:57",
+  "tag": "nfd_randlen_train",
+  "exp": "EXP-0030",
+  "cmd": [
+    "bash",
+    "Baselines/common/gpu_lock.sh",
+    "/home/alon/anaconda3/envs/pme/bin/python",
+    "Baselines/NFD/train_nfd.py",
+    "Baselines/NFD/configs/nfd_train_3ch_randlen.yaml",
+    "--no-resume"
+  ],
+  "out": "Baselines/NFD/runs/nfd_3ch_randlen",
+  "log": "runs/nfd_randlen_train.log",
+  "commit": "2c51f3d6",
+  "dirty": false,
+  "status": "ok",
+  "returncode": 0,
+  "seconds": 7235.9,
+  "provenance": {
+    "commit": "2c51f3d6",
+    "commit_full": "2c51f3d6040cd00cd50c409b93734f676cd8e589",
+    "dirty": false,
+    "dirty_files": [],
+    "branch": "baselines/overnight"
+  }
+}

@@ -1,0 +1,4 @@
+n=2560 transitions (5 held-out files)
+  persistence accuracy: +0.0000
+  nfd_unet3ch          accuracy: +0.4653
+wrote Baselines/NFD/runs/nfd_randlen_holdout_accuracy_mixed.json

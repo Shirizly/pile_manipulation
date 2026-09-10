@@ -1,0 +1,10 @@
+=== blind_n20: same target for both models, sigma=1.0 ===
+model                                rms  % of change
+  -- scored SHARP (EXP-0021 setting)
+  persistence                    0.16731       100.0%
+  linear-ridge1.0                0.13262        79.3%
+  UNet (blurred for scoring)     0.12064        72.1%
+  -- scored BLURRED sigma=1.0
+  persistence                    0.10503       100.0%
+  linear-ridge1.0                0.06380        60.7%
+  UNet (blurred for scoring)     0.06883        65.5%

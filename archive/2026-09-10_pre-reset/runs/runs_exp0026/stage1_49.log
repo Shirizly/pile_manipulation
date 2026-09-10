@@ -1,0 +1,7 @@
+provenance: {'commit': '9e78da53', 'commit_full': '9e78da53c217dd1a4d414d77df1f3cea61827301', 'dirty': False, 'dirty_files': [], 'branch': 'VisualForesight'}
+train: 3631 transitions, grid 64x64
+UNet load: <All keys matched successfully>
+slates: 1565 transitions, 49 slate groups (49 files in split 'test')
+goal=corner: dv_true mean +0.01903 sd 0.05152 helpful 38%
+goal=center: dv_true mean +0.00004 sd 0.00120 helpful 0%
+wrote runs_exp0026/dv_cache_exp0024_49.pt

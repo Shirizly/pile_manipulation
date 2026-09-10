@@ -1,0 +1,41 @@
+=== EXP-0024 control eval: paired ===
+train: 3631 transitions, grid 64x64
+  UNet load: <All keys matched successfully>
+test (image accuracy): 596 transitions
+
+-- image accuracy (held-out cube_spectrum/n20, swept region) --
+  persistence                accuracy=+0.0000
+  mean-delta                 accuracy=+0.3433
+  linear (ridge->identity)   accuracy=+0.5333
+  UNet                       accuracy=+0.5693
+  oracle                     accuracy=+1.0000
+
+slates: 1565 transitions, 49 slates (from configs/dataset/genesis_cube_spectrum_n20_slates.yaml)
+
+=== goal=corner === dv_true mean=+0.01903 sd=0.05152 helpful(dV<0)=38%
+model                        n_slt   spearman    (sd)   sign%   slate4    (sd)
+  persistence                   49     -0.052   0.170      0%   -0.002   0.014
+  mean-delta                    49      0.790   0.055     84%    0.796   0.059
+  linear (ridge->identity)      49      0.921   0.026     91%    0.950   0.020
+  UNet                          49      0.937   0.018     93%    0.969   0.020
+  oracle                        49      0.969   0.000    100%    1.000   0.000
+  PAIRED vs linear: persistence            mean_diff=-0.9519 paired_sd=0.0245 sem=0.0035 t=-271.62 n=49 wins=0/49
+  PAIRED vs linear: mean-delta             mean_diff=-0.1547 paired_sd=0.0567 sem=0.0081 t=-19.09 n=49 wins=0/49
+  PAIRED vs linear: UNet                   mean_diff=+0.0185 paired_sd=0.0217 sem=0.0031 t=+5.99 n=49 wins=42/49
+  PAIRED vs linear: oracle                 mean_diff=+0.0497 paired_sd=0.0203 sem=0.0029 t=+17.13 n=49 wins=49/49
+
+=== goal=center === dv_true mean=+0.00004 sd=0.00120 helpful(dV<0)=0%
+model                        n_slt   spearman    (sd)   sign%   slate4    (sd)
+  persistence                   11      0.875   0.106      0%    0.002   0.008
+  mean-delta                    11      0.120   0.161    100%    0.097   0.060
+  linear (ridge->identity)      11      0.157   0.161    100%    0.102   0.066
+  UNet                          11      0.063   0.213    100%    0.064   0.096
+  oracle                        11      0.969   0.000    100%    0.149   0.049
+  PAIRED vs linear: persistence            mean_diff=-0.0994 paired_sd=0.0719 sem=0.0217 t=-4.59 n=11 wins=1/11
+  PAIRED vs linear: mean-delta             mean_diff=-0.0051 paired_sd=0.0534 sem=0.0161 t=-0.32 n=11 wins=1/11
+  PAIRED vs linear: UNet                   mean_diff=-0.0379 paired_sd=0.0841 sem=0.0253 t=-1.50 n=11 wins=2/11
+  PAIRED vs linear: oracle                 mean_diff=+0.0477 paired_sd=0.0725 sem=0.0219 t=+2.18 n=11 wins=5/11
+
+persistence's dv_pred is 0 for every candidate by construction: it cannot rank at all, and its 'spearman'/'slate4' numbers above are noise around 0, not a meaningful correlation -- report as 'cannot rank', not as a score.
+
+wrote runs_exp0024/control_eval_paired.json

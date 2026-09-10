@@ -1,0 +1,37 @@
+{
+  "run_id": "nfd_randlen_L40mm_eval-2026-09-09T23:37:09-31701",
+  "event": "start",
+  "ts": "2026-09-09T23:37:09",
+  "tag": "nfd_randlen_L40mm_eval",
+  "exp": "EXP-0030",
+  "cmd": [
+    "/home/alon/anaconda3/envs/pme/bin/python",
+    "-u",
+    "Baselines/common/eval_baseline.py",
+    "configs/dataset/genesis_slates_multistep_n20_L20L40_train.yaml",
+    "configs/dataset/genesis_slates_multistep_n20_L40mm_eval.yaml",
+    "Genesis/data/slates_multistep/n20_L40mm/manifest.json",
+    "--tag",
+    "nfd_randlen_L40mm",
+    "--out-prefix",
+    "Baselines/NFD/runs/nfd_randlen_L40mm",
+    "--predictor",
+    "Baselines.NFD.predictor:build_predictor",
+    "--goals",
+    "corner,ind-stripe-thin-pile"
+  ],
+  "out": "Baselines/NFD/runs",
+  "log": "runs/nfd_randlen_L40mm_eval.log",
+  "commit": "a0f116d3",
+  "dirty": false,
+  "status": "ok",
+  "returncode": 0,
+  "seconds": 162.5,
+  "provenance": {
+    "commit": "a0f116d3",
+    "commit_full": "a0f116d3b1dd8b830cf16d494c7fe4d5f16c90e5",
+    "dirty": false,
+    "dirty_files": [],
+    "branch": "baselines/overnight"
+  }
+}

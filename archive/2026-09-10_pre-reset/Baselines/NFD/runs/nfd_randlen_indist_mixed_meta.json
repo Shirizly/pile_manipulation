@@ -1,0 +1,13 @@
+{
+  "tag": "nfd_randlen_indist_mixed",
+  "provenance": {
+    "commit": "652fce1f",
+    "commit_full": "652fce1f43bccbd5ecd7f0eab7224441aa9d87c6",
+    "dirty": false,
+    "dirty_files": [],
+    "branch": "baselines/overnight"
+  },
+  "n_files": 5,
+  "n_step0": 640,
+  "predictor": "nfd_unet3ch"
+}

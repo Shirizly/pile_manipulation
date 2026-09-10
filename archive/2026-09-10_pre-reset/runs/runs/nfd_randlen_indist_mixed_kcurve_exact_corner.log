@@ -1,0 +1,56 @@
+cache=Baselines/NFD/runs/nfd_randlen_indist_mixed_dv_cache.pt goal=corner n_slates=5 provenance=652fce1f dirty=False
+
+=== slateK_exact (closed form) ===
+model            K=2        K=4        K=8        K=16       K=32       K=64       K=128    
+persistence      0.0523     0.0995     0.1326     0.1325     0.1229     0.1243     0.0546   
+mean-delta       0.6219     0.7060     0.6820     0.6170     0.5507     0.4821     0.3600   
+linear           0.8954     0.9031     0.8957     0.8720     0.8332     0.7878     0.6989   
+nfd_unet3ch      0.9781     0.9736     0.9706     0.9621     0.9440     0.9235     0.8869   
+oracle           1.0000     1.0000     1.0000     1.0000     1.0000     1.0000     1.0000   
+
+=== worstK (adversarial pool) ===
+model            K=2        K=4        K=8        K=16       K=32       K=64       K=128    
+persistence      3.4437     3.4437     3.4437     3.4437     3.3725     3.2985     0.9454   
+mean-delta       2.5731     2.5731     2.5233     2.2854     2.0672     1.3577     0.6400   
+linear           1.4025     1.4025     1.3325     1.0682     1.0395     0.9242     0.3011   
+nfd_unet3ch      0.4645     0.4645     0.4608     0.4508     0.4174     0.4174     0.1068   
+oracle           0.0000     0.0000     0.0000     0.0000     0.0000     0.0000     -0.0785  
+
+=== rank_profile (true percentile of the model's r-th pick) ===
+model            r=1       r=2       r=3       r=4       r=8       r=16      r=32      r=64      r=128   
+persistence      0.502     0.325     0.417     0.661     0.348     0.594     0.389     0.367     0.447   
+mean-delta       0.231     0.114     0.139     0.167     0.239     0.177     0.286     0.494     0.789   
+linear           0.056     0.031     0.117     0.050     0.119     0.244     0.208     0.487     0.988   
+nfd_unet3ch      0.017     0.022     0.039     0.017     0.098     0.106     0.252     0.409     0.992   
+oracle           0.000     0.008     0.016     0.023     0.055     0.117     0.242     0.491     0.992   
+
+=== paired slateK_exact differences ===
+
+  nfd_unet3ch - linear
+    K=   2 mean=+0.0827 sem=0.0082 t=+10.09 wins=5/5 ties=0
+    K=   4 mean=+0.0705 sem=0.0111 t=+6.33 wins=5/5 ties=0
+    K=   8 mean=+0.0749 sem=0.0168 t=+4.47 wins=5/5 ties=0
+    K=  16 mean=+0.0901 sem=0.0262 t=+3.43 wins=5/5 ties=0
+    K=  32 mean=+0.1108 sem=0.0450 t=+2.46 wins=4/5 ties=0
+    K=  64 mean=+0.1357 sem=0.0589 t=+2.31 wins=4/5 ties=0
+    K= 128 mean=+0.1881 sem=0.0694 t=+2.71 wins=4/5 ties=0
+
+  oracle - linear
+    K=   2 mean=+0.1046 sem=0.0089 t=+11.75 wins=5/5 ties=0
+    K=   4 mean=+0.0969 sem=0.0127 t=+7.65 wins=5/5 ties=0
+    K=   8 mean=+0.1043 sem=0.0181 t=+5.77 wins=5/5 ties=0
+    K=  16 mean=+0.1280 sem=0.0248 t=+5.15 wins=5/5 ties=0
+    K=  32 mean=+0.1668 sem=0.0396 t=+4.21 wins=5/5 ties=0
+    K=  64 mean=+0.2122 sem=0.0534 t=+3.97 wins=5/5 ties=0
+    K= 128 mean=+0.3011 sem=0.0712 t=+4.23 wins=5/5 ties=0
+
+  linear - mean-delta
+    K=   2 mean=+0.2735 sem=0.0189 t=+14.43 wins=5/5 ties=0
+    K=   4 mean=+0.1971 sem=0.0253 t=+7.78 wins=5/5 ties=0
+    K=   8 mean=+0.2137 sem=0.0422 t=+5.07 wins=5/5 ties=0
+    K=  16 mean=+0.2551 sem=0.0469 t=+5.43 wins=5/5 ties=0
+    K=  32 mean=+0.2825 sem=0.0454 t=+6.22 wins=5/5 ties=0
+    K=  64 mean=+0.3057 sem=0.0591 t=+5.17 wins=5/5 ties=0
+    K= 128 mean=+0.3388 sem=0.1629 t=+2.08 wins=4/5 ties=0
+
+wrote Baselines/NFD/runs/nfd_randlen_indist_mixed_kcurve_exact_corner.json

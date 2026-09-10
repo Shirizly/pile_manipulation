@@ -1,0 +1,1470 @@
+[38;5;159m[Genesis] [21:25:02] [INFO] [38;5;121m╭───────────────────────────────────────────────╮[0m[38;5;159m[0m
+[38;5;159m[Genesis] [21:25:02] [INFO] [38;5;121m│┈┉┈┉┈┉┈┉┈┉┈┉┈┉┈┉┈┉┈[0m[38;5;159m [38;5;121m[1m[3mGenesis[0m[38;5;159m [38;5;121m┈┉┈┉┈┉┈┉┈┉┈┉┈┉┈┉┈┉┈│[0m[38;5;159m[0m
+[38;5;159m[Genesis] [21:25:02] [INFO] [38;5;121m╰───────────────────────────────────────────────╯[0m[38;5;159m[0m
+[38;5;159m[Genesis] [21:25:02] [INFO] Running on [38;5;121m[4m[NVIDIA GeForce RTX 4070 Laptop GPU][0m[38;5;159m with backend [38;5;121m[4mgs.cuda[0m[38;5;159m. Device memory: [38;5;121m[4m7.62[0m[38;5;159m GB.[0m
+[38;5;159m[Genesis] [21:25:02] [INFO] 🚀 Genesis initialized. 🔖 version: [38;5;121m[4m1.3.3[0m[38;5;159m, 🎨 theme: [38;5;121m[4mdark[0m[38;5;159m, 🌱 seed: [38;5;121m[4mNone[0m[38;5;159m, 🐛 debug: [38;5;121m[4mFalse[0m[38;5;159m, 📏 precision: [38;5;121m[4m32[0m[38;5;159m, 🔥 performance: [38;5;121m[4mTrue[0m[38;5;159m, 💬 verbose: [38;5;121m[4mINFO[0m[38;5;159m[0m
+[38;5;159m[Genesis] [21:25:04] [INFO] Scene [38;5;121m[3m<6fc820b>[0m[38;5;159m created.[0m
+[38;5;159m[Genesis] [21:25:04] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m0[0m[38;5;159m, uid: [38;5;121m[3m<cc74bd8>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Plane>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [21:25:04] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m1[0m[38;5;159m, uid: [38;5;121m[3m<d53a9e7>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [21:25:04] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m2[0m[38;5;159m, uid: [38;5;121m[3m<d03e575>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [21:25:04] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m3[0m[38;5;159m, uid: [38;5;121m[3m<0e8210a>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [21:25:04] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m4[0m[38;5;159m, uid: [38;5;121m[3m<2ccdfe4>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [21:25:04] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m5[0m[38;5;159m, uid: [38;5;121m[3m<4327963>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [21:25:04] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m6[0m[38;5;159m, uid: [38;5;121m[3m<e58306c>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [21:25:04] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m7[0m[38;5;159m, uid: [38;5;121m[3m<7ca724c>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [21:25:04] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m8[0m[38;5;159m, uid: [38;5;121m[3m<c6ec343>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [21:25:04] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m9[0m[38;5;159m, uid: [38;5;121m[3m<7e76315>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [21:25:04] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m10[0m[38;5;159m, uid: [38;5;121m[3m<1cf46b5>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [21:25:04] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m11[0m[38;5;159m, uid: [38;5;121m[3m<29c99aa>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [21:25:04] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m12[0m[38;5;159m, uid: [38;5;121m[3m<045167d>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [21:25:04] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m13[0m[38;5;159m, uid: [38;5;121m[3m<70d2a0f>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [21:25:04] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m14[0m[38;5;159m, uid: [38;5;121m[3m<2ca03d4>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [21:25:04] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m15[0m[38;5;159m, uid: [38;5;121m[3m<b2cced6>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [21:25:04] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m16[0m[38;5;159m, uid: [38;5;121m[3m<4f97ef0>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [21:25:04] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m17[0m[38;5;159m, uid: [38;5;121m[3m<8e201fb>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [21:25:04] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m18[0m[38;5;159m, uid: [38;5;121m[3m<1b43001>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [21:25:04] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m19[0m[38;5;159m, uid: [38;5;121m[3m<fd09bb6>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [21:25:04] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m20[0m[38;5;159m, uid: [38;5;121m[3m<892bff6>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [21:25:04] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m21[0m[38;5;159m, uid: [38;5;121m[3m<2ea4966>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [21:25:04] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m22[0m[38;5;159m, uid: [38;5;121m[3m<923e86c>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [21:25:04] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m23[0m[38;5;159m, uid: [38;5;121m[3m<75d75a0>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [21:25:04] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m24[0m[38;5;159m, uid: [38;5;121m[3m<3e8e8d0>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [21:25:04] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m25[0m[38;5;159m, uid: [38;5;121m[3m<b53139a>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [21:25:04] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m26[0m[38;5;159m, uid: [38;5;121m[3m<78323c6>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+Generated 20 particles out of 20
+[38;5;159m[Genesis] [21:25:04] [INFO] Building scene [38;5;121m[3m<6fc820b>[0m[38;5;159m...[0m
+[38;5;159m[Genesis] [21:25:07] [INFO] Compiling simulation kernels...[0m
+[38;5;159m[Genesis] [21:25:25] [INFO] Building visualizer...[0m
+build: 24s
+heap spawn: 20 particles, 2 layer(s), pitch 5.8 mm, jitter 0.08 cube, yaw +-0.00 rad, lift 0.00 cube, base frac 0.60
+  settled pile 1/2
+heap spawn: 20 particles, 2 layer(s), pitch 5.8 mm, jitter 0.08 cube, yaw +-0.00 rad, lift 0.00 cube, base frac 0.60
+  settled pile 2/2
+  state library: 256 settled x 1 symmetries = 256 states
+state library: 256 states (2 settles x 128 envs) in 15s
+ > sample 1/1
+
+Statistics (Multi-Environment Collection)
+==================================================
+>> Number of environments   : 128
+>> Samples per environment  : 1
+>> Total samples collected  : 128
+>> Number of failed samples : 0
+Material batch finished. Run 0 saved to /home/alon/Code/pile_manipulation/Genesis/data/slates_multistep/n20_L10mm.
+action resampling: resolved in 2 tries
+ > sample 1/1
+
+Statistics (Multi-Environment Collection)
+==================================================
+>> Number of environments   : 128
+>> Samples per environment  : 1
+>> Total samples collected  : 128
+>> Number of failed samples : 0
+Material batch finished. Run 1 saved to /home/alon/Code/pile_manipulation/Genesis/data/slates_multistep/n20_L10mm.
+ > sample 1/1
+
+Statistics (Multi-Environment Collection)
+==================================================
+>> Number of environments   : 128
+>> Samples per environment  : 1
+>> Total samples collected  : 128
+>> Number of failed samples : 0
+Material batch finished. Run 2 saved to /home/alon/Code/pile_manipulation/Genesis/data/slates_multistep/n20_L10mm.
+  slate 1/50 (state 0) -- 47s elapsed, 46.7s/slate (3 step(s) each)
+ > sample 1/1
+
+Statistics (Multi-Environment Collection)
+==================================================
+>> Number of environments   : 128
+>> Samples per environment  : 1
+>> Total samples collected  : 128
+>> Number of failed samples : 0
+Material batch finished. Run 3 saved to /home/alon/Code/pile_manipulation/Genesis/data/slates_multistep/n20_L10mm.
+ > sample 1/1
+
+Statistics (Multi-Environment Collection)
+==================================================
+>> Number of environments   : 128
+>> Samples per environment  : 1
+>> Total samples collected  : 128
+>> Number of failed samples : 0
+Material batch finished. Run 4 saved to /home/alon/Code/pile_manipulation/Genesis/data/slates_multistep/n20_L10mm.
+action resampling: resolved in 3 tries
+ > sample 1/1
+
+Statistics (Multi-Environment Collection)
+==================================================
+>> Number of environments   : 128
+>> Samples per environment  : 1
+>> Total samples collected  : 128
+>> Number of failed samples : 0
+Material batch finished. Run 5 saved to /home/alon/Code/pile_manipulation/Genesis/data/slates_multistep/n20_L10mm.
+ > sample 1/1
+
+Statistics (Multi-Environment Collection)
+==================================================
+>> Number of environments   : 128
+>> Samples per environment  : 1
+>> Total samples collected  : 128
+>> Number of failed samples : 0
+Material batch finished. Run 6 saved to /home/alon/Code/pile_manipulation/Genesis/data/slates_multistep/n20_L10mm.
+ > sample 1/1
+
+Statistics (Multi-Environment Collection)
+==================================================
+>> Number of environments   : 128
+>> Samples per environment  : 1
+>> Total samples collected  : 128
+>> Number of failed samples : 0
+Material batch finished. Run 7 saved to /home/alon/Code/pile_manipulation/Genesis/data/slates_multistep/n20_L10mm.
+ > sample 1/1
+
+Statistics (Multi-Environment Collection)
+==================================================
+>> Number of environments   : 128
+>> Samples per environment  : 1
+>> Total samples collected  : 128
+>> Number of failed samples : 0
+Material batch finished. Run 8 saved to /home/alon/Code/pile_manipulation/Genesis/data/slates_multistep/n20_L10mm.
+action resampling: resolved in 2 tries
+ > sample 1/1
+
+Statistics (Multi-Environment Collection)
+==================================================
+>> Number of environments   : 128
+>> Samples per environment  : 1
+>> Total samples collected  : 128
+>> Number of failed samples : 0
+Material batch finished. Run 9 saved to /home/alon/Code/pile_manipulation/Genesis/data/slates_multistep/n20_L10mm.
+action resampling: resolved in 2 tries
+ > sample 1/1
+
+Statistics (Multi-Environment Collection)
+==================================================
+>> Number of environments   : 128
+>> Samples per environment  : 1
+>> Total samples collected  : 128
+>> Number of failed samples : 0
+Material batch finished. Run 10 saved to /home/alon/Code/pile_manipulation/Genesis/data/slates_multistep/n20_L10mm.
+ > sample 1/1
+
+Statistics (Multi-Environment Collection)
+==================================================
+>> Number of environments   : 128
+>> Samples per environment  : 1
+>> Total samples collected  : 128
+>> Number of failed samples : 0
+Material batch finished. Run 11 saved to /home/alon/Code/pile_manipulation/Genesis/data/slates_multistep/n20_L10mm.
+ > sample 1/1
+
+Statistics (Multi-Environment Collection)
+==================================================
+>> Number of environments   : 128
+>> Samples per environment  : 1
+>> Total samples collected  : 128
+>> Number of failed samples : 0
+Material batch finished. Run 12 saved to /home/alon/Code/pile_manipulation/Genesis/data/slates_multistep/n20_L10mm.
+action resampling: resolved in 2 tries
+ > sample 1/1
+
+Statistics (Multi-Environment Collection)
+==================================================
+>> Number of environments   : 128
+>> Samples per environment  : 1
+>> Total samples collected  : 128
+>> Number of failed samples : 0
+Material batch finished. Run 13 saved to /home/alon/Code/pile_manipulation/Genesis/data/slates_multistep/n20_L10mm.
+ > sample 1/1
+
+Statistics (Multi-Environment Collection)
+==================================================
+>> Number of environments   : 128
+>> Samples per environment  : 1
+>> Total samples collected  : 128
+>> Number of failed samples : 0
+Material batch finished. Run 14 saved to /home/alon/Code/pile_manipulation/Genesis/data/slates_multistep/n20_L10mm.
+  slate 5/50 (state 5) -- 268s elapsed, 53.6s/slate (3 step(s) each)
+ > sample 1/1
+
+Statistics (Multi-Environment Collection)
+==================================================
+>> Number of environments   : 128
+>> Samples per environment  : 1
+>> Total samples collected  : 128
+>> Number of failed samples : 0
+Material batch finished. Run 15 saved to /home/alon/Code/pile_manipulation/Genesis/data/slates_multistep/n20_L10mm.
+ > sample 1/1
+
+Statistics (Multi-Environment Collection)
+==================================================
+>> Number of environments   : 128
+>> Samples per environment  : 1
+>> Total samples collected  : 128
+>> Number of failed samples : 0
+Material batch finished. Run 16 saved to /home/alon/Code/pile_manipulation/Genesis/data/slates_multistep/n20_L10mm.
+ > sample 1/1
+
+Statistics (Multi-Environment Collection)
+==================================================
+>> Number of environments   : 128
+>> Samples per environment  : 1
+>> Total samples collected  : 128
+>> Number of failed samples : 0
+Material batch finished. Run 17 saved to /home/alon/Code/pile_manipulation/Genesis/data/slates_multistep/n20_L10mm.
+action resampling: resolved in 2 tries
+ > sample 1/1
+
+Statistics (Multi-Environment Collection)
+==================================================
+>> Number of environments   : 128
+>> Samples per environment  : 1
+>> Total samples collected  : 128
+>> Number of failed samples : 0
+Material batch finished. Run 18 saved to /home/alon/Code/pile_manipulation/Genesis/data/slates_multistep/n20_L10mm.
+ > sample 1/1
+
+Statistics (Multi-Environment Collection)
+==================================================
+>> Number of environments   : 128
+>> Samples per environment  : 1
+>> Total samples collected  : 128
+>> Number of failed samples : 0
+Material batch finished. Run 19 saved to /home/alon/Code/pile_manipulation/Genesis/data/slates_multistep/n20_L10mm.
+ > sample 1/1
+
+Statistics (Multi-Environment Collection)
+==================================================
+>> Number of environments   : 128
+>> Samples per environment  : 1
+>> Total samples collected  : 128
+>> Number of failed samples : 0
+Material batch finished. Run 20 saved to /home/alon/Code/pile_manipulation/Genesis/data/slates_multistep/n20_L10mm.
+ > sample 1/1
+
+Statistics (Multi-Environment Collection)
+==================================================
+>> Number of environments   : 128
+>> Samples per environment  : 1
+>> Total samples collected  : 128
+>> Number of failed samples : 0
+Material batch finished. Run 21 saved to /home/alon/Code/pile_manipulation/Genesis/data/slates_multistep/n20_L10mm.
+action resampling: resolved in 2 tries
+ > sample 1/1
+
+Statistics (Multi-Environment Collection)
+==================================================
+>> Number of environments   : 128
+>> Samples per environment  : 1
+>> Total samples collected  : 128
+>> Number of failed samples : 0
+Material batch finished. Run 22 saved to /home/alon/Code/pile_manipulation/Genesis/data/slates_multistep/n20_L10mm.
+action resampling: resolved in 2 tries
+ > sample 1/1
+
+Statistics (Multi-Environment Collection)
+==================================================
+>> Number of environments   : 128
+>> Samples per environment  : 1
+>> Total samples collected  : 128
+>> Number of failed samples : 0
+Material batch finished. Run 23 saved to /home/alon/Code/pile_manipulation/Genesis/data/slates_multistep/n20_L10mm.
+action resampling: resolved in 2 tries
+ > sample 1/1
+
+Statistics (Multi-Environment Collection)
+==================================================
+>> Number of environments   : 128
+>> Samples per environment  : 1
+>> Total samples collected  : 128
+>> Number of failed samples : 0
+Material batch finished. Run 24 saved to /home/alon/Code/pile_manipulation/Genesis/data/slates_multistep/n20_L10mm.
+ > sample 1/1
+
+Statistics (Multi-Environment Collection)
+==================================================
+>> Number of environments   : 128
+>> Samples per environment  : 1
+>> Total samples collected  : 128
+>> Number of failed samples : 0
+Material batch finished. Run 25 saved to /home/alon/Code/pile_manipulation/Genesis/data/slates_multistep/n20_L10mm.
+ > sample 1/1
+
+Statistics (Multi-Environment Collection)
+==================================================
+>> Number of environments   : 128
+>> Samples per environment  : 1
+>> Total samples collected  : 128
+>> Number of failed samples : 0
+Material batch finished. Run 26 saved to /home/alon/Code/pile_manipulation/Genesis/data/slates_multistep/n20_L10mm.
+ > sample 1/1
+
+Statistics (Multi-Environment Collection)
+==================================================
+>> Number of environments   : 128
+>> Samples per environment  : 1
+>> Total samples collected  : 128
+>> Number of failed samples : 0
+Material batch finished. Run 27 saved to /home/alon/Code/pile_manipulation/Genesis/data/slates_multistep/n20_L10mm.
+ > sample 1/1
+
+Statistics (Multi-Environment Collection)
+==================================================
+>> Number of environments   : 128
+>> Samples per environment  : 1
+>> Total samples collected  : 128
+>> Number of failed samples : 0
+Material batch finished. Run 28 saved to /home/alon/Code/pile_manipulation/Genesis/data/slates_multistep/n20_L10mm.
+action resampling: resolved in 2 tries
+ > sample 1/1
+
+Statistics (Multi-Environment Collection)
+==================================================
+>> Number of environments   : 128
+>> Samples per environment  : 1
+>> Total samples collected  : 128
+>> Number of failed samples : 0
+Material batch finished. Run 29 saved to /home/alon/Code/pile_manipulation/Genesis/data/slates_multistep/n20_L10mm.
+  slate 10/50 (state 21) -- 529s elapsed, 52.9s/slate (3 step(s) each)
+ > sample 1/1
+
+Statistics (Multi-Environment Collection)
+==================================================
+>> Number of environments   : 128
+>> Samples per environment  : 1
+>> Total samples collected  : 128
+>> Number of failed samples : 0
+Material batch finished. Run 30 saved to /home/alon/Code/pile_manipulation/Genesis/data/slates_multistep/n20_L10mm.
+ > sample 1/1
+
+Statistics (Multi-Environment Collection)
+==================================================
+>> Number of environments   : 128
+>> Samples per environment  : 1
+>> Total samples collected  : 128
+>> Number of failed samples : 0
+Material batch finished. Run 31 saved to /home/alon/Code/pile_manipulation/Genesis/data/slates_multistep/n20_L10mm.
+action resampling: resolved in 2 tries
+ > sample 1/1
+
+Statistics (Multi-Environment Collection)
+==================================================
+>> Number of environments   : 128
+>> Samples per environment  : 1
+>> Total samples collected  : 128
+>> Number of failed samples : 0
+Material batch finished. Run 32 saved to /home/alon/Code/pile_manipulation/Genesis/data/slates_multistep/n20_L10mm.
+ > sample 1/1
+
+Statistics (Multi-Environment Collection)
+==================================================
+>> Number of environments   : 128
+>> Samples per environment  : 1
+>> Total samples collected  : 128
+>> Number of failed samples : 0
+Material batch finished. Run 33 saved to /home/alon/Code/pile_manipulation/Genesis/data/slates_multistep/n20_L10mm.
+ > sample 1/1
+
+Statistics (Multi-Environment Collection)
+==================================================
+>> Number of environments   : 128
+>> Samples per environment  : 1
+>> Total samples collected  : 128
+>> Number of failed samples : 0
+Material batch finished. Run 34 saved to /home/alon/Code/pile_manipulation/Genesis/data/slates_multistep/n20_L10mm.
+ > sample 1/1
+
+Statistics (Multi-Environment Collection)
+==================================================
+>> Number of environments   : 128
+>> Samples per environment  : 1
+>> Total samples collected  : 128
+>> Number of failed samples : 0
+Material batch finished. Run 35 saved to /home/alon/Code/pile_manipulation/Genesis/data/slates_multistep/n20_L10mm.
+action resampling: resolved in 2 tries
+ > sample 1/1
+
+Statistics (Multi-Environment Collection)
+==================================================
+>> Number of environments   : 128
+>> Samples per environment  : 1
+>> Total samples collected  : 128
+>> Number of failed samples : 0
+Material batch finished. Run 36 saved to /home/alon/Code/pile_manipulation/Genesis/data/slates_multistep/n20_L10mm.
+action resampling: resolved in 2 tries
+ > sample 1/1
+
+Statistics (Multi-Environment Collection)
+==================================================
+>> Number of environments   : 128
+>> Samples per environment  : 1
+>> Total samples collected  : 128
+>> Number of failed samples : 0
+Material batch finished. Run 37 saved to /home/alon/Code/pile_manipulation/Genesis/data/slates_multistep/n20_L10mm.
+ > sample 1/1
+
+Statistics (Multi-Environment Collection)
+==================================================
+>> Number of environments   : 128
+>> Samples per environment  : 1
+>> Total samples collected  : 128
+>> Number of failed samples : 0
+Material batch finished. Run 38 saved to /home/alon/Code/pile_manipulation/Genesis/data/slates_multistep/n20_L10mm.
+ > sample 1/1
+
+Statistics (Multi-Environment Collection)
+==================================================
+>> Number of environments   : 128
+>> Samples per environment  : 1
+>> Total samples collected  : 128
+>> Number of failed samples : 0
+Material batch finished. Run 39 saved to /home/alon/Code/pile_manipulation/Genesis/data/slates_multistep/n20_L10mm.
+ > sample 1/1
+
+Statistics (Multi-Environment Collection)
+==================================================
+>> Number of environments   : 128
+>> Samples per environment  : 1
+>> Total samples collected  : 128
+>> Number of failed samples : 0
+Material batch finished. Run 40 saved to /home/alon/Code/pile_manipulation/Genesis/data/slates_multistep/n20_L10mm.
+ > sample 1/1
+
+Statistics (Multi-Environment Collection)
+==================================================
+>> Number of environments   : 128
+>> Samples per environment  : 1
+>> Total samples collected  : 128
+>> Number of failed samples : 0
+Material batch finished. Run 41 saved to /home/alon/Code/pile_manipulation/Genesis/data/slates_multistep/n20_L10mm.
+ > sample 1/1
+
+Statistics (Multi-Environment Collection)
+==================================================
+>> Number of environments   : 128
+>> Samples per environment  : 1
+>> Total samples collected  : 128
+>> Number of failed samples : 0
+Material batch finished. Run 42 saved to /home/alon/Code/pile_manipulation/Genesis/data/slates_multistep/n20_L10mm.
+ > sample 1/1
+
+Statistics (Multi-Environment Collection)
+==================================================
+>> Number of environments   : 128
+>> Samples per environment  : 1
+>> Total samples collected  : 128
+>> Number of failed samples : 0
+Material batch finished. Run 43 saved to /home/alon/Code/pile_manipulation/Genesis/data/slates_multistep/n20_L10mm.
+action resampling: resolved in 2 tries
+ > sample 1/1
+
+Statistics (Multi-Environment Collection)
+==================================================
+>> Number of environments   : 128
+>> Samples per environment  : 1
+>> Total samples collected  : 128
+>> Number of failed samples : 0
+Material batch finished. Run 44 saved to /home/alon/Code/pile_manipulation/Genesis/data/slates_multistep/n20_L10mm.
+  slate 15/50 (state 62) -- 768s elapsed, 51.2s/slate (3 step(s) each)
+action resampling: resolved in 2 tries
+ > sample 1/1
+
+Statistics (Multi-Environment Collection)
+==================================================
+>> Number of environments   : 128
+>> Samples per environment  : 1
+>> Total samples collected  : 128
+>> Number of failed samples : 0
+Material batch finished. Run 45 saved to /home/alon/Code/pile_manipulation/Genesis/data/slates_multistep/n20_L10mm.
+ > sample 1/1
+
+Statistics (Multi-Environment Collection)
+==================================================
+>> Number of environments   : 128
+>> Samples per environment  : 1
+>> Total samples collected  : 128
+>> Number of failed samples : 0
+Material batch finished. Run 46 saved to /home/alon/Code/pile_manipulation/Genesis/data/slates_multistep/n20_L10mm.
+ > sample 1/1
+
+Statistics (Multi-Environment Collection)
+==================================================
+>> Number of environments   : 128
+>> Samples per environment  : 1
+>> Total samples collected  : 128
+>> Number of failed samples : 0
+Material batch finished. Run 47 saved to /home/alon/Code/pile_manipulation/Genesis/data/slates_multistep/n20_L10mm.
+action resampling: resolved in 2 tries
+ > sample 1/1
+
+Statistics (Multi-Environment Collection)
+==================================================
+>> Number of environments   : 128
+>> Samples per environment  : 1
+>> Total samples collected  : 128
+>> Number of failed samples : 0
+Material batch finished. Run 48 saved to /home/alon/Code/pile_manipulation/Genesis/data/slates_multistep/n20_L10mm.
+action resampling: resolved in 2 tries
+ > sample 1/1
+
+Statistics (Multi-Environment Collection)
+==================================================
+>> Number of environments   : 128
+>> Samples per environment  : 1
+>> Total samples collected  : 128
+>> Number of failed samples : 0
+Material batch finished. Run 49 saved to /home/alon/Code/pile_manipulation/Genesis/data/slates_multistep/n20_L10mm.
+action resampling: resolved in 2 tries
+ > sample 1/1
+
+Statistics (Multi-Environment Collection)
+==================================================
+>> Number of environments   : 128
+>> Samples per environment  : 1
+>> Total samples collected  : 128
+>> Number of failed samples : 0
+Material batch finished. Run 50 saved to /home/alon/Code/pile_manipulation/Genesis/data/slates_multistep/n20_L10mm.
+ > sample 1/1
+
+Statistics (Multi-Environment Collection)
+==================================================
+>> Number of environments   : 128
+>> Samples per environment  : 1
+>> Total samples collected  : 128
+>> Number of failed samples : 0
+Material batch finished. Run 51 saved to /home/alon/Code/pile_manipulation/Genesis/data/slates_multistep/n20_L10mm.
+action resampling: resolved in 2 tries
+ > sample 1/1
+
+Statistics (Multi-Environment Collection)
+==================================================
+>> Number of environments   : 128
+>> Samples per environment  : 1
+>> Total samples collected  : 128
+>> Number of failed samples : 0
+Material batch finished. Run 52 saved to /home/alon/Code/pile_manipulation/Genesis/data/slates_multistep/n20_L10mm.
+ > sample 1/1
+
+Statistics (Multi-Environment Collection)
+==================================================
+>> Number of environments   : 128
+>> Samples per environment  : 1
+>> Total samples collected  : 128
+>> Number of failed samples : 0
+Material batch finished. Run 53 saved to /home/alon/Code/pile_manipulation/Genesis/data/slates_multistep/n20_L10mm.
+ > sample 1/1
+
+Statistics (Multi-Environment Collection)
+==================================================
+>> Number of environments   : 128
+>> Samples per environment  : 1
+>> Total samples collected  : 128
+>> Number of failed samples : 0
+Material batch finished. Run 54 saved to /home/alon/Code/pile_manipulation/Genesis/data/slates_multistep/n20_L10mm.
+ > sample 1/1
+
+Statistics (Multi-Environment Collection)
+==================================================
+>> Number of environments   : 128
+>> Samples per environment  : 1
+>> Total samples collected  : 128
+>> Number of failed samples : 0
+Material batch finished. Run 55 saved to /home/alon/Code/pile_manipulation/Genesis/data/slates_multistep/n20_L10mm.
+action resampling: resolved in 2 tries
+ > sample 1/1
+
+Statistics (Multi-Environment Collection)
+==================================================
+>> Number of environments   : 128
+>> Samples per environment  : 1
+>> Total samples collected  : 128
+>> Number of failed samples : 0
+Material batch finished. Run 56 saved to /home/alon/Code/pile_manipulation/Genesis/data/slates_multistep/n20_L10mm.
+action resampling: resolved in 2 tries
+ > sample 1/1
+
+Statistics (Multi-Environment Collection)
+==================================================
+>> Number of environments   : 128
+>> Samples per environment  : 1
+>> Total samples collected  : 128
+>> Number of failed samples : 0
+Material batch finished. Run 57 saved to /home/alon/Code/pile_manipulation/Genesis/data/slates_multistep/n20_L10mm.
+action resampling: resolved in 2 tries
+ > sample 1/1
+
+Statistics (Multi-Environment Collection)
+==================================================
+>> Number of environments   : 128
+>> Samples per environment  : 1
+>> Total samples collected  : 128
+>> Number of failed samples : 0
+Material batch finished. Run 58 saved to /home/alon/Code/pile_manipulation/Genesis/data/slates_multistep/n20_L10mm.
+action resampling: resolved in 2 tries
+ > sample 1/1
+
+Statistics (Multi-Environment Collection)
+==================================================
+>> Number of environments   : 128
+>> Samples per environment  : 1
+>> Total samples collected  : 128
+>> Number of failed samples : 0
+Material batch finished. Run 59 saved to /home/alon/Code/pile_manipulation/Genesis/data/slates_multistep/n20_L10mm.
+  slate 20/50 (state 99) -- 1004s elapsed, 50.2s/slate (3 step(s) each)
+ > sample 1/1
+
+Statistics (Multi-Environment Collection)
+==================================================
+>> Number of environments   : 128
+>> Samples per environment  : 1
+>> Total samples collected  : 128
+>> Number of failed samples : 0
+Material batch finished. Run 60 saved to /home/alon/Code/pile_manipulation/Genesis/data/slates_multistep/n20_L10mm.
+ > sample 1/1
+
+Statistics (Multi-Environment Collection)
+==================================================
+>> Number of environments   : 128
+>> Samples per environment  : 1
+>> Total samples collected  : 128
+>> Number of failed samples : 0
+Material batch finished. Run 61 saved to /home/alon/Code/pile_manipulation/Genesis/data/slates_multistep/n20_L10mm.
+ > sample 1/1
+
+Statistics (Multi-Environment Collection)
+==================================================
+>> Number of environments   : 128
+>> Samples per environment  : 1
+>> Total samples collected  : 128
+>> Number of failed samples : 0
+Material batch finished. Run 62 saved to /home/alon/Code/pile_manipulation/Genesis/data/slates_multistep/n20_L10mm.
+ > sample 1/1
+
+Statistics (Multi-Environment Collection)
+==================================================
+>> Number of environments   : 128
+>> Samples per environment  : 1
+>> Total samples collected  : 128
+>> Number of failed samples : 0
+Material batch finished. Run 63 saved to /home/alon/Code/pile_manipulation/Genesis/data/slates_multistep/n20_L10mm.
+ > sample 1/1
+
+Statistics (Multi-Environment Collection)
+==================================================
+>> Number of environments   : 128
+>> Samples per environment  : 1
+>> Total samples collected  : 128
+>> Number of failed samples : 0
+Material batch finished. Run 64 saved to /home/alon/Code/pile_manipulation/Genesis/data/slates_multistep/n20_L10mm.
+action resampling: resolved in 3 tries
+ > sample 1/1
+
+Statistics (Multi-Environment Collection)
+==================================================
+>> Number of environments   : 128
+>> Samples per environment  : 1
+>> Total samples collected  : 128
+>> Number of failed samples : 0
+Material batch finished. Run 65 saved to /home/alon/Code/pile_manipulation/Genesis/data/slates_multistep/n20_L10mm.
+ > sample 1/1
+
+Statistics (Multi-Environment Collection)
+==================================================
+>> Number of environments   : 128
+>> Samples per environment  : 1
+>> Total samples collected  : 128
+>> Number of failed samples : 0
+Material batch finished. Run 66 saved to /home/alon/Code/pile_manipulation/Genesis/data/slates_multistep/n20_L10mm.
+ > sample 1/1
+
+Statistics (Multi-Environment Collection)
+==================================================
+>> Number of environments   : 128
+>> Samples per environment  : 1
+>> Total samples collected  : 128
+>> Number of failed samples : 0
+Material batch finished. Run 67 saved to /home/alon/Code/pile_manipulation/Genesis/data/slates_multistep/n20_L10mm.
+ > sample 1/1
+
+Statistics (Multi-Environment Collection)
+==================================================
+>> Number of environments   : 128
+>> Samples per environment  : 1
+>> Total samples collected  : 128
+>> Number of failed samples : 0
+Material batch finished. Run 68 saved to /home/alon/Code/pile_manipulation/Genesis/data/slates_multistep/n20_L10mm.
+action resampling: resolved in 3 tries
+ > sample 1/1
+
+Statistics (Multi-Environment Collection)
+==================================================
+>> Number of environments   : 128
+>> Samples per environment  : 1
+>> Total samples collected  : 128
+>> Number of failed samples : 0
+Material batch finished. Run 69 saved to /home/alon/Code/pile_manipulation/Genesis/data/slates_multistep/n20_L10mm.
+action resampling: resolved in 2 tries
+ > sample 1/1
+
+Statistics (Multi-Environment Collection)
+==================================================
+>> Number of environments   : 128
+>> Samples per environment  : 1
+>> Total samples collected  : 128
+>> Number of failed samples : 0
+Material batch finished. Run 70 saved to /home/alon/Code/pile_manipulation/Genesis/data/slates_multistep/n20_L10mm.
+action resampling: resolved in 2 tries
+ > sample 1/1
+
+Statistics (Multi-Environment Collection)
+==================================================
+>> Number of environments   : 128
+>> Samples per environment  : 1
+>> Total samples collected  : 128
+>> Number of failed samples : 0
+Material batch finished. Run 71 saved to /home/alon/Code/pile_manipulation/Genesis/data/slates_multistep/n20_L10mm.
+action resampling: resolved in 2 tries
+ > sample 1/1
+
+Statistics (Multi-Environment Collection)
+==================================================
+>> Number of environments   : 128
+>> Samples per environment  : 1
+>> Total samples collected  : 128
+>> Number of failed samples : 0
+Material batch finished. Run 72 saved to /home/alon/Code/pile_manipulation/Genesis/data/slates_multistep/n20_L10mm.
+action resampling: resolved in 2 tries
+ > sample 1/1
+
+Statistics (Multi-Environment Collection)
+==================================================
+>> Number of environments   : 128
+>> Samples per environment  : 1
+>> Total samples collected  : 128
+>> Number of failed samples : 0
+Material batch finished. Run 73 saved to /home/alon/Code/pile_manipulation/Genesis/data/slates_multistep/n20_L10mm.
+action resampling: resolved in 2 tries
+ > sample 1/1
+
+Statistics (Multi-Environment Collection)
+==================================================
+>> Number of environments   : 128
+>> Samples per environment  : 1
+>> Total samples collected  : 128
+>> Number of failed samples : 0
+Material batch finished. Run 74 saved to /home/alon/Code/pile_manipulation/Genesis/data/slates_multistep/n20_L10mm.
+  slate 25/50 (state 121) -- 1360s elapsed, 54.4s/slate (3 step(s) each)
+ > sample 1/1
+
+Statistics (Multi-Environment Collection)
+==================================================
+>> Number of environments   : 128
+>> Samples per environment  : 1
+>> Total samples collected  : 128
+>> Number of failed samples : 0
+Material batch finished. Run 75 saved to /home/alon/Code/pile_manipulation/Genesis/data/slates_multistep/n20_L10mm.
+ > sample 1/1
+
+Statistics (Multi-Environment Collection)
+==================================================
+>> Number of environments   : 128
+>> Samples per environment  : 1
+>> Total samples collected  : 128
+>> Number of failed samples : 0
+Material batch finished. Run 76 saved to /home/alon/Code/pile_manipulation/Genesis/data/slates_multistep/n20_L10mm.
+ > sample 1/1
+
+Statistics (Multi-Environment Collection)
+==================================================
+>> Number of environments   : 128
+>> Samples per environment  : 1
+>> Total samples collected  : 128
+>> Number of failed samples : 0
+Material batch finished. Run 77 saved to /home/alon/Code/pile_manipulation/Genesis/data/slates_multistep/n20_L10mm.
+action resampling: resolved in 2 tries
+ > sample 1/1
+
+Statistics (Multi-Environment Collection)
+==================================================
+>> Number of environments   : 128
+>> Samples per environment  : 1
+>> Total samples collected  : 128
+>> Number of failed samples : 0
+Material batch finished. Run 78 saved to /home/alon/Code/pile_manipulation/Genesis/data/slates_multistep/n20_L10mm.
+ > sample 1/1
+
+Statistics (Multi-Environment Collection)
+==================================================
+>> Number of environments   : 128
+>> Samples per environment  : 1
+>> Total samples collected  : 128
+>> Number of failed samples : 0
+Material batch finished. Run 79 saved to /home/alon/Code/pile_manipulation/Genesis/data/slates_multistep/n20_L10mm.
+ > sample 1/1
+
+Statistics (Multi-Environment Collection)
+==================================================
+>> Number of environments   : 128
+>> Samples per environment  : 1
+>> Total samples collected  : 128
+>> Number of failed samples : 0
+Material batch finished. Run 80 saved to /home/alon/Code/pile_manipulation/Genesis/data/slates_multistep/n20_L10mm.
+ > sample 1/1
+
+Statistics (Multi-Environment Collection)
+==================================================
+>> Number of environments   : 128
+>> Samples per environment  : 1
+>> Total samples collected  : 128
+>> Number of failed samples : 0
+Material batch finished. Run 81 saved to /home/alon/Code/pile_manipulation/Genesis/data/slates_multistep/n20_L10mm.
+ > sample 1/1
+
+Statistics (Multi-Environment Collection)
+==================================================
+>> Number of environments   : 128
+>> Samples per environment  : 1
+>> Total samples collected  : 128
+>> Number of failed samples : 0
+Material batch finished. Run 82 saved to /home/alon/Code/pile_manipulation/Genesis/data/slates_multistep/n20_L10mm.
+ > sample 1/1
+
+Statistics (Multi-Environment Collection)
+==================================================
+>> Number of environments   : 128
+>> Samples per environment  : 1
+>> Total samples collected  : 128
+>> Number of failed samples : 0
+Material batch finished. Run 83 saved to /home/alon/Code/pile_manipulation/Genesis/data/slates_multistep/n20_L10mm.
+ > sample 1/1
+
+Statistics (Multi-Environment Collection)
+==================================================
+>> Number of environments   : 128
+>> Samples per environment  : 1
+>> Total samples collected  : 128
+>> Number of failed samples : 0
+Material batch finished. Run 84 saved to /home/alon/Code/pile_manipulation/Genesis/data/slates_multistep/n20_L10mm.
+action resampling: resolved in 2 tries
+ > sample 1/1
+
+Statistics (Multi-Environment Collection)
+==================================================
+>> Number of environments   : 128
+>> Samples per environment  : 1
+>> Total samples collected  : 128
+>> Number of failed samples : 0
+Material batch finished. Run 85 saved to /home/alon/Code/pile_manipulation/Genesis/data/slates_multistep/n20_L10mm.
+action resampling: resolved in 3 tries
+ > sample 1/1
+
+Statistics (Multi-Environment Collection)
+==================================================
+>> Number of environments   : 128
+>> Samples per environment  : 1
+>> Total samples collected  : 128
+>> Number of failed samples : 0
+Material batch finished. Run 86 saved to /home/alon/Code/pile_manipulation/Genesis/data/slates_multistep/n20_L10mm.
+ > sample 1/1
+
+Statistics (Multi-Environment Collection)
+==================================================
+>> Number of environments   : 128
+>> Samples per environment  : 1
+>> Total samples collected  : 128
+>> Number of failed samples : 0
+Material batch finished. Run 87 saved to /home/alon/Code/pile_manipulation/Genesis/data/slates_multistep/n20_L10mm.
+ > sample 1/1
+
+Statistics (Multi-Environment Collection)
+==================================================
+>> Number of environments   : 128
+>> Samples per environment  : 1
+>> Total samples collected  : 128
+>> Number of failed samples : 0
+Material batch finished. Run 88 saved to /home/alon/Code/pile_manipulation/Genesis/data/slates_multistep/n20_L10mm.
+action resampling: resolved in 2 tries
+ > sample 1/1
+
+Statistics (Multi-Environment Collection)
+==================================================
+>> Number of environments   : 128
+>> Samples per environment  : 1
+>> Total samples collected  : 128
+>> Number of failed samples : 0
+Material batch finished. Run 89 saved to /home/alon/Code/pile_manipulation/Genesis/data/slates_multistep/n20_L10mm.
+  slate 30/50 (state 133) -- 1646s elapsed, 54.9s/slate (3 step(s) each)
+action resampling: resolved in 2 tries
+ > sample 1/1
+
+Statistics (Multi-Environment Collection)
+==================================================
+>> Number of environments   : 128
+>> Samples per environment  : 1
+>> Total samples collected  : 128
+>> Number of failed samples : 0
+Material batch finished. Run 90 saved to /home/alon/Code/pile_manipulation/Genesis/data/slates_multistep/n20_L10mm.
+ > sample 1/1
+
+Statistics (Multi-Environment Collection)
+==================================================
+>> Number of environments   : 128
+>> Samples per environment  : 1
+>> Total samples collected  : 128
+>> Number of failed samples : 0
+Material batch finished. Run 91 saved to /home/alon/Code/pile_manipulation/Genesis/data/slates_multistep/n20_L10mm.
+ > sample 1/1
+
+Statistics (Multi-Environment Collection)
+==================================================
+>> Number of environments   : 128
+>> Samples per environment  : 1
+>> Total samples collected  : 128
+>> Number of failed samples : 0
+Material batch finished. Run 92 saved to /home/alon/Code/pile_manipulation/Genesis/data/slates_multistep/n20_L10mm.
+action resampling: resolved in 2 tries
+ > sample 1/1
+
+Statistics (Multi-Environment Collection)
+==================================================
+>> Number of environments   : 128
+>> Samples per environment  : 1
+>> Total samples collected  : 128
+>> Number of failed samples : 0
+Material batch finished. Run 93 saved to /home/alon/Code/pile_manipulation/Genesis/data/slates_multistep/n20_L10mm.
+ > sample 1/1
+
+Statistics (Multi-Environment Collection)
+==================================================
+>> Number of environments   : 128
+>> Samples per environment  : 1
+>> Total samples collected  : 128
+>> Number of failed samples : 0
+Material batch finished. Run 94 saved to /home/alon/Code/pile_manipulation/Genesis/data/slates_multistep/n20_L10mm.
+ > sample 1/1
+
+Statistics (Multi-Environment Collection)
+==================================================
+>> Number of environments   : 128
+>> Samples per environment  : 1
+>> Total samples collected  : 128
+>> Number of failed samples : 0
+Material batch finished. Run 95 saved to /home/alon/Code/pile_manipulation/Genesis/data/slates_multistep/n20_L10mm.
+ > sample 1/1
+
+Statistics (Multi-Environment Collection)
+==================================================
+>> Number of environments   : 128
+>> Samples per environment  : 1
+>> Total samples collected  : 128
+>> Number of failed samples : 0
+Material batch finished. Run 96 saved to /home/alon/Code/pile_manipulation/Genesis/data/slates_multistep/n20_L10mm.
+action resampling: resolved in 2 tries
+ > sample 1/1
+
+Statistics (Multi-Environment Collection)
+==================================================
+>> Number of environments   : 128
+>> Samples per environment  : 1
+>> Total samples collected  : 128
+>> Number of failed samples : 0
+Material batch finished. Run 97 saved to /home/alon/Code/pile_manipulation/Genesis/data/slates_multistep/n20_L10mm.
+action resampling: resolved in 2 tries
+ > sample 1/1
+
+Statistics (Multi-Environment Collection)
+==================================================
+>> Number of environments   : 128
+>> Samples per environment  : 1
+>> Total samples collected  : 128
+>> Number of failed samples : 0
+Material batch finished. Run 98 saved to /home/alon/Code/pile_manipulation/Genesis/data/slates_multistep/n20_L10mm.
+action resampling: resolved in 2 tries
+ > sample 1/1
+
+Statistics (Multi-Environment Collection)
+==================================================
+>> Number of environments   : 128
+>> Samples per environment  : 1
+>> Total samples collected  : 128
+>> Number of failed samples : 0
+Material batch finished. Run 99 saved to /home/alon/Code/pile_manipulation/Genesis/data/slates_multistep/n20_L10mm.
+ > sample 1/1
+
+Statistics (Multi-Environment Collection)
+==================================================
+>> Number of environments   : 128
+>> Samples per environment  : 1
+>> Total samples collected  : 128
+>> Number of failed samples : 0
+Material batch finished. Run 100 saved to /home/alon/Code/pile_manipulation/Genesis/data/slates_multistep/n20_L10mm.
+ > sample 1/1
+
+Statistics (Multi-Environment Collection)
+==================================================
+>> Number of environments   : 128
+>> Samples per environment  : 1
+>> Total samples collected  : 128
+>> Number of failed samples : 0
+Material batch finished. Run 101 saved to /home/alon/Code/pile_manipulation/Genesis/data/slates_multistep/n20_L10mm.
+ > sample 1/1
+
+Statistics (Multi-Environment Collection)
+==================================================
+>> Number of environments   : 128
+>> Samples per environment  : 1
+>> Total samples collected  : 128
+>> Number of failed samples : 0
+Material batch finished. Run 102 saved to /home/alon/Code/pile_manipulation/Genesis/data/slates_multistep/n20_L10mm.
+ > sample 1/1
+
+Statistics (Multi-Environment Collection)
+==================================================
+>> Number of environments   : 128
+>> Samples per environment  : 1
+>> Total samples collected  : 128
+>> Number of failed samples : 0
+Material batch finished. Run 103 saved to /home/alon/Code/pile_manipulation/Genesis/data/slates_multistep/n20_L10mm.
+action resampling: resolved in 2 tries
+ > sample 1/1
+
+Statistics (Multi-Environment Collection)
+==================================================
+>> Number of environments   : 128
+>> Samples per environment  : 1
+>> Total samples collected  : 128
+>> Number of failed samples : 0
+Material batch finished. Run 104 saved to /home/alon/Code/pile_manipulation/Genesis/data/slates_multistep/n20_L10mm.
+  slate 35/50 (state 164) -- 1967s elapsed, 56.2s/slate (3 step(s) each)
+action resampling: resolved in 2 tries
+ > sample 1/1
+
+Statistics (Multi-Environment Collection)
+==================================================
+>> Number of environments   : 128
+>> Samples per environment  : 1
+>> Total samples collected  : 128
+>> Number of failed samples : 0
+Material batch finished. Run 105 saved to /home/alon/Code/pile_manipulation/Genesis/data/slates_multistep/n20_L10mm.
+action resampling: resolved in 2 tries
+ > sample 1/1
+
+Statistics (Multi-Environment Collection)
+==================================================
+>> Number of environments   : 128
+>> Samples per environment  : 1
+>> Total samples collected  : 128
+>> Number of failed samples : 0
+Material batch finished. Run 106 saved to /home/alon/Code/pile_manipulation/Genesis/data/slates_multistep/n20_L10mm.
+action resampling: resolved in 3 tries
+ > sample 1/1
+
+Statistics (Multi-Environment Collection)
+==================================================
+>> Number of environments   : 128
+>> Samples per environment  : 1
+>> Total samples collected  : 128
+>> Number of failed samples : 0
+Material batch finished. Run 107 saved to /home/alon/Code/pile_manipulation/Genesis/data/slates_multistep/n20_L10mm.
+ > sample 1/1
+
+Statistics (Multi-Environment Collection)
+==================================================
+>> Number of environments   : 128
+>> Samples per environment  : 1
+>> Total samples collected  : 128
+>> Number of failed samples : 0
+Material batch finished. Run 108 saved to /home/alon/Code/pile_manipulation/Genesis/data/slates_multistep/n20_L10mm.
+action resampling: resolved in 2 tries
+ > sample 1/1
+
+Statistics (Multi-Environment Collection)
+==================================================
+>> Number of environments   : 128
+>> Samples per environment  : 1
+>> Total samples collected  : 128
+>> Number of failed samples : 0
+Material batch finished. Run 109 saved to /home/alon/Code/pile_manipulation/Genesis/data/slates_multistep/n20_L10mm.
+action resampling: resolved in 2 tries
+ > sample 1/1
+
+Statistics (Multi-Environment Collection)
+==================================================
+>> Number of environments   : 128
+>> Samples per environment  : 1
+>> Total samples collected  : 128
+>> Number of failed samples : 0
+Material batch finished. Run 110 saved to /home/alon/Code/pile_manipulation/Genesis/data/slates_multistep/n20_L10mm.
+ > sample 1/1
+
+Statistics (Multi-Environment Collection)
+==================================================
+>> Number of environments   : 128
+>> Samples per environment  : 1
+>> Total samples collected  : 128
+>> Number of failed samples : 0
+Material batch finished. Run 111 saved to /home/alon/Code/pile_manipulation/Genesis/data/slates_multistep/n20_L10mm.
+action resampling: resolved in 2 tries
+ > sample 1/1
+
+Statistics (Multi-Environment Collection)
+==================================================
+>> Number of environments   : 128
+>> Samples per environment  : 1
+>> Total samples collected  : 128
+>> Number of failed samples : 0
+Material batch finished. Run 112 saved to /home/alon/Code/pile_manipulation/Genesis/data/slates_multistep/n20_L10mm.
+ > sample 1/1
+
+Statistics (Multi-Environment Collection)
+==================================================
+>> Number of environments   : 128
+>> Samples per environment  : 1
+>> Total samples collected  : 128
+>> Number of failed samples : 0
+Material batch finished. Run 113 saved to /home/alon/Code/pile_manipulation/Genesis/data/slates_multistep/n20_L10mm.
+ > sample 1/1
+
+Statistics (Multi-Environment Collection)
+==================================================
+>> Number of environments   : 128
+>> Samples per environment  : 1
+>> Total samples collected  : 128
+>> Number of failed samples : 0
+Material batch finished. Run 114 saved to /home/alon/Code/pile_manipulation/Genesis/data/slates_multistep/n20_L10mm.
+action resampling: resolved in 2 tries
+ > sample 1/1
+
+Statistics (Multi-Environment Collection)
+==================================================
+>> Number of environments   : 128
+>> Samples per environment  : 1
+>> Total samples collected  : 128
+>> Number of failed samples : 0
+Material batch finished. Run 115 saved to /home/alon/Code/pile_manipulation/Genesis/data/slates_multistep/n20_L10mm.
+action resampling: resolved in 2 tries
+ > sample 1/1
+
+Statistics (Multi-Environment Collection)
+==================================================
+>> Number of environments   : 128
+>> Samples per environment  : 1
+>> Total samples collected  : 128
+>> Number of failed samples : 0
+Material batch finished. Run 116 saved to /home/alon/Code/pile_manipulation/Genesis/data/slates_multistep/n20_L10mm.
+action resampling: resolved in 2 tries
+ > sample 1/1
+
+Statistics (Multi-Environment Collection)
+==================================================
+>> Number of environments   : 128
+>> Samples per environment  : 1
+>> Total samples collected  : 128
+>> Number of failed samples : 0
+Material batch finished. Run 117 saved to /home/alon/Code/pile_manipulation/Genesis/data/slates_multistep/n20_L10mm.
+ > sample 1/1
+
+Statistics (Multi-Environment Collection)
+==================================================
+>> Number of environments   : 128
+>> Samples per environment  : 1
+>> Total samples collected  : 128
+>> Number of failed samples : 0
+Material batch finished. Run 118 saved to /home/alon/Code/pile_manipulation/Genesis/data/slates_multistep/n20_L10mm.
+action resampling: resolved in 2 tries
+ > sample 1/1
+
+Statistics (Multi-Environment Collection)
+==================================================
+>> Number of environments   : 128
+>> Samples per environment  : 1
+>> Total samples collected  : 128
+>> Number of failed samples : 0
+Material batch finished. Run 119 saved to /home/alon/Code/pile_manipulation/Genesis/data/slates_multistep/n20_L10mm.
+  slate 40/50 (state 179) -- 2245s elapsed, 56.1s/slate (3 step(s) each)
+ > sample 1/1
+
+Statistics (Multi-Environment Collection)
+==================================================
+>> Number of environments   : 128
+>> Samples per environment  : 1
+>> Total samples collected  : 128
+>> Number of failed samples : 0
+Material batch finished. Run 120 saved to /home/alon/Code/pile_manipulation/Genesis/data/slates_multistep/n20_L10mm.
+ > sample 1/1
+
+Statistics (Multi-Environment Collection)
+==================================================
+>> Number of environments   : 128
+>> Samples per environment  : 1
+>> Total samples collected  : 128
+>> Number of failed samples : 0
+Material batch finished. Run 121 saved to /home/alon/Code/pile_manipulation/Genesis/data/slates_multistep/n20_L10mm.
+action resampling: resolved in 2 tries
+ > sample 1/1
+
+Statistics (Multi-Environment Collection)
+==================================================
+>> Number of environments   : 128
+>> Samples per environment  : 1
+>> Total samples collected  : 128
+>> Number of failed samples : 0
+Material batch finished. Run 122 saved to /home/alon/Code/pile_manipulation/Genesis/data/slates_multistep/n20_L10mm.
+action resampling: resolved in 2 tries
+ > sample 1/1
+
+Statistics (Multi-Environment Collection)
+==================================================
+>> Number of environments   : 128
+>> Samples per environment  : 1
+>> Total samples collected  : 128
+>> Number of failed samples : 0
+Material batch finished. Run 123 saved to /home/alon/Code/pile_manipulation/Genesis/data/slates_multistep/n20_L10mm.
+action resampling: resolved in 2 tries
+ > sample 1/1
+
+Statistics (Multi-Environment Collection)
+==================================================
+>> Number of environments   : 128
+>> Samples per environment  : 1
+>> Total samples collected  : 128
+>> Number of failed samples : 0
+Material batch finished. Run 124 saved to /home/alon/Code/pile_manipulation/Genesis/data/slates_multistep/n20_L10mm.
+action resampling: resolved in 2 tries
+ > sample 1/1
+
+Statistics (Multi-Environment Collection)
+==================================================
+>> Number of environments   : 128
+>> Samples per environment  : 1
+>> Total samples collected  : 128
+>> Number of failed samples : 0
+Material batch finished. Run 125 saved to /home/alon/Code/pile_manipulation/Genesis/data/slates_multistep/n20_L10mm.
+action resampling: resolved in 2 tries
+ > sample 1/1
+
+Statistics (Multi-Environment Collection)
+==================================================
+>> Number of environments   : 128
+>> Samples per environment  : 1
+>> Total samples collected  : 128
+>> Number of failed samples : 0
+Material batch finished. Run 126 saved to /home/alon/Code/pile_manipulation/Genesis/data/slates_multistep/n20_L10mm.
+action resampling: resolved in 2 tries
+ > sample 1/1
+
+Statistics (Multi-Environment Collection)
+==================================================
+>> Number of environments   : 128
+>> Samples per environment  : 1
+>> Total samples collected  : 128
+>> Number of failed samples : 0
+Material batch finished. Run 127 saved to /home/alon/Code/pile_manipulation/Genesis/data/slates_multistep/n20_L10mm.
+action resampling: resolved in 2 tries
+ > sample 1/1
+
+Statistics (Multi-Environment Collection)
+==================================================
+>> Number of environments   : 128
+>> Samples per environment  : 1
+>> Total samples collected  : 128
+>> Number of failed samples : 0
+Material batch finished. Run 128 saved to /home/alon/Code/pile_manipulation/Genesis/data/slates_multistep/n20_L10mm.
+ > sample 1/1
+
+Statistics (Multi-Environment Collection)
+==================================================
+>> Number of environments   : 128
+>> Samples per environment  : 1
+>> Total samples collected  : 128
+>> Number of failed samples : 0
+Material batch finished. Run 129 saved to /home/alon/Code/pile_manipulation/Genesis/data/slates_multistep/n20_L10mm.
+action resampling: resolved in 2 tries
+ > sample 1/1
+
+Statistics (Multi-Environment Collection)
+==================================================
+>> Number of environments   : 128
+>> Samples per environment  : 1
+>> Total samples collected  : 128
+>> Number of failed samples : 0
+Material batch finished. Run 130 saved to /home/alon/Code/pile_manipulation/Genesis/data/slates_multistep/n20_L10mm.
+ > sample 1/1
+
+Statistics (Multi-Environment Collection)
+==================================================
+>> Number of environments   : 128
+>> Samples per environment  : 1
+>> Total samples collected  : 128
+>> Number of failed samples : 0
+Material batch finished. Run 131 saved to /home/alon/Code/pile_manipulation/Genesis/data/slates_multistep/n20_L10mm.
+ > sample 1/1
+
+Statistics (Multi-Environment Collection)
+==================================================
+>> Number of environments   : 128
+>> Samples per environment  : 1
+>> Total samples collected  : 128
+>> Number of failed samples : 0
+Material batch finished. Run 132 saved to /home/alon/Code/pile_manipulation/Genesis/data/slates_multistep/n20_L10mm.
+ > sample 1/1
+
+Statistics (Multi-Environment Collection)
+==================================================
+>> Number of environments   : 128
+>> Samples per environment  : 1
+>> Total samples collected  : 128
+>> Number of failed samples : 0
+Material batch finished. Run 133 saved to /home/alon/Code/pile_manipulation/Genesis/data/slates_multistep/n20_L10mm.
+action resampling: resolved in 2 tries
+ > sample 1/1
+
+Statistics (Multi-Environment Collection)
+==================================================
+>> Number of environments   : 128
+>> Samples per environment  : 1
+>> Total samples collected  : 128
+>> Number of failed samples : 0
+Material batch finished. Run 134 saved to /home/alon/Code/pile_manipulation/Genesis/data/slates_multistep/n20_L10mm.
+  slate 45/50 (state 211) -- 2495s elapsed, 55.5s/slate (3 step(s) each)
+ > sample 1/1
+
+Statistics (Multi-Environment Collection)
+==================================================
+>> Number of environments   : 128
+>> Samples per environment  : 1
+>> Total samples collected  : 128
+>> Number of failed samples : 0
+Material batch finished. Run 135 saved to /home/alon/Code/pile_manipulation/Genesis/data/slates_multistep/n20_L10mm.
+ > sample 1/1
+
+Statistics (Multi-Environment Collection)
+==================================================
+>> Number of environments   : 128
+>> Samples per environment  : 1
+>> Total samples collected  : 128
+>> Number of failed samples : 0
+Material batch finished. Run 136 saved to /home/alon/Code/pile_manipulation/Genesis/data/slates_multistep/n20_L10mm.
+ > sample 1/1
+
+Statistics (Multi-Environment Collection)
+==================================================
+>> Number of environments   : 128
+>> Samples per environment  : 1
+>> Total samples collected  : 128
+>> Number of failed samples : 0
+Material batch finished. Run 137 saved to /home/alon/Code/pile_manipulation/Genesis/data/slates_multistep/n20_L10mm.
+ > sample 1/1
+
+Statistics (Multi-Environment Collection)
+==================================================
+>> Number of environments   : 128
+>> Samples per environment  : 1
+>> Total samples collected  : 128
+>> Number of failed samples : 0
+Material batch finished. Run 138 saved to /home/alon/Code/pile_manipulation/Genesis/data/slates_multistep/n20_L10mm.
+ > sample 1/1
+
+Statistics (Multi-Environment Collection)
+==================================================
+>> Number of environments   : 128
+>> Samples per environment  : 1
+>> Total samples collected  : 128
+>> Number of failed samples : 0
+Material batch finished. Run 139 saved to /home/alon/Code/pile_manipulation/Genesis/data/slates_multistep/n20_L10mm.
+action resampling: resolved in 2 tries
+ > sample 1/1
+
+Statistics (Multi-Environment Collection)
+==================================================
+>> Number of environments   : 128
+>> Samples per environment  : 1
+>> Total samples collected  : 128
+>> Number of failed samples : 0
+Material batch finished. Run 140 saved to /home/alon/Code/pile_manipulation/Genesis/data/slates_multistep/n20_L10mm.
+action resampling: resolved in 2 tries
+ > sample 1/1
+
+Statistics (Multi-Environment Collection)
+==================================================
+>> Number of environments   : 128
+>> Samples per environment  : 1
+>> Total samples collected  : 128
+>> Number of failed samples : 0
+Material batch finished. Run 141 saved to /home/alon/Code/pile_manipulation/Genesis/data/slates_multistep/n20_L10mm.
+ > sample 1/1
+
+Statistics (Multi-Environment Collection)
+==================================================
+>> Number of environments   : 128
+>> Samples per environment  : 1
+>> Total samples collected  : 128
+>> Number of failed samples : 0
+Material batch finished. Run 142 saved to /home/alon/Code/pile_manipulation/Genesis/data/slates_multistep/n20_L10mm.
+action resampling: resolved in 2 tries
+ > sample 1/1
+
+Statistics (Multi-Environment Collection)
+==================================================
+>> Number of environments   : 128
+>> Samples per environment  : 1
+>> Total samples collected  : 128
+>> Number of failed samples : 0
+Material batch finished. Run 143 saved to /home/alon/Code/pile_manipulation/Genesis/data/slates_multistep/n20_L10mm.
+ > sample 1/1
+
+Statistics (Multi-Environment Collection)
+==================================================
+>> Number of environments   : 128
+>> Samples per environment  : 1
+>> Total samples collected  : 128
+>> Number of failed samples : 0
+Material batch finished. Run 144 saved to /home/alon/Code/pile_manipulation/Genesis/data/slates_multistep/n20_L10mm.
+action resampling: resolved in 2 tries
+ > sample 1/1
+
+Statistics (Multi-Environment Collection)
+==================================================
+>> Number of environments   : 128
+>> Samples per environment  : 1
+>> Total samples collected  : 128
+>> Number of failed samples : 0
+Material batch finished. Run 145 saved to /home/alon/Code/pile_manipulation/Genesis/data/slates_multistep/n20_L10mm.
+ > sample 1/1
+
+Statistics (Multi-Environment Collection)
+==================================================
+>> Number of environments   : 128
+>> Samples per environment  : 1
+>> Total samples collected  : 128
+>> Number of failed samples : 0
+Material batch finished. Run 146 saved to /home/alon/Code/pile_manipulation/Genesis/data/slates_multistep/n20_L10mm.
+ > sample 1/1
+
+Statistics (Multi-Environment Collection)
+==================================================
+>> Number of environments   : 128
+>> Samples per environment  : 1
+>> Total samples collected  : 128
+>> Number of failed samples : 0
+Material batch finished. Run 147 saved to /home/alon/Code/pile_manipulation/Genesis/data/slates_multistep/n20_L10mm.
+ > sample 1/1
+
+Statistics (Multi-Environment Collection)
+==================================================
+>> Number of environments   : 128
+>> Samples per environment  : 1
+>> Total samples collected  : 128
+>> Number of failed samples : 0
+Material batch finished. Run 148 saved to /home/alon/Code/pile_manipulation/Genesis/data/slates_multistep/n20_L10mm.
+ > sample 1/1
+
+Statistics (Multi-Environment Collection)
+==================================================
+>> Number of environments   : 128
+>> Samples per environment  : 1
+>> Total samples collected  : 128
+>> Number of failed samples : 0
+Material batch finished. Run 149 saved to /home/alon/Code/pile_manipulation/Genesis/data/slates_multistep/n20_L10mm.
+  slate 50/50 (state 252) -- 2745s elapsed, 54.9s/slate (3 step(s) each)
+done: 50 slates x up to 128 candidates x 3 step(s) in 2745s (+ 38s build/library) -> Genesis/data/slates_multistep/n20_L10mm; worst broadcast spread 0.000e+00 m
+[38;5;159m[Genesis] [22:11:25] [INFO] 💤 Exiting Genesis and caching compiled kernels...[0m

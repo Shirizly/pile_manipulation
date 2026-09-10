@@ -1,0 +1,43 @@
+loaded 16 episodes; kept 4840 full-length pushes, dropped 280 truncated (5.5%)
+fit on 4840 cross-state transitions from Genesis/data/cube_spectrum/n20/*_data.pt
+loaded 50 episodes; kept 1597 full-length pushes, dropped 3 truncated (0.2%)
+1597 slate transitions, 50 slates (files matched: 50)
+finest-band true-signal std over region: 0.27054
+
+=== goal=center ===  dv_true mean=+0.00003 sd=0.00130 helpful(dV<0)=0%
+model                      n_slt  accuracy    (sd)  spearman    (sd)   slate4    (sd)
+persistence                    2    0.0000  0.0000     0.911   0.057   -0.004   0.003
+operator (undegraded)          2    0.4159  0.0157     0.002   0.113    0.126   0.006
+displacement k=1               2    0.2315  0.0081    -0.012   0.107    0.126   0.006
+displacement k=2               2    0.1350  0.0185    -0.020   0.102    0.126   0.006
+displacement k=4               2    0.0729  0.0089    -0.048   0.063    0.126   0.006
+amplitude a=0.5                2    0.2820  0.0041    -0.003   0.113    0.126   0.006
+amplitude a=0.75               2    0.3758  0.0090    -0.001   0.116    0.126   0.006
+amplitude a=1.25               2    0.4105  0.0229    -0.003   0.109    0.126   0.006
+amplitude a=1.5                2    0.3846  0.0294    -0.024   0.103    0.126   0.006
+hf-noise m=0.5                 2    0.3507  0.0163     0.033   0.119   -0.300   0.081
+hf-noise m=1.0                 2    0.1960  0.0144    -0.189   0.213   -0.132   0.201
+hf-noise m=2.0                 2   -0.1355  0.0244     0.038   0.038   -0.026   0.012
+blur s=1.0                     2    0.2924  0.0126    -0.022   0.093    0.126   0.006
+blur s=2.0                     2    0.1851  0.0168    -0.026   0.067    0.126   0.006
+wrong-physics                  2    0.1716  0.0016     0.032   0.188    0.119   0.001
+
+=== goal=corner ===  dv_true mean=+0.01905 sd=0.05426 helpful(dV<0)=38%
+model                      n_slt  accuracy    (sd)  spearman    (sd)   slate4    (sd)
+persistence                   50    0.0000  0.0000    -0.049   0.171   -0.002   0.014
+operator (undegraded)         50    0.4099  0.0179     0.925   0.021    0.956   0.017
+displacement k=1              50    0.2368  0.0187     0.909   0.028    0.940   0.022
+displacement k=2              50    0.1397  0.0243     0.889   0.035    0.916   0.036
+displacement k=4              50    0.0798  0.0194     0.855   0.043    0.869   0.049
+amplitude a=0.5               50    0.2801  0.0061     0.923   0.022    0.955   0.017
+amplitude a=0.75              50    0.3720  0.0113     0.924   0.021    0.955   0.017
+amplitude a=1.25              50    0.4026  0.0247     0.922   0.023    0.954   0.018
+amplitude a=1.5               50    0.3754  0.0309     0.918   0.024    0.950   0.020
+hf-noise m=0.5                50    0.3411  0.0196     0.872   0.035    0.872   0.045
+hf-noise m=1.0                50    0.1840  0.0236     0.782   0.070    0.769   0.087
+hf-noise m=2.0                50   -0.1652  0.0350     0.536   0.119    0.550   0.122
+blur s=1.0                    50    0.2816  0.0153     0.911   0.028    0.943   0.023
+blur s=2.0                    50    0.1783  0.0177     0.900   0.034    0.931   0.032
+wrong-physics                 50    0.1571  0.0265    -0.038   0.153   -0.052   0.180
+
+accuracy/spearman/slate4 computed WITHIN each same-state slate then averaged across slates (sd across slates reported).

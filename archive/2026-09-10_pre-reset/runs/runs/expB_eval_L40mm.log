@@ -1,0 +1,21 @@
+=== EXP-B multistep eval: n20_L40mm ===
+provenance: {'commit': '4afea641', 'commit_full': '4afea6412bd698ba494e153925c5c7ce20da3cbe', 'dirty': False, 'dirty_files': [], 'branch': 'VisualForesight'}
+train: 11520 transitions, grid 64x64, 90 batches
+UNet load: <All keys matched successfully>
+eval: 7680 transitions, 60 batches
+  steps present: [0, 1, 2], step0 transitions: 2560
+
+-- image accuracy (held-out eval slates, all 3 steps, n=7680) --
+  persistence          accuracy=+0.0000  (step0=+0.0000 step1=+0.0000 step2=+0.0000)
+  mean-delta           accuracy=+0.1380  (step0=+0.2313 step1=+0.1143 step2=-0.0121)
+  linear               accuracy=+0.4470  (step0=+0.5444 step1=+0.4137 step2=+0.3017)
+  UNet                 accuracy=+0.5045  (step0=+0.5542 step1=+0.4768 step2=+0.4444)
+  oracle               accuracy=+1.0000  (step0=+1.0000 step1=+1.0000 step2=+1.0000)
+
+step-0 (control-ranking) subset: 2560 transitions, 20 slates (128 candidates/slate)
+finest-band true-signal std over region: 0.21390
+degradation arms: 13 added
+goal=corner: dv_true mean +0.06591 sd 0.09054 helpful 31%
+goal=center: dv_true mean +0.00520 sd 0.01307 helpful 0%
+wrote runs_expB/n20_L40mm_dv_cache.pt
+wrote runs_expB/n20_L40mm_accuracy.json

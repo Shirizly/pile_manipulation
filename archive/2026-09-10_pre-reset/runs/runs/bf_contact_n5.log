@@ -1,0 +1,10 @@
+=== contact_n5: same target for both models, sigma=1.0 ===
+model                                rms  % of change
+  -- scored SHARP (EXP-0021 setting)
+  persistence                    0.11713       100.0%
+  linear-ridge1.0                0.09706        82.9%
+  UNet (blurred for scoring)     0.08429        72.0%
+  -- scored BLURRED sigma=1.0
+  persistence                    0.07450       100.0%
+  linear-ridge1.0                0.05036        67.6%
+  UNet (blurred for scoring)     0.04985        66.9%

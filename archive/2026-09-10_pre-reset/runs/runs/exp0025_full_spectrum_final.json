@@ -1,0 +1,25 @@
+{
+  "tag": "exp0025_full_spectrum_final",
+  "cmd": [
+    "python",
+    "-u",
+    "scripts/probes/full_spectrum_same_state.py"
+  ],
+  "returncode": 0,
+  "seconds": 19.1,
+  "provenance": {
+    "commit": "b3768064",
+    "commit_full": "b37680647750947ca8aac0c5ddea6852f059f636",
+    "dirty": true,
+    "dirty_files": [
+      ".claude/skills/experiment-log/SKILL.md",
+      "docs/experiments/EXP-0004-unet-action-ablation.md",
+      "docs/experiments/EXP-0009-grid-fix-pixel-rerun.md",
+      "docs/experiments/EXP-0014-unet-action-ablation-retrain.md",
+      "docs/experiments/EXP-0015-contact-switching-fixed-grid.md",
+      "docs/experiments/METRICS.md",
+      "fit_linear_foresight.py"
+    ],
+    "branch": "VisualForesight"
+  }
+}

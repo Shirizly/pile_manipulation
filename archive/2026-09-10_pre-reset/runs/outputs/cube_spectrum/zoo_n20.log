@@ -1,0 +1,24 @@
+loaded 16 episodes; kept 4840 full-length pushes, dropped 280 truncated (5.5%)
+view = mask (>= 2 grains/cell)
+split: 3632 train / 1208 val transitions (12/4 episodes)
+operator 1024x1024, M=3632, M/D=3.55
+
+  col-stochastic: column sums 1.0000 +- 0.0000 (target 1.0)
+
+=== validation, SWEPT REGION (1208 transitions) ===
+model                          rms  % of change  explained   fit s
+------------------------------------------------------------------
+affine (Ay+b)              0.09238        35.5%     0.6447     0.0
+linear-nonneg              0.09239        35.5%     0.6447     0.9
+col-stochastic             0.09252        35.6%     0.6442     2.3
+reduced-rank r=256         0.09313        35.8%     0.6419     0.2
+reduced-rank r=64          0.09314        35.8%     0.6418     0.2
+reduced-rank r=16          0.09399        36.1%     0.6385     0.2
+reduced-rank r=4           0.09812        37.7%     0.6227     0.2
+knn (k=1, retrieval)       0.13522        52.0%     0.4800     0.0
+mean-delta (0 params)      0.17028        65.5%     0.3452     0.0
+persistence                0.26004       100.0%     0.0000     0.0
+
+100% = no better than predicting nothing moved. The number to beat is NOT persistence
+but mean-delta: if a zero-parameter constant displacement gets most of the way, the
+operator is not doing state-dependent work.

@@ -1,0 +1,205 @@
+=== 15:44:36  n=20 cubes: physics check
+16 episodes, 5120 transitions, 20 grains
+mass in tray: before 1.0000 (min 1.0000) | after 1.0000 (min 1.0000)
+z range: 11.6 .. 17.8 mm (tray floor 10.0)
+grain displacement: mean 11.31 p95 19.98 max 112.64 mm
+=== 15:44:37  n=20 cubes
+=== 15:44:39  n=30: no data, skipping
+=== 15:44:39  n=40: no data, skipping
+=== 15:44:39  n=50: no data, skipping
+=== 15:44:39  n=80: no data, skipping
+=== 15:44:39  sand (continuum limit), full size
+=== 15:44:40  sand, size-matched to the cube sets
+=== 15:44:41  trend across the spectrum
+=== 15:44:41  done -> outputs/cube_spectrum
+=== 15:47:32  n=20 cubes: physics check
+16 episodes, 5120 transitions, 20 grains
+mass in tray: before 1.0000 (min 1.0000) | after 1.0000 (min 1.0000)
+z range: 11.6 .. 17.8 mm (tray floor 10.0)
+grain displacement: mean 11.31 p95 19.98 max 112.64 mm
+=== 15:47:33  n=20 cubes
+=== validation, SWEPT REGION (1208 transitions) ===
+model                          rms  % of change  explained   fit s
+------------------------------------------------------------------
+affine (Ay+b)              0.09238        35.5%     0.6447     0.0
+linear-nonneg              0.09239        35.5%     0.6447     0.9
+col-stochastic             0.09252        35.6%     0.6442     2.4
+reduced-rank r=256         0.09313        35.8%     0.6419     0.2
+reduced-rank r=64          0.09314        35.8%     0.6418     0.2
+reduced-rank r=16          0.09399        36.1%     0.6385     0.2
+reduced-rank r=4           0.09812        37.7%     0.6227     0.2
+knn (k=1, retrieval)       0.13522        52.0%     0.4800     0.0
+mean-delta (0 params)      0.17028        65.5%     0.3452     0.0
+persistence                0.26004       100.0%     0.0000     0.0
+
+100% = no better than predicting nothing moved. The number to beat is NOT persistence
+but mean-delta: if a zero-parameter constant displacement gets most of the way, the
+operator is not doing state-dependent work.
+=== 15:47:40  n=30: no data, skipping
+=== 15:47:40  n=40: no data, skipping
+=== 15:47:40  n=50: no data, skipping
+=== 15:47:40  n=80: no data, skipping
+=== 15:47:40  sand (continuum limit), full size
+=== 15:47:51  sand, size-matched to the cube sets
+=== validation, SWEPT REGION (1152 transitions) ===
+model                          rms  % of change  explained   fit s
+------------------------------------------------------------------
+affine (Ay+b)              0.07194        40.9%     0.5913     0.0
+linear-nonneg              0.07197        40.9%     0.5911     0.9
+reduced-rank r=64          0.07348        41.7%     0.5825     0.1
+reduced-rank r=256         0.07364        41.8%     0.5816     0.1
+reduced-rank r=16          0.07381        41.9%     0.5806     0.1
+reduced-rank r=4           0.08142        46.3%     0.5374     0.1
+col-stochastic             0.09681        55.0%     0.4500     2.4
+knn (k=1, retrieval)       0.11212        63.7%     0.3630     0.0
+mean-delta (0 params)      0.11836        67.2%     0.3276     0.0
+persistence                0.17602       100.0%     0.0000     0.0
+
+100% = no better than predicting nothing moved. The number to beat is NOT persistence
+but mean-delta: if a zero-parameter constant displacement gets most of the way, the
+operator is not doing state-dependent work.
+=== validation, SWEPT REGION (10754 transitions) ===
+model                          rms  % of change  explained   fit s
+------------------------------------------------------------------
+affine (Ay+b)              0.06977        39.8%     0.6022     0.2
+reduced-rank r=256         0.07157        40.8%     0.5920     0.3
+reduced-rank r=64          0.07192        41.0%     0.5900     0.3
+linear-nonneg              0.07209        41.1%     0.5890     1.1
+reduced-rank r=16          0.07304        41.6%     0.5836     0.3
+reduced-rank r=4           0.08153        46.5%     0.5352     0.3
+col-stochastic             0.09585        54.6%     0.4535     2.6
+knn (k=1, retrieval)       0.10777        61.4%     0.3856     0.3
+mean-delta (0 params)      0.11778        67.2%     0.3285     0.2
+persistence                0.17540       100.0%     0.0000     0.0
+
+100% = no better than predicting nothing moved. The number to beat is NOT persistence
+but mean-delta: if a zero-parameter constant displacement gets most of the way, the
+operator is not doing state-dependent work.
+=== 15:47:57  trend across the spectrum
+% of change (lower is better; 100% = nothing moved)
+
+model                          n20 sandmatched      sand
+-------------------------------------------------------
+affine (Ay+b)                35.5%     40.9%     39.8%
+linear-nonneg                35.5%     40.9%     41.1%
+col-stochastic               35.6%     55.0%     54.6%
+reduced-rank r=256           35.8%     41.8%     40.8%
+reduced-rank r=64            35.8%     41.7%     41.0%
+reduced-rank r=16            36.1%     41.9%     41.6%
+reduced-rank r=4             37.7%     46.3%     46.5%
+knn (k=1, retrieval)         52.0%     63.7%     61.4%
+mean-delta (0 params)        65.5%     67.2%     67.2%
+persistence                 100.0%    100.0%    100.0%
+
+margin of the linear operator over mean-delta (positive = state-dependence is being used):
+  n20    explained 0.345 -> 0.645  margin +0.300
+  sandmatched explained 0.328 -> 0.591  margin +0.263
+  sand   explained 0.329 -> 0.589  margin +0.260
+=== 15:47:57  done -> outputs/cube_spectrum
+=== 22:56:19  n=20 cubes: physics check
+16 episodes, 5120 transitions, 20 grains
+mass in tray: before 1.0000 (min 1.0000) | after 1.0000 (min 1.0000)
+z range: 11.6 .. 17.8 mm (tray floor 10.0)
+grain displacement: mean 11.31 p95 19.98 max 112.64 mm
+=== 22:56:20  n=20 cubes
+=== validation, SWEPT REGION (1208 transitions) ===
+model                          rms  % of change  explained   fit s
+------------------------------------------------------------------
+affine (Ay+b)              0.09238        35.5%     0.6447     0.0
+linear-nonneg              0.09239        35.5%     0.6447     0.9
+col-stochastic             0.09252        35.6%     0.6442     2.3
+reduced-rank r=256         0.09313        35.8%     0.6419     0.2
+reduced-rank r=64          0.09314        35.8%     0.6418     0.2
+reduced-rank r=16          0.09399        36.1%     0.6385     0.2
+reduced-rank r=4           0.09812        37.7%     0.6227     0.2
+knn (k=1, retrieval)       0.13522        52.0%     0.4800     0.0
+mean-delta (0 params)      0.17028        65.5%     0.3452     0.0
+persistence                0.26004       100.0%     0.0000     0.0
+
+100% = no better than predicting nothing moved. The number to beat is NOT persistence
+but mean-delta: if a zero-parameter constant displacement gets most of the way, the
+operator is not doing state-dependent work.
+=== 22:56:26  n=30 cubes: physics check
+8 episodes, 2560 transitions, 30 grains
+mass in tray: before 1.0000 (min 1.0000) | after 1.0000 (min 1.0000)
+z range: 11.8 .. 43.7 mm (tray floor 10.0)
+grain displacement: mean 9.78 p95 19.46 max 83.23 mm
+=== 22:56:27  n=30 cubes
+=== validation, SWEPT REGION (615 transitions) ===
+model                          rms  % of change  explained   fit s
+------------------------------------------------------------------
+col-stochastic             0.09739        35.7%     0.6434     2.3
+linear-nonneg              0.09755        35.7%     0.6428     0.9
+affine (Ay+b)              0.10003        36.6%     0.6337     0.0
+reduced-rank r=64          0.10036        36.7%     0.6325     0.1
+reduced-rank r=256         0.10040        36.8%     0.6324     0.1
+reduced-rank r=16          0.10056        36.8%     0.6318     0.1
+reduced-rank r=4           0.10342        37.9%     0.6213     0.1
+knn (k=1, retrieval)       0.15105        55.3%     0.4469     0.0
+mean-delta (0 params)      0.17805        65.2%     0.3481     0.0
+persistence                0.27311       100.0%     0.0000     0.0
+
+100% = no better than predicting nothing moved. The number to beat is NOT persistence
+but mean-delta: if a zero-parameter constant displacement gets most of the way, the
+operator is not doing state-dependent work.
+=== 22:56:33  n=40: no data, skipping
+=== 22:56:33  n=50: no data, skipping
+=== 22:56:33  n=80: no data, skipping
+=== 22:56:33  sand (continuum limit), full size
+=== 22:56:44  sand, size-matched to the cube sets
+=== validation, SWEPT REGION (1152 transitions) ===
+model                          rms  % of change  explained   fit s
+------------------------------------------------------------------
+affine (Ay+b)              0.07194        40.9%     0.5913     0.0
+linear-nonneg              0.07197        40.9%     0.5911     0.9
+reduced-rank r=64          0.07348        41.7%     0.5825     0.1
+reduced-rank r=256         0.07364        41.8%     0.5816     0.1
+reduced-rank r=16          0.07381        41.9%     0.5806     0.1
+reduced-rank r=4           0.08142        46.3%     0.5374     0.1
+col-stochastic             0.09681        55.0%     0.4500     2.4
+knn (k=1, retrieval)       0.11212        63.7%     0.3630     0.0
+mean-delta (0 params)      0.11836        67.2%     0.3276     0.0
+persistence                0.17602       100.0%     0.0000     0.0
+
+100% = no better than predicting nothing moved. The number to beat is NOT persistence
+but mean-delta: if a zero-parameter constant displacement gets most of the way, the
+operator is not doing state-dependent work.
+=== validation, SWEPT REGION (10754 transitions) ===
+model                          rms  % of change  explained   fit s
+------------------------------------------------------------------
+affine (Ay+b)              0.06977        39.8%     0.6022     0.2
+reduced-rank r=256         0.07157        40.8%     0.5920     0.3
+reduced-rank r=64          0.07192        41.0%     0.5900     0.3
+linear-nonneg              0.07209        41.1%     0.5890     1.1
+reduced-rank r=16          0.07304        41.6%     0.5836     0.3
+reduced-rank r=4           0.08153        46.5%     0.5352     0.3
+col-stochastic             0.09585        54.6%     0.4535     2.6
+knn (k=1, retrieval)       0.10777        61.4%     0.3856     0.3
+mean-delta (0 params)      0.11778        67.2%     0.3285     0.2
+persistence                0.17540       100.0%     0.0000     0.0
+
+100% = no better than predicting nothing moved. The number to beat is NOT persistence
+but mean-delta: if a zero-parameter constant displacement gets most of the way, the
+operator is not doing state-dependent work.
+=== 22:56:50  trend across the spectrum
+% of change (lower is better; 100% = nothing moved)
+
+model                          n20       n30 sandmatched      sand
+-----------------------------------------------------------------
+affine (Ay+b)                35.5%     36.6%     40.9%     39.8%
+linear-nonneg                35.5%     35.7%     40.9%     41.1%
+col-stochastic               35.6%     35.7%     55.0%     54.6%
+reduced-rank r=256           35.8%     36.8%     41.8%     40.8%
+reduced-rank r=64            35.8%     36.7%     41.7%     41.0%
+reduced-rank r=16            36.1%     36.8%     41.9%     41.6%
+reduced-rank r=4             37.7%     37.9%     46.3%     46.5%
+knn (k=1, retrieval)         52.0%     55.3%     63.7%     61.4%
+mean-delta (0 params)        65.5%     65.2%     67.2%     67.2%
+persistence                 100.0%    100.0%    100.0%    100.0%
+
+margin of the linear operator over mean-delta (positive = state-dependence is being used):
+  n20    explained 0.345 -> 0.645  margin +0.300
+  n30    explained 0.348 -> 0.643  margin +0.295
+  sandmatched explained 0.328 -> 0.591  margin +0.263
+  sand   explained 0.329 -> 0.589  margin +0.260
+=== 22:56:50  done -> outputs/cube_spectrum

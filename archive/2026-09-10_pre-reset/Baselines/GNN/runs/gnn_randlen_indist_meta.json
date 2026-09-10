@@ -1,0 +1,17 @@
+{
+  "tag": "gnn_randlen_indist",
+  "provenance": {
+    "commit": "a0f116d3",
+    "commit_full": "a0f116d3b1dd8b830cf16d494c7fe4d5f16c90e5",
+    "dirty": true,
+    "dirty_files": [
+      "docs/experiments/EXP-0030-randlen-corpus-generalisation.md",
+      "docs/experiments/REGISTER.md",
+      "docs/experiments/STATE_OF_PLAY.md"
+    ],
+    "branch": "baselines/overnight"
+  },
+  "n_files": 15,
+  "n_step0": 1920,
+  "predictor": "gnn"
+}

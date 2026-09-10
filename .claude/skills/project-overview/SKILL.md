@@ -47,11 +47,26 @@ infrastructure all three depend on.
 | `docs/piled_collection.md` | Piled (multi-layer, centred) particle spawns and pile-aware action sampling: why they exist, what they guarantee, and every flag/config that activates them |
 | `docs/human_demo_design.md` | Full design reference for the human-demonstration subsystem: the 5D action convention, local grid-search refinement, GUI interaction model, output-schema/recording parity with `run_oracle_mpc.py` |
 | `docs/experiments/` | The evidence layer: `REGISTER.md` (one row per claim, with what supports/contradicts it and what it depends on), `INVARIANTS.md` (the `depends_on` tag registry and its test backing), and `EXP-####-*.md` records. Owned by the `experiment-log` skill; validated by `scripts/check_register.py` |
-| `docs/prediction_difficulty_hypotheses.md` | The live hypothesis set (H-A1…H-C5) for prediction accuracy and MPC suitability, plus the frame-convention bug that invalidated much of the earlier cube work |
 
 (A previous version of this map pointed at `.github/skills/mpc-experiments/SKILL.md`,
 which does not exist. Removed 2026-09-03 — and it is a fair example of why
 `scripts/check_register.py` exists.)
+
+**2026-09-10 — claim register reset.** `docs/experiments/` (every `EXP-####`
+record, `REGISTER.md`, `INVARIANTS.md`, `METRICS.md`), `reports/`, and the
+narrative/hypothesis docs that cited them (`docs/ideas_log.md`,
+`docs/ideas_log_signal_vs_detail.md`, `docs/prediction_difficulty_hypotheses.md`,
+`docs/analytic_descriptors_latent_space_plan*.md`,
+`docs/plan_selection_pressure_validation.md`,
+`docs/handoff_model_selection_for_mpc.md`, `docs/linear_foresight_findings.md`,
+`docs/experiment_commands.md`) were archived wholesale to
+`archive/2026-09-10_pre-reset/` to start the claim ledger clean. Trained
+model checkpoints and datasets were left in place. Any citation below into an
+archived report (e.g. `reports/linear_foresight_report.md` from
+`docs/ARCHITECTURE.md`, `docs/UTILITIES.md`, `docs/piled_collection.md`,
+`docs/linear_visual_foresight_baseline.md`) now resolves under
+`archive/2026-09-10_pre-reset/` instead of the live tree; those docs were not
+themselves rewritten by the reset.
 
 If you're not sure where something belongs, it's almost certainly one of
 these `docs/` files, not a new one — check the Design Philosophy in

@@ -1,0 +1,9 @@
+provenance: {'commit': '9e78da53', 'commit_full': '9e78da53c217dd1a4d414d77df1f3cea61827301', 'dirty': False, 'dirty_files': [], 'branch': 'VisualForesight'}
+train: 3631 transitions, grid 64x64
+UNet load: <All keys matched successfully>
+slates: 1597 transitions, 50 slate groups (50 files in split 'train')
+finest-band true-signal std over region: 0.25182
+degradation arms: 13 added
+goal=corner: dv_true mean +0.01894 sd 0.05141 helpful 38%
+goal=center: dv_true mean +0.00004 sd 0.00119 helpful 0%
+wrote runs_exp0026/dv_cache_all50_deg.pt

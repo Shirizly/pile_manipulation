@@ -1,0 +1,21 @@
+{
+  "tag": "blurfair",
+  "cmd": [
+    "python",
+    "-u",
+    "scripts/probes/exp0022_blur_fair.py",
+    "configs/dataset/genesis_granularity_blind_n50.yaml",
+    "runs_granularity/unetfilm_blind_n50",
+    "--tag",
+    "blind_n50"
+  ],
+  "returncode": 0,
+  "seconds": 12.6,
+  "provenance": {
+    "commit": "c3f0104e",
+    "commit_full": "c3f0104eac6fdfb88cdbd9f8be38b35df7ce6edc",
+    "dirty": false,
+    "dirty_files": [],
+    "branch": "VisualForesight"
+  }
+}

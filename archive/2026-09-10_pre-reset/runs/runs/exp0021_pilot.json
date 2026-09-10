@@ -1,0 +1,20 @@
+{
+  "tag": "exp0021_pilot",
+  "cmd": [
+    "python",
+    "-u",
+    "-m",
+    "training.train",
+    "/tmp/exp0021_pilot.yaml",
+    "--no-resume"
+  ],
+  "returncode": 0,
+  "seconds": 11.2,
+  "provenance": {
+    "commit": "85f2413b",
+    "commit_full": "85f2413bb5435616dd3f79b55f0e0f5808835663",
+    "dirty": false,
+    "dirty_files": [],
+    "branch": "VisualForesight"
+  }
+}

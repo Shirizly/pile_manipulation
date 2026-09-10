@@ -1,0 +1,28 @@
+{
+  "tag": "exp0024_train",
+  "cmd": [
+    "python",
+    "-u",
+    "-m",
+    "training.train",
+    "configs/training/exp0024_unetfilm_cube_spectrum_n20.yaml",
+    "--no-resume"
+  ],
+  "returncode": 0,
+  "seconds": 942.6,
+  "provenance": {
+    "commit": "57452569",
+    "commit_full": "57452569eb960b0f6bebf1e93bf1397b6d0e731e",
+    "dirty": true,
+    "dirty_files": [
+      ".claude/skills/experiment-log/SKILL.md",
+      "docs/experiments/EXP-0004-unet-action-ablation.md",
+      "docs/experiments/EXP-0009-grid-fix-pixel-rerun.md",
+      "docs/experiments/EXP-0014-unet-action-ablation-retrain.md",
+      "docs/experiments/EXP-0015-contact-switching-fixed-grid.md",
+      "docs/experiments/METRICS.md",
+      "fit_linear_foresight.py"
+    ],
+    "branch": "VisualForesight"
+  }
+}

@@ -1,0 +1,6 @@
+# written by scripts/run_probe.py before the run started
+# run_id gnn_randlen_holdout_accuracy_scattered-2026-09-10T02:51:14-42030
+# exp     EXP-0030
+# commit  652fce1f dirty=False
+# log     runs/gnn_randlen_holdout_accuracy_scattered.log
+/home/alon/anaconda3/envs/pme/bin/python -u Baselines/common/eval_randlen_holdout.py --predictor Baselines.GNN.predictor:build_predictor --tag gnn_randlen_scattered --out Baselines/GNN/runs/gnn_randlen_holdout_accuracy_scattered.json --test-cfg configs/dataset/genesis_overnight_randlen_test_n20_scattered.yaml

@@ -1,0 +1,22 @@
+Config : /tmp/exp0021_pilot.yaml
+Device : cuda
+Training on cuda, epochs 0→2, log_dir=runs_granularity/_pilot_timing
+Train: 1920  Val: 320  Test: 320
+Epochs:   0%|          | 0/2 [00:00<?, ?it/s]Epochs:   0%|          | 0/2 [00:04<?, ?it/s, trn=0.0946, val=0.0129, iou=0.000, best=1, ni=0]Epoch    1: trn=0.094649  val=0.012943  iou=0.0000  chg_mse=0.497876  best=1
+Epochs:  50%|█████     | 1/2 [00:04<00:04,  4.48s/it, trn=0.0946, val=0.0129, iou=0.000, best=1, ni=0]Epochs:  50%|█████     | 1/2 [00:08<00:04,  4.48s/it, trn=0.0106, val=0.0042, iou=0.627, best=2, ni=0]Epoch    2: trn=0.010609  val=0.004207  iou=0.6273  chg_mse=0.671935  best=2
+Epochs: 100%|██████████| 2/2 [00:08<00:00,  4.09s/it, trn=0.0106, val=0.0042, iou=0.627, best=2, ni=0]Epochs: 100%|██████████| 2/2 [00:08<00:00,  4.15s/it, trn=0.0106, val=0.0042, iou=0.627, best=2, ni=0]
+
+=== Test metrics ===
+  prob_mse: 0.004018
+  zero_mse: 0.012135
+  copy_mse: 0.002348
+  hard_iou: 0.634801
+  hard_dice: 0.765371
+  changed_mse: 0.666630
+  changed_copy_mse: 1.000000
+  changed_pixel_frac: 0.002348
+
+=== Training complete ===
+  Best val loss : 0.004207  (epoch 2)
+  Model card    : runs_granularity/_pilot_timing/model_card.yaml
+  Log dir       : runs_granularity/_pilot_timing

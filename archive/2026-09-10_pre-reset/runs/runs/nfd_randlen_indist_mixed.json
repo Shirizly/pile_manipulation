@@ -1,0 +1,36 @@
+{
+  "run_id": "nfd_randlen_indist_mixed-2026-09-10T01:40:33-37192",
+  "event": "start",
+  "ts": "2026-09-10T01:40:33",
+  "tag": "nfd_randlen_indist_mixed",
+  "exp": "EXP-0030",
+  "cmd": [
+    "/home/alon/anaconda3/envs/pme/bin/python",
+    "-u",
+    "Baselines/common/eval_randlen_indist.py",
+    "--predictor",
+    "Baselines.NFD.predictor:build_predictor",
+    "--tag",
+    "nfd_randlen_indist_mixed",
+    "--out-prefix",
+    "Baselines/NFD/runs/nfd_randlen_indist_mixed",
+    "--test-cfg",
+    "configs/dataset/genesis_overnight_randlen_test_n20_mixed.yaml",
+    "--goals",
+    "corner,ind-stripe-thin-pile"
+  ],
+  "out": "Baselines/NFD/runs",
+  "log": "runs/nfd_randlen_indist_mixed.log",
+  "commit": "652fce1f",
+  "dirty": false,
+  "status": "ok",
+  "returncode": 0,
+  "seconds": 613.3,
+  "provenance": {
+    "commit": "652fce1f",
+    "commit_full": "652fce1f43bccbd5ecd7f0eab7224441aa9d87c6",
+    "dirty": false,
+    "dirty_files": [],
+    "branch": "baselines/overnight"
+  }
+}

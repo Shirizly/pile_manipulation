@@ -1,0 +1,23 @@
+loaded 3 episodes; kept 908 full-length pushes, dropped 52 truncated (5.4%)
+loaded 3 episodes; kept 908 full-length pushes, dropped 52 truncated (5.4%)
+loaded 3 episodes; kept 908 full-length pushes, dropped 52 truncated (5.4%)
+
+### cube n20 PILOT3ep  res=32 blur=1.0 M=908 (600 train / 308 val, 3 episodes)
+
+--- target = mask-delta ---
+  mean-delta (0 params)        dim=    0  explained over mean-delta = 0.0000  (by construction)
+  mask only                    dim= 1024  explained over mean-delta = 0.7100
+  height only                  dim= 1024  explained over mean-delta = 0.5716
+  density only                 dim= 1024  explained over mean-delta = 0.6012
+  mask + height (2 channel)    dim= 2048  explained over mean-delta = 0.6704
+  mask + density (2 channel)   dim= 2048  explained over mean-delta = 0.6783
+  mask+height+density (3ch)    dim= 3072  explained over mean-delta = 0.6534
+
+--- target = density-delta ---
+  mean-delta (0 params)        dim=    0  explained over mean-delta = 0.0000  (by construction)
+  mask only                    dim= 1024  explained over mean-delta = 0.3665
+  height only                  dim= 1024  explained over mean-delta = 0.3365
+  density only                 dim= 1024  explained over mean-delta = 0.3612
+  mask + height (2 channel)    dim= 2048  explained over mean-delta = 0.3018
+  mask + density (2 channel)   dim= 2048  explained over mean-delta = 0.3291
+  mask+height+density (3ch)    dim= 3072  explained over mean-delta = 0.2793
