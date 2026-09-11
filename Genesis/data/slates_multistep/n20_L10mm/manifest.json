@@ -1,0 +1,1223 @@
+{
+  "n_cubes": 20,
+  "size": 0.005,
+  "density": 1000.0,
+  "friction": 0.3,
+  "n_envs": 128,
+  "push_length": 0.01,
+  "n_steps": 3,
+  "pile_aware": false,
+  "placement_aware": true,
+  "spawn_mode": "heap",
+  "seed": 0,
+  "n_settles": 2,
+  "library_size": 256,
+  "augmented": false,
+  "n_states_requested": 50,
+  "n_states_collected": 50,
+  "pos_tol": 0.001,
+  "angle_tol_deg": 5.0,
+  "worst_state_broadcast_spread_m": 0.0,
+  "batches": [
+    {
+      "batch_idx": 0,
+      "slate_idx": 0,
+      "state_library_index": 0,
+      "step_idx": 0,
+      "env_count": 128,
+      "unresolved_after_resampling": 0
+    },
+    {
+      "batch_idx": 1,
+      "slate_idx": 0,
+      "state_library_index": 0,
+      "step_idx": 1,
+      "env_count": 128,
+      "unresolved_after_resampling": 0
+    },
+    {
+      "batch_idx": 2,
+      "slate_idx": 0,
+      "state_library_index": 0,
+      "step_idx": 2,
+      "env_count": 128,
+      "unresolved_after_resampling": 0
+    },
+    {
+      "batch_idx": 3,
+      "slate_idx": 1,
+      "state_library_index": 1,
+      "step_idx": 0,
+      "env_count": 128,
+      "unresolved_after_resampling": 0
+    },
+    {
+      "batch_idx": 4,
+      "slate_idx": 1,
+      "state_library_index": 1,
+      "step_idx": 1,
+      "env_count": 128,
+      "unresolved_after_resampling": 0
+    },
+    {
+      "batch_idx": 5,
+      "slate_idx": 1,
+      "state_library_index": 1,
+      "step_idx": 2,
+      "env_count": 128,
+      "unresolved_after_resampling": 0
+    },
+    {
+      "batch_idx": 6,
+      "slate_idx": 2,
+      "state_library_index": 2,
+      "step_idx": 0,
+      "env_count": 128,
+      "unresolved_after_resampling": 0
+    },
+    {
+      "batch_idx": 7,
+      "slate_idx": 2,
+      "state_library_index": 2,
+      "step_idx": 1,
+      "env_count": 128,
+      "unresolved_after_resampling": 0
+    },
+    {
+      "batch_idx": 8,
+      "slate_idx": 2,
+      "state_library_index": 2,
+      "step_idx": 2,
+      "env_count": 128,
+      "unresolved_after_resampling": 0
+    },
+    {
+      "batch_idx": 9,
+      "slate_idx": 3,
+      "state_library_index": 3,
+      "step_idx": 0,
+      "env_count": 128,
+      "unresolved_after_resampling": 0
+    },
+    {
+      "batch_idx": 10,
+      "slate_idx": 3,
+      "state_library_index": 3,
+      "step_idx": 1,
+      "env_count": 128,
+      "unresolved_after_resampling": 0
+    },
+    {
+      "batch_idx": 11,
+      "slate_idx": 3,
+      "state_library_index": 3,
+      "step_idx": 2,
+      "env_count": 128,
+      "unresolved_after_resampling": 0
+    },
+    {
+      "batch_idx": 12,
+      "slate_idx": 4,
+      "state_library_index": 5,
+      "step_idx": 0,
+      "env_count": 128,
+      "unresolved_after_resampling": 0
+    },
+    {
+      "batch_idx": 13,
+      "slate_idx": 4,
+      "state_library_index": 5,
+      "step_idx": 1,
+      "env_count": 128,
+      "unresolved_after_resampling": 0
+    },
+    {
+      "batch_idx": 14,
+      "slate_idx": 4,
+      "state_library_index": 5,
+      "step_idx": 2,
+      "env_count": 128,
+      "unresolved_after_resampling": 0
+    },
+    {
+      "batch_idx": 15,
+      "slate_idx": 5,
+      "state_library_index": 7,
+      "step_idx": 0,
+      "env_count": 128,
+      "unresolved_after_resampling": 0
+    },
+    {
+      "batch_idx": 16,
+      "slate_idx": 5,
+      "state_library_index": 7,
+      "step_idx": 1,
+      "env_count": 128,
+      "unresolved_after_resampling": 0
+    },
+    {
+      "batch_idx": 17,
+      "slate_idx": 5,
+      "state_library_index": 7,
+      "step_idx": 2,
+      "env_count": 128,
+      "unresolved_after_resampling": 0
+    },
+    {
+      "batch_idx": 18,
+      "slate_idx": 6,
+      "state_library_index": 8,
+      "step_idx": 0,
+      "env_count": 128,
+      "unresolved_after_resampling": 0
+    },
+    {
+      "batch_idx": 19,
+      "slate_idx": 6,
+      "state_library_index": 8,
+      "step_idx": 1,
+      "env_count": 128,
+      "unresolved_after_resampling": 0
+    },
+    {
+      "batch_idx": 20,
+      "slate_idx": 6,
+      "state_library_index": 8,
+      "step_idx": 2,
+      "env_count": 128,
+      "unresolved_after_resampling": 0
+    },
+    {
+      "batch_idx": 21,
+      "slate_idx": 7,
+      "state_library_index": 16,
+      "step_idx": 0,
+      "env_count": 128,
+      "unresolved_after_resampling": 0
+    },
+    {
+      "batch_idx": 22,
+      "slate_idx": 7,
+      "state_library_index": 16,
+      "step_idx": 1,
+      "env_count": 128,
+      "unresolved_after_resampling": 0
+    },
+    {
+      "batch_idx": 23,
+      "slate_idx": 7,
+      "state_library_index": 16,
+      "step_idx": 2,
+      "env_count": 128,
+      "unresolved_after_resampling": 0
+    },
+    {
+      "batch_idx": 24,
+      "slate_idx": 8,
+      "state_library_index": 19,
+      "step_idx": 0,
+      "env_count": 128,
+      "unresolved_after_resampling": 0
+    },
+    {
+      "batch_idx": 25,
+      "slate_idx": 8,
+      "state_library_index": 19,
+      "step_idx": 1,
+      "env_count": 128,
+      "unresolved_after_resampling": 0
+    },
+    {
+      "batch_idx": 26,
+      "slate_idx": 8,
+      "state_library_index": 19,
+      "step_idx": 2,
+      "env_count": 128,
+      "unresolved_after_resampling": 0
+    },
+    {
+      "batch_idx": 27,
+      "slate_idx": 9,
+      "state_library_index": 21,
+      "step_idx": 0,
+      "env_count": 128,
+      "unresolved_after_resampling": 0
+    },
+    {
+      "batch_idx": 28,
+      "slate_idx": 9,
+      "state_library_index": 21,
+      "step_idx": 1,
+      "env_count": 128,
+      "unresolved_after_resampling": 0
+    },
+    {
+      "batch_idx": 29,
+      "slate_idx": 9,
+      "state_library_index": 21,
+      "step_idx": 2,
+      "env_count": 128,
+      "unresolved_after_resampling": 0
+    },
+    {
+      "batch_idx": 30,
+      "slate_idx": 10,
+      "state_library_index": 31,
+      "step_idx": 0,
+      "env_count": 128,
+      "unresolved_after_resampling": 0
+    },
+    {
+      "batch_idx": 31,
+      "slate_idx": 10,
+      "state_library_index": 31,
+      "step_idx": 1,
+      "env_count": 128,
+      "unresolved_after_resampling": 0
+    },
+    {
+      "batch_idx": 32,
+      "slate_idx": 10,
+      "state_library_index": 31,
+      "step_idx": 2,
+      "env_count": 128,
+      "unresolved_after_resampling": 0
+    },
+    {
+      "batch_idx": 33,
+      "slate_idx": 11,
+      "state_library_index": 37,
+      "step_idx": 0,
+      "env_count": 128,
+      "unresolved_after_resampling": 0
+    },
+    {
+      "batch_idx": 34,
+      "slate_idx": 11,
+      "state_library_index": 37,
+      "step_idx": 1,
+      "env_count": 128,
+      "unresolved_after_resampling": 0
+    },
+    {
+      "batch_idx": 35,
+      "slate_idx": 11,
+      "state_library_index": 37,
+      "step_idx": 2,
+      "env_count": 128,
+      "unresolved_after_resampling": 0
+    },
+    {
+      "batch_idx": 36,
+      "slate_idx": 12,
+      "state_library_index": 41,
+      "step_idx": 0,
+      "env_count": 128,
+      "unresolved_after_resampling": 0
+    },
+    {
+      "batch_idx": 37,
+      "slate_idx": 12,
+      "state_library_index": 41,
+      "step_idx": 1,
+      "env_count": 128,
+      "unresolved_after_resampling": 0
+    },
+    {
+      "batch_idx": 38,
+      "slate_idx": 12,
+      "state_library_index": 41,
+      "step_idx": 2,
+      "env_count": 128,
+      "unresolved_after_resampling": 0
+    },
+    {
+      "batch_idx": 39,
+      "slate_idx": 13,
+      "state_library_index": 56,
+      "step_idx": 0,
+      "env_count": 128,
+      "unresolved_after_resampling": 0
+    },
+    {
+      "batch_idx": 40,
+      "slate_idx": 13,
+      "state_library_index": 56,
+      "step_idx": 1,
+      "env_count": 128,
+      "unresolved_after_resampling": 0
+    },
+    {
+      "batch_idx": 41,
+      "slate_idx": 13,
+      "state_library_index": 56,
+      "step_idx": 2,
+      "env_count": 128,
+      "unresolved_after_resampling": 0
+    },
+    {
+      "batch_idx": 42,
+      "slate_idx": 14,
+      "state_library_index": 62,
+      "step_idx": 0,
+      "env_count": 128,
+      "unresolved_after_resampling": 0
+    },
+    {
+      "batch_idx": 43,
+      "slate_idx": 14,
+      "state_library_index": 62,
+      "step_idx": 1,
+      "env_count": 128,
+      "unresolved_after_resampling": 0
+    },
+    {
+      "batch_idx": 44,
+      "slate_idx": 14,
+      "state_library_index": 62,
+      "step_idx": 2,
+      "env_count": 128,
+      "unresolved_after_resampling": 0
+    },
+    {
+      "batch_idx": 45,
+      "slate_idx": 15,
+      "state_library_index": 64,
+      "step_idx": 0,
+      "env_count": 128,
+      "unresolved_after_resampling": 0
+    },
+    {
+      "batch_idx": 46,
+      "slate_idx": 15,
+      "state_library_index": 64,
+      "step_idx": 1,
+      "env_count": 128,
+      "unresolved_after_resampling": 0
+    },
+    {
+      "batch_idx": 47,
+      "slate_idx": 15,
+      "state_library_index": 64,
+      "step_idx": 2,
+      "env_count": 128,
+      "unresolved_after_resampling": 0
+    },
+    {
+      "batch_idx": 48,
+      "slate_idx": 16,
+      "state_library_index": 65,
+      "step_idx": 0,
+      "env_count": 128,
+      "unresolved_after_resampling": 0
+    },
+    {
+      "batch_idx": 49,
+      "slate_idx": 16,
+      "state_library_index": 65,
+      "step_idx": 1,
+      "env_count": 128,
+      "unresolved_after_resampling": 0
+    },
+    {
+      "batch_idx": 50,
+      "slate_idx": 16,
+      "state_library_index": 65,
+      "step_idx": 2,
+      "env_count": 128,
+      "unresolved_after_resampling": 0
+    },
+    {
+      "batch_idx": 51,
+      "slate_idx": 17,
+      "state_library_index": 73,
+      "step_idx": 0,
+      "env_count": 128,
+      "unresolved_after_resampling": 0
+    },
+    {
+      "batch_idx": 52,
+      "slate_idx": 17,
+      "state_library_index": 73,
+      "step_idx": 1,
+      "env_count": 128,
+      "unresolved_after_resampling": 0
+    },
+    {
+      "batch_idx": 53,
+      "slate_idx": 17,
+      "state_library_index": 73,
+      "step_idx": 2,
+      "env_count": 128,
+      "unresolved_after_resampling": 0
+    },
+    {
+      "batch_idx": 54,
+      "slate_idx": 18,
+      "state_library_index": 91,
+      "step_idx": 0,
+      "env_count": 128,
+      "unresolved_after_resampling": 0
+    },
+    {
+      "batch_idx": 55,
+      "slate_idx": 18,
+      "state_library_index": 91,
+      "step_idx": 1,
+      "env_count": 128,
+      "unresolved_after_resampling": 0
+    },
+    {
+      "batch_idx": 56,
+      "slate_idx": 18,
+      "state_library_index": 91,
+      "step_idx": 2,
+      "env_count": 128,
+      "unresolved_after_resampling": 0
+    },
+    {
+      "batch_idx": 57,
+      "slate_idx": 19,
+      "state_library_index": 99,
+      "step_idx": 0,
+      "env_count": 128,
+      "unresolved_after_resampling": 0
+    },
+    {
+      "batch_idx": 58,
+      "slate_idx": 19,
+      "state_library_index": 99,
+      "step_idx": 1,
+      "env_count": 128,
+      "unresolved_after_resampling": 0
+    },
+    {
+      "batch_idx": 59,
+      "slate_idx": 19,
+      "state_library_index": 99,
+      "step_idx": 2,
+      "env_count": 128,
+      "unresolved_after_resampling": 0
+    },
+    {
+      "batch_idx": 60,
+      "slate_idx": 20,
+      "state_library_index": 103,
+      "step_idx": 0,
+      "env_count": 128,
+      "unresolved_after_resampling": 0
+    },
+    {
+      "batch_idx": 61,
+      "slate_idx": 20,
+      "state_library_index": 103,
+      "step_idx": 1,
+      "env_count": 128,
+      "unresolved_after_resampling": 0
+    },
+    {
+      "batch_idx": 62,
+      "slate_idx": 20,
+      "state_library_index": 103,
+      "step_idx": 2,
+      "env_count": 128,
+      "unresolved_after_resampling": 0
+    },
+    {
+      "batch_idx": 63,
+      "slate_idx": 21,
+      "state_library_index": 106,
+      "step_idx": 0,
+      "env_count": 128,
+      "unresolved_after_resampling": 0
+    },
+    {
+      "batch_idx": 64,
+      "slate_idx": 21,
+      "state_library_index": 106,
+      "step_idx": 1,
+      "env_count": 128,
+      "unresolved_after_resampling": 0
+    },
+    {
+      "batch_idx": 65,
+      "slate_idx": 21,
+      "state_library_index": 106,
+      "step_idx": 2,
+      "env_count": 128,
+      "unresolved_after_resampling": 0
+    },
+    {
+      "batch_idx": 66,
+      "slate_idx": 22,
+      "state_library_index": 110,
+      "step_idx": 0,
+      "env_count": 128,
+      "unresolved_after_resampling": 0
+    },
+    {
+      "batch_idx": 67,
+      "slate_idx": 22,
+      "state_library_index": 110,
+      "step_idx": 1,
+      "env_count": 128,
+      "unresolved_after_resampling": 0
+    },
+    {
+      "batch_idx": 68,
+      "slate_idx": 22,
+      "state_library_index": 110,
+      "step_idx": 2,
+      "env_count": 128,
+      "unresolved_after_resampling": 0
+    },
+    {
+      "batch_idx": 69,
+      "slate_idx": 23,
+      "state_library_index": 117,
+      "step_idx": 0,
+      "env_count": 128,
+      "unresolved_after_resampling": 0
+    },
+    {
+      "batch_idx": 70,
+      "slate_idx": 23,
+      "state_library_index": 117,
+      "step_idx": 1,
+      "env_count": 128,
+      "unresolved_after_resampling": 0
+    },
+    {
+      "batch_idx": 71,
+      "slate_idx": 23,
+      "state_library_index": 117,
+      "step_idx": 2,
+      "env_count": 128,
+      "unresolved_after_resampling": 0
+    },
+    {
+      "batch_idx": 72,
+      "slate_idx": 24,
+      "state_library_index": 121,
+      "step_idx": 0,
+      "env_count": 128,
+      "unresolved_after_resampling": 0
+    },
+    {
+      "batch_idx": 73,
+      "slate_idx": 24,
+      "state_library_index": 121,
+      "step_idx": 1,
+      "env_count": 128,
+      "unresolved_after_resampling": 0
+    },
+    {
+      "batch_idx": 74,
+      "slate_idx": 24,
+      "state_library_index": 121,
+      "step_idx": 2,
+      "env_count": 128,
+      "unresolved_after_resampling": 0
+    },
+    {
+      "batch_idx": 75,
+      "slate_idx": 25,
+      "state_library_index": 125,
+      "step_idx": 0,
+      "env_count": 128,
+      "unresolved_after_resampling": 0
+    },
+    {
+      "batch_idx": 76,
+      "slate_idx": 25,
+      "state_library_index": 125,
+      "step_idx": 1,
+      "env_count": 128,
+      "unresolved_after_resampling": 0
+    },
+    {
+      "batch_idx": 77,
+      "slate_idx": 25,
+      "state_library_index": 125,
+      "step_idx": 2,
+      "env_count": 128,
+      "unresolved_after_resampling": 0
+    },
+    {
+      "batch_idx": 78,
+      "slate_idx": 26,
+      "state_library_index": 129,
+      "step_idx": 0,
+      "env_count": 128,
+      "unresolved_after_resampling": 0
+    },
+    {
+      "batch_idx": 79,
+      "slate_idx": 26,
+      "state_library_index": 129,
+      "step_idx": 1,
+      "env_count": 128,
+      "unresolved_after_resampling": 0
+    },
+    {
+      "batch_idx": 80,
+      "slate_idx": 26,
+      "state_library_index": 129,
+      "step_idx": 2,
+      "env_count": 128,
+      "unresolved_after_resampling": 0
+    },
+    {
+      "batch_idx": 81,
+      "slate_idx": 27,
+      "state_library_index": 131,
+      "step_idx": 0,
+      "env_count": 128,
+      "unresolved_after_resampling": 0
+    },
+    {
+      "batch_idx": 82,
+      "slate_idx": 27,
+      "state_library_index": 131,
+      "step_idx": 1,
+      "env_count": 128,
+      "unresolved_after_resampling": 0
+    },
+    {
+      "batch_idx": 83,
+      "slate_idx": 27,
+      "state_library_index": 131,
+      "step_idx": 2,
+      "env_count": 128,
+      "unresolved_after_resampling": 0
+    },
+    {
+      "batch_idx": 84,
+      "slate_idx": 28,
+      "state_library_index": 132,
+      "step_idx": 0,
+      "env_count": 128,
+      "unresolved_after_resampling": 0
+    },
+    {
+      "batch_idx": 85,
+      "slate_idx": 28,
+      "state_library_index": 132,
+      "step_idx": 1,
+      "env_count": 128,
+      "unresolved_after_resampling": 0
+    },
+    {
+      "batch_idx": 86,
+      "slate_idx": 28,
+      "state_library_index": 132,
+      "step_idx": 2,
+      "env_count": 128,
+      "unresolved_after_resampling": 0
+    },
+    {
+      "batch_idx": 87,
+      "slate_idx": 29,
+      "state_library_index": 133,
+      "step_idx": 0,
+      "env_count": 128,
+      "unresolved_after_resampling": 0
+    },
+    {
+      "batch_idx": 88,
+      "slate_idx": 29,
+      "state_library_index": 133,
+      "step_idx": 1,
+      "env_count": 128,
+      "unresolved_after_resampling": 0
+    },
+    {
+      "batch_idx": 89,
+      "slate_idx": 29,
+      "state_library_index": 133,
+      "step_idx": 2,
+      "env_count": 128,
+      "unresolved_after_resampling": 0
+    },
+    {
+      "batch_idx": 90,
+      "slate_idx": 30,
+      "state_library_index": 140,
+      "step_idx": 0,
+      "env_count": 128,
+      "unresolved_after_resampling": 0
+    },
+    {
+      "batch_idx": 91,
+      "slate_idx": 30,
+      "state_library_index": 140,
+      "step_idx": 1,
+      "env_count": 128,
+      "unresolved_after_resampling": 0
+    },
+    {
+      "batch_idx": 92,
+      "slate_idx": 30,
+      "state_library_index": 140,
+      "step_idx": 2,
+      "env_count": 128,
+      "unresolved_after_resampling": 0
+    },
+    {
+      "batch_idx": 93,
+      "slate_idx": 31,
+      "state_library_index": 153,
+      "step_idx": 0,
+      "env_count": 128,
+      "unresolved_after_resampling": 0
+    },
+    {
+      "batch_idx": 94,
+      "slate_idx": 31,
+      "state_library_index": 153,
+      "step_idx": 1,
+      "env_count": 128,
+      "unresolved_after_resampling": 0
+    },
+    {
+      "batch_idx": 95,
+      "slate_idx": 31,
+      "state_library_index": 153,
+      "step_idx": 2,
+      "env_count": 128,
+      "unresolved_after_resampling": 0
+    },
+    {
+      "batch_idx": 96,
+      "slate_idx": 32,
+      "state_library_index": 157,
+      "step_idx": 0,
+      "env_count": 128,
+      "unresolved_after_resampling": 0
+    },
+    {
+      "batch_idx": 97,
+      "slate_idx": 32,
+      "state_library_index": 157,
+      "step_idx": 1,
+      "env_count": 128,
+      "unresolved_after_resampling": 0
+    },
+    {
+      "batch_idx": 98,
+      "slate_idx": 32,
+      "state_library_index": 157,
+      "step_idx": 2,
+      "env_count": 128,
+      "unresolved_after_resampling": 0
+    },
+    {
+      "batch_idx": 99,
+      "slate_idx": 33,
+      "state_library_index": 161,
+      "step_idx": 0,
+      "env_count": 128,
+      "unresolved_after_resampling": 0
+    },
+    {
+      "batch_idx": 100,
+      "slate_idx": 33,
+      "state_library_index": 161,
+      "step_idx": 1,
+      "env_count": 128,
+      "unresolved_after_resampling": 0
+    },
+    {
+      "batch_idx": 101,
+      "slate_idx": 33,
+      "state_library_index": 161,
+      "step_idx": 2,
+      "env_count": 128,
+      "unresolved_after_resampling": 0
+    },
+    {
+      "batch_idx": 102,
+      "slate_idx": 34,
+      "state_library_index": 164,
+      "step_idx": 0,
+      "env_count": 128,
+      "unresolved_after_resampling": 0
+    },
+    {
+      "batch_idx": 103,
+      "slate_idx": 34,
+      "state_library_index": 164,
+      "step_idx": 1,
+      "env_count": 128,
+      "unresolved_after_resampling": 0
+    },
+    {
+      "batch_idx": 104,
+      "slate_idx": 34,
+      "state_library_index": 164,
+      "step_idx": 2,
+      "env_count": 128,
+      "unresolved_after_resampling": 0
+    },
+    {
+      "batch_idx": 105,
+      "slate_idx": 35,
+      "state_library_index": 168,
+      "step_idx": 0,
+      "env_count": 128,
+      "unresolved_after_resampling": 0
+    },
+    {
+      "batch_idx": 106,
+      "slate_idx": 35,
+      "state_library_index": 168,
+      "step_idx": 1,
+      "env_count": 128,
+      "unresolved_after_resampling": 0
+    },
+    {
+      "batch_idx": 107,
+      "slate_idx": 35,
+      "state_library_index": 168,
+      "step_idx": 2,
+      "env_count": 128,
+      "unresolved_after_resampling": 0
+    },
+    {
+      "batch_idx": 108,
+      "slate_idx": 36,
+      "state_library_index": 172,
+      "step_idx": 0,
+      "env_count": 128,
+      "unresolved_after_resampling": 0
+    },
+    {
+      "batch_idx": 109,
+      "slate_idx": 36,
+      "state_library_index": 172,
+      "step_idx": 1,
+      "env_count": 128,
+      "unresolved_after_resampling": 0
+    },
+    {
+      "batch_idx": 110,
+      "slate_idx": 36,
+      "state_library_index": 172,
+      "step_idx": 2,
+      "env_count": 128,
+      "unresolved_after_resampling": 0
+    },
+    {
+      "batch_idx": 111,
+      "slate_idx": 37,
+      "state_library_index": 175,
+      "step_idx": 0,
+      "env_count": 128,
+      "unresolved_after_resampling": 0
+    },
+    {
+      "batch_idx": 112,
+      "slate_idx": 37,
+      "state_library_index": 175,
+      "step_idx": 1,
+      "env_count": 128,
+      "unresolved_after_resampling": 0
+    },
+    {
+      "batch_idx": 113,
+      "slate_idx": 37,
+      "state_library_index": 175,
+      "step_idx": 2,
+      "env_count": 128,
+      "unresolved_after_resampling": 0
+    },
+    {
+      "batch_idx": 114,
+      "slate_idx": 38,
+      "state_library_index": 176,
+      "step_idx": 0,
+      "env_count": 128,
+      "unresolved_after_resampling": 0
+    },
+    {
+      "batch_idx": 115,
+      "slate_idx": 38,
+      "state_library_index": 176,
+      "step_idx": 1,
+      "env_count": 128,
+      "unresolved_after_resampling": 0
+    },
+    {
+      "batch_idx": 116,
+      "slate_idx": 38,
+      "state_library_index": 176,
+      "step_idx": 2,
+      "env_count": 128,
+      "unresolved_after_resampling": 0
+    },
+    {
+      "batch_idx": 117,
+      "slate_idx": 39,
+      "state_library_index": 179,
+      "step_idx": 0,
+      "env_count": 128,
+      "unresolved_after_resampling": 0
+    },
+    {
+      "batch_idx": 118,
+      "slate_idx": 39,
+      "state_library_index": 179,
+      "step_idx": 1,
+      "env_count": 128,
+      "unresolved_after_resampling": 0
+    },
+    {
+      "batch_idx": 119,
+      "slate_idx": 39,
+      "state_library_index": 179,
+      "step_idx": 2,
+      "env_count": 128,
+      "unresolved_after_resampling": 0
+    },
+    {
+      "batch_idx": 120,
+      "slate_idx": 40,
+      "state_library_index": 186,
+      "step_idx": 0,
+      "env_count": 128,
+      "unresolved_after_resampling": 0
+    },
+    {
+      "batch_idx": 121,
+      "slate_idx": 40,
+      "state_library_index": 186,
+      "step_idx": 1,
+      "env_count": 128,
+      "unresolved_after_resampling": 0
+    },
+    {
+      "batch_idx": 122,
+      "slate_idx": 40,
+      "state_library_index": 186,
+      "step_idx": 2,
+      "env_count": 128,
+      "unresolved_after_resampling": 0
+    },
+    {
+      "batch_idx": 123,
+      "slate_idx": 41,
+      "state_library_index": 198,
+      "step_idx": 0,
+      "env_count": 128,
+      "unresolved_after_resampling": 0
+    },
+    {
+      "batch_idx": 124,
+      "slate_idx": 41,
+      "state_library_index": 198,
+      "step_idx": 1,
+      "env_count": 128,
+      "unresolved_after_resampling": 0
+    },
+    {
+      "batch_idx": 125,
+      "slate_idx": 41,
+      "state_library_index": 198,
+      "step_idx": 2,
+      "env_count": 128,
+      "unresolved_after_resampling": 0
+    },
+    {
+      "batch_idx": 126,
+      "slate_idx": 42,
+      "state_library_index": 200,
+      "step_idx": 0,
+      "env_count": 128,
+      "unresolved_after_resampling": 0
+    },
+    {
+      "batch_idx": 127,
+      "slate_idx": 42,
+      "state_library_index": 200,
+      "step_idx": 1,
+      "env_count": 128,
+      "unresolved_after_resampling": 0
+    },
+    {
+      "batch_idx": 128,
+      "slate_idx": 42,
+      "state_library_index": 200,
+      "step_idx": 2,
+      "env_count": 128,
+      "unresolved_after_resampling": 0
+    },
+    {
+      "batch_idx": 129,
+      "slate_idx": 43,
+      "state_library_index": 207,
+      "step_idx": 0,
+      "env_count": 128,
+      "unresolved_after_resampling": 0
+    },
+    {
+      "batch_idx": 130,
+      "slate_idx": 43,
+      "state_library_index": 207,
+      "step_idx": 1,
+      "env_count": 128,
+      "unresolved_after_resampling": 0
+    },
+    {
+      "batch_idx": 131,
+      "slate_idx": 43,
+      "state_library_index": 207,
+      "step_idx": 2,
+      "env_count": 128,
+      "unresolved_after_resampling": 0
+    },
+    {
+      "batch_idx": 132,
+      "slate_idx": 44,
+      "state_library_index": 211,
+      "step_idx": 0,
+      "env_count": 128,
+      "unresolved_after_resampling": 0
+    },
+    {
+      "batch_idx": 133,
+      "slate_idx": 44,
+      "state_library_index": 211,
+      "step_idx": 1,
+      "env_count": 128,
+      "unresolved_after_resampling": 0
+    },
+    {
+      "batch_idx": 134,
+      "slate_idx": 44,
+      "state_library_index": 211,
+      "step_idx": 2,
+      "env_count": 128,
+      "unresolved_after_resampling": 0
+    },
+    {
+      "batch_idx": 135,
+      "slate_idx": 45,
+      "state_library_index": 214,
+      "step_idx": 0,
+      "env_count": 128,
+      "unresolved_after_resampling": 0
+    },
+    {
+      "batch_idx": 136,
+      "slate_idx": 45,
+      "state_library_index": 214,
+      "step_idx": 1,
+      "env_count": 128,
+      "unresolved_after_resampling": 0
+    },
+    {
+      "batch_idx": 137,
+      "slate_idx": 45,
+      "state_library_index": 214,
+      "step_idx": 2,
+      "env_count": 128,
+      "unresolved_after_resampling": 0
+    },
+    {
+      "batch_idx": 138,
+      "slate_idx": 46,
+      "state_library_index": 222,
+      "step_idx": 0,
+      "env_count": 128,
+      "unresolved_after_resampling": 0
+    },
+    {
+      "batch_idx": 139,
+      "slate_idx": 46,
+      "state_library_index": 222,
+      "step_idx": 1,
+      "env_count": 128,
+      "unresolved_after_resampling": 0
+    },
+    {
+      "batch_idx": 140,
+      "slate_idx": 46,
+      "state_library_index": 222,
+      "step_idx": 2,
+      "env_count": 128,
+      "unresolved_after_resampling": 0
+    },
+    {
+      "batch_idx": 141,
+      "slate_idx": 47,
+      "state_library_index": 231,
+      "step_idx": 0,
+      "env_count": 128,
+      "unresolved_after_resampling": 0
+    },
+    {
+      "batch_idx": 142,
+      "slate_idx": 47,
+      "state_library_index": 231,
+      "step_idx": 1,
+      "env_count": 128,
+      "unresolved_after_resampling": 0
+    },
+    {
+      "batch_idx": 143,
+      "slate_idx": 47,
+      "state_library_index": 231,
+      "step_idx": 2,
+      "env_count": 128,
+      "unresolved_after_resampling": 0
+    },
+    {
+      "batch_idx": 144,
+      "slate_idx": 48,
+      "state_library_index": 247,
+      "step_idx": 0,
+      "env_count": 128,
+      "unresolved_after_resampling": 0
+    },
+    {
+      "batch_idx": 145,
+      "slate_idx": 48,
+      "state_library_index": 247,
+      "step_idx": 1,
+      "env_count": 128,
+      "unresolved_after_resampling": 0
+    },
+    {
+      "batch_idx": 146,
+      "slate_idx": 48,
+      "state_library_index": 247,
+      "step_idx": 2,
+      "env_count": 128,
+      "unresolved_after_resampling": 0
+    },
+    {
+      "batch_idx": 147,
+      "slate_idx": 49,
+      "state_library_index": 252,
+      "step_idx": 0,
+      "env_count": 128,
+      "unresolved_after_resampling": 0
+    },
+    {
+      "batch_idx": 148,
+      "slate_idx": 49,
+      "state_library_index": 252,
+      "step_idx": 1,
+      "env_count": 128,
+      "unresolved_after_resampling": 0
+    },
+    {
+      "batch_idx": 149,
+      "slate_idx": 49,
+      "state_library_index": 252,
+      "step_idx": 2,
+      "env_count": 128,
+      "unresolved_after_resampling": 0
+    }
+  ]
+}

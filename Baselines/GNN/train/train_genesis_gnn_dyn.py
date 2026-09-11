@@ -3,6 +3,15 @@ for the dynamic-resolution GNN (`model/gnn_dyn.py::PropNetDiffDenModel`) on
 our pooled Genesis slates_multistep data (N=20 fixed, no resolution
 regressor). See SPEC.md sections 6-8 for the recipe this follows.
 
+CORRECTED 2026-09-10: node positions now come from
+`GenesisGNNDataset`/`Baselines/GNN/perception.py`'s raster-derived
+foreground-extraction + FPS pipeline, not privileged ground-truth cube
+centroids -- see SPEC.md's "CORRECTION" section. This changed the dataset's
+constructor argument from raw `_*_data.pt` directories to dataset config
+yaml paths (`configs/dataset/genesis_slates_multistep_*.yaml`), since
+building the occupancy raster (`occ0`) requires going through
+`Baselines.common.data.load_cell`, not a bare glob over `.pt` files.
+
 Does NOT touch `Baselines/GNN/train/train_gnn_dyn.py` (vendored,
 PyFlex/FlexEnv-specific) -- this is a new script for a fundamentally
 different I/O shape.
@@ -26,15 +35,15 @@ from torch.utils.data import DataLoader
 
 from Baselines.GNN.dataset.dataset_genesis_gnn import GenesisGNNDataset, collate
 from Baselines.GNN.geometry import ADJ_THRESH, PARTICLE_DENS, compute_s_delta, model_config
+from Baselines.GNN.perception import N_PARTICLES
 from model.gnn_dyn import PropNetDiffDenModel
 
-TRAIN_ROOTS = [
-    "Genesis/data/slates_multistep/n20_L20mm_train",
-    "Genesis/data/slates_multistep/n20_L40mm_train",
+TRAIN_CFGS = [
+    "configs/dataset/genesis_slates_multistep_n20_L20L40_train.yaml",
 ]
-VAL_ROOTS = [
-    "Genesis/data/slates_multistep/n20_L20mm_eval",
-    "Genesis/data/slates_multistep/n20_L40mm_eval",
+VAL_CFGS = [
+    "configs/dataset/genesis_slates_multistep_n20_L20mm_eval.yaml",
+    "configs/dataset/genesis_slates_multistep_n20_L40mm_eval.yaml",
 ]
 
 
@@ -79,22 +88,26 @@ def main():
     ap.add_argument("--smoke", action="store_true",
                      help="tiny run (2 epochs) to check the pipeline end-to-end before "
                           "committing to a long run, per ORCHESTRATION_LOG.md priority order.")
-    ap.add_argument("--train-roots", default=None,
-                     help="comma-separated list of directories of _*_data.pt files, "
-                          "overriding the module-level TRAIN_ROOTS default (L20mm+L40mm "
-                          "pooled). Added for EXP-0030 (overnight_randlen corpus) without "
-                          "changing the default behaviour for any existing invocation.")
-    ap.add_argument("--val-roots", default=None,
-                     help="comma-separated list, overriding VAL_ROOTS. See --train-roots.")
+    ap.add_argument("--train-cfgs", default=None,
+                     help="comma-separated list of configs/dataset/*.yaml paths, "
+                          "overriding the module-level TRAIN_CFGS default (pooled "
+                          "L20mm+L40mm train).")
+    ap.add_argument("--val-cfgs", default=None,
+                     help="comma-separated list, overriding VAL_CFGS. See --train-cfgs.")
+    ap.add_argument("--n-particles", type=int, default=N_PARTICLES,
+                     help="fixed GNN node count (Baselines/GNN/perception.py's "
+                          "foreground-extraction + FPS output size). No longer tied to "
+                          "any cell's true particle count -- e.g. can be 30 while training "
+                          "on a pool that mixes n20 and n50 cells.")
     args = ap.parse_args()
 
     os.makedirs(args.out_dir, exist_ok=True)
     device = args.device
 
-    train_roots = args.train_roots.split(",") if args.train_roots else TRAIN_ROOTS
-    val_roots = args.val_roots.split(",") if args.val_roots else VAL_ROOTS
-    train_ds = GenesisGNNDataset(train_roots)
-    val_ds = GenesisGNNDataset(val_roots)
+    train_cfgs = args.train_cfgs.split(",") if args.train_cfgs else TRAIN_CFGS
+    val_cfgs = args.val_cfgs.split(",") if args.val_cfgs else VAL_CFGS
+    train_ds = GenesisGNNDataset(train_cfgs, n_particles=args.n_particles)
+    val_ds = GenesisGNNDataset(val_cfgs, n_particles=args.n_particles)
     print(f"train examples: {len(train_ds)}  val examples: {len(val_ds)}")
 
     train_loader = DataLoader(train_ds, batch_size=args.batch_size, shuffle=True,
@@ -127,11 +140,13 @@ def main():
         if val_loss < best_val:
             best_val = val_loss
             torch.save({"model_state": model.state_dict(), "cfg": cfg, "epoch": epoch,
-                        "val_mse": val_loss}, os.path.join(args.out_dir, "ckpt_best.pth"))
+                        "val_mse": val_loss, "n_particles": args.n_particles},
+                       os.path.join(args.out_dir, "ckpt_best.pth"))
 
         if epoch % args.ckpt_every == 0 or epoch == epochs - 1:
             torch.save({"model_state": model.state_dict(), "cfg": cfg, "epoch": epoch,
-                        "val_mse": val_loss}, os.path.join(args.out_dir, "ckpt_last.pth"))
+                        "val_mse": val_loss, "n_particles": args.n_particles},
+                       os.path.join(args.out_dir, "ckpt_last.pth"))
             with open(os.path.join(args.out_dir, "history.json"), "w") as f:
                 json.dump(history, f, indent=2)
 

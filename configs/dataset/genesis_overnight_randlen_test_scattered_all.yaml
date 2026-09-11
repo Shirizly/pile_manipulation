@@ -1,0 +1,30 @@
+# Held-out FILE-level test split of the overnight_randlen corpus,
+# SCATTERED spawn mode only, BOTH particle counts (scattered_n20: 5 files,
+# scattered_n50: 5 files -- 10 files total). Added 2026-09-10 (EXP-0002:
+# stratify the cross-corpus report by spawn mode) as the n20+n50-pooled
+# counterpart of `genesis_overnight_randlen_test_n20_scattered.yaml` (which
+# excludes n50 for the same `Baselines.common.data.load_cell`/`CellData`
+# shape-(n,20,7) reason `genesis_overnight_randlen_test_all.yaml`
+# documents). Consumed via `Baselines.common.randlen_data.load_randlen_cell`
+# (registry-based, N-agnostic), NOT `load_cell` -- do not point `load_cell`
+# at this config, it will crash on the n50 files.
+#
+# NOTE: `states`/`states_` (available through the registry, not through
+# this config's own fields) are PRIVILEGED ground-truth 3D cube pose -- do
+# not feed them directly into any model's input path; see
+# `Baselines/GNN/SPEC.md`'s "CORRECTION" section and
+# `Baselines/GNN/perception.py`.
+type: genesis
+
+paths:
+  - overnight_randlen_test/scattered_n20
+  - overnight_randlen_test/scattered_n50
+
+val_pct: 0
+test_pct: 0
+
+resolution_scale: 0.5
+
+min_push_length_m: 0.0001
+
+include_physics: false

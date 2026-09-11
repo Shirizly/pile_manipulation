@@ -1,4 +1,4 @@
-"""EXP-0030: in-distribution control-utility check on overnight_randlen's OWN
+"""In-distribution control-utility check on overnight_randlen's OWN
 held-out test files.
 
 `Genesis/data/overnight_randlen/DATASET.yaml` establishes that every file in
@@ -7,7 +7,9 @@ identical settled state (measured spread 0/1.16e-10 m), exactly the
 `slates_multistep` structure, just with randomised push length and 4 steps
 instead of 3. So the held-out TEST files (disjoint from train, see
 `scripts/probes/prepare_randlen_split.py`) can be scored with the SAME
-`regret_dv`/`slateK_exact` machinery as the register's slate cells --
+`regret_dv`/`slateK_exact` machinery this project already uses for the
+slates_multistep cells (a model's predicted ranking of candidate pushes by
+their effect on a goal potential, compared against the true ranking) --
 `Baselines.common.eval_baseline.run_eval` almost does this already, but it
 hardcodes a manifest-based slate/step lookup this corpus does not have (no
 manifest.json: it is not organised as named slates). This script derives
@@ -18,8 +20,8 @@ slate_idx/step_idx itself instead:
     (`DATASET.yaml`: row r = env r%128, step r//128), verified here by
     checking the step-0 subset comes out to exactly n_files*128 rows with no
     partial blocks (a `min_push_length_m` guard can drop a handful of
-    near-zero-length rows elsewhere in a file without disturbing this, and is
-    checked, not assumed -- see "What was actually run" in EXP-0030).
+    near-zero-length rows elsewhere in a file without disturbing this, and
+    the assertion below checks that directly rather than assuming it).
 
 Restricted to the n20 groups (mixed/piled/scattered) -- `load_cell` hard-
 assumes states shape (n,20,7), and the n50 groups cannot go through it. n20
@@ -153,10 +155,13 @@ def main():
     pile_center, pile_support = None, None
     if any(g.endswith("-pile") for g in goal_list):
         # Same "compute from the loaded data, never hard-code" rule
-        # Baselines/common/eval_baseline.py follows for the slate cells
-        # (goal-placement-pinned, INVARIANTS.md, is broken precisely because
-        # this centroid is recomputed per run/per pool set -- documented, not
-        # fixed here). Computed once over THIS call's step-0 occ0, i.e. over
+        # Baselines/common/eval_baseline.py follows for the slate cells: the
+        # pile-relative goal's centroid is recomputed from whatever data is
+        # currently loaded, not pinned to one fixed reference point -- so a
+        # pile-relative goal is NOT a stable target across different
+        # calls/pools (each call's target depends on that call's own data),
+        # a known limitation, not fixed here. Computed once over THIS call's
+        # step-0 occ0, i.e. over
         # whatever test-cfg was loaded -- pooled across all 3 n20 spawn
         # groups for the original pooled config, or over ONE spawn group's 5
         # held-out files for the per-stratum configs added for the spawn-mode

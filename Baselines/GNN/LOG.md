@@ -1,5 +1,50 @@
 # GNN baseline — LOG
 
+## SUMMARY (2026-09-10): camera-only correction, node-count generalisation, cross-corpus report
+
+**The node-construction pipeline was corrected.** Every entry below this
+one describes a version of the GNN baseline that fed privileged
+ground-truth simulator state (`states`/`states_`) directly to the graph
+nodes -- a real deployment has no such sensor, only a top-down camera. See
+`SPEC.md`'s "CORRECTION" section for the full rationale and
+`Baselines/GNN/perception.py` for the fix: node positions are now
+constructed via foreground-extraction + Farthest Point Sampling on the
+occupancy raster alone (training labels still use privileged state, which
+is fine -- see that section for why). `predictor.py`, `dataset/
+dataset_genesis_gnn.py`, and `train/train_genesis_gnn_dyn.py` were all
+rewritten accordingly; every accuracy/slateK_exact number in the older
+entries below was computed under the OLD (incorrect) pipeline and should
+not be cited going forward.
+
+Two models were retrained under the corrected pipeline: `runs/ckpt_best.pth`
+(pooled L20mm+L40mm slates, `n_particles=20`) and
+`runs/randlen_train_all_n30/ckpt_best.pth` (pooled overnight_randlen TRAIN
+corpus, all 5 groups n20+n50, `n_particles=30` -- node count is now a free
+hyperparameter decoupled from any cell's true particle count, which is
+what let one model pool across n20 and n50 cells at all).
+
+Both models, plus `Baselines/NFD/runs/nfd_3ch_randlen`, were then scored
+across L20mm, L40mm, and the overnight_randlen held-out test in one
+cross-corpus, multi-metric report (`Baselines/common/eval_report.py`) --
+image `accuracy` (GNN compared against a node-resampled ground truth, see
+`docs/experiments/METRICS.md`) and `slateN` capture across 3 goal shapes x
+3 value functions. Full numbers, caveats, and threats:
+**`docs/experiments/EXP-0001-cross-corpus-gnn-nfd-report.md`**
+(claim C-001, `docs/experiments/REGISTER.md`); raw JSON at
+`Baselines/common/runs/cross_corpus_report.json`.
+
+**Follow-up (EXP-0002):** the two overnight_randlen-trained models
+(`gnn_randlen_n30`, `nfd_randlen` -- `gnn_l20l40` excluded, it never
+trained on this corpus) were re-scored with the SAME code, this time
+stratified by spawn mode (piled/scattered/mixed) instead of pooled.
+Both models' accuracy is stable across modes (<0.04 spread) and NFD leads
+GNN in every mode. See
+**`docs/experiments/EXP-0002-randlen-spawnmode-stratified-report.md`**
+(claim C-002); raw JSON at
+`Baselines/common/runs/cross_corpus_report_spawnmode.json`.
+
+---
+
 ## SUMMARY (agent E1-gnn-improve, rasteriser-batching pass, 2026-09-08)
 
 **Task 1 (rasteriser batching): DONE.** `Baselines/GNN/predictor.py`'s
@@ -94,12 +139,16 @@ and on `slateK_exact`/`regret_dv`/`worstK` at nearly every K.**
 ### Headline numbers
 
 All rows below are **pooled-train fits** (mean-delta/linear refit on the
-same L20+L40 pool the GNN trains on, via `Baselines/common/eval_baseline.py`
-— NOT the per-cell numbers in `ORCHESTRATION_LOG.md`'s original reference
-table, which used a different, per-cell-only fit and are ~5-10 points
-higher for `linear`/`mean-delta` on this account alone. Comparing gnn's
-0.253 against the per-cell 0.301 would misread a win as a loss — see that
-file's corrected "Reference numbers" section.)
+same L20+L40 pool the GNN trains on, via `Baselines/common/eval_baseline.py`)
+— NOT a per-cell-only fit (fitting the reference operators separately on
+each cell's own train split rather than on the shared pool), which
+produces a systematically easier fit and `linear`/`mean-delta` scores
+~5-10 points higher on this account alone, with no relation to how well
+the operator actually generalises. Always compare a model's numbers
+against THIS file's own `mean-delta`/`linear` rows — refit on the exact
+same pool the model being judged trained on — never a per-cell fit
+reported elsewhere, which would misread a win as a loss purely from the
+fitting-procedure difference.
 
 **`accuracy`** (`Baselines/GNN/runs/gnn_{L20mm,L40mm}_accuracy.json`):
 
@@ -123,9 +172,9 @@ same-state slates, per `ORCHESTRATOR AMENDMENT`) — not independently
 verified, flagged as a hypothesis.
 
 **`slateK_exact` / `regret_dv` / `worstK`** at K=32 and K=128, goal=`corner`
-only (goal=`center` is claim C-040's known degeneracy — centred target,
-centred pile, `dV=0` identically, "helpful 0%" is not a model failure,
-confirmed in both cells' eval_baseline.py output):
+only (goal=`center` is a known degeneracy for these cells — centred
+target, centred pile, `dV=0` identically, "helpful 0%" is not a model
+failure, confirmed in both cells' `eval_baseline.py` output):
 
 | metric | model | L20mm K=32 | L20mm K=128 | L40mm K=32 | L40mm K=128 |
 |---|---|---|---|---|---|
@@ -179,8 +228,8 @@ linear operator's.
 1. **Per-cell vs pooled reference numbers are NOT directly comparable** —
    see the "Headline numbers" note above. Always compare against
    `Baselines/GNN/runs/gnn_*_accuracy.json`'s own `mean-delta`/`linear`
-   rows (refit on the same pool the model being judged trained on), not
-   `ORCHESTRATION_LOG.md`'s original per-cell table.
+   rows (refit on the same pool the model being judged trained on), never
+   a per-cell fit reported elsewhere.
 2. **`Baselines/common/gpu_lock.sh` changed mid-run** (from a single
    exclusive flock to a 3-slot semaphore) while this agent was mid-flight
    — a transient race during that edit caused one early invocation to
@@ -188,9 +237,10 @@ linear operator's.
    moment later worked fine. Not this baseline's bug; flagged in case
    another agent hits the same transient during a concurrent edit.
 3. **goal=`center`'s `dv_true` is identically ~0 (helpful 0%)** for both
-   cells — this is claim C-040's known degeneracy (centred goal + already
-   roughly-centred pile), not something wrong with the GNN or the harness.
-   Score/report `goal=corner` for control-ranking metrics.
+   cells — a known degeneracy of a centred goal against an already
+   roughly-centred pile (the target and the starting state coincide, so
+   there is no distance left to close), not something wrong with the GNN
+   or the harness. Score/report `goal=corner` for control-ranking metrics.
 
 **Files delivered (all new, per SPEC.md section 7 — none of the vendored
 `Baselines/GNN/{dataset,train,model}/*` files were touched):**

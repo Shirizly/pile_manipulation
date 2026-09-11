@@ -1,0 +1,158 @@
+{
+  "rebuilt": true,
+  "rebuilt_by": "scripts/probes/rebuild_slate_manifest.py",
+  "rebuilt_note": "Collection was interrupted; this manifest was reconstructed from the deterministic batch_idx == slate_idx * n_steps + step_idx mapping. state_library_index and unresolved_after_resampling are unrecoverable and are null. Trailing incomplete slates were dropped.",
+  "dropped_trailing_batches": 0,
+  "n_steps": 3,
+  "n_slates": 6,
+  "n_cubes": 50,
+  "size": 0.005,
+  "push_length": 0.02,
+  "n_envs": 64,
+  "batches": [
+    {
+      "batch_idx": 0,
+      "slate_idx": 0,
+      "step_idx": 0,
+      "env_count": 64,
+      "state_library_index": null,
+      "unresolved_after_resampling": null
+    },
+    {
+      "batch_idx": 1,
+      "slate_idx": 0,
+      "step_idx": 1,
+      "env_count": 64,
+      "state_library_index": null,
+      "unresolved_after_resampling": null
+    },
+    {
+      "batch_idx": 2,
+      "slate_idx": 0,
+      "step_idx": 2,
+      "env_count": 64,
+      "state_library_index": null,
+      "unresolved_after_resampling": null
+    },
+    {
+      "batch_idx": 3,
+      "slate_idx": 1,
+      "step_idx": 0,
+      "env_count": 64,
+      "state_library_index": null,
+      "unresolved_after_resampling": null
+    },
+    {
+      "batch_idx": 4,
+      "slate_idx": 1,
+      "step_idx": 1,
+      "env_count": 64,
+      "state_library_index": null,
+      "unresolved_after_resampling": null
+    },
+    {
+      "batch_idx": 5,
+      "slate_idx": 1,
+      "step_idx": 2,
+      "env_count": 64,
+      "state_library_index": null,
+      "unresolved_after_resampling": null
+    },
+    {
+      "batch_idx": 6,
+      "slate_idx": 2,
+      "step_idx": 0,
+      "env_count": 64,
+      "state_library_index": null,
+      "unresolved_after_resampling": null
+    },
+    {
+      "batch_idx": 7,
+      "slate_idx": 2,
+      "step_idx": 1,
+      "env_count": 64,
+      "state_library_index": null,
+      "unresolved_after_resampling": null
+    },
+    {
+      "batch_idx": 8,
+      "slate_idx": 2,
+      "step_idx": 2,
+      "env_count": 64,
+      "state_library_index": null,
+      "unresolved_after_resampling": null
+    },
+    {
+      "batch_idx": 9,
+      "slate_idx": 3,
+      "step_idx": 0,
+      "env_count": 64,
+      "state_library_index": null,
+      "unresolved_after_resampling": null
+    },
+    {
+      "batch_idx": 10,
+      "slate_idx": 3,
+      "step_idx": 1,
+      "env_count": 64,
+      "state_library_index": null,
+      "unresolved_after_resampling": null
+    },
+    {
+      "batch_idx": 11,
+      "slate_idx": 3,
+      "step_idx": 2,
+      "env_count": 64,
+      "state_library_index": null,
+      "unresolved_after_resampling": null
+    },
+    {
+      "batch_idx": 12,
+      "slate_idx": 4,
+      "step_idx": 0,
+      "env_count": 64,
+      "state_library_index": null,
+      "unresolved_after_resampling": null
+    },
+    {
+      "batch_idx": 13,
+      "slate_idx": 4,
+      "step_idx": 1,
+      "env_count": 64,
+      "state_library_index": null,
+      "unresolved_after_resampling": null
+    },
+    {
+      "batch_idx": 14,
+      "slate_idx": 4,
+      "step_idx": 2,
+      "env_count": 64,
+      "state_library_index": null,
+      "unresolved_after_resampling": null
+    },
+    {
+      "batch_idx": 15,
+      "slate_idx": 5,
+      "step_idx": 0,
+      "env_count": 64,
+      "state_library_index": null,
+      "unresolved_after_resampling": null
+    },
+    {
+      "batch_idx": 16,
+      "slate_idx": 5,
+      "step_idx": 1,
+      "env_count": 64,
+      "state_library_index": null,
+      "unresolved_after_resampling": null
+    },
+    {
+      "batch_idx": 17,
+      "slate_idx": 5,
+      "step_idx": 2,
+      "env_count": 64,
+      "state_library_index": null,
+      "unresolved_after_resampling": null
+    }
+  ]
+}

@@ -1,4 +1,4 @@
-# EXP-0030: held-out FILE-level test split of the overnight_randlen corpus,
+# Held-out FILE-level test split of the overnight_randlen corpus,
 # n20 groups only (mixed/piled/scattered at n_particles=20 -- Baselines/
 # common/data.py::load_cell hard-assumes states shape (n,20,7), so n50 files
 # cannot go through this config; they are covered separately by each
@@ -10,6 +10,13 @@
 # val_pct/test_pct=0/split="train" loads every file in `paths` (same pattern
 # as the *_eval configs for slates_multistep): these files are already
 # held out by construction.
+#
+# NOTE (2026-09-10): see `genesis_overnight_randlen_train_all.yaml` for the
+# n20+n50-pooled equivalent (`genesis_overnight_randlen_test_all.yaml` is
+# this file's n50-inclusive counterpart, used as the GNN baseline's
+# validation split). Also: `states`/`states_` here are PRIVILEGED
+# ground-truth 3D cube pose -- do not feed them directly into any model's
+# input path; see `Baselines/GNN/SPEC.md`'s "CORRECTION" section.
 type: genesis
 
 paths:

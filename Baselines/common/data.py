@@ -8,10 +8,12 @@ Every baseline model needs the SAME transitions in two representations:
   * an **occupancy view** -- ``occ0``/``occ1`` at 64x64, for grid models
     (UNet/CNN/etc).
 
-The occupancy view MUST be byte-identical to every number already recorded
-in docs/experiments/REGISTER.md, so it is produced by going through
-``registry.dataset_registry.build_dataset`` on the SAME dataset configs
-``scripts/probes/expB_multistep_eval.py`` uses -- not a new rasteriser.
+The occupancy view MUST be byte-identical across every baseline that
+consumes it -- otherwise two models' reported numbers are not measuring
+the same transitions and are not comparable -- so it is produced by going
+through ``registry.dataset_registry.build_dataset`` on the SAME dataset
+configs ``scripts/probes/expB_multistep_eval.py`` uses, not a new
+rasteriser.
 
 The particle view is read from the SAME underlying run arrays
 (``states``/``states_``/``p_starts``/``p_stops``/``angles``, loaded once per
@@ -21,10 +23,11 @@ itself) using PileSweepData's OWN index bookkeeping
 ``_offsets`` indirection that ``PileSweepData.get_raw_action`` and
 ``_extract_sample_in_pxl`` already use internally -- see
 ``Genesis/training/dataset.py`` lines ~150-169). This is NOT a re-derivation
-of frame conventions (there is a documented history of exactly that kind of
-bug -- C-018, the axis-transpose fix described in
-``Genesis/training/dataset.py``'s own ``_draw_particle_grid`` docstring): it
-is the two lines of index arithmetic the library already performs, applied
+of frame conventions -- world axes and pixel axes have silently swapped in
+this codebase before if re-derived by hand (see the axis-transpose fix
+described in ``Genesis/training/dataset.py``'s own ``_draw_particle_grid``
+docstring): it is the two lines of index arithmetic the library already
+performs, applied
 here so a particle-view row and an occupancy-view row at the same index
 `i` are guaranteed to be the same transition.
 

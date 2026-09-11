@@ -1,14 +1,33 @@
-# GNN baseline — design spec (constant node count, N=20)
+# GNN baseline — design spec (constant node count)
 
-**Status: design document only. Nothing here has been trained or run.**
-Written for an implementer who has NOT read the paper. Every architecture
-number is cited to `model/gnn_dyn.py` and to the vendored checkpoint's
+**See the "CORRECTION (2026-09-10)" section at the end of this file
+before reading anything below it as current.** The original design here
+(and the implementation it described) fed ground-truth simulator cube
+centroids directly to the graph nodes. That was a mistake, not a
+deliberate simplification: node positions must be constructed from the
+top-down occupancy raster (foreground-extraction + FPS), since a real
+deployment only ever has a camera, never privileged 3D object pose. The
+rest of this file (architecture, `s_delta`, hazards) is otherwise still
+accurate and is kept as the original record; only §1's node-construction
+description and the "N=20 fixed" framing below are superseded.
+
+**Status: design document + a since-corrected implementation.** Written
+for an implementer who has NOT read the paper. Every architecture number
+is cited to `model/gnn_dyn.py` and to the vendored checkpoint's
 `state_dict`, not guessed. Scope, per `Baselines/ORCHESTRATION_LOG.md`
-(user decision, 2026-09-08): **no resolution regressor.** Our cells have
-exactly 20 cubes, one node per cube, N=20 fixed, always. Everything about
-adaptive resolution selection (`res_rgr`, `res_regressor.py`,
-`train_res_rgr.py`, `dataset_res_rgr.py`, the paper's §III-C Bayesian
-optimization over ω) is out of scope and is not discussed further below.
+(user decision, 2026-09-08): **no resolution regressor** -- the paper's
+own §III-C Bayesian optimization over ω (choosing HOW MANY nodes to use,
+`res_rgr`/`res_regressor.py`/`train_res_rgr.py`/`dataset_res_rgr.py`) is
+out of scope and not discussed further below. This is a narrower
+exclusion than the original version of this doc implied: node count
+(`n_particles`) is a fixed, chosen hyperparameter (originally 20, matching
+our cells' true cube count; since generalized to other values, e.g. 30,
+decoupled from any cell's true particle count -- see the CORRECTION
+section), but WHICH `n_particles` positions the graph gets is no longer
+looked up from privileged state -- it is constructed via
+foreground-extraction + Farthest Point Sampling from the occupancy raster,
+exactly as the paper's own perception module does. Only the *adaptive
+choice of ω itself* (the resolution regressor) remains out of scope.
 
 ---
 
@@ -198,9 +217,10 @@ z constant = table height, ≈0.0175 m in the sample checked), `angles
 
 ## 5. Hazards — unit, frame, and convention mismatches (ranked)
 
-This repo has a documented history of frame-convention bugs (claim C-018,
-`docs/experiments/REGISTER.md`). Treat every one of these as load-bearing,
-not cosmetic.
+This repo has a history of frame/unit-convention bugs — an axis silently
+swapped between world and pixel space, a coordinate scale reused from a
+different simulator unexamined, a heading read from the wrong field. Treat
+every hazard below as load-bearing, not cosmetic.
 
 1. **Blade-yaw vs travel-heading confusion (confirmed, not hypothetical).**
    `angles` is the blade's face orientation, exactly `heading + 90°`
@@ -272,12 +292,13 @@ not cosmetic.
 
 6. **Orientation is dropped entirely, not modeled.** The model's output is
    xyz-only; our state additionally carries a quaternion. This is a real
-   capability gap versus e.g. the UNet-FiLM baseline (which presumably
-   predicts something richer or is scored purely on occupancy) — not a bug,
-   but confirm with whoever owns `docs/experiments/METRICS.md` that
-   occupancy/position-only scoring is what `slateK_exact`/`accuracy`
-   actually need (this agent did not re-derive the metrics code itself;
-   flagged as an assumption, not verified end-to-end — see Risks §8).
+   capability gap, not a bug — but it does mean this baseline can only ever
+   be credited for position, not orientation: confirm that
+   occupancy/position-only scoring is genuinely what `slateK_exact`/
+   `accuracy` measure (both operate on rasterised occupancy grids, so this
+   should already be the case, but this agent did not re-derive the
+   metrics code itself end-to-end; flagged as an assumption, not verified
+   — see Risks §8).
 
 ## 6. Conversion recipe: our `.pt` batch → `forward()` inputs
 
@@ -418,12 +439,11 @@ and touching a vendored file the instructions say not to modify.
    to ablate either way since the training loop is new regardless; not
    worth blocking on, but flagged so it isn't silently forgotten.
 4. **Orientation/quaternion is entirely unmodeled** (§5 item 6) — I did
-   not re-derive `docs/experiments/METRICS.md`'s `slateK_exact`/`accuracy`
-   computation to confirm it only needs positions/occupancy; this is an
-   assumption carried over from how the sibling UNet/linear baselines in
-   this same overnight effort are apparently scored (per
-   `ORCHESTRATION_LOG.md`'s reference-numbers table), not something this
-   agent verified end-to-end.
+   not re-derive `slateK_exact`/`accuracy`'s computation myself to confirm
+   it only needs positions/occupancy; this is an assumption (every sibling
+   baseline in this project is scored on rasterised occupancy, which is
+   itself orientation-blind past a cube's rendered silhouette, so this
+   should hold), not something this agent verified end-to-end.
 5. **Honest confidence this trains successfully on our data: moderate-
    high.** The architecture is tiny (38k params), well-understood now
    (every shape traced to code + checkpoint), and the data pipeline is
@@ -489,5 +509,112 @@ heading, as the spec says. Sharpening, because it matters:
   not there. **Always derive the push heading from `p_stop - p_start`, never
   from `angles`.** Use `angles` only where a face orientation is wanted.
 
-This is the C-018 failure mode (`docs/experiments/REGISTER.md`) waiting to
-happen again; treat it as a hard rule, not a preference.
+This is the same class of frame-convention bug flagged at the top of this
+section (§5) waiting to happen again; treat it as a hard rule, not a
+preference.
+
+---
+
+## CORRECTION (2026-09-10) — node positions were privileged; fixed
+
+**What was wrong.** Both this spec (§1, §4, §6) and the implementation it
+described (the original `Baselines/GNN/dataset/dataset_genesis_gnn.py` and
+`Baselines/GNN/predictor.py`) took the position "our cubes are already the
+exact per-node states — no depth/color/FPS/KDTree pipeline needed at all"
+(§4, as originally written) and read `states[...,:3]`/`states_[...,:3]`
+directly out of the raw `_*_data.pt` files as graph node positions, both
+for training and at inference. That is **privileged 3D simulator state** —
+exact per-cube centroid and, via the reattached quaternion, exact
+per-cube orientation. A real deployment has no such sensor; it has a
+top-down camera. Every other baseline in this project (NFD, the
+persistence/mean-delta/linear reference operators) already runs on the
+occupancy raster alone — the GNN was the one baseline quietly cheating,
+and this was flagged as a mistake, not defended as a reasonable
+simplification, once raised.
+
+**What changed.** `Baselines/GNN/perception.py` (new module) implements
+the paper's own recipe (§1's RGB-D → foreground point cloud → FPS,
+faithfully adapted to our raster instead of a real RGB-D frame — see that
+module's docstring for the full reasoning and terminology, including why
+"foreground extraction" here means reading already-pure-foreground
+occupied pixels, not segmenting a cluttered scene):
+
+1. **Node INPUT positions are raster-derived, never privileged.** The
+   top-down occupancy grid (`occ0` — the SAME rasteriser
+   (`Baselines/common/data.py::rasterize_particles`) that produces every
+   ground-truth occ0/occ1 elsewhere in this repo) has its occupied pixels
+   read out as a world-xy point cloud, Farthest-Point-Sampled down to a
+   fixed `n_particles`, then locally recentred (mirrors
+   `utils.py::recenter`/`dataset_gnn_dyn.py:101`). These xy values ARE the
+   node positions fed to the network — nothing here reads `states`.
+2. **Height and orientation are dropped, not estimated.** A top-down
+   occupancy raster carries no depth/height channel and no per-object
+   orientation once reduced to an anonymous point cloud, so every node
+   gets a single fixed `z` (`perception.py::Z_CONST = 0.0`) and, when a
+   predicted particle needs rendering back to occupancy for scoring, a
+   fixed identity quaternion (`DEFAULT_QUAT`) — never a privileged
+   per-cube value. This sharpens hazard §5 item 6 (orientation was already
+   unmodeled by the network) to also cover *position* height and the
+   predictor's former practice of reattaching the INPUT's real quaternion.
+3. **Training labels still use privileged state — that's fine, correctly
+   scoped.** To know how far a given raster-observed point should move
+   (the supervised target), `dataset_genesis_gnn.py` tracks each
+   FPS-sampled point to its nearest real cube (KDTree on ground-truth
+   `states`, mirroring `dataset_gnn_dyn.py:108-109`'s own tracking step
+   exactly) and applies THAT cube's true displacement to the
+   raster-derived point. This is the standard sim-training pattern —
+   privileged label, realistic input — not a re-introduction of the same
+   bug: `predictor.py` never runs this tracking step at inference; only
+   `dataset_genesis_gnn.py` (training) does.
+4. **Node count is now decoupled from true particle count.** Because
+   nodes are FPS-sampled from an occupancy grid rather than one-per-cube,
+   `n_particles` is a free hyperparameter — the graph does not need to
+   match a cell's true cube count. This is what let a single GNN pool
+   training data across cells with different true particle counts (e.g.
+   `Genesis/data/overnight_randlen`'s n20 and n50 groups) with one fixed
+   node count (e.g. 30), something the original one-node-per-cube design
+   could never have supported. See §7 below for the loader change this
+   required.
+
+**§7 update — dataset loader no longer goes through `CellData`.**
+`Baselines.common.data.load_cell`/`CellData` preallocates a fixed
+`(n, 20, 7)` tensor per config and therefore cannot represent a pool that
+mixes true particle counts (confirmed: it crashes on `overnight_randlen`'s
+n50 groups). `dataset_genesis_gnn.py::_load_rows` instead reads occupancy
++ each row's own per-file `states`/`states_`/`p_starts`/`p_stops` directly
+off `registry.dataset_registry.build_dataset`'s raw dataset (reusing
+`Baselines.common.data._resolve_sample`'s index arithmetic, not
+re-deriving it) — safe because, per point 4 above, the OUTPUT is always
+`n_particles`-shaped regardless of a row's true particle count. This does
+not touch `Baselines/common/data.py` itself (still used as-is by
+`predictor.py`/`eval_baseline.py` for occupancy and by every config that
+only needs `states` for evaluation-side ground truth, e.g. fitting the
+linear/mean-delta reference operators or computing a pile centroid — those
+uses are legitimate, they never feed `states` to a model's input path).
+
+**Performance note.** `sample_nodes_xy`/`track_displacement` are seeded
+deterministically per row (`seed=<flat row index>`) and therefore
+epoch-invariant — `GenesisGNNDataset` now runs this computation ONCE at
+construction time and caches the result as plain tensors, rather than
+recomputing it in every `__getitem__` call across every epoch. An early
+smoke-training attempt under the pre-fix design (computing it lazily, per
+epoch) was killed after exceeding a 10-minute wall-clock budget; moving it
+to `__init__` reduced the pooled-corpus (~98k row) one-time cost to a few
+minutes, paid once regardless of epoch count.
+
+**What did NOT change.** `model/gnn_dyn.py` (`PropNetDiffDenModel`) is
+still reused exactly as vendored — it has no N-dependent parameters, so a
+node-count change is purely a runtime choice (now saved into the
+checkpoint dict as `n_particles` and read back by `predictor.py`, so a
+model trained with e.g. `--n-particles 30` is always scored with 30
+nodes). `geometry.py::compute_s_delta` is unchanged and unaffected — it
+only ever consumed whatever `s_cur_xyz` was handed to it, never assumed
+where those positions came from.
+
+**Config note.** Every `configs/dataset/genesis_*.yaml` this baseline (or
+any other) reads now carries a header note: `states`/`states_` are
+privileged and must not be fed to a model's input path. Two new pooled
+configs were added for the n20+n50 case specifically:
+`genesis_overnight_randlen_train_all.yaml` /
+`genesis_overnight_randlen_test_all.yaml` (all 5 spawn-mode/particle-count
+groups, consumed via `_load_rows`, NOT via `load_cell`/`CellData`).

@@ -1,0 +1,29 @@
+# All 5 spawn-mode / particle-count groups of the overnight_randlen held-out
+# TEST corpus, pooled: mixed_n20, piled_n20, scattered_n20, piled_n50,
+# scattered_n50 (21 files total: 5+5+5+1+5). File-level disjoint from every
+# `overnight_randlen_train/*` dir (scripts/probes/prepare_randlen_split.py,
+# seed=0, see Genesis/data/overnight_randlen_test/split_manifest.json).
+#
+# Added 2026-09-10, same role as `genesis_overnight_randlen_train_all.yaml`
+# (see that file's header) -- used ONLY as a validation split for
+# `Baselines/GNN/train/train_genesis_gnn_dyn.py` via
+# `dataset_genesis_gnn.py::_load_rows` (bypasses `Baselines.common.data`'s
+# `CellData`, which cannot represent the n50 groups). Do NOT point
+# `load_cell`/`CellData` at this config.
+type: genesis
+
+paths:
+  - overnight_randlen_test/mixed_n20
+  - overnight_randlen_test/piled_n20
+  - overnight_randlen_test/scattered_n20
+  - overnight_randlen_test/piled_n50
+  - overnight_randlen_test/scattered_n50
+
+val_pct: 0
+test_pct: 0
+
+resolution_scale: 0.5
+
+min_push_length_m: 0.0001
+
+include_physics: false

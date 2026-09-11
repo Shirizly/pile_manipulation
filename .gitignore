@@ -11,6 +11,7 @@ nca_epoch_*.pth
 *.jpg
 *.jpeg
 *.avi
+*.pdf
 Genesis/data/dry_run/
 Genesis/data/overnight*/
 Genesis/data/granularity/
@@ -18,6 +19,8 @@ Genesis/data/cube_spectrum/
 Genesis/data/dinowm_test*/
 Genesis/data/linear_foresight/
 Genesis/data/slates
+Genesis/data/slates_multistep/*eval/
+Genesis/data/slates_multistep/*train/
 # Run artifacts (outputs are reproducible from configs)
 outputs/
 mpc_transitions/

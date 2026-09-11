@@ -1,13 +1,25 @@
-# EXP-0030: TRAIN-side n20 split of overnight_randlen (mixed/piled/scattered,
+# TRAIN-side n20 split of overnight_randlen (mixed/piled/scattered,
 # n_particles=20), used ONLY to fit the persistence/mean-delta/linear
 # reference operators for the held-out in-distribution regret check
 # (Baselines/common/eval_randlen_indist.py) -- the SAME role
 # genesis_slates_multistep_n20_L20L40_train.yaml plays for the slate cells,
 # kept as a separate config because it is a different corpus.
 #
-# NOT used to train the GNN/NFD baselines themselves (those use ALL 5 groups,
-# n20+n50, via nfd_train_3ch_randlen.yaml's own `paths` / the GNN train
-# script's --train-roots).
+# NOT used to train the GNN baseline itself: that now pools ALL 5 groups
+# (n20+n50) via `genesis_overnight_randlen_train_all.yaml` and
+# `Baselines/GNN/train/train_genesis_gnn_dyn.py --train-cfgs` (updated
+# 2026-09-10; this comment used to reference a since-renamed `--train-roots`
+# flag and a `nfd_train_3ch_randlen.yaml` config that does not exist in this
+# tree -- corrected here, not left stale).
+#
+# NOTE (2026-09-10, applies to every model consuming this config):
+# `states`/`states_` are PRIVILEGED ground-truth 3D cube pose -- a real
+# top-down-camera deployment only ever has the occupancy raster
+# (`occ0`/`occ1`). This config's own consumer (fitting linear/mean-delta
+# operators on `occ0`/`occ1`) never touches `states`, but a future model
+# added here must not feed `states`/`states_` directly into its input path;
+# use `occ0` + foreground-extraction/FPS (`Baselines/GNN/perception.py`)
+# instead. See `Baselines/GNN/SPEC.md`'s "CORRECTION" section.
 type: genesis
 
 paths:

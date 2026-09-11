@@ -1,12 +1,20 @@
-"""Baselines/common/eval_baseline.py -- generalised EXP-B scorer.
+"""Baselines/common/eval_baseline.py -- generalised occupancy-prediction and
+control-utility scorer for the slates_multistep cells.
 
 A generalisation of ``scripts/probes/expB_multistep_eval.py`` that takes a
 **pluggable predictor** in place of the hardcoded linear/mean-delta/UNet
-trio. Reuses that script's pipeline unchanged (fit the linear/mean-delta
-reference operators on TRAIN, score IMAGE ACCURACY over the full EVAL split
-with the swept-region mask, score CONTROL UTILITY on STEP-0 CANDIDATES ONLY
-and write a dV cache) -- the only new code is the predictor plumbing and the
-particle/occupancy dual view (via ``Baselines.common.data``).
+trio. Reuses that script's pipeline unchanged: fit linear/mean-delta
+reference operators on TRAIN (a ridge-regularised linear operator toward
+identity, and a fixed mean occupancy delta -- the cheapest baselines any
+learned model must beat), score IMAGE ACCURACY over the full EVAL split
+with the swept-region mask (how well predicted occupancy matches ground
+truth in the region the push could plausibly have affected), score
+CONTROL UTILITY on STEP-0 CANDIDATES ONLY (each candidate push's predicted
+change in a Lyapunov-style goal potential, ranked against the true change,
+on the subset of transitions that share one starting state so ranking
+candidates against each other is meaningful) and write a dV cache -- the
+only new code here is the predictor plumbing and the particle/occupancy
+dual view (via ``Baselines.common.data``).
 
 Predictor contract
 -------------------
@@ -24,11 +32,12 @@ produced every occ0/occ1 in this dataset -- see that module's docstring).
 It never carries ``occ1``/``states_`` (the ground truth).
 
 Reference rows: ``persistence``, ``mean-delta`` and ``linear`` (fit on TRAIN
-exactly as EXP-B does, via ``fit_linear_foresight``/``dmdc_baseline``, not
-reimplemented) are ALWAYS computed and included in the output, in addition
-to any ``--predictor`` supplied. This is also what ``--self-test`` checks
-against ``runs_expB/n20_L20mm_accuracy.json`` (no external predictor needed
-for that check).
+exactly as ``scripts/probes/expB_multistep_eval.py`` does, via
+``fit_linear_foresight``/``dmdc_baseline``, not reimplemented) are ALWAYS
+computed and included in the output, in addition to any ``--predictor``
+supplied. This is also what ``--self-test`` checks against
+``runs_expB/n20_L20mm_accuracy.json`` (no external predictor needed for
+that check).
 
 Usage
 -----
@@ -39,7 +48,8 @@ Usage
         --tag <yourmodel>_L20mm --out-prefix Baselines/<YOU>/runs/<yourmodel>_L20mm \\
         --predictor yourpkg.module:build_predictor
 
-    # harness self-test (no external predictor; reproduces EXP-B's own numbers):
+    # harness self-test (no external predictor; reproduces
+    # scripts/probes/expB_multistep_eval.py's own numbers):
     PYTHONPATH=. python Baselines/common/eval_baseline.py --self-test
 """
 from __future__ import annotations
@@ -61,7 +71,9 @@ from utils import git_provenance
 
 from Baselines.common.data import CellData, load_cell
 
-R, CR, RIDGE = 64, 1.0, 1.0  # EXP-0024/EXP-0026/EXP-B's fit, unchanged
+R, CR, RIDGE = 64, 1.0, 1.0  # grid resolution / crop margin / ridge strength used by
+                              # every occupancy-based fit and score in this project;
+                              # kept fixed so numbers across cells/models stay comparable
 
 
 @dataclass
@@ -298,7 +310,9 @@ def main():
                           "an object with .name and .predict_occ(batch). Repeatable.")
     ap.add_argument("--degradations", action="store_true")
     ap.add_argument("--goals", default="corner,center",
-                     help="comma-separated lyapunov_weights goal keys (default: EXP-B's own two).")
+                     help="comma-separated lyapunov_weights goal keys (default: this "
+                          "harness's two standard goal placements, a corner target and a "
+                          "centered target).")
     ap.add_argument("--self-test", action="store_true",
                      help="run the harness with only the built-in reference operators on "
                           "n20_L20mm and check it reproduces runs_expB/n20_L20mm_accuracy.json "

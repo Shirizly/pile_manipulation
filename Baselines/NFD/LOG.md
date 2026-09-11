@@ -1,5 +1,30 @@
 # Baselines/NFD — LOG
 
+## SUMMARY (2026-09-10): cross-corpus report vs both GNN variants
+
+`nfd_3ch_randlen` (`runs/nfd_3ch_randlen/unet_best.pth`) was scored
+alongside two GNN checkpoints across L20mm, L40mm, and the
+overnight_randlen held-out test in one cross-corpus, multi-metric report
+(`Baselines/common/eval_report.py`): image `accuracy` (raw ground truth --
+NFD has no node-count bottleneck to resample through, unlike GNN, see
+`docs/experiments/METRICS.md`) and `slateN` capture across 3 goal shapes x
+3 value functions. NFD's accuracy exceeded both GNN variants' on every
+corpus tested. Full numbers, caveats, and threats:
+**`docs/experiments/EXP-0001-cross-corpus-gnn-nfd-report.md`**
+(claim C-001, `docs/experiments/REGISTER.md`); raw JSON at
+`Baselines/common/runs/cross_corpus_report.json`.
+
+**Follow-up (EXP-0002):** `nfd_randlen` (alongside `gnn_randlen_n30`
+only -- `gnn_l20l40` excluded, it never trained on this corpus) was
+re-scored with the SAME code, stratified by spawn mode (piled/scattered/
+mixed) instead of pooled. NFD's accuracy is stable across modes (<0.02
+spread) and leads GNN in every mode. See
+**`docs/experiments/EXP-0002-randlen-spawnmode-stratified-report.md`**
+(claim C-002); raw JSON at
+`Baselines/common/runs/cross_corpus_report_spawnmode.json`.
+
+---
+
 Agent: A2-grid-specs (design), then B2-nfd-impl (implementation/training/
 scoring). Branch `baselines/overnight`. Task: non-FiLM NFD baseline, built on
 `model/UNetModels_modular.py::UNet` (`unet-modular` registry entry), per the

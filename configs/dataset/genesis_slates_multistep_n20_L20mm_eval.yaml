@@ -1,5 +1,5 @@
-# EXP-B multistep: held-out EVAL split for n20_L20mm (20 of 50 slates, all
-# 3 steps -- 60 batches, 7680 transitions). Symlinked by
+# Held-out EVAL split for n20_L20mm (20 of 50 slates, all 3 steps -- 60
+# batches, 7680 transitions). Symlinked by
 # scripts/probes/prepare_slate_multistep_split.py; disjoint from the *_train
 # cell at the SLATE level (no slate appears in both).
 #
@@ -8,15 +8,25 @@
 #   (b) control ranking restricted to STEP 0 ONLY, filtered downstream by
 #       the eval script using the source cell's manifest.json (batch_idx ->
 #       slate_idx/step_idx) -- at step 0 every env of a slate shares an
-#       identical start state (same-state slate, EXP-0012's convention);
-#       steps 1-2 are each env's own diverged rollout and are NOT slates
-#       (docs/plan_selection_pressure_validation.md, "Control ranking uses
-#       STEP-0 CANDIDATES ONLY").
+#       identical start state, by construction of the data-collection
+#       script; steps 1-2 are each env's own diverged rollout and are NOT
+#       slates, so ranking candidate pushes against each other is only
+#       meaningful at step 0.
 #
 # val_pct=0/test_pct=0/split="train" loads every file in the folder --
-# the genesis_cube_spectrum_n20_slates_all.yaml pattern (EXP-0026): these
-# slates are held out by construction (a disjoint slate set from *_train),
-# so the nominal split name is immaterial.
+# these slates are held out by construction (a disjoint slate set from
+# *_train), so the nominal split name is immaterial.
+#
+# NOTE (2026-09-10, applies to every model consuming this config):
+# `states`/`states_` are PRIVILEGED ground-truth 3D cube pose -- a real
+# top-down-camera deployment only ever has the occupancy raster
+# (`occ0`/`occ1`). Do not feed `states`/`states_` directly into any model's
+# input path; use `occ0` + foreground-extraction/FPS
+# (`Baselines/GNN/perception.py`) to build camera-realistic node-level
+# input instead, and reserve `states`/`states_` for training-time labels
+# only. See `Baselines/GNN/SPEC.md`'s "CORRECTION" section (an earlier
+# version of the GNN baseline fed these directly to the model -- that was a
+# mistake, not a deliberate simplification).
 type: genesis
 
 paths:

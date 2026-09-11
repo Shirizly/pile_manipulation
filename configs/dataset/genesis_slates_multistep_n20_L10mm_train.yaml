@@ -1,11 +1,12 @@
-# EXP-B multistep: training split for n20_L10mm (30 of 50 slates, all 3
-# steps, symlinked by scripts/probes/prepare_slate_multistep_split.py into
+# Training split for n20_L10mm (30 of 50 slates, all 3 steps), symlinked by
+# scripts/probes/prepare_slate_multistep_split.py into
 # Genesis/data/slates_multistep/n20_L10mm_train/ -- see that script for the
-# slate-level split rule (seed 0, sorted slate index) and
-# docs/plan_selection_pressure_validation.md's "EXP-B collection status" for
-# why these cells are not drop-in comparable with slates/n20_heap_5mm
-# (placement-aware collision-free starts, no contact-triggered early stop,
-# 0% short pushes here vs ~5% there).
+# slate-level split rule (seed 0, sorted slate index). These cells use
+# placement-aware, collision-free starting configurations with NO
+# contact-triggered early stop (0% short pushes here), which is NOT the
+# same collection convention as slates/n20_heap_5mm (~5% short pushes
+# there) -- a comparison across the two must account for that difference,
+# not treat the numbers as interchangeable.
 #
 # val_pct/test_pct=0: with 90 files (30 slates x 3 steps) all sharing one
 # physics key, a generic split would carve val/test at (slate,step)
@@ -14,6 +15,17 @@
 # a fixed 100-epoch schedule with patience=100 (early stopping disabled), so
 # no in-loop validation split is required for the trained weights to be
 # well-defined. Held-out scoring is entirely on the disjoint *_eval cell.
+#
+# NOTE (2026-09-10, applies to every model consuming this config):
+# `states`/`states_` are PRIVILEGED ground-truth 3D cube pose -- a real
+# top-down-camera deployment only ever has the occupancy raster
+# (`occ0`/`occ1`). Do not feed `states`/`states_` directly into any model's
+# input path; use `occ0` + foreground-extraction/FPS
+# (`Baselines/GNN/perception.py`) to build camera-realistic node-level
+# input instead, and reserve `states`/`states_` for training-time labels
+# only. See `Baselines/GNN/SPEC.md`'s "CORRECTION" section (an earlier
+# version of the GNN baseline fed these directly to the model -- that was a
+# mistake, not a deliberate simplification).
 type: genesis
 
 paths:
@@ -22,7 +34,8 @@ paths:
 val_pct: 0
 test_pct: 0
 
-resolution_scale: 0.5   # box 0.128 m -> 64x64, matching EXP-0024/EXP-0026
+resolution_scale: 0.5   # box 0.128 m -> 64x64, the occupancy resolution used
+                         # throughout this project's occupancy-based scoring
 
 # Placement-aware collection has NO contact-triggered early stop (pile_aware:
 # false), so realized push length is constant (verified:

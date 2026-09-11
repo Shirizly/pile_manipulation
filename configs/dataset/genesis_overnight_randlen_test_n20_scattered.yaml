@@ -1,17 +1,22 @@
-# EXP-0030 (spawn-mode stratification follow-up): held-out FILE-level test
-# split of the overnight_randlen corpus, SCATTERED spawn mode only, n20 (5
-# files -- Genesis/data/overnight_randlen_test/split_manifest.json's
-# scattered_n20 test_idx). Modelled on genesis_overnight_randlen_test_n20.yaml
-# (which pools all 3 n20 spawn groups into 15 pools), but restricted to ONE
-# spawn group so `ind-stripe-thin-pile`'s pile-centroid target is computed
-# from, and scored against, this spawn mode's own piles rather than an
-# average over all three (see the write-up in EXP-0030's appended section for
-# why pooling is wrong for a pile-relative goal).
+# Held-out FILE-level test split of the overnight_randlen corpus, SCATTERED
+# spawn mode only, n20 (5 files -- Genesis/data/overnight_randlen_test/
+# split_manifest.json's scattered_n20 test_idx). Modelled on
+# genesis_overnight_randlen_test_n20.yaml (which pools all 3 n20 spawn
+# groups into 15 pools), but restricted to ONE spawn group so
+# `ind-stripe-thin-pile`'s pile-centroid target is computed from, and
+# scored against, this spawn mode's own piles rather than an average over
+# all three -- pooling spawn modes would blur a pile-relative goal toward
+# a centroid no single spawn mode's pile is actually near.
 #
 # n50 excluded, same reason as the pooled config: Baselines/common/data.py's
 # load_cell hard-assumes states shape (n,20,7).
 #
 # NEW config -- does not touch any config used by prior runs.
+#
+# NOTE (2026-09-10): `states`/`states_` here are PRIVILEGED ground-truth 3D
+# cube pose -- do not feed them directly into any model's input path; see
+# `Baselines/GNN/SPEC.md`'s "CORRECTION" section and
+# `Baselines/GNN/perception.py`.
 type: genesis
 
 paths:

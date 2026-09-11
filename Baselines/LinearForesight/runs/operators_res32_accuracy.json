@@ -1,0 +1,96 @@
+{
+  "provenance": {
+    "commit": "36b38878",
+    "commit_full": "36b3887863dc81ea57c297c310583d834c12c1e0",
+    "dirty": true,
+    "dirty_files": [
+      "Baselines/GNN/LOG.md",
+      "Baselines/GNN/SPEC.md",
+      "Baselines/GNN/dataset/dataset_genesis_gnn.py",
+      "Baselines/GNN/predictor.py",
+      "Baselines/GNN/runs/ckpt_best.pth",
+      "Baselines/GNN/runs/ckpt_last.pth",
+      "Baselines/GNN/scripts/verify_rasterizer.py",
+      "Baselines/GNN/train/train_genesis_gnn_dyn.py",
+      "Baselines/NFD/LOG.md",
+      "Baselines/common/data.py",
+      "Baselines/common/eval_baseline.py",
+      "Baselines/common/eval_randlen_indist.py",
+      "configs/dataset/genesis_overnight_randlen_test_n20.yaml",
+      "configs/dataset/genesis_overnight_randlen_test_n20_mixed.yaml",
+      "configs/dataset/genesis_overnight_randlen_test_n20_piled.yaml",
+      "configs/dataset/genesis_overnight_randlen_test_n20_scattered.yaml",
+      "configs/dataset/genesis_overnight_randlen_train_n20.yaml",
+      "configs/dataset/genesis_slates_multistep_n20_L10mm_eval.yaml",
+      "configs/dataset/genesis_slates_multistep_n20_L10mm_train.yaml",
+      "configs/dataset/genesis_slates_multistep_n20_L20L40_train.yaml"
+    ],
+    "branch": "baselines/overnight"
+  },
+  "train_cfg": "configs/dataset/genesis_overnight_randlen_train_all.yaml",
+  "test_cfg": "configs/dataset/genesis_overnight_randlen_test_all.yaml",
+  "n_bins": 6,
+  "res": 32,
+  "constraint": "ridge",
+  "counts_per_bin": [
+    7420,
+    18330,
+    24925,
+    22275,
+    18680,
+    6666
+  ],
+  "bin_edges_mm": [
+    0.0,
+    13.333939015865326,
+    26.667878031730652,
+    40.00181704759598,
+    53.335756063461304,
+    66.66969507932663,
+    80.00363409519196
+  ],
+  "accuracy": {
+    "persistence": 0.0,
+    "mean-delta": 0.05568140745162964,
+    "linear-single": 0.14729034900665283,
+    "linear-switched": 0.24783533811569214
+  },
+  "per_bin_accuracy": {
+    "0": {
+      "persistence": 0.0,
+      "mean-delta": -0.651126503944397,
+      "linear-single": -1.1493518352508545,
+      "linear-switched": -0.5460035800933838
+    },
+    "1": {
+      "persistence": 0.0,
+      "mean-delta": -0.040818214416503906,
+      "linear-single": -0.027436137199401855,
+      "linear-switched": 0.13460958003997803
+    },
+    "2": {
+      "persistence": 0.0,
+      "mean-delta": 0.06180506944656372,
+      "linear-single": 0.17730581760406494,
+      "linear-switched": 0.2463819980621338
+    },
+    "3": {
+      "persistence": 0.0,
+      "mean-delta": 0.1106221079826355,
+      "linear-single": 0.2540246248245239,
+      "linear-switched": 0.3033697009086609
+    },
+    "4": {
+      "persistence": 0.0,
+      "mean-delta": 0.1346248984336853,
+      "linear-single": 0.27402251958847046,
+      "linear-switched": 0.34643638134002686
+    },
+    "5": {
+      "persistence": 0.0,
+      "mean-delta": 0.1265750527381897,
+      "linear-single": 0.24392026662826538,
+      "linear-switched": 0.3549000024795532
+    }
+  }
+}

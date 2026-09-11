@@ -1,0 +1,38 @@
+# All 5 spawn-mode / particle-count groups of the overnight_randlen TRAIN
+# corpus, pooled: mixed_n20, piled_n20, scattered_n20, piled_n50,
+# scattered_n50 (192 files total: 45+45+45+12+45).
+#
+# Added 2026-09-10 for training a raster/FPS-based particle-space model
+# (Baselines/GNN) whose node count is a fixed hyperparameter independent of
+# each cell's TRUE particle count (see Baselines/GNN/perception.py's
+# foreground-extraction + Farthest Point Sampling node construction). This
+# is unlike `genesis_overnight_randlen_train_n20.yaml` (n20 groups only),
+# which exists to fit the persistence/mean-delta/linear reference operators
+# via `Baselines.common.data.load_cell` -- that loader hardcodes states
+# shape (n,20,7) via `CellData` and therefore CANNOT read the n50 files.
+#
+# This config is consumed directly through
+# `registry.dataset_registry.build_dataset` by
+# `Baselines/GNN/dataset/dataset_genesis_gnn.py::_load_rows`, which reads
+# each run's own per-file states/states_/p_starts/p_stops (whatever true N
+# that file has) rather than through CellData -- so pooling heterogeneous
+# true-N cells here is safe. Do NOT point `Baselines.common.data.load_cell`
+# (or anything using `CellData`) at this config -- it will crash on the
+# n50 files (shape mismatch against the hardcoded (n,20,7) allocation).
+type: genesis
+
+paths:
+  - overnight_randlen_train/mixed_n20
+  - overnight_randlen_train/piled_n20
+  - overnight_randlen_train/scattered_n20
+  - overnight_randlen_train/piled_n50
+  - overnight_randlen_train/scattered_n50
+
+val_pct: 0
+test_pct: 0
+
+resolution_scale: 0.5
+
+min_push_length_m: 0.0001
+
+include_physics: false

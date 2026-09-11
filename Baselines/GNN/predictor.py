@@ -3,62 +3,40 @@ Baselines/common/eval_baseline.py. Wraps the trained
 `PropNetDiffDenModel` (model/gnn_dyn.py) and rasterises its particle-space
 prediction to occupancy.
 
-Rasterisation note (E1-gnn-improve, batching pass): the harness's own
-`Baselines.common.data.rasterize_particles` is a single-transition routine
-(it says so in its own docstring) that calls
-`PileSweepData._draw_particle_grid` once per row -- and that method itself
-loops in Python over the 20 particles issuing ONE `cv2.boxPoints` +
-`cv2.fillPoly` pair PER PARTICLE. Timing showed the GNN's per-candidate
-cost is flat in K (866->832->820 us, K=32->1024) -- the tell of an
-unbatched per-candidate Python/cv2 loop, not network cost (38k params).
+CORRECTED 2026-09-10 (SPEC.md's "CORRECTION" section, LOG.md): `predict_occ`
+used to read `batch.states` -- privileged ground-truth 3D cube pose -- and
+feed those exact centroids to the graph as node positions. That is not
+available in a real camera-only deployment. Node positions are now built
+from `batch.occ0` (the top-down occupancy raster) alone, via
+`Baselines/GNN/perception.py`'s foreground-extraction + FPS pipeline --
+the same pipeline `Baselines/GNN/dataset/dataset_genesis_gnn.py` uses for
+training (minus the KDTree-to-ground-truth tracking step, which only
+exists to build a training label and has no privileged state to run
+against at inference time).
 
-`Baselines/common/data.py` is read-only, so the batched path lives here
-instead. Two things were TRIED for batching the per-particle work itself
-and one of them is a documented dead end, kept here as a warning:
-
-  - TRIED AND REJECTED: collapsing the 20 per-particle `cv2.fillPoly`
-    calls into one `cv2.fillPoly(grid, boxes, 1)` call over the whole
-    particle list. This LOOKS safe (fillPoly with a list of
-    *non-overlapping* polygons and a constant colour is bit-identical to
-    calling it once per polygon -- verified directly), but our cube piles
-    have ADJACENT/OVERLAPPING boxes, and `cv2.fillPoly` given multiple
-    contours in one call fills them under an even-odd winding rule (like
-    a single multi-contour path), which XORs out the overlap instead of
-    just setting it to 1 -- silently DIFFERENT pixels, caught only by
-    `Baselines/GNN/scripts/verify_rasterizer.py`'s real-candidate check
-    (batched sum was LOWER than per-row, e.g. 117 vs 122 filled pixels on
-    the first real candidate tried). Reverted; do not reintroduce this
-    without re-deriving the fill-rule interaction from scratch.
-  - KEPT: the quaternion-to-yaw computation is vectorised across the
-    WHOLE (B,N) batch at once (plain elementwise arctan2, the identical
-    formula to `quaternion_to_yaw` in `Genesis/training/dataset.py`, just
-    computed as one numpy array instead of 20*B separate Python/math
-    calls) and the world->pixel coordinate transform is likewise done
-    once for the whole batch tensor instead of once per row. Both are
-    pure elementwise ops with no particle-to-particle interaction, so
-    there is no fill-rule-style trap here.
-  - KEPT: candidates are rasterised in PARALLEL across a thread pool
-    (`concurrent.futures.ThreadPoolExecutor`) instead of a serial Python
-    loop. Each candidate's `cv2.boxPoints`/`cv2.fillPoly`/`cv2.circle`
-    calls release the GIL (OpenCV's own C implementation), and each
-    candidate's grid buffer is independent (own `np.zeros` allocation,
-    own list of boxes) -- so this changes nothing about what gets
-    computed, only how many candidates are computed at once. This is the
-    real point of amortisation for a Python/cv2-bound per-candidate cost
-    that could not otherwise fall with K.
-
-Per-particle math (`_draw_particle_grid_fast`) reproduces
-`PileSweepData._draw_particle_grid` (Genesis/training/dataset.py) EXACTLY
-particle-by-particle (same `cv2.boxPoints` call, same int() truncation,
-same PER-PARTICLE `cv2.fillPoly` call, same axis-transpose-at-the-end
-convention). Sphere/cylinder particles (never present in our cube cells
-but kept for parity) fall back to the original per-particle `cv2.circle`
-call, unchanged.
-
-Equivalence with the harness's own `rasterize_particles` was checked
-particle-grid-exact (max abs diff == 0.0) on 400 real eval candidates
-across both cells before this was wired into `predict_occ` -- see
-`Baselines/GNN/LOG.md` and `Baselines/GNN/scripts/verify_rasterizer.py`.
+Rasterisation, second correction (also 2026-09-10): predicted nodes are now
+rasterised as fixed-size, axis-aligned cubes (`perception.py::
+rasterize_nodes_as_cubes_batch`), not the harness's own per-cube,
+per-orientation box renderer. That renderer (formerly
+`rasterize_particles_batch`/`_draw_particle_grid_fast` in this file, with
+an extensive cv2-batching/threading history -- see
+`Baselines/GNN/LOG.md`'s "E1-gnn-improve" summary for that work) assumed
+one node per REAL cube, reading a per-cell config's own `n_particles`/
+`particle_sizes` list by index. That assumption is gone now that node
+count is a free hyperparameter decoupled from any cell's true particle
+count (SPEC.md's "CORRECTION" section) -- scoring, say, a 30-node model on
+an n50 cell would have silently truncated to 30 boxes or indexed past the
+end of the prediction tensor, depending on which count was larger, with
+the old code. `rasterize_nodes_as_cubes_batch` draws exactly as many boxes
+as the model predicted, all the same real cube size, all axis-aligned (no
+orientation head, none observable from a top-down raster either) -- see
+`perception.py` for the full rationale. `Baselines/GNN/scripts/
+verify_rasterizer.py` (the equivalence proof for the retired per-cube
+renderer) was retired along with it: the property it proved (byte-identical
+to the harness's exact per-cube-config renderer) no longer applies by
+design, and the cv2 multi-contour fill-rule trap it also guarded against
+cannot occur with `rasterize_nodes_as_cubes`'s plain numpy slice
+assignment (correctly ORs overlapping boxes with no winding-rule surprise).
 
 `build_predictor()` takes no arguments (harness contract) and loads
 `Baselines/GNN/runs/ckpt_best.pth` by default (override via the
@@ -66,142 +44,18 @@ GNN_CKPT env var if scoring a different checkpoint).
 """
 from __future__ import annotations
 
-import math
 import os
-from concurrent.futures import ThreadPoolExecutor
 
-import cv2
 import numpy as np
 import torch
 
 from Baselines.GNN.geometry import PARTICLE_DENS, compute_s_delta
+from Baselines.GNN.perception import (
+    N_PARTICLES, Z_CONST, rasterize_nodes_as_cubes_batch, sample_nodes_xy,
+)
 from model.gnn_dyn import PropNetDiffDenModel
 
 DEFAULT_CKPT = "Baselines/GNN/runs/ckpt_best.pth"
-
-
-def _yaw_from_quat_batch(quat: torch.Tensor) -> np.ndarray:
-    """Vectorised form of `PileSweepData._draw_particle_grid`'s local
-    `quaternion_to_yaw` (Genesis/training/dataset.py) -- identical
-    elementwise formula (`atan2(2(wz+xy), 1-2(y^2+z^2))`), computed as a
-    numpy array instead of one Python call per particle. `quat`: (...,4)
-    w,x,y,z. Widened to float64 first, matching the original's
-    `math.atan2` on Python floats (which upconverts the float32 tensor
-    values the same way)."""
-    q = quat.to(torch.float64).cpu().numpy()
-    w, x, y, z = q[..., 0], q[..., 1], q[..., 2], q[..., 3]
-    siny_cosp = 2 * (w * z + x * y)
-    cosy_cosp = 1 - 2 * (y * y + z * z)
-    return np.arctan2(siny_cosp, cosy_cosp)
-
-
-def _draw_particle_grid_fast(raw, particle_states_px: torch.Tensor, config,
-                              yaw: np.ndarray) -> torch.Tensor:
-    """Drop-in replacement for ONE call of
-    `raw._draw_particle_grid(particle_states_px, grid, config)`, with the
-    yaw argument precomputed for the whole batch (see module docstring).
-    `particle_states_px`: (N,7) tensor already in pixel space
-    (world*to_pxl + ctr_in_PXL, same as the harness's own
-    `rasterize_particles` produces). `yaw`: (N,) precomputed
-    `_yaw_from_quat_batch` output for this row's particles.
-
-    Mirrors `PileSweepData._draw_particle_grid` line for line, including
-    issuing ONE `cv2.fillPoly` call PER PARTICLE (see module docstring for
-    why collapsing these into a single multi-polygon call is NOT
-    equivalent for our overlapping cube piles). Sphere/cylinder particles
-    use the original per-particle `cv2.circle` call, unchanged -- never
-    exercised by our cube cells but kept so this isn't silently wrong if
-    ever pointed at a different one.
-    """
-    num_particles = config["material"]["n_particles"]
-    shape = config["material"]["shape"]
-    particle_sizes = config["data_collection"]["sampled"]["particle_sizes"]
-    H, W = raw._output_grid.shape
-    grid_np = np.zeros((H, W), dtype=np.float32)
-
-    ps = particle_states_px.numpy()
-    for idx in range(num_particles):
-        center_x = float(ps[idx, 0])
-        center_y = float(ps[idx, 1])
-        dimensions = particle_sizes[idx]
-        upright_cylinder = False
-
-        if shape == "cylinder":
-            from scipy.spatial.transform import Rotation as R
-
-            def cylinder_is_standing(quat):
-                local_up = np.array([0, 0, 1])
-                world_up = np.array([0, 0, 1])
-                rot = R.from_quat(quat)
-                rotated_axis = rot.apply(local_up)
-                alignment = abs(np.dot(rotated_axis, world_up))
-                return alignment >= 0.5
-
-            if cylinder_is_standing(ps[idx, 3:]):
-                upright_cylinder = True
-
-        if shape == "sphere" or (upright_cylinder and shape == "cylinder"):
-            diameter, _, _ = dimensions
-            cv2.circle(
-                grid_np,
-                (int(round(center_x)), int(round(center_y))),
-                max(1, int(round(diameter * raw.to_pxl * 0.5))),
-                color=1,
-                thickness=-1,
-            )
-            continue
-
-        rotated_rect = (
-            (int(center_x), int(center_y)),
-            (int(float(dimensions[0]) * raw.to_pxl), int(float(dimensions[1]) * raw.to_pxl)),
-            int(float(yaw[idx]) * 180 / math.pi),
-        )
-        box = np.int32(cv2.boxPoints(rotated_rect))
-        cv2.fillPoly(grid_np, [box], 1)
-
-    return torch.from_numpy(grid_np.T.copy())
-
-
-_MAX_WORKERS = min(32, (os.cpu_count() or 4))
-
-
-def rasterize_particles_batch(raw, run_idx: list[int], particles_world: torch.Tensor) -> torch.Tensor:
-    """Batched form of `Baselines.common.data.rasterize_particles`: rasterise
-    a whole (B,20,7) batch of world-frame particle predictions to (B,H,W)
-    occupancy grids, instead of the caller looping per row with all of the
-    per-row overhead (tensor clone, config lookup, closures) repeated B
-    times. `run_idx[i]` indexes `raw.configs`, exactly as the per-row
-    routine uses it.
-
-    The coordinate transform and quaternion-to-yaw are vectorised once for
-    the whole batch; each candidate's actual rasterisation
-    (`_draw_particle_grid_fast`, per-particle `cv2.boxPoints`/`fillPoly`,
-    unchanged from the original) is then dispatched across a thread pool
-    (`cv2` releases the GIL) so B independent candidates amortise across
-    CPU cores instead of running as one long serial Python loop -- this is
-    what actually collapses the flat-in-K cost (see module docstring).
-    Numerically identical to calling the harness's own
-    `rasterize_particles` once per row (see module docstring +
-    `Baselines/GNN/scripts/verify_rasterizer.py`)."""
-    B, N, _ = particles_world.shape
-    px = particles_world.clone()
-    px[:, :, :3] = px[:, :, :3] * raw.to_pxl + raw.ctr_in_PXL
-    yaw_all = _yaw_from_quat_batch(particles_world[:, :, 3:])  # (B,N), unpixelated quat -> yaw
-
-    H, W = raw._output_grid.shape
-    occ = torch.empty((B, H, W), dtype=torch.float32)
-    configs = [raw.configs[r] for r in run_idx]
-
-    def _one(i):
-        occ[i] = _draw_particle_grid_fast(raw, px[i], configs[i], yaw_all[i])
-
-    if B > 1:
-        with ThreadPoolExecutor(max_workers=min(_MAX_WORKERS, B)) as pool:
-            list(pool.map(_one, range(B)))
-    else:
-        for i in range(B):
-            _one(i)
-    return occ
 
 
 class GNNPredictor:
@@ -215,30 +69,55 @@ class GNNPredictor:
         self.model.eval()
         self.ckpt_epoch = ckpt.get("epoch")
         self.ckpt_val_mse = ckpt.get("val_mse")
+        # Node count is a runtime FPS choice, not something baked into the
+        # model's weights (PropNetDiffDenModel has no N-dependent
+        # parameters) -- read it from the checkpoint so a model trained
+        # with e.g. --n-particles 30 is scored with 30 nodes, not whatever
+        # this module's default happens to be.
+        self.n_particles = ckpt.get("n_particles", N_PARTICLES)
         print(f"[GNNPredictor] loaded {ckpt_path} (epoch={self.ckpt_epoch}, "
-              f"val_mse={self.ckpt_val_mse})")
+              f"val_mse={self.ckpt_val_mse}, n_particles={self.n_particles})")
 
     @torch.no_grad()
     def predict_occ(self, batch) -> torch.Tensor:
-        states = batch.states.to(self.device)          # (B,20,7)
-        s_cur = states[..., :3]
+        # CORRECTED 2026-09-10 (SPEC.md's "CORRECTION" section): node
+        # positions come ONLY from `batch.occ0`, the top-down occupancy
+        # raster -- `batch.states` (privileged ground-truth cube pose) is
+        # never read here, matching what a real camera-only deployment
+        # would have. `occ0` is already pure foreground (no background to
+        # segment out, `perception.py`'s module docstring) -- reading its
+        # occupied pixels + FPS mirrors exactly what
+        # `Baselines/GNN/dataset/dataset_genesis_gnn.py` does for training,
+        # minus the KDTree-to-ground-truth tracking step (that step exists
+        # only to build a training LABEL; there is no privileged state to
+        # track against at inference time).
+        occ0 = batch.occ0  # (B,H,W), cpu
+        raw = batch.raw
+        B, H, W = occ0.shape
+        n_particles = self.n_particles
+
+        s_cur_xy = np.stack([
+            sample_nodes_xy(occ0[i].numpy(), raw.to_pxl, raw.ctr_in_PXL,
+                             n_particles=n_particles, seed=i)
+            for i in range(B)
+        ])  # (B,n_particles,2)
+        z = np.full((B, n_particles, 1), Z_CONST, dtype=np.float32)
+        s_cur = torch.from_numpy(
+            np.concatenate([s_cur_xy, z], axis=-1).astype(np.float32)
+        ).to(self.device)  # (B,n_particles,3)
+
         p_start = batch.p_start.to(self.device)
         p_stop = batch.p_stop.to(self.device)
-        B, N, _ = s_cur.shape
 
         s_delta = compute_s_delta(s_cur, p_start, p_stop)
-        a_cur = torch.zeros(B, N, device=self.device)
+        a_cur = torch.zeros(B, n_particles, device=self.device)
         dens = torch.full((B,), PARTICLE_DENS, device=self.device)
 
-        s_pred = self.model.predict_one_step(a_cur, s_cur, s_delta, dens)  # (B,20,3)
+        s_pred = self.model.predict_one_step(a_cur, s_cur, s_delta, dens)  # (B,n_particles,3)
+        s_pred_xy = s_pred[..., :2].cpu().numpy()
 
-        # Model has no orientation head (SPEC.md hazard/§6) -- reattach the
-        # INPUT frame's quaternion unchanged rather than inventing one.
-        quat = states[..., 3:7]
-        particles_pred = torch.cat([s_pred, quat], dim=-1).cpu()  # (B,20,7)
-
-        run_idx = batch.run_idx.tolist()
-        return rasterize_particles_batch(batch.raw, run_idx, particles_pred)
+        occ_pred = rasterize_nodes_as_cubes_batch(s_pred_xy, raw.to_pxl, raw.ctr_in_PXL, H, W)
+        return torch.from_numpy(occ_pred)
 
 
 def build_predictor():

@@ -1,0 +1,176 @@
+{
+  "randlen_piled": {
+    "gnn_randlen_n30": {
+      "accuracy": 0.14473658800125122,
+      "capture": {
+        "n_slates": 6,
+        "per_goal": {
+          "random_quadrant": {
+            "lyapunov": 0.9247339830935434,
+            "mass_in_region": 0.5884658243856783,
+            "signed_mass": 0.5875393065748175
+          },
+          "ring_O": {
+            "lyapunov": 0.6905773644461567,
+            "mass_in_region": 0.4514517134331048,
+            "signed_mass": 0.33853067128189673
+          },
+          "T": {
+            "lyapunov": 0.7891656953078806,
+            "mass_in_region": 0.2152421064910778,
+            "signed_mass": 0.24028505619722104
+          }
+        },
+        "averaged_over_goals": {
+          "lyapunov": 0.8014923476158602,
+          "mass_in_region": 0.41838654810328696,
+          "signed_mass": 0.38878501135131177
+        }
+      }
+    },
+    "nfd_randlen": {
+      "accuracy": 0.4473907947540283,
+      "capture": {
+        "n_slates": 6,
+        "per_goal": {
+          "random_quadrant": {
+            "lyapunov": 0.9934199672501154,
+            "mass_in_region": 0.8407073076283925,
+            "signed_mass": 0.9442573471074622
+          },
+          "ring_O": {
+            "lyapunov": 0.8413125826952168,
+            "mass_in_region": 0.7077461893585223,
+            "signed_mass": 0.8843028493319002
+          },
+          "T": {
+            "lyapunov": 0.971482587857534,
+            "mass_in_region": 0.7711397234878984,
+            "signed_mass": 0.6074980533396307
+          }
+        },
+        "averaged_over_goals": {
+          "lyapunov": 0.9354050459342887,
+          "mass_in_region": 0.7731977401582711,
+          "signed_mass": 0.8120194165929977
+        }
+      }
+    }
+  },
+  "randlen_scattered": {
+    "gnn_randlen_n30": {
+      "accuracy": 0.13740265369415283,
+      "capture": {
+        "n_slates": 10,
+        "per_goal": {
+          "random_quadrant": {
+            "lyapunov": 0.5441395346601413,
+            "mass_in_region": 0.8970789213660039,
+            "signed_mass": 0.8798990222474504
+          },
+          "ring_O": {
+            "lyapunov": 0.5561949135669344,
+            "mass_in_region": 0.38152177280426713,
+            "signed_mass": 0.5332520485500714
+          },
+          "T": {
+            "lyapunov": 0.8160491981997222,
+            "mass_in_region": 0.5259884637637763,
+            "signed_mass": 0.4096831111713513
+          }
+        },
+        "averaged_over_goals": {
+          "lyapunov": 0.6387945488089326,
+          "mass_in_region": 0.601529719311349,
+          "signed_mass": 0.6076113939896243
+        }
+      }
+    },
+    "nfd_randlen": {
+      "accuracy": 0.4568333029747009,
+      "capture": {
+        "n_slates": 10,
+        "per_goal": {
+          "random_quadrant": {
+            "lyapunov": 0.9728587867828373,
+            "mass_in_region": 0.9370818787638738,
+            "signed_mass": 0.9360680603952891
+          },
+          "ring_O": {
+            "lyapunov": 0.9128049084221415,
+            "mass_in_region": 0.9378140576966498,
+            "signed_mass": 0.841283540822691
+          },
+          "T": {
+            "lyapunov": 0.9691255596625934,
+            "mass_in_region": 0.815092184508908,
+            "signed_mass": 0.6974222231179795
+          }
+        },
+        "averaged_over_goals": {
+          "lyapunov": 0.9515964182891907,
+          "mass_in_region": 0.8966627069898107,
+          "signed_mass": 0.8249246081119866
+        }
+      }
+    }
+  },
+  "randlen_mixed": {
+    "gnn_randlen_n30": {
+      "accuracy": 0.1744004487991333,
+      "capture": {
+        "n_slates": 5,
+        "per_goal": {
+          "random_quadrant": {
+            "lyapunov": 0.8426607228554632,
+            "mass_in_region": 0.8688598675748613,
+            "signed_mass": 0.8809745884386435
+          },
+          "ring_O": {
+            "lyapunov": 0.6296910649549131,
+            "mass_in_region": 0.7571665751903676,
+            "signed_mass": 0.7127429613284109
+          },
+          "T": {
+            "lyapunov": 0.9112720052648298,
+            "mass_in_region": 0.3942753195468017,
+            "signed_mass": 0.26209983540518056
+          }
+        },
+        "averaged_over_goals": {
+          "lyapunov": 0.794541264358402,
+          "mass_in_region": 0.6734339207706769,
+          "signed_mass": 0.6186057950574116
+        }
+      }
+    },
+    "nfd_randlen": {
+      "accuracy": 0.46525490283966064,
+      "capture": {
+        "n_slates": 5,
+        "per_goal": {
+          "random_quadrant": {
+            "lyapunov": 0.9363343987173371,
+            "mass_in_region": 0.7660851882407956,
+            "signed_mass": 0.9542879417519968
+          },
+          "ring_O": {
+            "lyapunov": 0.9135639027768482,
+            "mass_in_region": 0.8563941376824518,
+            "signed_mass": 0.8260258488258871
+          },
+          "T": {
+            "lyapunov": 0.9724205969275465,
+            "mass_in_region": 1.0,
+            "signed_mass": 0.9899774884995596
+          }
+        },
+        "averaged_over_goals": {
+          "lyapunov": 0.9407729661405773,
+          "mass_in_region": 0.8741597753077491,
+          "signed_mass": 0.9234304263591478
+        }
+      }
+    }
+  }
+}

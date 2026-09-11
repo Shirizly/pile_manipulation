@@ -4,22 +4,35 @@
 # shape as genesis_slates_multistep_n20_L20mm_train.yaml (see that file for
 # why val_pct/test_pct=0 and why min_push_length_m is a guard, not a filter,
 # under the placement-aware/no-early-stop collection). L10mm is excluded
-# (suspect per EXP-0028/EXP-0029); n50_L20mm is excluded (incomplete).
+# (flagged suspect by prior testing on this push length -- the specific
+# investigation is retained only in this project's archived record, not
+# restated here); n50_L20mm is excluded (incomplete).
 #
 # IMPORTANT for every model trained on this config: push length is NOT
 # constant across the pool (20mm vs 40mm commanded, ~0% short pushes at
 # either length per scripts/probes/verify_slate_cell.py). A model that
 # ignores the action and only conditions on occ0 will be fitting a mixture
-# and will underperform both per-cell UNet-FiLM numbers in
-# ORCHESTRATION_LOG.md's reference table -- the action (or the raw
-# p_start/p_stop/angle triple, for particle-space models) MUST be consumed,
-# not just used to pick a push location.
+# and will systematically underperform any baseline that DOES condition on
+# the action -- the action (or the raw p_start/p_stop/angle triple, for
+# particle-space models) MUST be consumed, not just used to pick a push
+# location.
 #
 # min_push_length_m is set to the L20mm cell's own guard (0.0198 m, just
 # under the 20mm nominal length) rather than the L40mm cell's 0.0396 m --
 # using the L40mm threshold here would silently drop every L20mm transition
 # from the pool. This is a GUARD against short/failed pushes, not a
 # cell-selection filter: both cells are included via `paths` below.
+#
+# NOTE (2026-09-10, applies to every model consuming this config):
+# `states`/`states_` are PRIVILEGED ground-truth 3D cube pose -- a real
+# top-down-camera deployment only ever has the occupancy raster
+# (`occ0`/`occ1`). Do not feed `states`/`states_` directly into any model's
+# input path; use `occ0` + foreground-extraction/FPS
+# (`Baselines/GNN/perception.py`) to build camera-realistic node-level
+# input instead, and reserve `states`/`states_` for training-time labels
+# only. See `Baselines/GNN/SPEC.md`'s "CORRECTION" section (an earlier
+# version of the GNN baseline fed these directly to the model -- that was a
+# mistake, not a deliberate simplification).
 type: genesis
 
 paths:
@@ -29,7 +42,8 @@ paths:
 val_pct: 0
 test_pct: 0
 
-resolution_scale: 0.5   # box 0.128 m -> 64x64, matching EXP-0024/EXP-0026/EXP-B
+resolution_scale: 0.5   # box 0.128 m -> 64x64, the occupancy resolution used
+                         # throughout this project's occupancy-based scoring
 
 min_push_length_m: 0.0198   # lowered from the L40mm cell's 0.0396 m to admit 20mm pushes
 
