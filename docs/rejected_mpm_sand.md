@@ -83,7 +83,7 @@ merely caveated (REGISTER C-029), and nothing downstream should cite them.
 
 ## Evidence
 
-`docs/experiments/EXP-0007` (settle cap, and the ~1.3 mm bias it caused),
+`archive/2026-09-10_pre-reset/docs/experiments/EXP-0007` (settle cap, and the ~1.3 mm bias it caused; archived in the 2026-09-10 register reset — see `experiments/README.md`),
 `EXP-0008` (frictionless floor, angle of repose, CPIC), and REGISTER claims
 C-023 through C-029. The probes that produced those numbers are in commit
 `e4fa9947`.

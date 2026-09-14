@@ -66,7 +66,7 @@ design:
     test_data: "same 10,751-transition test_all load, same swept-region mask, for every model"
     goals_and_value_fns: "3 goals (random_quadrant, ring_O, T) x 3 value functions (lyapunov, mass_in_region, signed_mass) -- Baselines/common/goals.py, identical to EXP-0001/EXP-0002"
   baselines: [persistence, mean-delta]
-  metric: "accuracy (image, swept region) AND slateN/capture (control-utility, step-0 same-state pools, averaged over goals) -- both keys in docs/experiments/METRICS.md, computed by fit_linear_foresight.metrics and Baselines/common/goals.py::slate_n_capture respectively, the SAME functions EXP-0001/EXP-0002 use"
+  metric: "accuracy (image, swept region) AND slateN/capture (control-utility, step-0 same-state pools, averaged over goals) -- both keys in experiments/METRICS.md, computed by fit_linear_foresight.metrics and Baselines/common/goals.py::slate_n_capture respectively, the SAME functions EXP-0001/EXP-0002 use"
 
 noise_floor: "not measured -- single file-level train/test split (seed 0), no fold-to-fold sd or bootstrap run for either metric. Aggregate accuracy gaps (e.g. 0.288 vs 0.189 at res64) and capture gaps (e.g. lyapunov 0.780 vs 0.624 at res64) are both large relative to the per-cell spread seen across goals/value-functions (~0.03-0.3), but that is not a measured floor -- flagged as imprecision, not treated as precise."
 

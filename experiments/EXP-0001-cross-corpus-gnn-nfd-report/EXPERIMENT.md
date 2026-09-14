@@ -56,7 +56,7 @@ design:
   baselines: [persistence]        # via metrics()'s own denominator; mean-delta/linear not
                                   # re-fit in this record (out of scope -- see "What would
                                   # change the verdict")
-  metric: "accuracy, slateN -- slateN generalised to 3 value functions (lyapunov, mass_in_region, signed_mass), see docs/experiments/METRICS.md"
+  metric: "accuracy, slateN -- slateN generalised to 3 value functions (lyapunov, mass_in_region, signed_mass), see experiments/METRICS.md"
 
 noise_floor: "not measured -- single run per (model, corpus) cell, no repeated seeds/folds. Flagged as a real gap (see Threats), not silently assumed zero."
 
@@ -109,7 +109,7 @@ runs/randlen_train_all_n30/ (new checkpoint, this session),
 scripts/verify_rasterizer.py (deleted this session)}`,
 `Baselines/common/{data.py,eval_baseline.py,eval_randlen_indist.py,
 eval_report.py (new),goals.py (new),randlen_data.py (new)}`,
-`docs/experiments/METRICS.md`, and 12 `configs/dataset/genesis_*.yaml`
+`experiments/METRICS.md`, and 12 `configs/dataset/genesis_*.yaml`
 files (documentation-only edits to those 12 -- citation cleanup, no
 functional change; see git diff for the exact set). In short: the checkpoints
 being scored (`ckpt_best.pth`, `randlen_train_all_n30/ckpt_best.pth`) and
@@ -130,7 +130,7 @@ earlier commit these specific numbers could be reproduced against.
 
 **GNN accuracy uses a node-count-bottlenecked ground truth** (both
 `occ0`/`occ1` FPS-resampled to the model's own `n_particles` and rasterised
-back before comparison -- `docs/experiments/METRICS.md`, "GNN accuracy:
+back before comparison -- `experiments/METRICS.md`, "GNN accuracy:
 node-count-bottlenecked comparison"), NOT raw ground truth. NFD's accuracy
 uses raw ground truth directly (no such bottleneck exists for a grid-native
 model). This is a deliberate asymmetry (fair to each model's own

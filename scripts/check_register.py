@@ -1,10 +1,13 @@
 #!/usr/bin/env python3
-"""Validate docs/experiments/ — the experiment records, the claim register and
+"""Validate experiments/ — the experiment records, the claim register and
 the invariant registry.
 
 A register nobody checks goes stale within a month; this repo's own doc map
-already points at a skill that does not exist. So the rules in
-.claude/skills/experiment-log/SKILL.md are enforced here rather than trusted.
+once pointed at a skill that did not exist. So the rules in
+.claude/skills/register-validator/SKILL.md are enforced here rather than
+trusted (workflow/storage rules live in .claude/skills/experiment-log/SKILL.md
+instead — this script does not enforce those, only what's listed in
+register-validator).
 
     python scripts/check_register.py            # check
     python scripts/check_register.py --fix-grades   # rewrite computed grades
@@ -21,7 +24,7 @@ import sys
 import yaml
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
-EXPDIR = ROOT / "docs" / "experiments"
+EXPDIR = ROOT / "experiments"
 
 GRADES = ["high", "moderate", "low", "very-low"]
 VERDICTS = {"supported", "refuted", "inconclusive", "invalidated"}
@@ -33,15 +36,15 @@ DOWNGRADES = {"provenance", "imprecision", "indirectness", "inconsistency",
 # Fields every tier needs, and the extra ones each tier adds.
 BASE = ["id", "title", "tier", "mode", "date", "claim", "provenance", "result",
         "verdict", "downgrades", "grade"]
-T1_EXTRA = ["design", "noise_floor", "depends_on"]
+T1_EXTRA = ["design", "noise_floor", "depends_on", "budget"]
 PROVENANCE = ["commit", "script", "data", "code_path", "seed", "split"]
 DESIGN = ["varied", "held_fixed", "baselines", "metric"]
 
 
 def load_records():
-    """Parse the YAML frontmatter of every EXP-*.md."""
+    """Parse the YAML frontmatter of every experiments/EXP-####-slug/EXPERIMENT.md."""
     out = []
-    for path in sorted(EXPDIR.glob("EXP-*.md")):
+    for path in sorted(EXPDIR.glob("EXP-*/EXPERIMENT.md")):
         text = path.read_text()
         m = re.match(r"^---\n(.*?)\n---\n", text, re.S)
         if not m:
@@ -67,13 +70,25 @@ def load_invariants():
     return tags
 
 
+def load_metric_keys():
+    """Metric keys -> True, from every bold-backtick `**`key`**` cell in
+    METRICS.md (covers both its metric-key table and its value-function
+    tables, which share the same markdown convention). A superset of real
+    metric keys is harmless here since this only backs an advisory warning;
+    parsing the doc beats a hardcoded list that silently goes stale."""
+    path = EXPDIR / "METRICS.md"
+    if not path.exists():
+        return set()
+    return set(re.findall(r"\*\*`([a-zA-Z0-9_]+)`\*\*", path.read_text()))
+
+
 def computed_grade(downgrades):
     """Grade is derived, never chosen: start high, drop one level per domain."""
     return GRADES[min(len(set(downgrades or [])), len(GRADES) - 1)]
 
 
-def check_record(path, rec, invariants, errors, warnings):
-    name = path.name
+def check_record(path, rec, invariants, metric_keys, errors, warnings):
+    name = f"{path.parent.name}/{path.name}"
     def err(msg): errors.append(f"{name}: {msg}")
     def warn(msg): warnings.append(f"{name}: {msg}")
 
@@ -94,8 +109,10 @@ def check_record(path, rec, invariants, errors, warnings):
                 continue          # an empty downgrade list is a real answer
             err(f"missing required field for {tier}: {f}")
 
-    if rec.get("id") != path.stem.split("-")[0] + "-" + path.stem.split("-")[1]:
-        err(f"id {rec.get('id')!r} does not match filename")
+    dirname = path.parent.name  # EXP-####-slug
+    parts = dirname.split("-")
+    if rec.get("id") != f"{parts[0]}-{parts[1]}":
+        err(f"id {rec.get('id')!r} does not match directory name {dirname!r}")
 
     if rec.get("verdict") not in VERDICTS:
         err(f"verdict {rec.get('verdict')!r} not in {sorted(VERDICTS)}")
@@ -154,14 +171,9 @@ def check_record(path, rec, invariants, errors, warnings):
             if f not in design or design[f] in (None, "", [], {}):
                 err(f"design.{f} is missing")
         met = str(design.get("metric", ""))
-        keys = ("pct_persistence", "pct_persistence_wholeimage",
-                "explained_over_meandelta", "explained", "soft_iou",
-                "l1_per_mass", "frobenius", "spearman", "slate4", "partial",
-                "FSS", "canonical_delta_profile", "r2_grouped_cv",
-                "world_alignment_cosine")
-        if met and not any(k in met for k in keys):
+        if met and metric_keys and not any(k in met for k in metric_keys):
             warn(f"design.metric does not name a key from "
-                 f"docs/experiments/METRICS.md: {met[:60]!r}")
+                 f"experiments/METRICS.md: {met[:60]!r}")
         if not (design.get("baselines") or []):
             err("design.baselines must be non-empty and include a do-nothing baseline")
 
@@ -245,12 +257,13 @@ def main():
         return 0
 
     invariants = load_invariants()
+    metric_keys = load_metric_keys()
     records = load_records()
     errors, warnings = [], []
 
     for path, rec, parse_err in records:
         if parse_err:
-            errors.append(f"{path.name}: {parse_err}")
+            errors.append(f"{path.parent.name}/{path.name}: {parse_err}")
             continue
         if args.fix_grades:
             want = computed_grade(rec.get("downgrades"))
@@ -258,9 +271,9 @@ def main():
                 text = path.read_text()
                 path.write_text(re.sub(r"^grade: .*$", f"grade: {want}", text,
                                        count=1, flags=re.M))
-                print(f"  fixed {path.name}: grade -> {want}")
+                print(f"  fixed {path.parent.name}: grade -> {want}")
                 rec["grade"] = want
-        check_record(path, rec, invariants, errors, warnings)
+        check_record(path, rec, invariants, metric_keys, errors, warnings)
 
     check_register(records, invariants, errors, warnings)
 

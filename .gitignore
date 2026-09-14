@@ -25,6 +25,11 @@ Genesis/data/slates_multistep/*train/
 outputs/
 mpc_transitions/
 
+# Below-T0 scratch for quick, uncited probes -- see experiment-log skill's
+# "Quick, uncited work" section. experiments/TEMP_LOG.md is a tracked
+# sibling and is NOT caught by this (anchored to the temp/ dir itself).
+/experiments/temp/
+
 # Rendered inspection videos. Regenerate with
 #   python -m tests.scaling_investigation.record_simulation_video
 # The measured numbers alongside them (results/*.json) ARE tracked; the frames

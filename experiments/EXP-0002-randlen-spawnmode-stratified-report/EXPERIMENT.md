@@ -57,7 +57,7 @@ design:
     gnn_no_orientation: true
     scoring_code: "byte-identical to EXP-0001 (Baselines/common/eval_report.py unchanged except the CORPORA dict addition; predictor.py/perception.py untouched since EXP-0001)"
   baselines: [persistence]
-  metric: "accuracy, slateN -- slateN generalised to 3 value functions (lyapunov, mass_in_region, signed_mass), see docs/experiments/METRICS.md"
+  metric: "accuracy, slateN -- slateN generalised to 3 value functions (lyapunov, mass_in_region, signed_mass), see experiments/METRICS.md"
 
 noise_floor: "not measured, same gap as EXP-0001. Additionally: n_slates per spawn mode is small (piled=6, scattered=10, mixed=5), so per-spawn-mode capture means rest on very few pools -- flagged in Threats, not treated as precise."
 
