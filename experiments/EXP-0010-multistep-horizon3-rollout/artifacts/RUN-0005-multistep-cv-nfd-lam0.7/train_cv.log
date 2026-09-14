@@ -1,0 +1,46 @@
+provenance: {'commit': '0ddab20f', 'commit_full': '0ddab20fe3985d1d22ab1fb69032ef70bb275996', 'dirty': True, 'dirty_files': ['.claude/skills/_draft/experiment-log/SKILL.md', '.claude/skills/_draft/experiment-log/references/experiment-template.md', '.claude/skills/_draft/experiment-log/references/why-these-fields.md -> .claude/skills/experiment-log/references/why-these-fields.md', '.claude/skills/_draft/project-overview/SKILL.md', '.claude/skills/_draft/register-validator/SKILL.md -> .claude/skills/register-validator/SKILL.md', '.claude/skills/experiment-log.SKILL.md', '.claude/skills/experiment-log/SKILL.md', '.claude/skills/experiment-log/references/experiment-template.md', '.claude/skills/project-overview.SKILL.md', '.claude/skills/project-overview/SKILL.md', '.gitignore', 'docs/experiments/EXP-0001-cross-corpus-gnn-nfd-report.md -> experiments/EXP-0001-cross-corpus-gnn-nfd-report/EXPERIMENT.md', 'docs/experiments/EXP-0002-randlen-spawnmode-stratified-report.md -> experiments/EXP-0002-randlen-spawnmode-stratified-report/EXPERIMENT.md', 'docs/experiments/EXP-0003-switched-linear-foresight-randlen.md -> experiments/EXP-0003-switched-linear-foresight-randlen/EXPERIMENT.md', 'docs/experiments/INVARIANTS.md -> experiments/INVARIANTS.md', 'docs/experiments/METRICS.md -> experiments/METRICS.md', 'docs/experiments/README.md', 'docs/experiments/REGISTER.md -> experiments/REGISTER.md', 'docs/rejected_mpm_sand.md', 'experiments/COMMANDS.jsonl'], 'branch': 'baselines/overnight'}
+folds (seed=0): [[2, 3, 4, 18, 20, 23, 24, 26, 34, 36], [1, 6, 10, 11, 21, 22, 27, 30, 45, 47], [0, 8, 16, 19, 28, 35, 37, 38, 43, 46], [9, 12, 13, 17, 25, 32, 40, 42, 44, 48], [5, 7, 14, 15, 29, 31, 33, 39, 41, 49]]
+[baseline][n20_L20mm] all-rows closed-loop acc: {0: 0.35073649883270264, 1: 0.1810241937637329, 2: 0.0989300012588501}
+[baseline][n20_L40mm] all-rows closed-loop acc: {0: 0.4509756565093994, 1: 0.3026067614555359, 2: 0.1712474226951599}
+
+=== fold 0: test slates [2, 3, 4, 18, 20, 23, 24, 26, 34, 36] ===
+  train rows (both datasets, 40 slates): 10240
+  fold 0 trained 4000 iters in 332s, final loss=0.009940
+  [fold 0][n20_L20mm] held-out closed-loop acc: {0: 0.4068235754966736, 1: 0.28010958433151245, 2: 0.2356894612312317}
+  [fold 0][n20_L40mm] held-out closed-loop acc: {0: 0.48846668004989624, 1: 0.36499857902526855, 2: 0.27464479207992554}
+
+=== fold 1: test slates [1, 6, 10, 11, 21, 22, 27, 30, 45, 47] ===
+  train rows (both datasets, 40 slates): 10240
+  fold 1 trained 4000 iters in 332s, final loss=0.010261
+  [fold 1][n20_L20mm] held-out closed-loop acc: {0: 0.40002238750457764, 1: 0.2697092890739441, 2: 0.21769088506698608}
+  [fold 1][n20_L40mm] held-out closed-loop acc: {0: 0.48728227615356445, 1: 0.37417006492614746, 2: 0.2612590789794922}
+
+=== fold 2: test slates [0, 8, 16, 19, 28, 35, 37, 38, 43, 46] ===
+  train rows (both datasets, 40 slates): 10240
+  fold 2 trained 4000 iters in 332s, final loss=0.009715
+  [fold 2][n20_L20mm] held-out closed-loop acc: {0: 0.3979451656341553, 1: 0.28114402294158936, 2: 0.2101176381111145}
+  [fold 2][n20_L40mm] held-out closed-loop acc: {0: 0.48602986335754395, 1: 0.3760519027709961, 2: 0.266923725605011}
+
+=== fold 3: test slates [9, 12, 13, 17, 25, 32, 40, 42, 44, 48] ===
+  train rows (both datasets, 40 slates): 10240
+  fold 3 trained 4000 iters in 331s, final loss=0.010160
+  [fold 3][n20_L20mm] held-out closed-loop acc: {0: 0.39726752042770386, 1: 0.26933062076568604, 2: 0.20766180753707886}
+  [fold 3][n20_L40mm] held-out closed-loop acc: {0: 0.4878860116004944, 1: 0.374115526676178, 2: 0.2679911255836487}
+
+=== fold 4: test slates [5, 7, 14, 15, 29, 31, 33, 39, 41, 49] ===
+  train rows (both datasets, 40 slates): 10240
+  fold 4 trained 4000 iters in 331s, final loss=0.010602
+  [fold 4][n20_L20mm] held-out closed-loop acc: {0: 0.3931105136871338, 1: 0.27058523893356323, 2: 0.21680426597595215}
+  [fold 4][n20_L40mm] held-out closed-loop acc: {0: 0.48606884479522705, 1: 0.3780882954597473, 2: 0.26625674962997437}
+
+pooled (CV, both datasets) per-step closed-loop accuracy: {0: 0.4430977404117584, 1: 0.3238792419433594, 2: 0.24263250827789307}
+RUN-0003 reference: step1~+0.099->+0.21x (untrained->trained, single split)
+
+[lyapunov] pooled (n=100) paired capture diff: +0.0162 +/- 0.0081 (+2.00 sigma)  wlt(trained vs untrained)=25/13/62
+
+[mass_in_region] pooled (n=100) paired capture diff: +0.0459 +/- 0.0180 (+2.54 sigma)  wlt(trained vs untrained)=40/25/35
+
+[signed_mass_in_region] pooled (n=100) paired capture diff: +0.0341 +/- 0.0144 (+2.37 sigma)  wlt(trained vs untrained)=33/26/41
+
+wrote /home/alon/Code/pile_manipulation/experiments/temp/multistep-cv/results_cv.json
+total wall time: 1665s

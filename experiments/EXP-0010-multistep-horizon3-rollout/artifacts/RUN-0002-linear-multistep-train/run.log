@@ -1,0 +1,61 @@
+provenance: {'commit': '0ddab20f', 'commit_full': '0ddab20fe3985d1d22ab1fb69032ef70bb275996', 'dirty': True, 'dirty_files': ['.claude/skills/_draft/experiment-log/SKILL.md', '.claude/skills/_draft/experiment-log/references/experiment-template.md', '.claude/skills/_draft/experiment-log/references/why-these-fields.md -> .claude/skills/experiment-log/references/why-these-fields.md', '.claude/skills/_draft/project-overview/SKILL.md', '.claude/skills/_draft/register-validator/SKILL.md -> .claude/skills/register-validator/SKILL.md', '.claude/skills/experiment-log.SKILL.md', '.claude/skills/experiment-log/SKILL.md', '.claude/skills/experiment-log/references/experiment-template.md', '.claude/skills/project-overview.SKILL.md', '.claude/skills/project-overview/SKILL.md', '.gitignore', 'docs/experiments/EXP-0001-cross-corpus-gnn-nfd-report.md -> experiments/EXP-0001-cross-corpus-gnn-nfd-report/EXPERIMENT.md', 'docs/experiments/EXP-0002-randlen-spawnmode-stratified-report.md -> experiments/EXP-0002-randlen-spawnmode-stratified-report/EXPERIMENT.md', 'docs/experiments/EXP-0003-switched-linear-foresight-randlen.md -> experiments/EXP-0003-switched-linear-foresight-randlen/EXPERIMENT.md', 'docs/experiments/INVARIANTS.md -> experiments/INVARIANTS.md', 'docs/experiments/METRICS.md -> experiments/METRICS.md', 'docs/experiments/README.md', 'docs/experiments/REGISTER.md -> experiments/REGISTER.md', 'docs/rejected_mpm_sand.md', 'experiments/COMMANDS.jsonl'], 'branch': 'baselines/overnight'}
+split (seed=0): 35 train slates / 15 test slates (same set for both datasets)
+  train: [0, 1, 2, 3, 4, 6, 8, 10, 11, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 30, 32, 34, 35, 36, 37, 38, 43, 44, 45, 46, 47, 48]
+  test:  [5, 7, 9, 12, 13, 14, 15, 29, 31, 33, 39, 40, 41, 42, 49]
+[n20_L20mm] 6400 rows (50 slates x 128 envs); 4480 train rows / 1920 test rows
+[n20_L40mm] 6400 rows (50 slates x 128 envs); 4480 train rows / 1920 test rows
+
+combined train set: 8960 rows (both datasets, 35 slates each)
+
+initialisation: 6-bin switched operator + 1 global operator, each torch.Size([1024, 1024]), from weights/MODEL-0001-stage2-visual-switched/checkpoint.pt
+
+init (closed-form) train losses (L1,L2,L3), switched: (0.03331401199102402, 0.030802065506577492, 0.029410893097519875)
+init (closed-form) train losses (L1,L2,L3), global:   (0.04279220476746559, 0.040183816105127335, 0.0391550175845623)
+
+spectral radius / max singular value at INIT:
+  switched bin 0: sr=1.0300 sv=1.7944
+  switched bin 1: sr=1.0153 sv=1.6122
+  switched bin 2: sr=1.0165 sv=2.3638
+  switched bin 3: sr=1.0279 sv=2.9455
+  switched bin 4: sr=1.0255 sv=3.0360
+  switched bin 5: sr=1.0607 sv=4.2363
+  global:        sr=1.0138 sv=1.6465
+  [switched lam=0.3] iter    1  L=0.013560  L1=0.033314 L2=0.030802 L3=0.029411
+  [switched lam=0.3] iter   50  L=0.011392  L1=0.028504 L2=0.024286 L3=0.024243
+  [switched lam=0.3] iter  100  L=0.010620  L1=0.027905 L2=0.019119 L3=0.019540
+  [switched lam=0.3] iter  150  L=0.010114  L1=0.027611 L2=0.015735 L3=0.015365
+  [global lam=0.3] iter    1  L=0.017511  L1=0.042792 L2=0.040184 L3=0.039155
+  [global lam=0.3] iter   50  L=0.013870  L1=0.034775 L2=0.029522 L3=0.028907
+  [global lam=0.3] iter  100  L=0.013163  L1=0.034047 L2=0.025292 L3=0.024934
+  [global lam=0.3] iter  150  L=0.012663  L1=0.033689 L2=0.021907 L3=0.021647
+  [switched lam=0.5] iter    1  L=0.028034  L1=0.033314 L2=0.030802 L3=0.029411
+  [switched lam=0.5] iter   50  L=0.023397  L1=0.028805 L2=0.024500 L3=0.022952
+  [switched lam=0.5] iter  100  L=0.021187  L1=0.028185 L2=0.019934 L3=0.016891
+  [switched lam=0.5] iter  150  L=0.019695  L1=0.027859 L2=0.016609 L3=0.012909
+  [global lam=0.5] iter    1  L=0.036336  L1=0.042792 L2=0.040184 L3=0.039155
+  [global lam=0.5] iter   50  L=0.028449  L1=0.035022 L2=0.029730 L3=0.028042
+  [global lam=0.5] iter  100  L=0.026316  L1=0.034268 L2=0.025376 L3=0.022707
+  [global lam=0.5] iter  150  L=0.024744  L1=0.033898 L2=0.021947 L3=0.018467
+  [switched lam=0.7] iter    1  L=0.048501  L1=0.033314 L2=0.030802 L3=0.029411
+  [switched lam=0.7] iter   50  L=0.040343  L1=0.029115 L2=0.025000 L3=0.022488
+  [switched lam=0.7] iter  100  L=0.036117  L1=0.028503 L2=0.021340 L3=0.016640
+  [switched lam=0.7] iter  150  L=0.033132  L1=0.028161 L2=0.018334 L3=0.012930
+  [global lam=0.7] iter    1  L=0.063075  L1=0.042792 L2=0.040184 L3=0.039155
+  [global lam=0.7] iter   50  L=0.050040  L1=0.035594 L2=0.030888 L3=0.029121
+  [global lam=0.7] iter  100  L=0.046049  L1=0.034642 L2=0.027604 L3=0.024122
+  [global lam=0.7] iter  150  L=0.042395  L1=0.034164 L2=0.024140 L3=0.019394
+  [switched lam=0.9] iter    1  L=0.076373  L1=0.033314 L2=0.030802 L3=0.029411
+  [switched lam=0.9] iter   50  L=0.063798  L1=0.029399 L2=0.025641 L3=0.022730
+  [switched lam=0.9] iter  100  L=0.056834  L1=0.028806 L2=0.022634 L3=0.017249
+  [switched lam=0.9] iter  150  L=0.051687  L1=0.028460 L2=0.019931 L3=0.013621
+  [global lam=0.9] iter    1  L=0.099606  L1=0.042792 L2=0.040184 L3=0.039155
+  [global lam=0.9] iter   50  L=0.079050  L1=0.036010 L2=0.031238 L3=0.029270
+  [global lam=0.9] iter  100  L=0.073527  L1=0.035246 L2=0.028908 L3=0.025227
+  [global lam=0.9] iter  150  L=0.067251  L1=0.034589 L2=0.026023 L3=0.020633
+
+[755s elapsed] training done, evaluating on held-out slates ...
+
+wrote /home/alon/Code/pile_manipulation/experiments/temp/multistep-train/results_multistep_train.json
+saved 4 switched + 4 global operator .pt files to /home/alon/Code/pile_manipulation/experiments/temp/multistep-train
+
+total wall time: 765s

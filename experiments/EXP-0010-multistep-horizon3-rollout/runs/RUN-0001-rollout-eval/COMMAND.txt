@@ -1,0 +1,4 @@
+# RECONSTRUCTED — this run predates run_probe.py-style command logging.
+# Original working directory: experiments/temp/multistep-rollout/
+# commit: 0ddab20f (dirty)
+cd experiments/temp/multistep-rollout && python -u rollout.py

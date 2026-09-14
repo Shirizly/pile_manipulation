@@ -1,0 +1,250 @@
+{
+  "0.3": {
+    "switched": {
+      "n20_L20mm": {
+        "lyapunov": {
+          "wins": 0,
+          "losses": 15,
+          "ties": 0,
+          "n": 15
+        },
+        "mass_in_region": {
+          "wins": 0,
+          "losses": 15,
+          "ties": 0,
+          "n": 15
+        }
+      },
+      "n20_L40mm": {
+        "lyapunov": {
+          "wins": 0,
+          "losses": 15,
+          "ties": 0,
+          "n": 15
+        },
+        "mass_in_region": {
+          "wins": 0,
+          "losses": 15,
+          "ties": 0,
+          "n": 15
+        }
+      }
+    },
+    "global": {
+      "n20_L20mm": {
+        "lyapunov": {
+          "wins": 1,
+          "losses": 14,
+          "ties": 0,
+          "n": 15
+        },
+        "mass_in_region": {
+          "wins": 2,
+          "losses": 12,
+          "ties": 1,
+          "n": 15
+        }
+      },
+      "n20_L40mm": {
+        "lyapunov": {
+          "wins": 0,
+          "losses": 15,
+          "ties": 0,
+          "n": 15
+        },
+        "mass_in_region": {
+          "wins": 0,
+          "losses": 15,
+          "ties": 0,
+          "n": 15
+        }
+      }
+    }
+  },
+  "0.5": {
+    "switched": {
+      "n20_L20mm": {
+        "lyapunov": {
+          "wins": 0,
+          "losses": 15,
+          "ties": 0,
+          "n": 15
+        },
+        "mass_in_region": {
+          "wins": 0,
+          "losses": 15,
+          "ties": 0,
+          "n": 15
+        }
+      },
+      "n20_L40mm": {
+        "lyapunov": {
+          "wins": 0,
+          "losses": 15,
+          "ties": 0,
+          "n": 15
+        },
+        "mass_in_region": {
+          "wins": 1,
+          "losses": 14,
+          "ties": 0,
+          "n": 15
+        }
+      }
+    },
+    "global": {
+      "n20_L20mm": {
+        "lyapunov": {
+          "wins": 0,
+          "losses": 15,
+          "ties": 0,
+          "n": 15
+        },
+        "mass_in_region": {
+          "wins": 2,
+          "losses": 13,
+          "ties": 0,
+          "n": 15
+        }
+      },
+      "n20_L40mm": {
+        "lyapunov": {
+          "wins": 0,
+          "losses": 15,
+          "ties": 0,
+          "n": 15
+        },
+        "mass_in_region": {
+          "wins": 0,
+          "losses": 15,
+          "ties": 0,
+          "n": 15
+        }
+      }
+    }
+  },
+  "0.7": {
+    "switched": {
+      "n20_L20mm": {
+        "lyapunov": {
+          "wins": 0,
+          "losses": 15,
+          "ties": 0,
+          "n": 15
+        },
+        "mass_in_region": {
+          "wins": 0,
+          "losses": 15,
+          "ties": 0,
+          "n": 15
+        }
+      },
+      "n20_L40mm": {
+        "lyapunov": {
+          "wins": 0,
+          "losses": 15,
+          "ties": 0,
+          "n": 15
+        },
+        "mass_in_region": {
+          "wins": 0,
+          "losses": 15,
+          "ties": 0,
+          "n": 15
+        }
+      }
+    },
+    "global": {
+      "n20_L20mm": {
+        "lyapunov": {
+          "wins": 0,
+          "losses": 15,
+          "ties": 0,
+          "n": 15
+        },
+        "mass_in_region": {
+          "wins": 0,
+          "losses": 15,
+          "ties": 0,
+          "n": 15
+        }
+      },
+      "n20_L40mm": {
+        "lyapunov": {
+          "wins": 0,
+          "losses": 15,
+          "ties": 0,
+          "n": 15
+        },
+        "mass_in_region": {
+          "wins": 0,
+          "losses": 15,
+          "ties": 0,
+          "n": 15
+        }
+      }
+    }
+  },
+  "0.9": {
+    "switched": {
+      "n20_L20mm": {
+        "lyapunov": {
+          "wins": 0,
+          "losses": 15,
+          "ties": 0,
+          "n": 15
+        },
+        "mass_in_region": {
+          "wins": 0,
+          "losses": 15,
+          "ties": 0,
+          "n": 15
+        }
+      },
+      "n20_L40mm": {
+        "lyapunov": {
+          "wins": 0,
+          "losses": 15,
+          "ties": 0,
+          "n": 15
+        },
+        "mass_in_region": {
+          "wins": 0,
+          "losses": 15,
+          "ties": 0,
+          "n": 15
+        }
+      }
+    },
+    "global": {
+      "n20_L20mm": {
+        "lyapunov": {
+          "wins": 0,
+          "losses": 15,
+          "ties": 0,
+          "n": 15
+        },
+        "mass_in_region": {
+          "wins": 1,
+          "losses": 13,
+          "ties": 1,
+          "n": 15
+        }
+      },
+      "n20_L40mm": {
+        "lyapunov": {
+          "wins": 0,
+          "losses": 15,
+          "ties": 0,
+          "n": 15
+        },
+        "mass_in_region": {
+          "wins": 0,
+          "losses": 15,
+          "ties": 0,
+          "n": 15
+        }
+      }
+    }
+  }
+}

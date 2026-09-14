@@ -1,0 +1,2 @@
+OMP_NUM_THREADS=4 PYTHONPATH=. python -u experiments/EXP-0009-time-budget-bench/code/bench.py
+commit: 0ddab20fe3985d1d22ab1fb69032ef70bb275996 (dirty -- see EXPERIMENT.md)

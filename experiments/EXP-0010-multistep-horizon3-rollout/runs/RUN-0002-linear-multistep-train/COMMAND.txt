@@ -1,0 +1,5 @@
+# RECONSTRUCTED — this run predates run_probe.py-style command logging.
+# Original working directory: experiments/temp/multistep-train/
+# commit: 0ddab20f (dirty)
+cd experiments/temp/multistep-train && python -u train_multistep.py
+cd experiments/temp/multistep-train && python recompute_wlt.py   # post-hoc bugfix pass, no retraining

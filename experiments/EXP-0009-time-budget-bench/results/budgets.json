@@ -1,0 +1,198 @@
+{
+  "budgets_ms_swept": [
+    1.7144269986602012,
+    2.5,
+    5,
+    10,
+    25,
+    50
+  ],
+  "cap": 128,
+  "note": "N_i(T) interpolated on RUN-0002's corrected (sync-free) end2end curve at K in {1,32,128} -- coarser interpolation than RUN-0001's 11-point curve; sufficient to see where the comparison is/isn't degenerate. 'without_value' uses end2end_ms; 'with_value' uses end2end_with_value_ms (lyapunov+mass_in_region both computed).",
+  "per_model": {
+    "nfd": {
+      "without_value": {
+        "1.71443ms": 30.2,
+        "2.5ms": 84.6,
+        "5ms": 128.0,
+        "10ms": 128.0,
+        "25ms": 128.0,
+        "50ms": 128.0
+      },
+      "with_value": {
+        "1.71443ms": 27.8,
+        "2.5ms": 79.3,
+        "5ms": 128.0,
+        "10ms": 128.0,
+        "25ms": 128.0,
+        "50ms": 128.0
+      }
+    },
+    "schenck": {
+      "without_value": {
+        "1.71443ms": 6.1,
+        "2.5ms": 10.4,
+        "5ms": 24.1,
+        "10ms": 40.4,
+        "25ms": 75.7,
+        "50ms": 128.0
+      },
+      "with_value": {
+        "1.71443ms": 6.0,
+        "2.5ms": 10.4,
+        "5ms": 24.5,
+        "10ms": 40.6,
+        "25ms": 75.7,
+        "50ms": 128.0
+      }
+    },
+    "gnn": {
+      "without_value": {
+        "1.71443ms": null,
+        "2.5ms": 2.9,
+        "5ms": 10.7,
+        "10ms": 26.2,
+        "25ms": 70.6,
+        "50ms": 128.0
+      },
+      "with_value": {
+        "1.71443ms": null,
+        "2.5ms": 1.9,
+        "5ms": 8.1,
+        "10ms": 20.4,
+        "25ms": 56.4,
+        "50ms": 115.5
+      }
+    },
+    "model0001_switched": {
+      "without_value": {
+        "1.71443ms": null,
+        "2.5ms": 128.0,
+        "5ms": 128.0,
+        "10ms": 128.0,
+        "25ms": 128.0,
+        "50ms": 128.0
+      },
+      "with_value": {
+        "1.71443ms": null,
+        "2.5ms": 128.0,
+        "5ms": 128.0,
+        "10ms": 128.0,
+        "25ms": 128.0,
+        "50ms": 128.0
+      }
+    },
+    "model0001_global": {
+      "without_value": {
+        "1.71443ms": 122.0,
+        "2.5ms": 128.0,
+        "5ms": 128.0,
+        "10ms": 128.0,
+        "25ms": 128.0,
+        "50ms": 128.0
+      },
+      "with_value": {
+        "1.71443ms": 111.1,
+        "2.5ms": 128.0,
+        "5ms": 128.0,
+        "10ms": 128.0,
+        "25ms": 128.0,
+        "50ms": 128.0
+      }
+    },
+    "model0002_descriptor_only": {
+      "without_value": {
+        "1.71443ms": null,
+        "2.5ms": 128.0,
+        "5ms": 128.0,
+        "10ms": 128.0,
+        "25ms": 128.0,
+        "50ms": 128.0
+      },
+      "with_value": {
+        "1.71443ms": null,
+        "2.5ms": null,
+        "5ms": 128.0,
+        "10ms": 128.0,
+        "25ms": 128.0,
+        "50ms": 128.0
+      }
+    },
+    "hybrid14": {
+      "without_value": {
+        "1.71443ms": null,
+        "2.5ms": null,
+        "5ms": 128.0,
+        "10ms": 128.0,
+        "25ms": 128.0,
+        "50ms": 128.0
+      },
+      "with_value": {
+        "1.71443ms": null,
+        "2.5ms": null,
+        "5ms": 128.0,
+        "10ms": 128.0,
+        "25ms": 128.0,
+        "50ms": 128.0
+      }
+    },
+    "hybrid94": {
+      "without_value": {
+        "1.71443ms": null,
+        "2.5ms": null,
+        "5ms": 128.0,
+        "10ms": 128.0,
+        "25ms": 128.0,
+        "50ms": 128.0
+      },
+      "with_value": {
+        "1.71443ms": null,
+        "2.5ms": null,
+        "5ms": 128.0,
+        "10ms": 128.0,
+        "25ms": 128.0,
+        "50ms": 128.0
+      }
+    }
+  },
+  "run0001_reference_budgets": {
+    "reference_model": "model0001_global",
+    "reference_time_ms": 1.7144269986602012,
+    "reference_k": 128,
+    "method": "linear interpolation on measured (K, end2end_ms median) curve; N_i = largest K at/under the reference model's own K=128 end2end median time",
+    "budgets": {
+      "nfd": {
+        "N_i": 69.6,
+        "N_i_floor": 69
+      },
+      "schenck": {
+        "N_i": 7.0,
+        "N_i_floor": 7
+      },
+      "gnn": {
+        "N_i": null,
+        "note": "even K=1 costs 1.881ms > reference 1.714ms; cannot clear the budget for even one candidate at measured resolution"
+      },
+      "model0001_switched": {
+        "N_i": 54.2,
+        "N_i_floor": 54
+      },
+      "model0001_global": {
+        "N_i": 128.0,
+        "N_i_floor": 128
+      },
+      "model0002_descriptor_only": {
+        "N_i": 74.5,
+        "N_i_floor": 74
+      },
+      "hybrid14": {
+        "N_i": null,
+        "note": "even K=1 costs 2.774ms > reference 1.714ms; cannot clear the budget for even one candidate at measured resolution"
+      },
+      "hybrid94": {
+        "N_i": null,
+        "note": "even K=1 costs 2.769ms > reference 1.714ms; cannot clear the budget for even one candidate at measured resolution"
+      }
+    }
+  }
+}

@@ -52,6 +52,7 @@ infrastructure all three depend on.
 | `docs/rejected_mpm_sand.md` | Why MPM sand was tried as the continuum end of the granularity spectrum and abandoned: cohesion is zero by construction and adhesion measured zero, but the pile is three grid cells tall and a continuum cannot represent grain-scale discreteness at any resolution. Use DEM (the cube path) if a granular medium is needed |
 | `docs/piled_collection.md` | Piled (multi-layer, centred) particle spawns and pile-aware action sampling: why they exist, what they guarantee, and every flag/config that activates them |
 | `docs/human_demo_design.md` | Full design reference for the human-demonstration subsystem: the 5D action convention, local grid-search refinement, GUI interaction model, output-schema/recording parity with `run_oracle_mpc.py` |
+| `docs/midterm_report_2026-09.md` | Mid-term synthesis of standing model-comparison results (EXP-0004..EXP-0010): what was measured, what it says, what limits it. Cites experiment ids; does not own any number |
 | `experiments/` | The evidence layer and experiment storage — structure and ownership are covered in the Major Parts row above, not restated here; this row exists so the documentation-policy rule below has something to point at. |
 
 **2026-09-10 — claim register reset, and a stale-citation note.** The prior

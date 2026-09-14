@@ -152,9 +152,27 @@ means: allocate a real `EXP-####`, move the content into
 `experiments/EXP-####-slug/`, write it up to the tier the finding deserves
 (below), and update the `TEMP_LOG.md` line to point at the new id.
 
-Anything left in `experiments/temp/` may be deleted without notice — it is
-scratch, not storage. `TEMP_LOG.md`, written at creation, is what survives a
-dead end being forgotten rather than closed out.
+**Keep every fitted object you produce, even in `temp/`.** A fitted
+operator, a trained checkpoint, an encoder — save it to disk beside its
+metrics, with the resolved config that produced it, the moment the fit
+finishes. Metrics alone are not enough: a later test (a control evaluation,
+an ablation, a re-score under a different metric) then has to refit the same
+model from scratch, and a refit is only *probably* the same object. This
+costs disk, which is cheap, and buys the ability to test a model again
+without re-deriving it, which is not.
+
+`experiments/temp/` is scratch in the sense that nothing there is *cited* —
+not in the sense that it is disposable on sight. Clearing it, fitted objects
+included, is the **user's decision**, taken when a line of inquiry has proved
+unproductive and the whole directory goes at once. Do not delete another
+agent's or an earlier session's temp work to reclaim space on your own
+judgement. `TEMP_LOG.md`, written at creation, is what survives a dead end
+being forgotten rather than closed out.
+
+A fitted object that outlives its line of inquiry — one that something else
+will be compared against — stops being scratch and belongs in
+`weights/MODEL-####-slug/` with its own `MODEL.md`, per "Where things
+belong" below.
 
 ## Tiers — pick one before running anything
 
@@ -239,7 +257,24 @@ means the tier or the sizing is wrong.
 ## Metrics
 
 Report the two standard metrics, **`accuracy`** (image prediction) and
-**`slateN`** (control), in every record — both go up when better. Where the
+**`slateN`** (control), in every record — both go up when better.
+
+**They are not equally trustworthy, and `slateN` is the one that decides.**
+`accuracy` is usable for comparing variants *within* one model type — a
+parameter sweep, a small design change — and is suspect everywhere else;
+across model types it has been observed to rank models in an order `slateN`
+does not reproduce, and to shift its own ranking under re-definitions of the
+same quantity. Treat it as a diagnostic, not a verdict. Concretely:
+
+- **A model comparison carrying only `accuracy` is not finished.** Repeat it
+  under `slateN` before drawing a conclusion from it or reporting it as one.
+- **Lead every summary with `slateN`**, and report `accuracy` beside it as
+  additional, explicitly-flagged-as-suspect information.
+- `slateN` itself is strongest with breadth — more validation pools, more
+  than one goal, and every non-degenerate variation available — because its
+  known weakness is power, not bias (see `experiments/METRICS.md` on ties
+  and effective sample size). A `slateN` run on a single pool with a single
+  goal is a weak `slateN` run; widen it before leaning on it. Where the
 metric under study is something else, report these two as reference rows
 anyway, so results stay comparable across the register. Any other
 `design.metric` value must be a key defined in `experiments/METRICS.md` with
@@ -449,7 +484,10 @@ synthesis of that kind belongs.
 - Do not duplicate raw artifacts in `results/`, or duplicate numbers from
   results in a report.
 - Do not let `experiments/temp/` become a permanent home for a cited number
-  — promote it first.
+  — promote it first. (Keeping a fitted *object* there is fine and expected;
+  it is the cited *number* that must move.)
+- Do not report only metrics for a fit whose fitted object you discarded —
+  the next test then cannot reuse the model, only approximate it.
 - Do not make a model/dataset test history into a second results database.
 - Do not let a project-level config edit silently alter an old instance.
 

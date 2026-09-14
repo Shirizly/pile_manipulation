@@ -1,0 +1,782 @@
+{
+  "provenance": {
+    "commit": "0ddab20f",
+    "commit_full": "0ddab20fe3985d1d22ab1fb69032ef70bb275996",
+    "dirty": true,
+    "dirty_files": [
+      ".claude/skills/_draft/experiment-log/SKILL.md",
+      ".claude/skills/_draft/experiment-log/references/experiment-template.md",
+      ".claude/skills/_draft/experiment-log/references/why-these-fields.md -> .claude/skills/experiment-log/references/why-these-fields.md",
+      ".claude/skills/_draft/project-overview/SKILL.md",
+      ".claude/skills/_draft/register-validator/SKILL.md -> .claude/skills/register-validator/SKILL.md",
+      ".claude/skills/experiment-log.SKILL.md",
+      ".claude/skills/experiment-log/SKILL.md",
+      ".claude/skills/experiment-log/references/experiment-template.md",
+      ".claude/skills/project-overview.SKILL.md",
+      ".claude/skills/project-overview/SKILL.md",
+      ".gitignore",
+      "docs/experiments/EXP-0001-cross-corpus-gnn-nfd-report.md -> experiments/EXP-0001-cross-corpus-gnn-nfd-report/EXPERIMENT.md",
+      "docs/experiments/EXP-0002-randlen-spawnmode-stratified-report.md -> experiments/EXP-0002-randlen-spawnmode-stratified-report/EXPERIMENT.md",
+      "docs/experiments/EXP-0003-switched-linear-foresight-randlen.md -> experiments/EXP-0003-switched-linear-foresight-randlen/EXPERIMENT.md",
+      "docs/experiments/INVARIANTS.md -> experiments/INVARIANTS.md",
+      "docs/experiments/METRICS.md -> experiments/METRICS.md",
+      "docs/experiments/README.md",
+      "docs/experiments/REGISTER.md -> experiments/REGISTER.md",
+      "docs/rejected_mpm_sand.md",
+      "experiments/COMMANDS.jsonl"
+    ],
+    "branch": "baselines/overnight"
+  },
+  "n20_L20mm": {
+    "tag": "n20_L20mm",
+    "n_rows": 6400,
+    "n_slates": 50,
+    "accuracy": {
+      "model0001_switched": {
+        "teacher_forced": {
+          "0": 0.1684393286705017,
+          "1": 0.16662317514419556,
+          "2": 0.1714302897453308
+        },
+        "closed_loop": {
+          "0": 0.1684393286705017,
+          "1": 0.11036145687103271,
+          "2": 0.09355056285858154
+        }
+      },
+      "model0001_global": {
+        "teacher_forced": {
+          "0": 0.030548393726348877,
+          "1": 0.028842687606811523,
+          "2": 0.03538542985916138
+        },
+        "closed_loop": {
+          "0": 0.030548393726348877,
+          "1": -0.06451153755187988,
+          "2": -0.10425639152526855
+        }
+      },
+      "hybrid94": {
+        "teacher_forced": {
+          "0": 0.16964191198349,
+          "1": 0.16741228103637695,
+          "2": 0.1720510721206665
+        },
+        "closed_loop": {
+          "0": 0.16964191198349,
+          "1": 0.11169260740280151,
+          "2": 0.09494167566299438
+        }
+      },
+      "nfd": {
+        "teacher_forced": {
+          "0": 0.35073667764663696,
+          "1": 0.3536628484725952,
+          "2": 0.3600854277610779
+        },
+        "closed_loop": {
+          "0": 0.35073667764663696,
+          "1": 0.18102431297302246,
+          "2": 0.0989304780960083
+        }
+      },
+      "persistence": {
+        "teacher_forced": {
+          "0": 0.0,
+          "1": -0.28165483474731445,
+          "2": -0.4264216423034668
+        },
+        "closed_loop": {
+          "0": 0.0,
+          "1": -0.28165483474731445,
+          "2": -0.4264216423034668
+        }
+      },
+      "random": {
+        "teacher_forced": {
+          "0": -0.40866029262542725,
+          "1": -0.5204401016235352,
+          "2": -0.5932414531707764
+        },
+        "closed_loop": {
+          "0": -0.40866029262542725,
+          "1": -0.5204401016235352,
+          "2": -0.5932414531707764
+        }
+      }
+    },
+    "terminal": {
+      "lyapunov__teacher_forced": {
+        "model0001_switched": {
+          "mean_capture": 0.972459614276886,
+          "sem": 0.0060309995998171365,
+          "n_slates": 50,
+          "wins": 50,
+          "losses": 0,
+          "ties": 0,
+          "k32_mean": 0.9704661965370178
+        },
+        "model0001_global": {
+          "mean_capture": 0.9371992349624634,
+          "sem": 0.010953958552282868,
+          "n_slates": 50,
+          "wins": 50,
+          "losses": 0,
+          "ties": 0,
+          "k32_mean": 0.9212889671325684
+        },
+        "hybrid94": {
+          "mean_capture": 0.972459614276886,
+          "sem": 0.0060309995998171365,
+          "n_slates": 50,
+          "wins": 50,
+          "losses": 0,
+          "ties": 0,
+          "k32_mean": 0.9684509038925171
+        },
+        "nfd": {
+          "mean_capture": 0.9769837856292725,
+          "sem": 0.006222331540659616,
+          "n_slates": 50,
+          "wins": 50,
+          "losses": 0,
+          "ties": 0,
+          "k32_mean": 0.9798484444618225
+        },
+        "persistence": {
+          "mean_capture": -0.03875897452235222,
+          "sem": 0.07654371765886546,
+          "n_slates": 50,
+          "wins": 25,
+          "losses": 25,
+          "ties": 0,
+          "k32_mean": 0.0011128796031698585
+        },
+        "random": {
+          "mean_capture": 0.08138502389192581,
+          "sem": 0.06047564048851767,
+          "n_slates": 50,
+          "wins": 31,
+          "losses": 19,
+          "ties": 0,
+          "k32_mean": 0.022498004138469696
+        },
+        "oracle": {
+          "mean_capture": 1.0,
+          "sem": 0.0,
+          "n_slates": 50,
+          "wins": 50,
+          "losses": 0,
+          "ties": 0,
+          "k32_mean": 1.0
+        }
+      },
+      "lyapunov__closed_loop": {
+        "model0001_switched": {
+          "mean_capture": 0.9406079649925232,
+          "sem": 0.00865121069298711,
+          "n_slates": 50,
+          "wins": 50,
+          "losses": 0,
+          "ties": 0,
+          "k32_mean": 0.9481046795845032
+        },
+        "model0001_global": {
+          "mean_capture": 0.833740234375,
+          "sem": 0.022083958168768465,
+          "n_slates": 50,
+          "wins": 50,
+          "losses": 0,
+          "ties": 0,
+          "k32_mean": 0.8350740075111389
+        },
+        "hybrid94": {
+          "mean_capture": 0.9434928894042969,
+          "sem": 0.008504816775698157,
+          "n_slates": 50,
+          "wins": 50,
+          "losses": 0,
+          "ties": 0,
+          "k32_mean": 0.9461933374404907
+        },
+        "nfd": {
+          "mean_capture": 0.970939576625824,
+          "sem": 0.006334061255555178,
+          "n_slates": 50,
+          "wins": 50,
+          "losses": 0,
+          "ties": 0,
+          "k32_mean": 0.9494215846061707
+        },
+        "persistence": {
+          "mean_capture": -0.03875897452235222,
+          "sem": 0.07654371765886546,
+          "n_slates": 50,
+          "wins": 25,
+          "losses": 25,
+          "ties": 0,
+          "k32_mean": 0.0011128796031698585
+        },
+        "random": {
+          "mean_capture": 0.08138502389192581,
+          "sem": 0.06047564048851767,
+          "n_slates": 50,
+          "wins": 31,
+          "losses": 19,
+          "ties": 0,
+          "k32_mean": 0.022498004138469696
+        },
+        "oracle": {
+          "mean_capture": 1.0,
+          "sem": 0.0,
+          "n_slates": 50,
+          "wins": 50,
+          "losses": 0,
+          "ties": 0,
+          "k32_mean": 1.0
+        }
+      },
+      "mass_in_region__teacher_forced": {
+        "model0001_switched": {
+          "mean_capture": 0.9321243166923523,
+          "sem": 0.015656320372806974,
+          "n_slates": 50,
+          "wins": 50,
+          "losses": 0,
+          "ties": 0,
+          "k32_mean": 0.9331082105636597
+        },
+        "model0001_global": {
+          "mean_capture": 0.9234673976898193,
+          "sem": 0.018579131613723796,
+          "n_slates": 50,
+          "wins": 50,
+          "losses": 0,
+          "ties": 0,
+          "k32_mean": 0.873603880405426
+        },
+        "hybrid94": {
+          "mean_capture": 0.9321243166923523,
+          "sem": 0.015656320372806974,
+          "n_slates": 50,
+          "wins": 50,
+          "losses": 0,
+          "ties": 0,
+          "k32_mean": 0.9333544969558716
+        },
+        "nfd": {
+          "mean_capture": 0.9408165216445923,
+          "sem": 0.01451137489122822,
+          "n_slates": 50,
+          "wins": 50,
+          "losses": 0,
+          "ties": 0,
+          "k32_mean": 0.9483800530433655
+        },
+        "persistence": {
+          "mean_capture": -0.008771408349275589,
+          "sem": 0.044798778795417694,
+          "n_slates": 50,
+          "wins": 19,
+          "losses": 31,
+          "ties": 0,
+          "k32_mean": -0.0016762753948569298
+        },
+        "random": {
+          "mean_capture": -0.04625370353460312,
+          "sem": 0.034737339819612134,
+          "n_slates": 50,
+          "wins": 20,
+          "losses": 30,
+          "ties": 0,
+          "k32_mean": 0.009094971232116222
+        },
+        "oracle": {
+          "mean_capture": 1.0,
+          "sem": 0.0,
+          "n_slates": 50,
+          "wins": 50,
+          "losses": 0,
+          "ties": 0,
+          "k32_mean": 1.0
+        }
+      },
+      "mass_in_region__closed_loop": {
+        "model0001_switched": {
+          "mean_capture": 0.9355556964874268,
+          "sem": 0.014980152160119426,
+          "n_slates": 50,
+          "wins": 50,
+          "losses": 0,
+          "ties": 0,
+          "k32_mean": 0.9219441413879395
+        },
+        "model0001_global": {
+          "mean_capture": 0.7532147169113159,
+          "sem": 0.034250876679414545,
+          "n_slates": 50,
+          "wins": 50,
+          "losses": 0,
+          "ties": 0,
+          "k32_mean": 0.7447327375411987
+        },
+        "hybrid94": {
+          "mean_capture": 0.9355556964874268,
+          "sem": 0.014980152160119426,
+          "n_slates": 50,
+          "wins": 50,
+          "losses": 0,
+          "ties": 0,
+          "k32_mean": 0.9264376759529114
+        },
+        "nfd": {
+          "mean_capture": 0.8777492642402649,
+          "sem": 0.025158381106819887,
+          "n_slates": 50,
+          "wins": 50,
+          "losses": 0,
+          "ties": 0,
+          "k32_mean": 0.8934511542320251
+        },
+        "persistence": {
+          "mean_capture": -0.008771408349275589,
+          "sem": 0.044798778795417694,
+          "n_slates": 50,
+          "wins": 19,
+          "losses": 31,
+          "ties": 0,
+          "k32_mean": -0.0016762753948569298
+        },
+        "random": {
+          "mean_capture": -0.04625370353460312,
+          "sem": 0.034737339819612134,
+          "n_slates": 50,
+          "wins": 20,
+          "losses": 30,
+          "ties": 0,
+          "k32_mean": 0.009094971232116222
+        },
+        "oracle": {
+          "mean_capture": 1.0,
+          "sem": 0.0,
+          "n_slates": 50,
+          "wins": 50,
+          "losses": 0,
+          "ties": 0,
+          "k32_mean": 1.0
+        }
+      }
+    },
+    "model0002_descriptor_terminal_teacher_forced": {
+      "lyapunov": {
+        "mean_capture": 0.6408461928367615,
+        "sem": 0.03054459451051508,
+        "n_slates": 50,
+        "wins": 50,
+        "losses": 0,
+        "ties": 0,
+        "k32_mean": 0.7109919786453247
+      },
+      "mass_in_region": {
+        "mean_capture": 0.6142361164093018,
+        "sem": 0.04590915016349175,
+        "n_slates": 50,
+        "wins": 47,
+        "losses": 3,
+        "ties": 0,
+        "k32_mean": 0.6911076307296753
+      }
+    },
+    "bin_seq_top10": [
+      [
+        [
+          1,
+          1,
+          1
+        ],
+        6400
+      ]
+    ],
+    "n_distinct_bin_seqs": 1
+  },
+  "n20_L40mm": {
+    "tag": "n20_L40mm",
+    "n_rows": 6400,
+    "n_slates": 50,
+    "accuracy": {
+      "model0001_switched": {
+        "teacher_forced": {
+          "0": 0.41203510761260986,
+          "1": 0.3272438645362854,
+          "2": 0.2486315369606018
+        },
+        "closed_loop": {
+          "0": 0.41203510761260986,
+          "1": 0.28349459171295166,
+          "2": 0.16745954751968384
+        }
+      },
+      "model0001_global": {
+        "teacher_forced": {
+          "0": 0.35082006454467773,
+          "1": 0.2872738838195801,
+          "2": 0.21803611516952515
+        },
+        "closed_loop": {
+          "0": 0.35082006454467773,
+          "1": 0.23111534118652344,
+          "2": 0.11871153116226196
+        }
+      },
+      "hybrid94": {
+        "teacher_forced": {
+          "0": 0.41600942611694336,
+          "1": 0.3297662138938904,
+          "2": 0.24964070320129395
+        },
+        "closed_loop": {
+          "0": 0.41600942611694336,
+          "1": 0.28880995512008667,
+          "2": 0.17236995697021484
+        }
+      },
+      "nfd": {
+        "teacher_forced": {
+          "0": 0.4509756565093994,
+          "1": 0.4231652021408081,
+          "2": 0.40019696950912476
+        },
+        "closed_loop": {
+          "0": 0.4509756565093994,
+          "1": 0.30260664224624634,
+          "2": 0.17124825716018677
+        }
+      },
+      "persistence": {
+        "teacher_forced": {
+          "0": 0.0,
+          "1": -0.3455151319503784,
+          "2": -0.6881197690963745
+        },
+        "closed_loop": {
+          "0": 0.0,
+          "1": -0.3455151319503784,
+          "2": -0.6881197690963745
+        }
+      },
+      "random": {
+        "teacher_forced": {
+          "0": 0.008023977279663086,
+          "1": -0.2678225040435791,
+          "2": -0.5079712867736816
+        },
+        "closed_loop": {
+          "0": 0.008023977279663086,
+          "1": -0.2678225040435791,
+          "2": -0.5079712867736816
+        }
+      }
+    },
+    "terminal": {
+      "lyapunov__teacher_forced": {
+        "model0001_switched": {
+          "mean_capture": 0.9975708723068237,
+          "sem": 0.001076713026562158,
+          "n_slates": 50,
+          "wins": 50,
+          "losses": 0,
+          "ties": 0,
+          "k32_mean": 0.9910152554512024
+        },
+        "model0001_global": {
+          "mean_capture": 0.9970540404319763,
+          "sem": 0.0012750865204106943,
+          "n_slates": 50,
+          "wins": 50,
+          "losses": 0,
+          "ties": 0,
+          "k32_mean": 0.9908104538917542
+        },
+        "hybrid94": {
+          "mean_capture": 0.9974797964096069,
+          "sem": 0.0010763737444316455,
+          "n_slates": 50,
+          "wins": 50,
+          "losses": 0,
+          "ties": 0,
+          "k32_mean": 0.9907087087631226
+        },
+        "nfd": {
+          "mean_capture": 0.9964056611061096,
+          "sem": 0.001170473827721804,
+          "n_slates": 50,
+          "wins": 50,
+          "losses": 0,
+          "ties": 0,
+          "k32_mean": 0.9945873022079468
+        },
+        "persistence": {
+          "mean_capture": -0.12547613680362701,
+          "sem": 0.09588926442465076,
+          "n_slates": 50,
+          "wins": 20,
+          "losses": 30,
+          "ties": 0,
+          "k32_mean": -0.0011044758139178157
+        },
+        "random": {
+          "mean_capture": -0.09292426705360413,
+          "sem": 0.09470262833419624,
+          "n_slates": 50,
+          "wins": 20,
+          "losses": 30,
+          "ties": 0,
+          "k32_mean": -0.056616321206092834
+        },
+        "oracle": {
+          "mean_capture": 1.0,
+          "sem": 0.0,
+          "n_slates": 50,
+          "wins": 50,
+          "losses": 0,
+          "ties": 0,
+          "k32_mean": 1.0
+        }
+      },
+      "lyapunov__closed_loop": {
+        "model0001_switched": {
+          "mean_capture": 0.9918150305747986,
+          "sem": 0.002618855018319135,
+          "n_slates": 50,
+          "wins": 50,
+          "losses": 0,
+          "ties": 0,
+          "k32_mean": 0.977343738079071
+        },
+        "model0001_global": {
+          "mean_capture": 0.9914191961288452,
+          "sem": 0.0030395111229230276,
+          "n_slates": 50,
+          "wins": 50,
+          "losses": 0,
+          "ties": 0,
+          "k32_mean": 0.9791660308837891
+        },
+        "hybrid94": {
+          "mean_capture": 0.9848072528839111,
+          "sem": 0.008004284490632025,
+          "n_slates": 50,
+          "wins": 50,
+          "losses": 0,
+          "ties": 0,
+          "k32_mean": 0.9752365350723267
+        },
+        "nfd": {
+          "mean_capture": 0.9559467434883118,
+          "sem": 0.013979506951129844,
+          "n_slates": 50,
+          "wins": 50,
+          "losses": 0,
+          "ties": 0,
+          "k32_mean": 0.9624208807945251
+        },
+        "persistence": {
+          "mean_capture": -0.12547613680362701,
+          "sem": 0.09588926442465076,
+          "n_slates": 50,
+          "wins": 20,
+          "losses": 30,
+          "ties": 0,
+          "k32_mean": -0.0011044758139178157
+        },
+        "random": {
+          "mean_capture": -0.09292426705360413,
+          "sem": 0.09470262833419624,
+          "n_slates": 50,
+          "wins": 20,
+          "losses": 30,
+          "ties": 0,
+          "k32_mean": -0.056616321206092834
+        },
+        "oracle": {
+          "mean_capture": 1.0,
+          "sem": 0.0,
+          "n_slates": 50,
+          "wins": 50,
+          "losses": 0,
+          "ties": 0,
+          "k32_mean": 1.0
+        }
+      },
+      "mass_in_region__teacher_forced": {
+        "model0001_switched": {
+          "mean_capture": 0.9356342554092407,
+          "sem": 0.00758502239304263,
+          "n_slates": 50,
+          "wins": 50,
+          "losses": 0,
+          "ties": 0,
+          "k32_mean": 0.9606322050094604
+        },
+        "model0001_global": {
+          "mean_capture": 0.9287084937095642,
+          "sem": 0.008706001596051272,
+          "n_slates": 50,
+          "wins": 50,
+          "losses": 0,
+          "ties": 0,
+          "k32_mean": 0.9568789005279541
+        },
+        "hybrid94": {
+          "mean_capture": 0.9339539408683777,
+          "sem": 0.008049907400473854,
+          "n_slates": 50,
+          "wins": 50,
+          "losses": 0,
+          "ties": 0,
+          "k32_mean": 0.9612298011779785
+        },
+        "nfd": {
+          "mean_capture": 0.8955379724502563,
+          "sem": 0.011619264468437949,
+          "n_slates": 50,
+          "wins": 50,
+          "losses": 0,
+          "ties": 0,
+          "k32_mean": 0.9485408067703247
+        },
+        "persistence": {
+          "mean_capture": 0.0016000497853383422,
+          "sem": 0.05854029513706108,
+          "n_slates": 50,
+          "wins": 15,
+          "losses": 35,
+          "ties": 0,
+          "k32_mean": -0.006093674339354038
+        },
+        "random": {
+          "mean_capture": -0.05944368988275528,
+          "sem": 0.054113822372204426,
+          "n_slates": 50,
+          "wins": 14,
+          "losses": 36,
+          "ties": 0,
+          "k32_mean": -0.016802027821540833
+        },
+        "oracle": {
+          "mean_capture": 1.0,
+          "sem": 0.0,
+          "n_slates": 50,
+          "wins": 50,
+          "losses": 0,
+          "ties": 0,
+          "k32_mean": 1.0
+        }
+      },
+      "mass_in_region__closed_loop": {
+        "model0001_switched": {
+          "mean_capture": 0.8938876986503601,
+          "sem": 0.01249731187080783,
+          "n_slates": 50,
+          "wins": 50,
+          "losses": 0,
+          "ties": 0,
+          "k32_mean": 0.9265705943107605
+        },
+        "model0001_global": {
+          "mean_capture": 0.878315806388855,
+          "sem": 0.01226107562389063,
+          "n_slates": 50,
+          "wins": 50,
+          "losses": 0,
+          "ties": 0,
+          "k32_mean": 0.9160990118980408
+        },
+        "hybrid94": {
+          "mean_capture": 0.8974980711936951,
+          "sem": 0.011420390349054444,
+          "n_slates": 50,
+          "wins": 50,
+          "losses": 0,
+          "ties": 0,
+          "k32_mean": 0.9315754175186157
+        },
+        "nfd": {
+          "mean_capture": 0.8283001780509949,
+          "sem": 0.01581200661652137,
+          "n_slates": 50,
+          "wins": 50,
+          "losses": 0,
+          "ties": 0,
+          "k32_mean": 0.888243556022644
+        },
+        "persistence": {
+          "mean_capture": 0.0016000497853383422,
+          "sem": 0.05854029513706108,
+          "n_slates": 50,
+          "wins": 15,
+          "losses": 35,
+          "ties": 0,
+          "k32_mean": -0.006093674339354038
+        },
+        "random": {
+          "mean_capture": -0.05944368988275528,
+          "sem": 0.054113822372204426,
+          "n_slates": 50,
+          "wins": 14,
+          "losses": 36,
+          "ties": 0,
+          "k32_mean": -0.016802027821540833
+        },
+        "oracle": {
+          "mean_capture": 1.0,
+          "sem": 0.0,
+          "n_slates": 50,
+          "wins": 50,
+          "losses": 0,
+          "ties": 0,
+          "k32_mean": 1.0
+        }
+      }
+    },
+    "model0002_descriptor_terminal_teacher_forced": {
+      "lyapunov": {
+        "mean_capture": 0.8310184478759766,
+        "sem": 0.027200650905606194,
+        "n_slates": 50,
+        "wins": 50,
+        "losses": 0,
+        "ties": 0,
+        "k32_mean": 0.8415758013725281
+      },
+      "mass_in_region": {
+        "mean_capture": 0.6831501722335815,
+        "sem": 0.035039547474832226,
+        "n_slates": 50,
+        "wins": 50,
+        "losses": 0,
+        "ties": 0,
+        "k32_mean": 0.7362667918205261
+      }
+    },
+    "bin_seq_top10": [
+      [
+        [
+          3,
+          3,
+          3
+        ],
+        6399
+      ],
+      [
+        [
+          3,
+          2,
+          3
+        ],
+        1
+      ]
+    ],
+    "n_distinct_bin_seqs": 2
+  }
+}

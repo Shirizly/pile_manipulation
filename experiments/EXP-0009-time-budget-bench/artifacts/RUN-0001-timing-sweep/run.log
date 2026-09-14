@@ -1,0 +1,113 @@
+[bench] provenance: {'commit': '0ddab20f', 'commit_full': '0ddab20fe3985d1d22ab1fb69032ef70bb275996', 'dirty': True, 'dirty_files': ['.claude/skills/_draft/experiment-log/SKILL.md', '.claude/skills/_draft/experiment-log/references/experiment-template.md', '.claude/skills/_draft/experiment-log/references/why-these-fields.md -> .claude/skills/experiment-log/references/why-these-fields.md', '.claude/skills/_draft/project-overview/SKILL.md', '.claude/skills/_draft/register-validator/SKILL.md -> .claude/skills/register-validator/SKILL.md', '.claude/skills/experiment-log.SKILL.md', '.claude/skills/experiment-log/SKILL.md', '.claude/skills/experiment-log/references/experiment-template.md', '.claude/skills/project-overview.SKILL.md', '.claude/skills/project-overview/SKILL.md', '.gitignore', 'docs/experiments/EXP-0001-cross-corpus-gnn-nfd-report.md -> experiments/EXP-0001-cross-corpus-gnn-nfd-report/EXPERIMENT.md', 'docs/experiments/EXP-0002-randlen-spawnmode-stratified-report.md -> experiments/EXP-0002-randlen-spawnmode-stratified-report/EXPERIMENT.md', 'docs/experiments/EXP-0003-switched-linear-foresight-randlen.md -> experiments/EXP-0003-switched-linear-foresight-randlen/EXPERIMENT.md', 'docs/experiments/INVARIANTS.md -> experiments/INVARIANTS.md', 'docs/experiments/METRICS.md -> experiments/METRICS.md', 'docs/experiments/README.md', 'docs/experiments/REGISTER.md -> experiments/REGISTER.md', 'docs/rejected_mpm_sand.md', 'experiments/COMMANDS.jsonl'], 'branch': 'baselines/overnight'}
+[bench] DEVICE=cuda  cuda_available=True
+[bench] loaded 7680 transitions from configs/dataset/genesis_slates_multistep_n20_L20mm_eval.yaml (state rasterisation done once, NOT timed)
+
+[bench] loading models...
+[GNNPredictor] loaded Baselines/GNN/runs/ckpt_best.pth (epoch=300, val_mse=4.0153605207630484e-06, n_particles=20)
+[bench] 8 models loaded: ['nfd', 'schenck', 'gnn', 'model0001_switched', 'model0001_global', 'model0002_descriptor_only', 'hybrid14', 'hybrid94']
+
+--- nfd (device=cuda:0, params=30541) ---
+  K= 128  end2end median=4.027ms [4.023,4.039]  fwd median=3.616ms  cand/s=31783
+  K=  96  end2end median=2.392ms [2.380,2.408]  fwd median=2.761ms  cand/s=40126
+  K=  64  end2end median=1.572ms [1.559,1.715]  fwd median=1.387ms  cand/s=40710
+  K=  48  end2end median=1.519ms [1.514,1.531]  fwd median=1.123ms  cand/s=31594
+  K=  32  end2end median=1.321ms [1.312,1.331]  fwd median=0.881ms  cand/s=24228
+  K=  24  end2end median=1.223ms [1.214,1.233]  fwd median=0.807ms  cand/s=19625
+  K=  16  end2end median=1.215ms [1.184,1.242]  fwd median=0.746ms  cand/s=13166
+  K=   8  end2end median=1.122ms [1.115,1.134]  fwd median=0.700ms  cand/s=7132
+  K=   4  end2end median=1.125ms [1.108,1.155]  fwd median=0.684ms  cand/s=3556
+  K=   2  end2end median=1.115ms [1.090,1.123]  fwd median=0.679ms  cand/s=1794
+  K=   1  end2end median=1.121ms [1.110,1.138]  fwd median=0.713ms  cand/s=892
+
+--- schenck (device=cuda:0, params=139937) ---
+  K= 128  end2end median=46.266ms [46.247,46.627]  fwd median=48.672ms  cand/s=2767
+  K=  96  end2end median=35.229ms [34.932,36.496]  fwd median=36.188ms  cand/s=2725
+  K=  64  end2end median=20.711ms [20.542,21.082]  fwd median=21.825ms  cand/s=3090
+  K=  48  end2end median=13.964ms [13.785,14.001]  fwd median=13.561ms  cand/s=3437
+  K=  32  end2end median=6.364ms [6.280,6.388]  fwd median=6.017ms  cand/s=5029
+  K=  24  end2end median=5.363ms [5.340,5.391]  fwd median=5.152ms  cand/s=4475
+  K=  16  end2end median=3.413ms [3.392,3.502]  fwd median=2.671ms  cand/s=4688
+  K=   8  end2end median=1.892ms [1.844,1.901]  fwd median=1.648ms  cand/s=4229
+  K=   4  end2end median=1.180ms [1.175,1.184]  fwd median=0.804ms  cand/s=3391
+  K=   2  end2end median=0.801ms [0.798,0.811]  fwd median=0.460ms  cand/s=2498
+  K=   1  end2end median=0.773ms [0.764,0.780]  fwd median=0.376ms  cand/s=1294
+
+--- gnn (device=cuda:0, params=38403) ---
+  K= 128  end2end median=44.107ms [43.904,44.321]  fwd median=3.916ms  cand/s=2902
+  K=  96  end2end median=34.277ms [34.064,34.610]  fwd median=4.157ms  cand/s=2801
+  K=  64  end2end median=22.922ms [22.843,23.130]  fwd median=2.735ms  cand/s=2792
+  K=  48  end2end median=17.430ms [17.391,17.514]  fwd median=2.318ms  cand/s=2754
+  K=  32  end2end median=12.060ms [12.024,12.115]  fwd median=1.827ms  cand/s=2653
+  K=  24  end2end median=9.473ms [9.436,9.500]  fwd median=1.772ms  cand/s=2533
+  K=  16  end2end median=6.830ms [6.750,6.877]  fwd median=1.526ms  cand/s=2342
+  K=   8  end2end median=4.391ms [4.222,4.678]  fwd median=1.467ms  cand/s=1822
+  K=   4  end2end median=2.883ms [2.870,2.945]  fwd median=1.399ms  cand/s=1388
+  K=   2  end2end median=2.234ms [2.222,2.243]  fwd median=1.341ms  cand/s=895
+  K=   1  end2end median=1.881ms [1.876,1.888]  fwd median=1.355ms  cand/s=532
+
+--- model0001_switched (device=cuda, params=None) ---
+  K= 128  end2end median=2.829ms [2.807,2.849]  fwd median=2.364ms  cand/s=45246
+  K=  96  end2end median=2.405ms [2.393,2.432]  fwd median=2.013ms  cand/s=39912
+  K=  64  end2end median=1.990ms [1.614,2.006]  fwd median=1.641ms  cand/s=32165
+  K=  48  end2end median=1.541ms [1.534,1.575]  fwd median=1.186ms  cand/s=31141
+  K=  32  end2end median=1.491ms [1.481,1.530]  fwd median=1.126ms  cand/s=21466
+  K=  24  end2end median=1.475ms [1.470,1.493]  fwd median=1.123ms  cand/s=16268
+  K=  16  end2end median=1.496ms [1.481,1.516]  fwd median=1.101ms  cand/s=10692
+  K=   8  end2end median=1.489ms [1.483,1.537]  fwd median=1.114ms  cand/s=5374
+  K=   4  end2end median=1.470ms [1.462,1.478]  fwd median=1.113ms  cand/s=2721
+  K=   2  end2end median=1.488ms [1.481,1.523]  fwd median=1.111ms  cand/s=1344
+  K=   1  end2end median=1.489ms [1.478,1.506]  fwd median=1.148ms  cand/s=672
+
+--- model0001_global (device=cuda, params=None) ---
+  K= 128  end2end median=1.714ms [1.637,1.726]  fwd median=1.242ms  cand/s=74661
+  K=  96  end2end median=1.473ms [1.459,1.485]  fwd median=1.166ms  cand/s=65162
+  K=  64  end2end median=1.313ms [1.302,1.339]  fwd median=0.978ms  cand/s=48735
+  K=  48  end2end median=1.282ms [1.273,1.299]  fwd median=0.925ms  cand/s=37440
+  K=  32  end2end median=1.213ms [1.205,1.221]  fwd median=0.871ms  cand/s=26386
+  K=  24  end2end median=1.227ms [1.207,1.257]  fwd median=0.864ms  cand/s=19559
+  K=  16  end2end median=1.208ms [1.197,1.223]  fwd median=0.859ms  cand/s=13240
+  K=   8  end2end median=1.218ms [1.199,1.230]  fwd median=0.854ms  cand/s=6570
+  K=   4  end2end median=1.210ms [1.202,1.220]  fwd median=0.871ms  cand/s=3306
+  K=   2  end2end median=1.267ms [1.213,1.293]  fwd median=0.876ms  cand/s=1579
+  K=   1  end2end median=1.248ms [1.244,1.261]  fwd median=0.900ms  cand/s=801
+
+--- model0002_descriptor_only (device=cuda, params=None) ---
+  K= 128  end2end median=2.061ms [2.056,2.064]  fwd median=0.178ms  cand/s=62104
+  K=  96  end2end median=1.844ms [1.823,1.875]  fwd median=0.181ms  cand/s=52049
+  K=  64  end2end median=1.651ms [1.644,1.657]  fwd median=0.173ms  cand/s=38767
+  K=  48  end2end median=1.632ms [1.616,1.637]  fwd median=0.171ms  cand/s=29420
+  K=  32  end2end median=1.627ms [1.617,1.640]  fwd median=0.167ms  cand/s=19665
+  K=  24  end2end median=1.678ms [1.661,1.742]  fwd median=0.173ms  cand/s=14300
+  K=  16  end2end median=1.639ms [1.621,1.684]  fwd median=0.169ms  cand/s=9760
+  K=   8  end2end median=1.657ms [1.648,1.704]  fwd median=0.171ms  cand/s=4827
+  K=   4  end2end median=1.620ms [1.612,1.623]  fwd median=0.169ms  cand/s=2469
+  K=   2  end2end median=1.617ms [1.612,1.645]  fwd median=0.169ms  cand/s=1237
+  K=   1  end2end median=1.671ms [1.653,1.708]  fwd median=0.168ms  cand/s=598
+
+--- hybrid14 (device=cuda, params=None) ---
+  K= 128  end2end median=3.637ms [3.626,3.661]  fwd median=1.569ms  cand/s=35193
+  K=  96  end2end median=3.154ms [3.145,3.194]  fwd median=1.334ms  cand/s=30439
+  K=  64  end2end median=2.887ms [2.837,2.972]  fwd median=1.191ms  cand/s=22171
+  K=  48  end2end median=2.760ms [2.744,2.787]  fwd median=1.138ms  cand/s=17393
+  K=  32  end2end median=2.719ms [2.694,2.740]  fwd median=1.086ms  cand/s=11768
+  K=  24  end2end median=2.689ms [2.683,2.741]  fwd median=1.075ms  cand/s=8925
+  K=  16  end2end median=2.687ms [2.676,2.710]  fwd median=1.093ms  cand/s=5954
+  K=   8  end2end median=2.672ms [2.658,2.707]  fwd median=1.083ms  cand/s=2994
+  K=   4  end2end median=2.687ms [2.661,2.707]  fwd median=1.098ms  cand/s=1488
+  K=   2  end2end median=2.665ms [2.643,2.683]  fwd median=1.079ms  cand/s=750
+  K=   1  end2end median=2.774ms [2.763,2.816]  fwd median=1.145ms  cand/s=360
+
+--- hybrid94 (device=cuda, params=None) ---
+  K= 128  end2end median=3.644ms [3.613,3.660]  fwd median=1.584ms  cand/s=35129
+  K=  96  end2end median=3.150ms [3.138,3.164]  fwd median=1.351ms  cand/s=30481
+  K=  64  end2end median=2.834ms [2.828,2.869]  fwd median=1.197ms  cand/s=22586
+  K=  48  end2end median=2.762ms [2.734,2.812]  fwd median=1.174ms  cand/s=17378
+  K=  32  end2end median=2.700ms [2.691,2.746]  fwd median=1.095ms  cand/s=11852
+  K=  24  end2end median=2.719ms [2.681,2.739]  fwd median=1.080ms  cand/s=8827
+  K=  16  end2end median=2.698ms [2.674,2.714]  fwd median=1.082ms  cand/s=5930
+  K=   8  end2end median=2.717ms [2.687,2.786]  fwd median=1.119ms  cand/s=2944
+  K=   4  end2end median=2.670ms [2.657,2.690]  fwd median=1.091ms  cand/s=1498
+  K=   2  end2end median=2.675ms [2.663,2.688]  fwd median=1.074ms  cand/s=748
+  K=   1  end2end median=2.769ms [2.763,2.814]  fwd median=1.157ms  cand/s=361
+
+[bench] wrote /home/alon/Code/pile_manipulation/experiments/temp/time-budget-bench/results_timing.json

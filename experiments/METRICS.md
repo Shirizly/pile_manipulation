@@ -122,6 +122,57 @@ is smooth but blurs fine detail. Some combination of the two — sharp where
 it matters, differentiable everywhere — might get both properties at
 once. Not attempted here.
 
+## `descriptor_accuracy` (added 2026-09-13, transferred from EXP-0004)
+
+Used when the model's prediction target is a vector of analytic push-frame
+descriptors (`phi`) rather than an image, so raw-pixel `accuracy` does not
+apply directly. Let `phi_t1` be the true next-step descriptor vector for a
+sample (the `const` block -- a degenerate always-constant descriptor
+sub-block -- dropped before scoring), and `mu`, `sigma` the TRAIN-set
+per-dimension mean/std of `phi_t1` (fit once, reused for every split).
+Z-score every vector with these fixed train-set stats:
+
+```
+z(phi) = (phi - mu) / sigma          # per-dimension, using TRAIN mu/sigma always
+```
+
+Then, pooling across all retained dimensions and all samples (rms computed
+over the flattened pooled residual, not per-dim then averaged):
+
+```
+descriptor_accuracy = 1 - rms(z(phi_pred) - z(phi_true)) / rms(z(phi_persist) - z(phi_true))
+```
+
+where `phi_persist = phi_t0` (the persistence/do-nothing prediction, i.e.
+"nothing changed"). 0 means no better than persistence in normalised space;
+1 means perfect; negative means worse than persistence. This is an explicit
+proxy for `accuracy` (it never reconstructs occupancy), not a substitute for
+it -- see EXP-0004's `indirectness` downgrade.
+
+## Kill-probe latent loss ratio (added 2026-09-13, transferred from EXP-0007)
+
+Used for a FiLM-conditioned residual latent predictor `P(z, a)` scored
+against the mandatory `dz=0` ("predict no latent change") baseline, per the
+design doc's Stage-2 loss:
+
+```
+L_latent(model)    = mean_i || P(z_i, a_i) + z_i - E(T_{a_i}(X_i)) ||^2
+L_latent(baseline) = mean_i || z_i          - E(T_{a_i}(X_i)) ||^2     # dz=0
+ratio = L_latent(model) / L_latent(baseline)
+```
+
+Lower is better; `ratio < 1` means the predictor beats predicting no
+latent change at all (e.g. EXP-0007's ~0.093 train / ~0.095 holdout, a
+~10x improvement over `dz=0`). Report `z_std` (per-channel latent std)
+alongside this ratio -- a collapsed encoder can trivially drive both
+`L_latent(model)` and `L_latent(baseline)` toward 0 together (making the
+ratio meaningless), which is exactly what EXP-0007 found training the loss
+as literally specified, with no regulariser.
+
+**`mass_in_region`/`signed_mass_in_region` already exist above (2026-09-10
+section) and are reused verbatim here and in EXP-0004/EXP-0008 -- not
+redefined.**
+
 ## GNN accuracy: node-count-bottlenecked comparison (added 2026-09-10)
 
 A particle/node-based model (the GNN baseline) predicts only
@@ -143,3 +194,40 @@ bottleneck and is compared directly against raw ground truth. This makes
 to the ceiling ITS OWN representation could achieve, rather than
 penalising a node-based model for a representational choice unrelated to
 whether it predicts motion correctly.
+
+## `candidate_throughput_ms` (added 2026-09-13, from EXP-0009)
+
+The wall-clock cost (median, ms) of a model's `predict_occ`-equivalent call
+on ONE current state repeated K times, paired with K real candidate actions
+cycled from an eval cell (the "same state, many candidate actions" shape an
+MPC inner loop repeats every step). Two variants, both required together
+whenever this key is cited:
+
+  - `candidate_throughput_ms.end2end` -- preprocessing (all per-candidate,
+    action-dependent work: e.g. `draw_plate_soft`, push-frame warp/
+    `canonicalise`, push-frame descriptor computation, image->particle
+    conversion) PLUS the forward call, back to back, in one timed region.
+  - `candidate_throughput_ms.fwd_only` -- the forward call alone, timed
+    separately on the SAME preprocessed input (isolates preprocessing cost
+    as its own number rather than folding it silently into "the model").
+
+Excludes the one-time particle->occupancy rasterisation of the CURRENT
+STATE (shared across every candidate; in a real deployment the state
+arrives as an image from perception, not re-derived per candidate).
+
+Methodology (mandatory, not optional, when reporting this key): >=3
+untimed warm-up calls discarded, >=10 timed repeats, MEDIAN + IQR (not
+mean), `torch.cuda.synchronize()` immediately before AND after every timed
+region on GPU, and the actual device of the tensors fed to the forward
+call recorded per model (introspected, not assumed from a `--device` flag
+-- see `Baselines/common/benchmark_time.py`'s module docstring for the
+device-consistency trap this guards against). See
+`Baselines/common/benchmark_time.py::time_predictor_at_k` /
+`experiments/EXP-0009-time-budget-bench/code/bench.py::time_model_at_k`
+for reference implementations.
+
+Derived quantity, reported alongside: `N_i`, the number of candidates
+model `i` can evaluate (`end2end`) in the time the FASTEST model in the
+comparison takes to evaluate its own reference batch size (linear
+interpolation on the measured (K, end2end_ms) curve) -- this is the actual
+quantity an equalised-wall-clock-budget control comparison needs.

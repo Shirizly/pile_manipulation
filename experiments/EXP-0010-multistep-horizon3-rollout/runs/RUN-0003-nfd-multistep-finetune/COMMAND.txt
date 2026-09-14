@@ -1,0 +1,4 @@
+# RECONSTRUCTED — this run predates run_probe.py-style command logging.
+# Original working directory: experiments/temp/multistep-nfd/
+# commit: 0ddab20f (dirty)
+cd experiments/temp/multistep-nfd && python -u train_nfd_multistep.py

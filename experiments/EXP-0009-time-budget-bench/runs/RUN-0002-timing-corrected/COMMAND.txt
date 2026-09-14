@@ -1,0 +1,6 @@
+/home/alon/anaconda3/envs/pme/bin/python -u experiments/EXP-0009-time-budget-bench/code/bench.py
+# repeatability check (defect 3), run 3x as SEPARATE processes:
+/home/alon/anaconda3/envs/pme/bin/python -u experiments/EXP-0009-time-budget-bench/code/repeat_check.py schenck 128
+/home/alon/anaconda3/envs/pme/bin/python -u experiments/EXP-0009-time-budget-bench/code/repeat_check.py model0001_global 128
+# budget sweep:
+/home/alon/anaconda3/envs/pme/bin/python -u experiments/EXP-0009-time-budget-bench/code/make_budgets_v2.py

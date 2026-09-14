@@ -1,0 +1,2 @@
+# commit: 0ddab20f (dirty)
+cd experiments/temp/multistep-cv && /home/alon/anaconda3/envs/pme/bin/python -u train_eval_cv.py
