@@ -76,7 +76,13 @@ def pile_centroid_and_support(occ, thresh=1e-6):
 def lyapunov_weights(grid_res, goal, device, pile_center=None):
     """Weight field `d` (or `w`) for a target set, normalised to [0, 1].
 
-    `goal` is one of the three original keys, byte-identical to before:
+    All fields are in `transforms/functional.py::particles_to_occupancy`'s
+    convention: row = world x, col = world y ("convention A"), the same
+    convention `Baselines/common/goals.py` builds its masks in. (Fixed
+    2026-09-17; see invariant `goal-mask-axis-convention-row-y-col-x` and
+    `tests/test_goal_axis_convention.py`.)
+
+    `goal` is one of the three original keys:
       center  -- a centred square covering a quarter of the tray area
       corner  -- a square in one corner (their non-convex-ish harder case)
       stripe  -- a central band, so the cost only rewards one axis
@@ -115,15 +121,23 @@ def lyapunov_weights(grid_res, goal, device, pile_center=None):
     support rows/cols 25-38 -- see `pile_centroid_and_support`), so `dV` is
     identically 0 for a trivial reason (the target is always empty) rather
     than because sharp targets are inherently hard to hit. The following
-    keys require `pile_center=(cy, cx)`, computed from the ACTUAL data (never
-    hard-coded), so the target genuinely intersects the pile:
+    keys require `pile_center`, computed from the ACTUAL data (never
+    hard-coded), so the target genuinely intersects the pile. It is a
+    (row, col) GRID centroid as returned by `pile_centroid_and_support` -- in
+    this file's convention A that is (world x, world y), not (y, x); the old
+    `(cy, cx)` spelling was a misnomer, not a second convention, and these
+    keys are byte-identical before and after the 2026-09-17 axis fix because
+    they are built from grid indices measured off the occupancy itself:
 
       ind-square8-pile   -- 8x8 px indicator centred on `pile_center`.
       ind-square16-pile  -- 16x16 px indicator centred on `pile_center` (a
           larger sharp target, in case 8x8 gives too discrete a `dV`).
-      ind-stripe-thin-pile -- a 4-px-wide indicator stripe (full image
-          width) centred on `pile_center`'s row -- structured rather than
-          blobby, crossing the pile rather than sitting inside it.
+      ind-stripe-thin-pile -- a 4-px-wide indicator stripe spanning every
+          column, centred on `pile_center`'s ROW -- structured rather than
+          blobby, crossing the pile rather than sitting inside it. Defined in
+          grid indices taken from the occupancy itself, so it is unaffected by
+          the 2026-09-17 axis fix (in convention A it is a band in world x
+          spanning all of world y).
     """
     from scipy.ndimage import distance_transform_edt
 
@@ -135,7 +149,18 @@ def lyapunov_weights(grid_res, goal, device, pile_center=None):
     elif goal == "corner":
         mask[: H // 2, : W // 2] = True
     elif goal == "stripe":
-        mask[H // 2 - H // 8: H // 2 + H // 8, :] = True
+        # A central band in world y, free in world x -- "the cost only rewards
+        # one axis". Built in convention A (row = world x, col = world y), so
+        # the band is over COLUMNS. Before 2026-09-17 this sliced rows, i.e.
+        # it was a band in world x while every occupancy it multiplied was
+        # convention A -- the transposed-mask bug (invariant
+        # `goal-mask-axis-convention-row-y-col-x`). `stripe` is the ONLY key
+        # in this function whose output changes: every other target here is
+        # its own transpose (`corner`, `center`, `ind-corner`,
+        # `distclip-corner-r*`, `ind-square8`, `dist-square8`) or is built
+        # from grid indices measured off the occupancy itself (the
+        # `*-pile` keys), so those are byte-identical before and after.
+        mask[:, W // 2 - W // 8: W // 2 + W // 8] = True
     elif goal in ("ind-corner",) or goal.startswith("distclip-corner-r"):
         mask[: H // 2, : W // 2] = True
     elif goal in ("ind-square8", "dist-square8"):
@@ -143,16 +168,16 @@ def lyapunov_weights(grid_res, goal, device, pile_center=None):
         mask[side_h:2 * side_h, side_w:2 * side_w] = True
     elif goal in ("ind-square8-pile", "ind-square16-pile"):
         if pile_center is None:
-            raise ValueError(f"{goal} requires pile_center=(cy, cx), "
+            raise ValueError(f"{goal} requires pile_center=(row, col), "
                               f"computed from data via pile_centroid_and_support")
         side = 8 if goal == "ind-square8-pile" else 16
-        cy, cx = pile_center
+        cy, cx = pile_center            # (row, col) grid centroid = (world x, world y)
         r0 = max(0, min(H - side, int(round(cy - side / 2))))
         c0 = max(0, min(W - side, int(round(cx - side / 2))))
         mask[r0:r0 + side, c0:c0 + side] = True
     elif goal == "ind-stripe-thin-pile":
         if pile_center is None:
-            raise ValueError(f"{goal} requires pile_center=(cy, cx), "
+            raise ValueError(f"{goal} requires pile_center=(row, col), "
                               f"computed from data via pile_centroid_and_support")
         cy, _cx = pile_center
         thickness = 4

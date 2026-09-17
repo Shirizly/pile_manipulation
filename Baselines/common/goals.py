@@ -6,10 +6,19 @@ utility). See `docs/experiments/METRICS.md` for the formal writeup this
 module implements.
 
 Three goal SHAPES, each a binary (H,W) numpy mask (True = inside the
-target region), in `control_utility_test.py::lyapunov_weights`'s own
-row=y/col=x convention -- NOT `transforms/functional.py`'s row=x/col=y
-convention (a different subsystem; mixing the two up would be exactly the
-axis-swap bug this repo has a documented history of):
+target region), in **`transforms/functional.py::particles_to_occupancy`'s
+convention: row = world x, col = world y** ("convention A"), which is also
+what `control_utility_test.py::lyapunov_weights` now uses.
+
+CONVENTION CHANGE, 2026-09-17 (invariant `goal-mask-axis-convention-row-y-col-x`,
+which was `broken`, now `fixed`): until this date this module built masks with
+row = world y, col = world x, the opposite of the rasteriser, and the docstring
+here documented that divergence as if it were harmless. It is not: every value
+function multiplies an occupancy by a mask, so for any ASYMMETRIC target the
+two were TRANSPOSED relative to each other. Symmetric targets (`corner`,
+`center`, quadrants 0 and 3) are their own transpose, which is why it survived.
+Masks are now built natively in convention A -- do NOT "fix" a mask by
+transposing it at the call site; see `tests/test_goal_axis_convention.py`:
 
   * random-quadrant -- one of the workspace's 4 quadrants, chosen by a
     SEEDED rng so the SAME quadrant is assigned to a given slate across
@@ -59,13 +68,21 @@ LETTER_FONT = "helvetica_thin"
 
 
 def quadrant_mask(H: int, W: int, quadrant: int) -> np.ndarray:
-    """`quadrant` in {0,1,2,3} = {top-left, top-right, bottom-left,
-    bottom-right} (row=y/col=x convention, matching `lyapunov_weights`)."""
+    """`quadrant` in {0,1,2,3} indexes the four WORLD quadrants
+    {(-x,-y), (+x,-y), (-x,+y), (+x,+y)} -- the same four world regions the
+    old row=y/col=x version named {top-left, top-right, bottom-left,
+    bottom-right}, but built in convention A (row = world x, col = world y).
+
+    Quadrants 0 and 3 are their own transpose and are therefore BYTE-IDENTICAL
+    to the pre-2026-09-17 masks; 1 and 2 swap. That is the whole blast radius
+    of the convention fix on this function."""
     if quadrant not in (0, 1, 2, 3):
         raise ValueError(f"quadrant must be 0-3, got {quadrant}")
     mask = np.zeros((H, W), dtype=bool)
-    r0, r1 = (0, H // 2) if quadrant in (0, 1) else (H // 2, H)
-    c0, c1 = (0, W // 2) if quadrant in (0, 2) else (W // 2, W)
+    # row = world x: low half for -x (quadrants 0, 2), high half for +x (1, 3).
+    r0, r1 = (0, H // 2) if quadrant in (0, 2) else (H // 2, H)
+    # col = world y: low half for -y (quadrants 0, 1), high half for +y (2, 3).
+    c0, c1 = (0, W // 2) if quadrant in (0, 1) else (W // 2, W)
     mask[r0:r1, c0:c1] = True
     return mask
 
@@ -87,18 +104,34 @@ def letter_mask(name: str, H: int, W: int, font_name: str = LETTER_FONT) -> np.n
     precomputed asset (`env/target_shapes/{font_name}/helvetica_{name}.npy`)
     -- not reimplemented from scratch, just the binarisation step isolated
     from that function's distance-transform/visualisation outputs, which
-    this caller does not need."""
+    this caller does not need.
+
+    AXIS CONVENTION: the `.npy` asset is stored the way a human reads the
+    glyph -- asset row increases with world y, asset column increases with
+    world x. This module's masks are in convention A (row = world x, col =
+    world y), so the asset's two axes are read out in the opposite order.
+    This is an axis RELABEL of an external asset (there is no row/col
+    construction here to swap), not a post-hoc correction: the returned mask
+    is the glyph as it stands in the world, and rasterising material placed
+    on the glyph with `particles_to_occupancy` reproduces exactly this array.
+    `cv2.resize` takes its size argument as (width, height), i.e. (n_cols,
+    n_rows) of the ASSET's own layout, so it is sized (H, W) here -- the
+    asset's column axis becomes the mask's row axis."""
     root_dir = f"env/target_shapes/{font_name}"
     shape_path = os.path.join(root_dir, f"helvetica_{name}.npy")
     goal = np.load(shape_path)
-    goal = cv2.resize(goal, (W, H), interpolation=cv2.INTER_AREA)
-    return goal <= 0.5
+    # asset (row=y, col=x) -> world (x, y): resize to (W_asset=H, H_asset=W)
+    # so that after the axis swap the mask is (H, W) = (n_x, n_y).
+    goal = cv2.resize(goal, (H, W), interpolation=cv2.INTER_AREA)
+    return np.ascontiguousarray((goal <= 0.5).T)
 
 
 def dist_field_from_mask(mask: np.ndarray) -> np.ndarray:
     """Normalised [0,1] distance-to-mask field, matching
     `control_utility_test.lyapunov_weights`'s own general (non-`ind-`,
     non-`distclip-`) branch exactly: `distance_transform_edt(~mask)`,
+    (axis-convention-agnostic: the field inherits whatever convention the
+    mask it is given is in, so feed it a convention-A mask),
     divided by its own max. 0 inside/at the mask, up to 1 at the point(s)
     farthest from it."""
     d = distance_transform_edt(~mask).astype(np.float32)
