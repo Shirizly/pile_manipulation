@@ -1,0 +1,66 @@
+# EXP-0025 flow-warp NFD pilot -- COARSE-RESOLUTION cell (flow_res=16, upsampled to 64;
+# max_disp_px=12, pure advection). Same recipe/data/epochs as the baseline cell,
+# optimizer, augmentation, splits, resolution_scale, min_push_length_m) is
+# copied from Baselines/NFD/configs/nfd_train_3ch_L20mm_pilot.yaml so the
+# flow head is the only thing varying across this sweep's cells and its
+# direct-prediction control. Data is a FIXED 8-slate SUBSET of
+# slates_multistep/n20_L20mm_train (Genesis/data/slates_multistep/
+# n20_L20mm_train_pilotsubset, symlinks to files _1.._8), used identically
+# by every cell in this sweep including the control -- a quick multi-factor
+# design sweep, not a final model (see EXPERIMENT.md for why/epoch-count
+# derivation).
+model:
+  type: nfd-flow-warp
+  in_channels: 3
+  features: [4, 8, 16]
+  kernel_size: 3
+  final_kernel_size: 1
+  activation: relu
+  bottleneck_type: "None"
+  bottleneck_kwargs: {}
+  uses_physics: false
+  flow_res: 16          # coarse: predicted at 16x16, upsampled
+  max_disp_px: 12.0
+  source_sink: false
+
+dataset:
+  type: nfd-genesis-3ch
+  paths:
+    - slates_multistep/n20_L20mm_train_pilotsubset
+  val_pct: 15
+  test_pct: 15
+  resolution_scale: 0.5
+  include_physics: false
+  min_push_length_m: 0.0198
+  transforms:
+    - type: ensure_representation
+      representation: eulerian
+    - type: eulerian_aliases
+
+training:
+  epochs: 40
+  batch_size: 32
+  lr: 0.0001
+  lr_scheduler:
+    type: StepLR
+    step_size: 50
+    gamma: 0.75
+  augmentation: true
+  patience: 100
+  mixed_precision: true
+  grad_clip_norm: 1.0
+  save_every_n_epochs: 40
+  num_workers: 2
+  loss:
+    type: eulerian_combined
+    mse: 1.0
+    mass: 0.0
+    dice: 0.0
+    bce: 0.0
+    sharpness: 0.0
+    tv: 0.0
+    add: 0.0
+    remove: 0.0
+
+output:
+  log_dir: Baselines/NFD/runs/flow_coarse16_L20mm_pilot

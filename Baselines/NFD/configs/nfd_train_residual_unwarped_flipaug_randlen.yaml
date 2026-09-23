@@ -1,0 +1,102 @@
+# WORLD-FRAME NFD + explicit tanh RESIDUAL head, on overnight_randlen -- FLIP-ONLY augmentation.
+#
+# Why: the residual parameterisation, not the push-frame warp, is the effect
+# that actually transferred in EXP-0022 (L20mm pilot .360->.401 warped;
+# randlen .409->.462 warped). Whether it helps a WORLD-FRAME NFD at randlen
+# scale was never tested. This is that test.
+#
+# `residual: false` on the UNet is REQUIRED: UNetModels_modular already adds raw
+# occ0 into the PRE-SIGMOID LOGIT when its own `residual` flag is true, and every
+# stock NFD config sets it. Leaving it on would double-count with the explicit
+# residual head. That existing logit-space skip is also why the world-frame gain
+# is expected to be SMALLER than the warped one -- part of the effect is already
+# banked.
+#
+# AUGMENTATION: FLIP-ONLY augmentation. flip-only (x2, no rotations). A WORLD-frame model is NOT rotation-invariant by construction, so unlike the push-frame arms it genuinely loses information here -- that is the point of running both.
+#
+# MATCHING: epochs are set so total gradient steps ~= the world-frame baseline's
+# 668,100 (89,081 transitions; loader batch = 32 // augmentation factor):
+#   none      -> loader_bs 32, 2,783 steps/epoch -> 240 epochs = 667,920
+#   flip (x2) -> loader_bs 16, 5,567 steps/epoch -> 120 epochs = 668,040
+#
+# COMPARISON CAVEAT: the world-frame baseline
+# (Baselines/NFD/runs/nfd_3ch_randlen) was trained with FULL x8 augmentation, so
+# neither arm here has an augmentation-matched control yet. Training a plain
+# (non-residual) world-frame NFD at these augmentation settings is the item that
+# unblocks a clean read -- see experiments/TODO.md (MID priority).
+
+model:
+  type: nfd-unet3ch-residual
+  in_channels: 3
+  out_channels: 1
+  features: [4, 8, 16]
+  kernel_size: 3
+  final_kernel_size: 1
+  activation: relu
+  residual: false   # REQUIRED false -- see module docstring; asserted, not silently coerced
+  bottleneck_type: "None"
+  bottleneck_kwargs: {}
+  uses_physics: false
+
+dataset:
+  type: nfd-genesis-3ch
+  paths:
+    - overnight_randlen_train/mixed_n20
+    - overnight_randlen_train/piled_n20
+    - overnight_randlen_train/piled_n50
+    - overnight_randlen_train/scattered_n20
+    - overnight_randlen_train/scattered_n50
+  val_pct: 5
+  test_pct: 5
+  resolution_scale: 0.5
+  include_physics: false
+  # Guard against literal zero-length pushes only (divide-by-zero in
+  # canonicalisation); the corpus's real short tail (measured min ~0.47mm,
+  # early-contact cutoffs) is intentionally part of this training distribution
+  # and is NOT filtered -- unlike the L20L40 configs' 0.0198m guard, which
+  # exists there to reject a DIFFERENT cell's nominal length, not to shape
+  # this one's.
+  min_push_length_m: 0.0001
+  transforms:
+    - type: ensure_representation
+      representation: eulerian
+    - type: eulerian_aliases
+
+training:
+  # 30 epochs, copied UNCHANGED from nfd_train_3ch_randlen.yaml so this arm
+  # takes the same number of gradient steps as the baseline it is compared
+  # against. That baseline's own derivation: 1 epoch measured at 207s on an
+  # idle GPU (89,081 train transitions, batch=32, ~2784 steps/epoch), and 30
+  # epochs gives ~83,500 updates, close to the in-distribution run's
+  # 100 x ~684 = 68,400 -- matched by total updates, not by epoch count.
+  # A WARPED arm is slower per epoch than that baseline (the warp adds two
+  # grid_sample passes, and a canon_res=96 arm also enlarges the UNet input),
+  # so expect a longer wall-clock for the SAME number of updates. The epoch
+  # count is deliberately NOT reduced to compensate: matching the baseline's
+  # update count is what keeps the comparison honest.
+  epochs: 120
+  batch_size: 32
+  lr: 0.0001
+  lr_scheduler:
+    type: StepLR
+    step_size: 30
+    gamma: 0.75
+  augmentation: flip
+  patience: 100
+  mixed_precision: true
+  grad_clip_norm: 1.0
+  save_every_n_epochs: 10
+  num_workers: 4
+  loss:
+    type: eulerian_combined
+    mse: 1.0
+    mass: 0.0
+    dice: 0.0
+    bce: 0.0
+    sharpness: 0.0
+    tv: 0.0
+    add: 0.0
+    remove: 0.0
+
+output:
+  log_dir: Baselines/NFD/runs/nfd_residual_unwarped_flipaug_randlen

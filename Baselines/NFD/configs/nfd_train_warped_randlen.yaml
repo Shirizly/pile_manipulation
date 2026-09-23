@@ -1,0 +1,102 @@
+# Warped NFD on overnight_randlen -- no wall channel, canonical resolution 64
+#
+# EXP-0022. This is the arm that actually decides the experiment: it is
+# trained on the SAME corpus, split and recipe as
+# nfd_train_3ch_randlen.yaml, whose checkpoint
+# (Baselines/NFD/runs/nfd_3ch_randlen/unet_best.pth) is the world-frame NFD
+# baseline whose test numbers are recorded in EXP-0001. Everything below is
+# copied unchanged from that config except the model/dataset type and the
+# warp knobs, so any difference in the scored result is attributable to the
+# push-frame warp rather than to the data, the split or the recipe.
+#
+# canon_res: null -> defaults to the grid resolution (64 at resolution_scale
+#   0.5). This is the setting that matches the LinearForesight baseline's own
+#   warp exactly (fit_switched.py never passes `scale`, so scale=1.0, and its
+#   canonical resolution is the grid resolution). The warp's own accuracy
+#   ceiling at this setting is 0.664 -- see
+#   experiments/EXP-0022-warped-nfd-push-frame/results/warp_accuracy_ceiling.md.
+#
+# See nfd_train_3ch_randlen.yaml's own header for the corpus description and
+# the 30-epoch derivation (matched by total gradient steps to the
+# in-distribution run, not by epoch count).
+
+model:
+  type: nfd-unet-warped
+  in_channels: 3
+  out_channels: 1
+  features: [4, 8, 16]
+  kernel_size: 3
+  final_kernel_size: 1
+  activation: relu
+  residual: true
+  bottleneck_type: "None"
+  bottleneck_kwargs: {}
+  uses_physics: false
+  plate_mode: canonical
+  wall_channel: false
+  resolution_scale: 0.5
+  scale: 1.0
+  canon_res: null
+
+dataset:
+  type: nfd-genesis-3ch-warped
+  paths:
+    - overnight_randlen_train/mixed_n20
+    - overnight_randlen_train/piled_n20
+    - overnight_randlen_train/piled_n50
+    - overnight_randlen_train/scattered_n20
+    - overnight_randlen_train/scattered_n50
+  val_pct: 5
+  test_pct: 5
+  resolution_scale: 0.5
+  include_physics: false
+  # Guard against literal zero-length pushes only (divide-by-zero in
+  # canonicalisation); the corpus's real short tail (measured min ~0.47mm,
+  # early-contact cutoffs) is intentionally part of this training distribution
+  # and is NOT filtered -- unlike the L20L40 configs' 0.0198m guard, which
+  # exists there to reject a DIFFERENT cell's nominal length, not to shape
+  # this one's.
+  min_push_length_m: 0.0001
+  transforms:
+    - type: ensure_representation
+      representation: eulerian
+    - type: eulerian_aliases
+
+training:
+  # 30 epochs, copied UNCHANGED from nfd_train_3ch_randlen.yaml so this arm
+  # takes the same number of gradient steps as the baseline it is compared
+  # against. That baseline's own derivation: 1 epoch measured at 207s on an
+  # idle GPU (89,081 train transitions, batch=32, ~2784 steps/epoch), and 30
+  # epochs gives ~83,500 updates, close to the in-distribution run's
+  # 100 x ~684 = 68,400 -- matched by total updates, not by epoch count.
+  # A WARPED arm is slower per epoch than that baseline (the warp adds two
+  # grid_sample passes, and a canon_res=96 arm also enlarges the UNet input),
+  # so expect a longer wall-clock for the SAME number of updates. The epoch
+  # count is deliberately NOT reduced to compensate: matching the baseline's
+  # update count is what keeps the comparison honest.
+  epochs: 30
+  batch_size: 32
+  lr: 0.0001
+  lr_scheduler:
+    type: StepLR
+    step_size: 30
+    gamma: 0.75
+  augmentation: true
+  patience: 100
+  mixed_precision: true
+  grad_clip_norm: 1.0
+  save_every_n_epochs: 10
+  num_workers: 4
+  loss:
+    type: eulerian_combined
+    mse: 1.0
+    mass: 0.0
+    dice: 0.0
+    bce: 0.0
+    sharpness: 0.0
+    tv: 0.0
+    add: 0.0
+    remove: 0.0
+
+output:
+  log_dir: Baselines/NFD/runs/nfd_warped_randlen

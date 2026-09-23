@@ -443,3 +443,144 @@ def blend_push_prediction(pred: torch.Tensor, occ: torch.Tensor,
     """
     keep = (mask >= threshold).to(pred.dtype)
     return keep * pred + (1.0 - keep) * occ
+
+
+def push_frame_roundtrip(fn, occ: torch.Tensor, start_px: torch.Tensor,
+                         end_px: torch.Tensor, canon_res: int,
+                         scale: float = 1.0, blend: bool = True,
+                         validity_threshold: float = 0.5) -> torch.Tensor:
+    """Model-agnostic warp -> predict -> unwarp -> blend composition.
+
+    This is the same pipeline ``fit_linear_foresight.py::predict_world`` uses
+    for the switched-linear operator (Suh & Tedrake 2020 Fig. 4):
+
+        I_{k+1} ~= blend( T^-1( fn(T(I_k)) ), I_k, M )
+
+    promoted here so a model built on this warp does not have to depend on a
+    linear-model-specific script to get it. ``fn`` is the only
+    model-specific piece: it receives the (B, canon_res, canon_res)
+    canonical-frame occupancy and must return a (B, canon_res, canon_res)
+    canonical-frame prediction. Anything else ``fn`` needs (a matrix
+    operator, a network, extra channels) is the caller's business — close
+    over it in the ``fn`` passed here, e.g.
+    ``lambda canon: my_unet(torch.stack([canon, other_channel], dim=1))``.
+
+    Parameters
+    ----------
+    occ              : (B, H, W) world-frame occupancy. H == W (see
+                       `push_frame_transform`).
+    start_px, end_px  : (B, 2) push endpoints, pixels, (col, row) order.
+    canon_res         : side length of the square canonical grid `fn` is
+                        called on.
+    scale             : forwarded to `to_push_frame`/`from_push_frame`
+                        (fraction of the image the canonical window spans).
+    blend             : if True (default), recombine the unwarped prediction
+                        with `occ` outside the round-trip's validity mask
+                        (`push_frame_validity_mask` + `blend_push_prediction`
+                        at `validity_threshold`). If False, return the raw
+                        unwarped prediction everywhere — useful for a caller
+                        that wants to blend itself (e.g. against a different
+                        base image) or that is scoring only the canonical
+                        interior.
+
+    Fully differentiable in both `occ` and anything `fn` does internally:
+    plain `grid_sample` warps, no `no_grad`, and an out-of-place `clamp`
+    left to the caller rather than the in-place `clamp_`
+    `fit_linear_foresight.py::predict_world` used before this was factored
+    out (in-place clamp on a tensor needed for backward would be unsafe).
+    """
+    H, W = occ.shape[-2], occ.shape[-1]
+    canon = to_push_frame(occ, start_px, end_px, (canon_res, canon_res), scale)
+    pred_canon = fn(canon)
+    back = from_push_frame(pred_canon, start_px, end_px, (H, W), scale)
+    if not blend:
+        return back
+    mask = push_frame_validity_mask(start_px, end_px, (H, W),
+                                    (canon_res, canon_res), scale)
+    return blend_push_prediction(back, occ, mask, threshold=validity_threshold)
+
+
+def canonical_plate_channels(push_length_px: torch.Tensor, canon_res: int,
+                             plate_dim_x_px: float, plate_dim_y_px: float,
+                             scale: float = 1.0, sigma: float = 1.5,
+                             world_res: Optional[int] = None) -> torch.Tensor:
+    """Render the start/stop plate channels directly in the canonical push
+    frame (no world-frame render + warp needed).
+
+    In the canonical frame the push midpoint sits at the grid centre and the
+    push direction is always +x (the col/dim1 axis, `push_frame_transform`'s
+    convention), so the two plates are always at the SAME canonical pose:
+    centred on the row axis, offset +/- half the canonical push length along
+    the col axis, at a fixed orientation (perpendicular to the col axis —
+    `draw_plate_soft`'s ``angle=0``, whose length axis runs along dim0/row,
+    exactly perpendicular to a col-axis push). Only the push LENGTH varies
+    the render; direction and position are already factored out by the
+    canonical frame, which is the entire reason a switched-linear/canonical
+    model needs only length-conditioned operators.
+
+    Parameters
+    ----------
+    push_length_px : (B,) push length in WORLD pixels (`(end_px -
+                     start_px).norm()`, same units `fit_linear_foresight.py`
+                     computes lengths in).
+    canon_res      : side of the square canonical grid to render into.
+    plate_dim_x_px, plate_dim_y_px : plate size in WORLD pixels, same
+                     convention and argument order as every other
+                     `draw_plate_soft` call site in this repo (`plate_dim_x`
+                     is the extent along the plate's long axis, i.e.
+                     perpendicular to travel; `plate_dim_y` is the thickness
+                     along the travel direction).
+    scale          : same meaning as `push_frame_transform`'s `scale` — the
+                     fraction of the world image the canonical window spans.
+    sigma          : `draw_plate_soft` edge softness, in WORLD pixels.
+    world_res      : side of the square WORLD grid `push_length_px` etc. are
+                     measured in. Defaults to `canon_res` (the common case,
+                     and the one the derivation below simplifies to).
+
+    Derivation (see model/warped_nfd/WARPED_NFD_NOTES.md for the worked-out
+    version and the empirical cross-check against warping a world-frame
+    `draw_plate_soft` render through `to_push_frame`):
+
+    `push_frame_transform` maps a canonical NORMALIZED offset `x_c` from the
+    midpoint to a world normalized offset `scale * x_c` along the push
+    direction. A world pixel difference of `L` pixels is a world normalized
+    difference of `2*L/world_res` (exact for `_to_normalized`, no offset
+    since it's a difference). Equating `scale * x_c = 2*L/world_res` and
+    converting `x_c` (canonical normalized) back to canonical PIXELS
+    (`2*length_canon_px/canon_res`) gives
+
+        length_canon_px = L * canon_res / (world_res * scale)
+
+    i.e. `L / scale` canonical pixels when `canon_res == world_res` (the
+    literal case this function's brief names), generalizing multiplicatively
+    by `canon_res / world_res` otherwise. This is a UNIFORM similarity
+    (rotation factored out + one scalar), so plate dimensions and the render
+    sigma scale by the same factor.
+    """
+    if world_res is None:
+        world_res = canon_res
+    k = float(canon_res) / (float(world_res) * float(scale))
+
+    length_canon = push_length_px * k
+    plate_len_canon = float(plate_dim_x_px) * k
+    plate_wid_canon = float(plate_dim_y_px) * k
+    sigma_canon = float(sigma) * k
+
+    device = push_length_px.device
+    B = push_length_px.shape[0]
+    c = (canon_res - 1) / 2.0
+    row = torch.full((B,), c, device=device, dtype=push_length_px.dtype)
+    col_start = c - length_canon / 2.0
+    col_stop = c + length_canon / 2.0
+    angle = torch.zeros(B, device=device, dtype=push_length_px.dtype)
+
+    start_center = torch.stack([row, col_start], dim=-1)
+    stop_center = torch.stack([row, col_stop], dim=-1)
+
+    r_start = draw_plate_soft(start_center, angle, (canon_res, canon_res),
+                              plate_len_canon, plate_wid_canon,
+                              intensity=1.0, sigma=sigma_canon)
+    r_stop = draw_plate_soft(stop_center, angle, (canon_res, canon_res),
+                             plate_len_canon, plate_wid_canon,
+                             intensity=1.0, sigma=sigma_canon)
+    return torch.stack([r_start, r_stop], dim=1)

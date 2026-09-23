@@ -146,6 +146,31 @@ Two measured properties worth knowing before building on this:
   against an identity-operator baseline (`A = I`) as well as persistence, or
   resampling loss gets silently attributed to the model.
 
+The warp→apply→unwarp→blend COMPOSITION itself (not just the pieces above)
+is `push_frame_roundtrip(fn, occ, start_px, end_px, canon_res, scale=1.0,
+blend=True, validity_threshold=0.5)` — `fn` maps the canonical-frame
+occupancy to a canonical-frame prediction; everything else the model needs
+should be closed over in `fn`. This was promoted out of
+`fit_linear_foresight.py::predict_world` (which now delegates to it, closing
+over its linear operator `A`) so a new model built on this warp — e.g. an
+NFD UNet operating in the canonical push frame — does not have to import a
+linear-model-specific function to get the composition. Verified
+bit-identical against the pre-refactor `predict_world` on random inputs.
+
+`canonical_plate_channels(push_length_px, canon_res, plate_dim_x_px,
+plate_dim_y_px, scale=1.0, sigma=..., world_res=None)` renders the
+start/stop action-plate channels directly in the canonical frame — for a
+canonical-frame model that needs plate channels alongside the warped
+occupancy, this is cheaper and avoids a second resampling pass compared to
+rendering in the world frame and warping through `to_push_frame`. It is
+numerically consistent with that warp-based alternative (correlation
+>0.99 across several `canon_res`/`scale`/`world_res` configurations against
+`draw_plate_soft` + `to_push_frame`); see
+`model/warped_nfd/WARPED_NFD_NOTES.md` for the scaling derivation (a push
+length of `L` world pixels is `L * canon_res / (world_res * scale)`
+canonical pixels) and the `draw_plate_soft`-vs-`push_frame` coordinate-order
+and angle-convention reconciliation it required.
+
 ## 2.1 Action Sampling and Action-Space Restriction
 
 `Genesis/action_sampling.py` owns push-action geometry that is *pure torch* —

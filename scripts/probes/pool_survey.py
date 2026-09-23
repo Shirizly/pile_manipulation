@@ -22,6 +22,13 @@ Reports, per model:
     slate) -- every normalised capture number in this project divides by one
     of these, so this is the number that says whether a slate can
     discriminate models at all.
+  * `slateN` per model -- the project's standard control metric
+    (`experiments/METRICS.md`), computed with the canonical
+    `Baselines/common/goals.py::slate_n_capture` rather than reimplemented.
+    Reported as mean +/- sem over slates, and with wins/losses/ties against
+    the first model in `--models` (so pass the baseline first). This is the
+    number a comparison must lead with; the |R_K| and agreement statistics
+    below are supporting texture, not a substitute.
   * slates ranked by |R_K| (docs/experiments/METRICS.md's M_k/P_k, raw
     Lyapunov units, via pool_common.rk_curve) at a chosen K, so the worst and
     most-typical pools can be handed to pool_inspect.py by slate id.
@@ -41,6 +48,7 @@ import json
 import numpy as np
 import torch
 
+from Baselines.common.goals import slate_n_capture
 from scripts.probes.pool_common import admissible_slates, load_cache, rk_curve
 
 THRESHOLDS = [0.02, 0.05, 0.10, 0.20, 0.30]
@@ -105,7 +113,7 @@ def main():
 
     for m in models:
         pred = dv["dv_true"].clone() if m == "oracle" else dv[m]
-        agree, loss, ratio_all = [], [], []
+        agree, loss, ratio_all, capture = [], [], [], []
         rk_abs_by_slate = {}
         for e in slates:
             sel = (ep == e).nonzero(as_tuple=True)[0]
@@ -118,11 +126,17 @@ def main():
             agree.append(a)
             loss.append(l)
             ratio_all.append(l / spread if spread > 1e-12 else 0.0)
+            # dv is a COST here, hence higher_is_better=False. Canonical
+            # implementation, not a local reimplementation -- see METRICS.md.
+            c = slate_n_capture(p, t, higher_is_better=False)
+            if c == c:                       # drop NaN (degenerate pool)
+                capture.append(c)
             Mk, Pk = rk_curve(p, t, [args.k_rank])
             if args.k_rank in Mk:
                 rk_abs_by_slate[e] = abs(Mk[args.k_rank] - Pk[args.k_rank])
 
         agree = np.array(agree)
+        capture = np.array(capture)
         loss = np.array(loss)
         ratio = np.array(ratio_all)
         disagree_ratio = ratio[~agree]
@@ -165,7 +179,11 @@ def main():
             print(f"  smallest-ratio disagreement slate (candidate for the "
                   f"'near-tie' figure): {near_tie_example}")
 
+        print(f"  slateN: {capture.mean():+.4f} (sem "
+              f"{capture.std(ddof=1) / np.sqrt(capture.size):.4f}, n={capture.size})")
+
         out["per_model"][m] = {
+            "slateN": quantiles(capture),
             "agreement_rate": prevalence["exact_agreement"],
             "loss_quantiles": quantiles(loss),
             "disagreement_ratio_quantiles": quantiles(disagree_ratio) if disagree_ratio.size else None,

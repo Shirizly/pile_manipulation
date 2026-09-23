@@ -152,7 +152,14 @@ def load_occ0_for_slate(cache, slate_id) -> torch.Tensor:
     A same-state slate's candidates all start from one pile, so any raw row
     whose source file matches one of this slate's cache rows gives the same
     occ0 -- which candidate within the file is arbitrary.
+
+    A cache that EMBEDS its own ``occ0`` (one image per slate) is used
+    directly. That is how `binned_pool_cache.py` writes it, because a binned
+    corpus is stored as ``step{k}.pt`` and cannot be reached through the
+    `PileSweepData` reload path below at all.
     """
+    if "occ0" in cache:
+        return cache["occ0"][int(slate_id)]
     cfg_path = _eval_cfg_path(cache)
     wrapper, raw, file_to_rows = _wrapper_and_file_index(cfg_path)
     fname = _source_file_for_slate(cache, slate_id)
@@ -167,6 +174,8 @@ def load_occ0_for_slate(cache, slate_id) -> torch.Tensor:
 
 
 def workspace_bounds(cache):
+    if "ws_min" in cache:
+        return cache["ws_min"], cache["ws_max"]
     cfg_path = _eval_cfg_path(cache)
     _wrapper, raw, _idx = _wrapper_and_file_index(cfg_path)
     return raw.workspace_bounds
@@ -201,4 +210,9 @@ MODEL_COLORS = {
     "linear": "#d62728",
     "mean-delta": "#9467bd",
     "persistence": "#7f7f7f",
+    # the three promoted instances in weights/, scored by binned_pool_cache.py
+    "nfd": "#1f77b4",              # MODEL-0003
+    "visual-switched": "#d62728",  # MODEL-0001
+    "descriptor": "#ff7f0e",       # MODEL-0002
+    "random": "#bbbbbb",
 }

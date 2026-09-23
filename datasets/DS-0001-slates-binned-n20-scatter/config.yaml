@@ -1,0 +1,27 @@
+n_cubes: 20
+size: 0.005
+density: 1000.0
+friction: 0.3
+n_envs: 128
+n_states: 20
+n_actions_per_state: 1000
+n_steps: 1
+n_chains: 20000
+bin_edges:
+- 0.02
+- 0.03
+- 0.04
+- 0.05
+- 0.06
+- 0.07
+max_length_tries: 10
+min_swath_particles: 3
+spawn_mode: drop
+seed: 0
+n_settles: 2
+library_size: 256
+pile_aware: true
+template: none -- no dataset template existed for a binned slate corpus; this is the
+  resolved config as written by the collector's own manifest.json
+collector: Genesis/binned_slate_collection.py
+reader: Genesis/binned_slate_dataset.py::BinnedSlateCorpus

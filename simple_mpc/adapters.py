@@ -679,5 +679,316 @@ def make_adapter(model_dy,
 
     raise NotImplementedError(
         f"No simple_mpc adapter for model type '{type(model_dy).__name__}'. "
-        "Implement a ModelAdapter and register it in make_adapter()."
+        "Implement a ModelAdapter and register it in make_adapter(). "
+        "For the Baselines/ occupancy-grid models (NFD family, switched-linear "
+        "operators), which are not driven from a rendered observation at all, "
+        "use make_occ_adapter() / OCC_ADAPTERS further down this module."
     )
+
+
+# ═════════════════════════════════════════════════════════════════════════════
+#  Occupancy-grid GRADIENT adapters  (EXP-0023)
+# ═════════════════════════════════════════════════════════════════════════════
+#
+# WHY A SECOND FAMILY.  The adapters above are built around the live
+# `run_simple_mpc` loop: they take a rendered `(H,W,5)` observation, own a
+# camera/`global_scale` convention, and score against a distance-transform
+# subgoal.  The baseline models (`Baselines/NFD/*`, `Baselines/LinearForesight/*`)
+# do not live in that world at all -- they consume a 64x64 world-frame
+# occupancy grid built straight from particle positions, over the fixed
+# +/-64 mm slate workspace, and they are scored with `control_utility_test
+# .lyapunov`.  Their published `predict_occ(batch)` entry points are an
+# OFFLINE SCORING interface: they are `@torch.no_grad()` and return CPU
+# tensors, so they cannot be optimised against.
+#
+# The adapters below close exactly that gap.  Contract (mirrors the five
+# operations at the top of this module, minus the camera):
+#
+#   state_from_particles(states)  : (B,n_particles,>=3) world metres -> (B,H,W)
+#   predict_step(occ, act)        : (B,H,W) x (B,4) world-metre [sx,sy,ex,ey]
+#                                   -> (B,H,W), DIFFERENTIABLE W.R.T. `act`
+#   value(occ)                    : (B,H,W) -> (B,)  Lyapunov value
+#   dv(occ0, act)                 : value(predict_step) - value(occ0)
+#
+# SIGN CONVENTION, FIXED ONCE AND ASSERTED (`assert_dv_convention` below):
+#   dv = value(after) - value(before).  It is a COST: negative means the push
+#   moved material TOWARDS the goal, and LOWER IS BETTER.  This is the same
+#   convention as `scripts/probes/binned_pool_cache.py` and every ranking
+#   metric in `experiments/METRICS.md`.  An optimiser MINIMISES `dv`.
+#
+# NO MATH IS DUPLICATED for the NFD family.  Each NFD adapter wraps the
+# already-validated predictor object and calls its `predict_occ` through
+# `__wrapped__`, i.e. the undecorated function `torch.no_grad()` wrapped --
+# so the adapter runs the IDENTICAL forward the offline eval runs, with
+# grad-mode simply left on.  If the predictor's math changes, the adapter
+# changes with it; they cannot drift.
+
+from dataclasses import dataclass as _dataclass
+
+from transforms.functional import action_to_pose as _action_to_pose
+
+# The slate-corpus occupancy convention, identical to
+# `scripts/probes/binned_pool_cache.py` and `experiments/temp/multistep-rollout
+# /rollout.py`, so occupancies (and therefore dv) are on the same scale as
+# every number already recorded against these models.
+OCC_BOUNDS = {"x_min": -0.064, "x_max": 0.064, "y_min": -0.064, "y_max": 0.064}
+OCC_GRID = 64
+OCC_CUBE_SIZE = 0.005
+OCC_PITCH = (OCC_BOUNDS["x_max"] - OCC_BOUNDS["x_min"]) / OCC_GRID
+OCC_FOOTPRINT_RADIUS = 0.5 * OCC_CUBE_SIZE / OCC_PITCH
+
+
+class SlateRawStub:
+    """The two lines of dataset geometry `Baselines/NFD/predictor.py`'s
+    predictors read off a `PileSweepData` (`to_pxl`, `ctr_in_PXL`,
+    `resolution_scale`, `configs[0]['plate']['size']`), for the fixed
+    +/-64 mm / 64 px slate workspace -- so a predictor can be driven from raw
+    actions without constructing a dataset.  Same values as
+    `experiments/temp/multistep-rollout/rollout.py::RawStub`, promoted here
+    because it is not experiment-specific."""
+    to_pxl = OCC_GRID / (OCC_BOUNDS["x_max"] - OCC_BOUNDS["x_min"])
+    ctr_in_PXL = torch.tensor([OCC_GRID / 2, OCC_GRID / 2, 0.0])
+    resolution_scale = 0.5
+    configs = [{"plate": {"size": [0.04, 0.002, 0.01]}}]
+
+
+@_dataclass
+class _OccBatch:
+    """Duck-typed `Baselines.common.eval_baseline.PredictorBatch` carrying a
+    GRAD-CARRYING action.  Only the fields the NFD-family predictors read are
+    populated (`occ0`, `p_start`, `p_stop`, `angle`, `raw`, `H`, `W`)."""
+    occ0: "torch.Tensor"
+    p_start: "torch.Tensor"
+    p_stop: "torch.Tensor"
+    angle: "torch.Tensor"
+    raw: object
+    H: int
+    W: int
+
+
+def occ_from_particles(states: "torch.Tensor", device=None) -> "torch.Tensor":
+    """(B, n_particles, >=3) world-metre particle states -> (B, 64, 64)."""
+    pts = states[..., :3]
+    if device is not None:
+        pts = pts.to(device)
+    return _particles_to_occupancy(pts.float(), OCC_BOUNDS, (OCC_GRID, OCC_GRID),
+                                   footprint_radius=OCC_FOOTPRINT_RADIUS)
+
+
+class OccupancyGradientAdapter:
+    """Base class: everything except `predict_step`.
+
+    `goal_shape` selects the Lyapunov weight field
+    (`control_utility_test.lyapunov_weights`)."""
+
+    def __init__(self, name: str, device: str = "cuda", goal_shape: str = "corner"):
+        from control_utility_test import lyapunov_weights
+        self.name = name
+        self.device = device if torch.cuda.is_available() else "cpu"
+        self.goal_shape = goal_shape
+        self.dw = lyapunov_weights((OCC_GRID, OCC_GRID), goal_shape, self.device)
+        self.raw = SlateRawStub()
+
+    # ── state ────────────────────────────────────────────────────────────────
+    def state_from_particles(self, states):
+        return occ_from_particles(states, self.device)
+
+    def expand_state(self, state, n_sample):
+        return state.expand(n_sample, *state.shape[1:]).clone()
+
+    # ── value ────────────────────────────────────────────────────────────────
+    def value(self, occ):
+        """(B,H,W) -> (B,) Lyapunov value. LOWER IS BETTER."""
+        from control_utility_test import lyapunov
+        return lyapunov(occ, self.dw)
+
+    def dv(self, occ0, act):
+        """dv = value(after) - value(before). A COST: lower is better.
+        Differentiable w.r.t. `act`."""
+        occ1 = self.predict_step(occ0, act)
+        return self.value(occ1) - self.value(occ0)
+
+    # ── model ────────────────────────────────────────────────────────────────
+    def predict_step(self, occ, act):
+        raise NotImplementedError
+
+    # ── helpers ──────────────────────────────────────────────────────────────
+    def _batch(self, occ, act):
+        """(B,H,W) occupancy + (B,4) world-metre action -> `_OccBatch`, with
+        the plate yaw derived from the travel direction exactly as
+        `transforms.functional.action_to_pose` (and the corpus's own
+        `angles`) define it -- differentiably."""
+        sx, sy, ex, ey, angle = _action_to_pose(act)
+        z = torch.zeros_like(sx)
+        return _OccBatch(
+            occ0=occ,
+            p_start=torch.stack([sx, sy, z], dim=-1),
+            p_stop=torch.stack([ex, ey, z], dim=-1),
+            angle=angle,
+            raw=self.raw, H=occ.shape[-2], W=occ.shape[-1],
+        )
+
+
+def _undecorated(method):
+    """The function `torch.no_grad()` wrapped, so the adapter runs the
+    predictor's OWN forward with grad-mode left on instead of reimplementing
+    it.  `torch.no_grad.__call__` uses `functools.wraps`, so `__wrapped__` is
+    the original function."""
+    fn = getattr(method, "__wrapped__", None)
+    if fn is None:
+        raise TypeError(f"{method!r} is not a torch.no_grad()-decorated function; "
+                        "if the decorator was removed, call it directly instead.")
+    return fn
+
+
+class PredictorGradientAdapter(OccupancyGradientAdapter):
+    """Wraps any `Baselines/*` predictor whose `predict_occ(batch)` is a
+    `@torch.no_grad()`-decorated, otherwise fully differentiable forward
+    (`NFDPredictor`, `WarpedNFDPredictor`, `ResidualNFDPredictor`,
+    `ResidualWarpedNFDPredictor`)."""
+
+    def __init__(self, name, predictor, device="cuda", goal_shape="corner"):
+        super().__init__(name, device, goal_shape)
+        self.predictor = predictor
+        self.predictor.model.to(self.device).eval()
+        for p in self.predictor.model.parameters():
+            p.requires_grad_(False)
+        self._forward = _undecorated(type(predictor).predict_occ)
+
+    def predict_step(self, occ, act):
+        out = self._forward(self.predictor, self._batch(occ, act))
+        return out.to(occ.device)
+
+
+class SwitchedLinearGradientAdapter(OccupancyGradientAdapter):
+    """Pixel-space switched-linear operators (`weights/MODEL-0001-*`,
+    `Baselines/LinearForesight/runs/operators_res*.pt`).
+
+    `gate="soft"` uses `Baselines.LinearForesight.model.predict_switched_soft`
+    -- a RELAXATION of the fitted model (see that function's note), required
+    because the hard `torch.bucketize` gate carries no length gradient.
+    `gate="hard"` reproduces the fitted model exactly and is what every
+    existing register row was measured with."""
+
+    def __init__(self, name, ckpt, device="cuda", goal_shape="corner",
+                 res: int = 32, scale: float = 1.0, gate: str = "soft"):
+        super().__init__(name, device, goal_shape)
+        assert gate in ("soft", "hard")
+        self.gate = gate
+        self.res = res
+        self.scale = scale
+        self.bin_edges = ckpt["bin_edges"].to(self.device)
+        ops_key = "switched_ops" if "switched_ops" in ckpt else "operators"
+        self.ops = [o.to(self.device).float() for o in ckpt[ops_key]]
+
+    def predict_step(self, occ, act):
+        from Baselines.LinearForesight.model import (
+            predict_switched, predict_switched_soft)
+        from fit_linear_foresight import actions_to_pixels
+        ws_min = torch.tensor([OCC_BOUNDS["x_min"], OCC_BOUNDS["y_min"]])
+        ws_max = torch.tensor([OCC_BOUNDS["x_max"], OCC_BOUNDS["y_max"]])
+        H, W = occ.shape[-2], occ.shape[-1]
+        s_px, e_px = actions_to_pixels(act, ws_min, ws_max, (H, W))
+        length_m = (act[:, 2:4] - act[:, 0:2]).norm(dim=-1)
+        fn = predict_switched_soft if self.gate == "soft" else predict_switched
+        return fn(self.bin_edges, self.ops, occ, s_px, e_px, length_m,
+                  self.res, (H, W), self.scale)
+
+
+# ── registry: adding a model is ONE entry here ───────────────────────────────
+
+def _nfd(ckpt, channels=3):
+    def f(device, goal_shape):
+        from Baselines.NFD.predictor import NFDPredictor
+        return PredictorGradientAdapter(
+            "x", NFDPredictor(ckpt, channels=channels), device, goal_shape)
+    return f
+
+
+def _nfd_warped(ckpt, plate_mode="canonical", wall_channel=False, canon_res=None, scale=1.0):
+    def f(device, goal_shape):
+        from model.warped_nfd.predictor import WarpedNFDPredictor
+        return PredictorGradientAdapter(
+            "x", WarpedNFDPredictor(ckpt, plate_mode, wall_channel, canon_res, scale),
+            device, goal_shape)
+    return f
+
+
+def _nfd_residual_warped(ckpt, plate_mode="canonical", wall_channel=False,
+                         canon_res=None, scale=1.0):
+    def f(device, goal_shape):
+        from model.residual_nfd.predictor import ResidualWarpedNFDPredictor
+        return PredictorGradientAdapter(
+            "x", ResidualWarpedNFDPredictor(ckpt, plate_mode, wall_channel, canon_res, scale),
+            device, goal_shape)
+    return f
+
+
+def _switched(ckpt_path, res=32, gate="soft"):
+    def f(device, goal_shape):
+        ck = torch.load(ckpt_path, map_location="cpu", weights_only=False)
+        return SwitchedLinearGradientAdapter("x", ck, device, goal_shape,
+                                             res=res, gate=gate)
+    return f
+
+
+OCC_ADAPTERS = {
+    # id                          factory
+    "nfd_3ch":                    _nfd("Baselines/NFD/runs/nfd_3ch/unet_best.pth"),
+    "nfd_3ch_randlen":            _nfd("Baselines/NFD/runs/nfd_3ch_randlen/unet_best.pth"),
+    "nfd_3ch_finetuned":          _nfd("weights/MODEL-0003-nfd-multistep-finetuned/checkpoint.pth"),
+    "nfd_warped_randlen":         _nfd_warped("Baselines/NFD/runs/nfd_warped_randlen/unet_best.pth"),
+    "nfd_residual_warped":        _nfd_residual_warped(
+        "Baselines/NFD/runs/nfd_residual_warped_L20mm_pilot_2/unet_best.pth"),
+    "linear_switched_soft":       _switched("weights/MODEL-0001-stage2-visual-switched/checkpoint.pt"),
+    "linear_switched_hard":       _switched("weights/MODEL-0001-stage2-visual-switched/checkpoint.pt",
+                                            gate="hard"),
+}
+
+
+def make_occ_adapter(model_id: str, device: str = "cuda", goal_shape: str = "corner"):
+    """Return the `OccupancyGradientAdapter` registered under `model_id`.
+
+    This is the live-gradient counterpart of
+    `Baselines/common/eval_report.py`'s `MODELS` dict: adding a model is one
+    entry in `OCC_ADAPTERS`."""
+    if model_id not in OCC_ADAPTERS:
+        raise NotImplementedError(
+            f"No occupancy gradient adapter registered for '{model_id}'. "
+            f"Known: {sorted(OCC_ADAPTERS)}")
+    ad = OCC_ADAPTERS[model_id](device, goal_shape)
+    ad.name = model_id
+    return ad
+
+
+def assert_dv_convention(adapter, tol: float = 1e-9) -> None:
+    """Assert, in code, that `adapter.dv` is `value(after) - value(before)`
+    and therefore a COST **for a LYAPUNOV-style value function**.  Uses a
+    synthetic pair of occupancies whose values are known to be ordered, so a
+    flipped sign fails loudly here instead of inverting every conclusion
+    downstream.
+
+    SCOPE, do not over-read this: the check builds its test from the distance
+    field `adapter.dw` and asserts "closer to the goal has the LOWER value".
+    That holds for `lyapunov` and is FALSE for `mass_in_region` /
+    `signed_mass_in_region`, which are VALUE functions where an improving push
+    RAISES the value and so gives a POSITIVE dv.  Passing this assertion is
+    therefore not evidence that a mass-based `dv` is signed as expected -- see
+    the SIGN section of `experiments/METRICS.md`.  If this adapter family is
+    ever extended to a VALUE function, this assertion needs a
+    `higher_is_better` flag of its own, the way
+    `Baselines/common/goals.py::slate_n_capture` already has one."""
+    g = OCC_GRID
+    dev = adapter.device
+    near = torch.zeros(1, g, g, device=dev)
+    far = torch.zeros(1, g, g, device=dev)
+    dwf = adapter.dw.reshape(-1)
+    lo = int(torch.argmin(dwf)); hi = int(torch.argmax(dwf))
+    near[0, lo // g, lo % g] = 1.0
+    far[0, hi // g, hi % g] = 1.0
+    v_near = float(adapter.value(near)); v_far = float(adapter.value(far))
+    assert v_near < v_far - tol, (
+        f"Lyapunov value is not 'lower = closer to goal' ({v_near} vs {v_far})")
+    # dv from far -> near must be negative under 'value(after) - value(before)'
+    dv = v_near - v_far
+    assert dv < 0, f"dv convention broken: improving push gave dv={dv:+.6g} (expected < 0)"

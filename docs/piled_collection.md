@@ -304,6 +304,18 @@ against the pile. If both are passed, `pile_aware` wins.
   longer in its length bin. It only matters for a *single-operator* fit; anything
   treating push length as an input is unaffected.
 
+  **Per-env lengths.** `push_length` may also be a *tensor* of one target per
+  env, broadcast to `t_max`'s shape in `_pile_aware_stops`. That is what lets
+  `Genesis/binned_slate_collection.py` give a batch a spread of lengths inside
+  one bin while keeping the batch length-homogeneous (envs step in lockstep and
+  the sweep is sized by the longest travel, so mixing bins makes short pushes pay
+  for long ones). The shortening `WARNING` is debug-gated in the tensor case
+  only: those callers redraw up to `--max-length-tries` times, keep the longest
+  draw, and re-label it by its *realized* bin rather than discarding it — which
+  deliberately preserves the state-dependence of the achievable length
+  distribution instead of filtering the tray-constrained pile configurations
+  out of the corpus.
+
 - **`min_swath_particles` can be unreachable** (e.g. a sparse configuration where
   no lateral alignment catches enough particles). Those draws are counted and
   logged, and `pile_contact_starts` returns an `ok` mask so a caller can drop

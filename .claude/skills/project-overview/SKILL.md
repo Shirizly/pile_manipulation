@@ -44,15 +44,16 @@ infrastructure all three depend on.
 
 | Doc | Owns |
 |---|---|
+| `docs/CODEMAP.md` | **Index of where things already are** — which function in which file does what (representations, operators, goals, metrics, datasets, timing), plus known traps. Check it before grepping; add to it when you find something missing |
 | `docs/ARCHITECTURE.md` | Repository module map, entry points, the **Design Philosophy** (modularity / division-of-responsibility patterns to preserve), extension recipes (add a model/dataset/loss), training config schema |
 | `docs/INTERFACES.md` | Data contracts: batch dict keys per representation, `ModelOutput`, the MPC adapter surface (§3.4) and its `per_sample` loss-cost variant (§3.5), coordinate conventions |
 | `docs/UTILITIES.md` | Utility ownership boundaries: what belongs in `transforms/functional.py` vs `utils.py` vs a scoped module, and the on_phase-hook / write_video_frame pattern as the reference example |
+
+Minor subsystem design docs (each owns the design of one major subsystem, not the whole repo):
 | `docs/oracle_mpc_design.md` | Full design reference for the oracle MPC subsystem: snapshot/restore state management, sampling optimizers, occupancy-representation caveats, config schema, known limitations |
 | `docs/linear_visual_foresight_baseline.md` | Suh & Tedrake 2020 switched-linear visual foresight as a comparison baseline: paper summary, what the repo already supports, the integration plan, and the perpendicular-push / fixed-length action restriction (§7, implemented) |
-| `docs/rejected_mpm_sand.md` | Why MPM sand was tried as the continuum end of the granularity spectrum and abandoned: cohesion is zero by construction and adhesion measured zero, but the pile is three grid cells tall and a continuum cannot represent grain-scale discreteness at any resolution. Use DEM (the cube path) if a granular medium is needed |
 | `docs/piled_collection.md` | Piled (multi-layer, centred) particle spawns and pile-aware action sampling: why they exist, what they guarantee, and every flag/config that activates them |
 | `docs/human_demo_design.md` | Full design reference for the human-demonstration subsystem: the 5D action convention, local grid-search refinement, GUI interaction model, output-schema/recording parity with `run_oracle_mpc.py` |
-| `docs/midterm_report_2026-09.md` | Mid-term synthesis of standing model-comparison results (EXP-0004..EXP-0010): what was measured, what it says, what limits it. Cites experiment ids; does not own any number |
 | `experiments/` | The evidence layer and experiment storage — structure and ownership are covered in the Major Parts row above, not restated here; this row exists so the documentation-policy rule below has something to point at. |
 
 **2026-09-10 — claim register reset, and a stale-citation note.** The prior
@@ -71,6 +72,30 @@ these `docs/` files or the Major Parts table above, not a new file — check
 the Design Philosophy in `ARCHITECTURE.md` first; it explains *why* the
 boundaries are drawn where they are, which usually settles where a change's
 documentation belongs too.
+
+## Visualization — where the plotting code already is
+
+There is no single `viz/` module and there should not be one; plotting lives
+with the thing being plotted. Before writing a new figure, check this table —
+the pool-diagnostic scripts in particular already produce the standard
+per-slate figure and should be extended, not reimplemented.
+
+| what you want to draw | where it is |
+|---|---|
+| **one action pool / same-state slate**: dv histogram with each model's pick, the action pool on the step-0 occupancy (dots + sampled heading arrows), the chosen actions with swept rectangles, `\|R_K\|` vs K, model-rank-vs-true-rank scatter, true-percentile bars | `scripts/probes/pool_inspect.py` (the figure) + `scripts/probes/pool_common.py` (cache loading, `rk_curve`, `action_geometry`, `swept_rectangle_corners`, `MODEL_COLORS`) |
+| which pools are worth plotting (typical / worst / near-tie, per model) | `scripts/probes/pool_survey.py` — run it first and take the slate ids it names |
+| the dV cache those two read | `scripts/probes/exp0026_selection_pressure.py`, `expB_multistep_eval.py`, and — for `Genesis/data/slates_binned/*`, whose `step{k}.pt` layout the other two cannot read — `scripts/probes/binned_pool_cache.py` |
+| particles → an image to plot at all | `transforms/functional.py::particles_to_occupancy`; the plate as a channel is `draw_plate_soft` |
+| world action → pixel endpoints | `fit_linear_foresight.py::actions_to_pixels` (`pool_common.action_geometry` wraps it) |
+| a push drawn on a raw image (OpenCV, not matplotlib) | `utils.py::drawPushing`, `drawRotatedRect` |
+| simulator video of an episode | `utils.py::write_video_frame` + the `on_phase`/`on_step` hooks on `SandboxManipulation.execute_action` (see `docs/UTILITIES.md` — this hook pattern is the documented reference example) |
+| predicted-vs-true rollout video | `simple_mpc/debug_vis.py::save_predicted_trajectory_video` |
+| OT planner diagnostics (distributions, vector field, divergence) | `simple_mpc/ot_planner.py::plot_*` |
+| per-episode reward curve | `simple_mpc/human_mpc.py::_plot_episode_reward` |
+
+Corpus-level structure (trajectories, per-slate sequences, per-bin selections)
+is queried through `Genesis/binned_slate_dataset.py::BinnedSlateCorpus`, not by
+re-reading the files — see the `data-collection` skill.
 
 ## Configuration and code ownership
 

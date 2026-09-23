@@ -23,8 +23,20 @@ All dataset wrappers should return a dict with representation-specific keys. Opt
     "input":   Tensor[B, C, H, W],
     "target":  Tensor[B, H, W],
     "physics": Tensor[B, P],
+    "push_px": Tensor[B, 4],   # optional — see below
 }
 ```
+
+`push_px` (optional): `[start_col, start_row, end_col, end_row]`, pixels,
+**(col, row)** order — the same convention `transforms/functional.py`'s
+push-frame warp (`to_push_frame` et al.) uses, and what a push-frame /
+canonical-frame model needs alongside the occupancy. When present,
+`training/trainer.py::_augment_eulerian_batch`'s 4-rotation x 2-flip
+spatial augmentation carries it through the SAME `rot90`/`flip` pixel
+transform applied to `input`/`target` (see
+`model/warped_nfd/WARPED_NFD_NOTES.md` for the derivation), so the endpoints
+stay geometrically consistent with the augmented images; when absent,
+augmentation behaviour is unchanged from before this key existed.
 
 ### 1.3 Lagrangian batch example
 
@@ -132,6 +144,45 @@ rollout (`GenesisOracleEnv.rollout_candidates`), not a learned forward pass,
 and there is no `compute_reward`/`ModelAdapter` object to swap. It reuses the
 same occupancy conventions (§4.1) and the training loss registry (via
 `per_sample=True`, see below) rather than duplicating the adapter contract.
+
+### 3.4b Occupancy-grid gradient adapter surface (EXP-0023)
+
+The §3.4 surface is built around a rendered `(H,W,5)` observation and a
+camera. The `Baselines/` occupancy models (NFD family, warped/residual NFD,
+switched-linear pixel operators) have no camera: they consume a 64x64
+world-frame occupancy over the fixed +/-64 mm slate workspace and are scored
+with `control_utility_test.lyapunov`. `simple_mpc.adapters` therefore carries
+a SECOND adapter family for them, with its own surface:
+
+```python
+state_from_particles(states)   -> occ          # (B,n_particles,>=3) metres -> (B,64,64)
+expand_state(state, n_sample)  -> occ_batch
+predict_step(occ, act)         -> occ1         # act (B,4) world-metre [sx,sy,ex,ey]
+value(occ)                     -> (B,)         # Lyapunov COST, lower is better
+dv(occ0, act)                  -> (B,)         # value(after) - value(before)
+```
+
+**`predict_step` and `dv` are required to be differentiable w.r.t. `act`.**
+The plate yaw is derived from the travel direction by
+`transforms.functional.action_to_pose` (matching the corpora's own `angles`),
+so the action has exactly four free parameters and no yaw argument.
+
+Selection is by string id, not by `isinstance`:
+`make_occ_adapter(model_id, device, goal_shape)` over the `OCC_ADAPTERS`
+registry -- the live-gradient counterpart of
+`Baselines/common/eval_report.py`'s `MODELS` dict. Registering a model is one
+entry.
+
+**A `Baselines/*` predictor's `predict_occ(batch) -> (B,H,W)` (§ `Baselines/
+common/eval_baseline.py`) is an OFFLINE SCORING interface and is
+`@torch.no_grad()`.** It is not this contract. `PredictorGradientAdapter`
+bridges the two by calling the predictor's own `predict_occ.__wrapped__`, so
+the differentiable path and the offline path are literally the same code.
+
+**SIGN CONVENTION, repo-wide for `dv`:** `dv = value(after) - value(before)`,
+a COST -- lower is better, an optimiser MINIMISES it. Asserted by
+`simple_mpc.adapters.assert_dv_convention`; identical to
+`scripts/probes/binned_pool_cache.py` and `experiments/METRICS.md`.
 
 ### 3.5 Loss contract's `per_sample` mode (MPC cost use)
 

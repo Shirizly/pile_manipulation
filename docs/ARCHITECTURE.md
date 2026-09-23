@@ -89,12 +89,67 @@ model/
   diff_mass_push.py     differentiable mass-push kernels used by the
                         heuristic push models
   gnn_dyn.py            PropNetDiffDenModel (Lagrangian GNN dynamics)
-  futureintegration/    salvaged architectures; three are now registered
-                        (see below), the rest await consolidation/are
-                        skipped/broken — see its README for the breakdown
-    NCAModels.py            NCAWithPhysics       → model type "nca"
-    SpatTransNet.py         EulerianSTN          → model type "spatial-transformer"
-    UNetModels_modular.py   UNet (config-driven) → model type "unet-modular"
+  NCAModels.py          NCAWithPhysics       → model type "nca"
+  SpatTransNet.py       EulerianSTN          → model type "spatial-transformer"
+  UNetModels_modular.py UNet (config-driven) → model type "unet-modular"
+                        (these three now live at `model/` top level, not
+                        under `futureintegration/` — moved out when each was
+                        registered; the rest of `futureintegration/` await
+                        consolidation/are skipped/broken, see its README)
+  futureintegration/    salvaged architectures not yet promoted to the top
+                        level — see its README for the breakdown
+  warped_nfd/           "warped NFD": the NFD UNet baseline predicting in
+                        the canonical PUSH FRAME instead of the world frame
+                        (a new model family, not a minor parameter change
+                        over the NFD baseline in Baselines/NFD/ — see the
+                        Baselines/NFD/ entry below for the split rationale).
+    lib.py                  registers dataset `nfd-genesis-3ch-warped`
+                            (PileSweepData3ChWarped, adds a `push_px` batch
+                            key) and model `nfd-unet-warped`
+                            (WarpedNFDWrapper; config knobs plate_mode:
+                            canonical|warp, wall_channel, canon_res, scale)
+    predictor.py            eval-time twin: `build_canonical_stack` (the ONE
+                            canonical-frame input-stack builder, shared
+                            verbatim by lib.py's WarpedNFDWrapper and this
+                            module's WarpedNFDPredictor so training/eval
+                            cannot drift apart — train/eval parity measured
+                            at ~1e-6 world-frame prob diff), WarpedNFDPredictor,
+                            build_predictor_warped[_walls]. Genesis-free by
+                            design (does not import Genesis.training.dataset
+                            / the dataset registry), matching the rest of
+                            `model/`.
+    WARPED_NFD_NOTES.md     coordinate-convention traps ((col,row) vs
+                            (row,col) point order) and the plate_mode timing
+                            derivation
+  residual_nfd/         EXP-0022 R1/R2: image-space RESIDUAL
+                        PARAMETERISATION for NFD (not a residual objective —
+                        the loss stays `eulerian_combined` world-frame MSE
+                        against the absolute `occ1` target, unchanged).
+    lib.py                  registers model `nfd-unet3ch-residual` (R1,
+                            unwarped control; reuses the existing
+                            `nfd-genesis-3ch` dataset unchanged) and
+                            `nfd-unet-warped-residual` (R2, warped; reuses
+                            `nfd-genesis-3ch-warped` and
+                            `warped_nfd/predictor.py::build_canonical_stack`,
+                            unchanged)
+    predictor.py            eval-time predictors registered in
+                            Baselines/common/eval_report.py's `MODELS` as
+                            `nfd_residual_unwarped_L20mm_pilot`/
+                            `nfd_residual_warped_L20mm_pilot`
+  flow_nfd/             EXP-0025: flow/advection field prediction — a
+                        per-pixel BACKWARD displacement field warped through
+                        `grid_sample`, mass-conserving and residual by
+                        construction.
+    lib.py                  registers model `nfd-flow-warp`; reuses the
+                            existing `nfd-genesis-3ch` dataset unchanged
+    predictor.py            eval-time twin (duplicates the flow/warp math
+                            so eval and train agree, same pattern
+                            `residual_nfd/predictor.py` uses)
+    supervised.py           direct particle-correspondence supervision for
+                            the flow head (`build_flow_targets_for_split`,
+                            the x8-augmentation-with-vector-rotation helper
+                            `augment_flow_batch_x8`), on top of the
+                            photometric loss above
 
 fit_linear_foresight.py  fits and falsifies the switched-linear pixel operator
                         of Suh & Tedrake 2020 on a single-push-length dataset;
@@ -420,6 +475,71 @@ debug_mpc_gui.py         Interactive learned/heuristic-model MPC debugger
                          refinement) — human_mpc_gui.py reuses its
                          tile-image helpers and canvas-drag interaction
 visualize.py             dataset / occupancy / prediction visualization
+
+Baselines/common/
+  goal_configs.py        mask_to_configuration (grid-then-jitter goal-as-
+                        configuration) plus its legacy non-penetration bound
+                        assert_no_penetration/_penetrates -- an axis-aligned
+                        circumscribed-box test at the conservative any-yaw
+                        diameter (MIN_PITCH = CUBE_SIZE*sqrt(2)). UNCHANGED
+                        and still used by mask_to_configuration/goal
+                        generation (claim C-021 depends on this exact
+                        behaviour) -- do not migrate it. Measured: this bound
+                        rejects legal diagonal contact by a factor of sqrt(2)
+                        and rejects 91-99% of REAL DS-0002 states outright,
+                        i.e. it cannot express "contact" and nothing could
+                        ever be compacted against it -- see cube_overlap.py.
+                        sample_synthetic_state (the old B1-scattered/B2-clump
+                        no-target-mask generator) is RETIRED from DS-0003 as
+                        of 2026-09-17 (superseded by pile_compaction.py) but
+                        the function itself is untouched and still importable.
+  cube_overlap.py        Exact separating-axis (SAT) overlap test for
+                        yaw-rotated squares: overlaps_pairs, any_overlap_matrix,
+                        state_is_legal(xy, yaw, size, tol). tol=0.0 is the
+                        exact boundary; a NEGATIVE tol inflates the squares
+                        (a safety margin used during placement so the
+                        finished state still verifies at tol=0). This is the
+                        legality test the new compaction generator relaxes
+                        cubes against -- it replaces (for DS-0003 only)
+                        goal_configs.py's conservative axis-aligned bound
+                        above. Unit-tested on aligned/diagonal/45-degree/
+                        contact cases.
+  pile_compaction.py     sample_compacted_state(n_objects, rng, size,
+                        compaction, n_sweeps, tol, seed_jitter, yaw_kappa) ->
+                        (xy, yaw): grid seed (pitch sized from the ACTUAL yaw
+                        spread, not the any-yaw worst case) then per-object
+                        relaxation toward the centroid, each candidate move
+                        checked against cube_overlap.py at a small negative
+                        tol margin. `compaction` in [0,1] sets the effective
+                        sweep count (the dispersed<->compact diversity axis);
+                        `yaw_kappa` concentrates yaws around a random common
+                        heading via von Mises (real cubes partially align and
+                        pack tighter than uniform-random yaws allow -- do not
+                        exceed yaw_kappa=6, the seed lattice starts too tight
+                        above that and legality drops). Returns a CENTRED
+                        pile; placing it in a workspace is the caller's job.
+                        Backs datasets/DS-0003-synthetic-states/ (2026-09-17
+                        rewrite, replacing sample_synthetic_state above).
+
+Baselines/NFD/
+  nfd_lib.py            the plain NFD baseline: registers dataset
+                        `nfd-genesis-3ch` and model `nfd-unet3ch`
+  predictor.py          plain (unwarped) `NFDPredictor`/`build_predictor[_2ch_ablation]`
+                        eval-time predictor only -- the warped/residual/flow
+                        predictor code that used to live here moved out to
+                        `model/warped_nfd/`, `model/residual_nfd/`,
+                        `model/flow_nfd/` (see the `model/` entries above):
+                        those are new model families with their own
+                        multi-file code, not minor parameter changes over
+                        this baseline, so they belong under `model/`, not
+                        `Baselines/`
+  train_nfd.py          thin driver: imports `nfd_lib` plus
+                        `model.warped_nfd.lib` / `model.residual_nfd.lib` /
+                        `model.flow_nfd.lib` (registration side effects),
+                        then runs `training.trainer.Trainer`
+  configs/               training configs for every arm above (unmoved --
+                        these are `Baselines/NFD/`-owned config instances,
+                        not code)
 ```
 
 Genesis-dependent modules (`env/genesis_env.py`, `simple_mpc/genesis_oracle.py`,
@@ -429,6 +549,28 @@ is a partial exception: `build_action_grid` is plain NumPy and Genesis-free,
 but `grid_search_refine` needs a real `GenesisOracleEnv` — the `genesis`-
 requiring import is deferred inside that one function so the module itself
 stays importable without `genesis` installed (see docs/human_demo_design.md).
+
+
+### Two adapter families in `simple_mpc/adapters.py`
+
+`make_adapter` serves the live `run_simple_mpc` loop: observation-driven,
+camera-aware, goal given as a distance-transform subgoal. It supports the
+Eulerian wrapper and the GNN and raises `NotImplementedError` for everything
+else, which is correct -- the other models are not observation-driven.
+
+`make_occ_adapter` / `OCC_ADAPTERS` serve action optimisation against the
+`Baselines/` occupancy models on the slate workspace. The split is deliberate
+and is about the INPUT, not the model class: one family starts from a rendered
+depth image and owns a camera convention; the other starts from particle
+positions and owns the +/-64 mm / 64 px slate convention that
+`scripts/probes/binned_pool_cache.py` and every DS-0001 number already use.
+Merging them would force one of the two conventions onto the other.
+
+The second family's reason to exist is that a `predict_occ` predictor is an
+OFFLINE scorer (`@torch.no_grad()`): it can rank a fixed pool but cannot be
+optimised against. `PredictorGradientAdapter` reuses the predictor's own
+forward via `__wrapped__` rather than reimplementing it, so there is exactly
+one copy of each model's prediction math.
 
 ## Data Flow
 

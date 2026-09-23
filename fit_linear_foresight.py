@@ -34,10 +34,7 @@ import time
 import torch
 
 from dmdc_baseline import load_transition_arrays, split_by_episode
-from transforms.functional import (
-    blend_push_prediction, from_push_frame, push_frame_validity_mask,
-    to_push_frame,
-)
+from transforms.functional import push_frame_roundtrip, to_push_frame
 
 
 # =====================================================================
@@ -212,17 +209,24 @@ def fit_operator_nonneg(Y0, Y1, max_iter: int = 4000, tol: float = 1e-6,
 
 
 def predict_world(A, occ, start_px, end_px, res, grid_res, scale=1.0, batch=256):
-    """Full pipeline: warp -> apply A -> unwarp -> blend with the original."""
+    """Full pipeline: warp -> apply A -> unwarp -> blend with the original.
+
+    Delegates the warp/apply/unwarp/blend composition to the model-agnostic
+    `transforms.functional.push_frame_roundtrip` (closing over `A` here);
+    this function now only supplies the linear operator and the batching
+    loop, which `push_frame_roundtrip` deliberately leaves to the caller.
+    """
     H, W = grid_res
+
+    def apply_A(canon):
+        return (A @ canon.reshape(canon.shape[0], -1).T).T.reshape(-1, res, res)
+
     outs = []
     for i in range(0, occ.shape[0], batch):
         sl = slice(i, i + batch)
         o, s, e = occ[sl], start_px[sl], end_px[sl]
-        canon = to_push_frame(o, s, e, (res, res), scale)
-        pred_c = (A @ canon.reshape(canon.shape[0], -1).T).T.reshape(-1, res, res)
-        back = from_push_frame(pred_c, s, e, (H, W), scale)
-        mask = push_frame_validity_mask(s, e, (H, W), (res, res), scale)
-        outs.append(blend_push_prediction(back, o, mask).clamp_(0.0, 1.0))
+        pred = push_frame_roundtrip(apply_A, o, s, e, res, scale=scale)
+        outs.append(pred.clamp(0.0, 1.0))
     return torch.cat(outs, dim=0)
 
 

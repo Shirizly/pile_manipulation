@@ -24,6 +24,9 @@ from pathlib import Path
 import yaml
 
 import Baselines.NFD.nfd_lib  # noqa: F401  -- registers nfd-genesis-3ch / nfd-unet3ch
+import model.warped_nfd.lib  # noqa: F401  -- registers nfd-genesis-3ch-warped / nfd-unet-warped
+import model.residual_nfd.lib  # noqa: F401  -- EXP-0022 R1/R2: registers nfd-unet3ch-residual / nfd-unet-warped-residual
+import model.flow_nfd.lib  # noqa: F401  -- EXP-0025: registers nfd-flow-warp
 
 
 def _apply_overrides(cfg: dict, overrides: list[str]) -> dict:

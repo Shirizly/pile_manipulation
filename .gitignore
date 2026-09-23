@@ -8,6 +8,9 @@ gnn_epoch_*.pth
 stn_epoch_*.pth
 nca_epoch_*.pth
 *.png
+# Curated dataset-validation figures ARE tracked (small, cited PNGs), unlike
+# the general *.png rule above which targets run/render output.
+!datasets/*/validation/*.png
 *.jpg
 *.jpeg
 *.avi
@@ -21,6 +24,7 @@ Genesis/data/linear_foresight/
 Genesis/data/slates
 Genesis/data/slates_multistep/*eval/
 Genesis/data/slates_multistep/*train/
+Genesis/data/Sean
 # Run artifacts (outputs are reproducible from configs)
 outputs/
 mpc_transitions/
@@ -29,6 +33,11 @@ mpc_transitions/
 # "Quick, uncited work" section. experiments/TEMP_LOG.md is a tracked
 # sibling and is NOT caught by this (anchored to the temp/ dir itself).
 /experiments/temp/
+
+# Reusable dataset payloads (datasets/DS-####-slug/data/) -- DATASET.md and
+# config.yaml stay tracked; the tensor payload is large and regenerable from
+# the recorded provenance + command.
+datasets/*/data/
 
 # Reusable trained-instance payloads (weights/MODEL-####-slug/) -- the
 # MODEL.md/tests.md/config.yaml stay tracked; the checkpoint itself is
@@ -41,3 +50,18 @@ Baselines/*/weights/*/checkpoint.*
 # The measured numbers alongside them (results/*.json) ARE tracked; the frames
 # are megabytes of binary that say nothing a re-render would not.
 tests/scaling_investigation/results/video/
+
+# Fitted linear-operator payloads (Baselines/<Name>/runs/*.pt). These are
+# hundreds of MB -- operators_res64.pt alone is 448 MB, past GitHub's limit --
+# and are regenerable from fit_switched.py plus the recorded config. The run's
+# small JSON metrics beside them ARE tracked.
+Baselines/*/runs/*.pt
+
+# Binned slate corpus (collection output, regenerable via
+# Genesis/binned_slate_collection.py from its recorded config).
+Genesis/data/slates_binned/
+
+# Final-epoch network checkpoints. Only the SELECTED `unet_best.pth` of a
+# top-performing model per family is tracked, and it is added explicitly --
+# see the repo's weights policy. `unet_epoch_*.pth` is already excluded above.
+unet.pth

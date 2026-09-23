@@ -117,16 +117,78 @@ def _to_device(batch: TrainingBatch, device: str) -> TrainingBatch:
     }
 
 
-def _augment_eulerian_batch(batch: TrainingBatch) -> TrainingBatch:
+def _augment_push_endpoints(push_px: torch.Tensor, n: int, k: int,
+                            flipped: bool) -> torch.Tensor:
+    """Map push endpoints through the SAME rot90(k, dims=(-2,-1)) [+ hflip on
+    dims=[-1]] pixel transform ``_augment_eulerian_batch`` applies to the
+    image tensors, so the augmented occupancy/target and the augmented
+    ``push_px`` stay geometrically consistent.
+
+    ``push_px`` is (B, 4) = ``[start_col, start_row, end_col, end_row]`` in
+    pixels, (col, row) order (see docs/INTERFACES.md). The square grid side
+    is ``n``. The per-point map below is derived and empirically verified in
+    ``model/warped_nfd/WARPED_NFD_NOTES.md``; it is an exact affine reflection
+    (not a rounding/nearest-pixel approximation), so it is exact for
+    sub-pixel (float) endpoint coordinates too, not just integer pixel
+    centers.
     """
-    Spatial ×8 augmentation for Eulerian batches: 4 rotations × 2 horizontal flips.
+    sc, sr, ec, er = push_px[:, 0], push_px[:, 1], push_px[:, 2], push_px[:, 3]
+
+    def _map(c, r):
+        if k == 0:
+            co, ro = c, r
+        elif k == 1:
+            co, ro = r, n - 1 - c
+        elif k == 2:
+            co, ro = n - 1 - c, n - 1 - r
+        elif k == 3:
+            co, ro = n - 1 - r, c
+        else:
+            raise ValueError(k)
+        if flipped:
+            co = n - 1 - co
+        return co, ro
+
+    sco, sro = _map(sc, sr)
+    eco, ero = _map(ec, er)
+    return torch.stack([sco, sro, eco, ero], dim=-1)
+
+
+AUGMENT_FACTOR = {"full": 8, "flip": 2}
+
+
+def _augment_eulerian_batch(batch: TrainingBatch,
+                            mode: str = "full") -> TrainingBatch:
+    """
+    Spatial augmentation for Eulerian batches.
+
+    ``mode="full"`` (the default, and what ``augmentation: true`` selects) is
+    the ×8 group: 4 rotations × 2 horizontal flips.
+
+    ``mode="flip"`` is the ×2 subgroup: identity and one horizontal flip, no
+    rotations. This exists for models that are ROTATION-INVARIANT BY
+    CONSTRUCTION, for which the 4 rotations are not augmentation at all. A
+    push-frame model is the case in point: it warps its input into a frame
+    defined by the push direction, so all 4 rotated views of a sample map to
+    the SAME canonical input, and the ×8 group yields only 2 distinct inputs.
+    Feeding it the full group spends 4× the compute per gradient step on
+    exact duplicates, which is why ``mode="flip"`` is the correct setting
+    there rather than a weaker one — see
+    ``experiments/EXP-0022-warped-nfd-push-frame/PLAN.md``.
 
     Operates on:
         "input":   Tensor[B, C, H, W]  — spatial dims are the last two
         "target":  Tensor[B, H, W]
         "physics": Tensor[B, P]        — replicated ×8, not spatially modified
+        "push_px": Tensor[B, 4]        — OPTIONAL, [start_col, start_row,
+                   end_col, end_row] pixels; carried through the SAME
+                   rot90/flip transform as the images (see
+                   ``_augment_push_endpoints``) so a push-frame model's
+                   endpoints stay consistent with the augmented occupancy.
+                   If absent, behaviour is byte-identical to before this key
+                   existed.
 
-    Returns a new batch dict with batch dimension ×8.
+    Returns a new batch dict with batch dimension ×``AUGMENT_FACTOR[mode]``.
 
     Note: this augmentation assumes spatial symmetry of the occupancy grid.
     It is only appropriate for Eulerian (grid-based) representations.
@@ -135,22 +197,40 @@ def _augment_eulerian_batch(batch: TrainingBatch) -> TrainingBatch:
     """
     x       = batch["input"]    # (B, C, H, W)
     targets = batch["target"]   # (B, H, W)
+    push_px = batch.get("push_px")   # optional (B, 4)
+    if push_px is not None:
+        H, W = x.shape[-2], x.shape[-1]
+        if H != W:
+            raise ValueError(
+                "push_px augmentation requires a square grid, got "
+                f"(H, W) = {(H, W)}")
 
-    xs, ts = [], []
-    for k in range(4):
+    if mode not in AUGMENT_FACTOR:
+        raise ValueError(
+            f"Unknown augmentation mode {mode!r}; expected one of "
+            f"{sorted(AUGMENT_FACTOR)}")
+    ks = range(4) if mode == "full" else range(1)
+
+    xs, ts, ps = [], [], []
+    for k in ks:
         xr = torch.rot90(x,       k, dims=(-2, -1))
         xm = torch.flip(xr, dims=[-1])
         tr = torch.rot90(targets, k, dims=(-2, -1))
         tm = torch.flip(tr, dims=[-1])
         xs.extend([xr, xm])
         ts.extend([tr, tm])
+        if push_px is not None:
+            ps.extend([_augment_push_endpoints(push_px, x.shape[-1], k, False),
+                       _augment_push_endpoints(push_px, x.shape[-1], k, True)])
 
     new_batch: TrainingBatch = {
         "input":  torch.cat(xs, dim=0),
         "target": torch.cat(ts, dim=0),
     }
     if "physics" in batch:
-        new_batch["physics"] = batch["physics"].repeat(8, 1)
+        new_batch["physics"] = batch["physics"].repeat(AUGMENT_FACTOR[mode], 1)
+    if push_px is not None:
+        new_batch["push_px"] = torch.cat(ps, dim=0)
     return new_batch
 
 
@@ -273,11 +353,27 @@ class Trainer:
         optimizer, scheduler, scaler = self._build_optimizer()
 
         batch_size  = int(tcfg.get("batch_size", 64))
-        augment     = bool(tcfg.get("augmentation", True))
+        # `augmentation` is true / false / "flip" (the ×2 rotation-free
+        # subgroup, for models that are rotation-invariant by construction --
+        # see `_augment_eulerian_batch`). true and false behave exactly as
+        # they always have.
+        aug_cfg     = tcfg.get("augmentation", True)
+        if isinstance(aug_cfg, str):
+            aug_mode = aug_cfg.lower()
+            if aug_mode not in AUGMENT_FACTOR:
+                raise ValueError(
+                    f"training.augmentation={aug_cfg!r} not understood; use "
+                    f"true, false, or one of {sorted(AUGMENT_FACTOR)}")
+            augment = True
+        else:
+            augment  = bool(aug_cfg)
+            aug_mode = "full"
         num_workers = int(tcfg.get("num_workers", 4))
 
-        # Augmentation ×8: reduce loader batch size so augmented batch = batch_size
-        loader_bs = max(1, batch_size // 8) if augment else batch_size
+        # Reduce the loader batch so the AUGMENTED batch is `batch_size`,
+        # by whatever factor this augmentation mode multiplies by.
+        loader_bs = (max(1, batch_size // AUGMENT_FACTOR[aug_mode])
+                     if augment else batch_size)
 
         train_loader = self._make_loader(self.train_ds, loader_bs, shuffle=True,  num_workers=num_workers)
         val_loader   = self._make_loader(self.val_ds,   loader_bs, shuffle=False, num_workers=num_workers)
@@ -307,7 +403,7 @@ class Trainer:
                 for batch in train_loader:
                     batch = _to_device(batch, DEVICE)
                     if augment and _is_eulerian_batch(batch):
-                        batch = _augment_eulerian_batch(batch)
+                        batch = _augment_eulerian_batch(batch, aug_mode)
 
                     optimizer.zero_grad(set_to_none=True)
                     with torch.amp.autocast(device_type=DEVICE, dtype=torch.bfloat16, enabled=(DEVICE == "cuda")):

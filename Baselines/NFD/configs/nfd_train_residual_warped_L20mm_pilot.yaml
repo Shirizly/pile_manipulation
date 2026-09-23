@@ -1,0 +1,93 @@
+# EXP-0022 R2 -- WARPED residual arm. This is the one that matters (see
+# experiments/EXP-0022-warped-nfd-push-frame/results/residual_vs_direct_survey.md
+# and PLAN.md). Compared directly against RUN-0001 (unwarped, direct),
+# RUN-0002 (warped, direct) and R1 (nfd_train_residual_unwarped_L20mm_pilot.yaml,
+# unwarped residual control).
+#
+# Model: `model/residual_nfd/lib.py::ResidualWarpedWrapper` (model
+# type `nfd-unet-warped-residual`). Same UNet architecture/features/plate
+# geometry as nfd-unet-warped (RUN-0002), `residual: false` (turns off
+# UNetModels_modular.UNet's own occ0-into-logit skip -- required so it does
+# not double-count with this wrapper's explicit residual), `plate_mode:
+# canonical`, no wall channel, `canon_res: null` (-> batch's own H=64,
+# matching RUN-0002 exactly).
+#
+# THE MECHANISM (the entire point of this arm):
+#   1. warp the PRISTINE world-frame occ0 into the canonical frame
+#      (to_push_frame) and predict the residual THERE (tanh head, signed,
+#      [-1,1] -- not sigmoid, which cannot express a negative delta);
+#   2. unwarp the RESIDUAL FIELD itself (not a reconstructed occupancy)
+#      back to the world frame (from_push_frame);
+#   3. add that unwarped residual to the SAME pristine world-frame occ0
+#      used in step 1 (never a warped-and-back occupancy), then clamp.
+# No validity-mask blend is applied: zero-padding outside the canonical
+# grid's coverage already means "no change" for a residual field (occ0 + 0
+# = occ0, bit-exact), unlike for RUN-0002's absolute-occupancy formulation
+# where the same zero-pad would read as "no material" and genuinely needs
+# the explicit occ0 copy-back. See model/residual_nfd/lib.py's module docstring.
+#
+# Dataset: the EXISTING nfd-genesis-3ch-warped dataset (registered by
+# model/warped_nfd/lib.py), UNCHANGED -- target stays occ1, same push_px-carrying
+# wrapper RUN-0002 uses. Every other recipe knob (resolution_scale 0.5,
+# min_push_length_m 0.0198, val/test 5/5, features, lr, scheduler,
+# augmentation true, batch 32, 20 epochs, loss eulerian_combined mse=1.0
+# only -- world-frame MSE against the SAME absolute occ1 target every other
+# arm uses) is copied verbatim from nfd_train_warped_L20mm_pilot.yaml.
+model:
+  type: nfd-unet-warped-residual
+  in_channels: 3
+  out_channels: 1
+  features: [4, 8, 16]
+  kernel_size: 3
+  final_kernel_size: 1
+  activation: relu
+  residual: false   # REQUIRED false -- see model/residual_nfd/lib.py module docstring
+  bottleneck_type: "None"
+  bottleneck_kwargs: {}
+  uses_physics: false
+  plate_mode: canonical
+  wall_channel: false
+  resolution_scale: 0.5
+  scale: 1.0
+
+dataset:
+  type: nfd-genesis-3ch-warped
+  paths:
+    - slates_multistep/n20_L20mm_train
+  val_pct: 5
+  test_pct: 5
+  resolution_scale: 0.5
+  include_physics: false
+  min_push_length_m: 0.0198
+  transforms:
+    - type: ensure_representation
+      representation: eulerian
+    - type: eulerian_aliases
+
+training:
+  epochs: 20
+  batch_size: 32
+  lr: 0.0001
+  lr_scheduler:
+    type: StepLR
+    step_size: 50
+    gamma: 0.75
+  augmentation: true
+  patience: 100
+  mixed_precision: true
+  grad_clip_norm: 1.0
+  save_every_n_epochs: 10
+  num_workers: 4
+  loss:
+    type: eulerian_combined
+    mse: 1.0
+    mass: 0.0
+    dice: 0.0
+    bce: 0.0
+    sharpness: 0.0
+    tv: 0.0
+    add: 0.0
+    remove: 0.0
+
+output:
+  log_dir: Baselines/NFD/runs/nfd_residual_warped_L20mm_pilot

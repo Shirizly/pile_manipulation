@@ -270,6 +270,11 @@ same quantity. Treat it as a diagnostic, not a verdict. Concretely:
   under `slateN` before drawing a conclusion from it or reporting it as one.
 - **Lead every summary with `slateN`**, and report `accuracy` beside it as
   additional, explicitly-flagged-as-suspect information.
+- **A descriptor-space accuracy is comparable only within one descriptor set.** Two
+  models predicting different descriptor vectors are scored on different quantities;
+  ranking them that way rewards the set that is easier to predict. Within a shared
+  set (same definition, normalisation and held-out rows) it is a valid axis, and the
+  only prediction axis available when neither model can reconstruct an image.
 - `slateN` itself is strongest with breadth — more validation pools, more
   than one goal, and every non-degenerate variation available — because its
   known weakness is power, not bias (see `experiments/METRICS.md` on ties
@@ -496,6 +501,17 @@ avoiding `utils.py`-style dumping grounds) is `project-overview`'s territory,
 not this skill's — see there.
 
 ## Existing project documentation
+
+**Before searching for code, read `docs/CODEMAP.md`** — an index of which
+function in which file does what. An audit of 26 subagent runs found 74% of all
+tool calls were Bash and most were navigation (216 `grep`, 142 `sed -n`, 125
+`cat`, 94 `ls`, 78 `find`, against 180 `python`), with ten agents each
+independently rediscovering the same module. Add to the index when you find
+something it lacks.
+
+**Use `subagent-experimenter` when running or delegating a single experiment** —
+it owns the execution rules (bounded foreground waits, `python -u`, persisting
+fitted objects) and the measurement traps this repo has already hit.
 
 Use `project-overview` before touching unfamiliar code or deciding where a
 code/config change belongs. Use `register-validator` when writing an

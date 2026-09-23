@@ -1,0 +1,48 @@
+n_per_count: 10000
+counts: [20, 50, 100]
+seed: 0
+workers: 4
+cube_size: 0.005
+rest_z: 0.012482
+bounds: {x_min: -0.064, x_max: 0.064, y_min: -0.064, y_max: 0.064}
+generator: Baselines/common/pile_compaction.py::sample_compacted_state
+legality_check: Baselines/common/cube_overlap.py::state_is_legal (tol=0.0, exact SAT test)
+driver: datasets/DS-0003-synthetic-states/generate.py
+template: none -- no dataset template existed for a synthetic-state generator corpus;
+  this is the resolved config as written by the driver.
+
+# --- 2026-09-17 generator rewrite ---
+# Replaces the old scattered+clump generator (goal_configs.py::
+# sample_synthetic_state) and its axis-aligned-box legality bound
+# (assert_no_penetration, which rejects legal diagonal contact by sqrt(2)
+# and rejects 91-99% of REAL DS-0002 states outright) with the grid-seed +
+# per-object-relaxation compaction generator and the exact SAT legality
+# test. clump_prob/clump_size_range/grid_pitch_factors are RETIRED -- the
+# single dispersed<->compact diversity axis is `compaction`.
+compaction_range: [0.05, 1.0]     # Uniform per state; replaces clump_prob/clump_size
+yaw_kappa_range: [0.0, 6.0]       # Uniform per state; von Mises concentration of yaws.
+                                  # Do NOT raise above 6 -- at kappa=40 the seed lattice
+                                  # starts too tight and legality drops to 4/8 (measured).
+n_sweeps: 26                      # pile_compaction.py default; effective sweeps = compaction * n_sweeps
+placement: >
+  sample_compacted_state returns a CENTRED pile (mean-subtracted xy); this
+  driver places it at a uniform random offset inside `bounds`, rejecting
+  offsets that would push any cube outside the workspace (conservative
+  any-yaw half-extent pad = cube_size*sqrt(2)/2). This offset step, not the
+  compaction routine, is what gives centre-of-mass spread.
+
+# Measured packing floor (8 states/cell probe, tol=0.0), for reference --
+# full numbers and real-vs-synthetic comparison are in DATASET.md:
+#   n=20  compaction=1.0 -> spread ~0.0106 (real min 0.0074)
+#   n=50  compaction=1.0 -> spread ~0.0171 (real min 0.0156)
+#   n=100 compaction=1.0 -> spread ~0.0242 (real min 0.0209, ~15% short)
+# n=100's tightest pile is short of real's tightest by ~15%: per-object
+# relaxation reaches a local packing minimum; real piles also tilt
+# (mean 5-13 degrees) and ~2% sit in a second layer, neither reproducible
+# by a single-layer yaw-only generator. Known limitation, not tuned away.
+
+real_reference_measured_from_DS0002:
+  # spread = RMS distance of each object from its own state's COM (metres)
+  n20: {com_x_sd: 0.0122, spread_range: [0.0074, 0.0676]}
+  n50: {com_x_sd: 0.0111, spread_range: [0.0148, 0.0670]}
+  n100: {com_x_sd: 0.0082, spread_range: [0.0209, 0.0647]}

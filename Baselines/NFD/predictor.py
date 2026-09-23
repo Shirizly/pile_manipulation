@@ -28,6 +28,8 @@ always trains against ``sigmoid(logit)``, see ``training/losses.py``), so
 """
 from __future__ import annotations
 
+import os
+
 import torch
 
 from model.UNetModels_modular import UNet
@@ -121,3 +123,13 @@ def build_predictor() -> NFDPredictor:
 def build_predictor_2ch_ablation() -> NFDPredictor:
     """2-channel ablation (repo's own union encoding). --predictor Baselines.NFD.predictor:build_predictor_2ch_ablation"""
     return NFDPredictor(CKPT_2CH, channels=2, name="nfd_unet2ch_ablation")
+
+
+# Warped NFD (canonical-push-frame prediction) now lives in
+# `model/warped_nfd/predictor.py` -- `build_canonical_stack`, `WarpedNFDPredictor`,
+# `build_predictor_warped[_walls]`, `WARPED_DEFAULT_PLATE_MODE` moved there so
+# that new-model-family code sits under `model/`, not `Baselines/`. This
+# module keeps only the plain (unwarped) NFD predictor above. See
+# `model/warped_nfd/predictor.py`'s module docstring for the "stays
+# importable without Genesis.training.dataset" rationale that motivated
+# keeping this split rather than merging the two.

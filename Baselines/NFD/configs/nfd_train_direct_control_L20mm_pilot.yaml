@@ -1,0 +1,65 @@
+# EXP-0025 flow-warp NFD pilot -- DIRECT-PREDICTION CONTROL cell. Plain
+# nfd-unet3ch (predicts absolute next occupancy directly, the repo's
+# existing NFD baseline), trained on the SAME 8-slate subset
+# (n20_L20mm_train_pilotsubset), SAME split/epochs/optimizer/loss as every
+# flow-warp cell in this sweep -- exists so the flow numbers have something
+# to be read against (a short-epoch/subset sweep is not comparable to
+# EXP-0022's fully-trained pilot numbers). residual: true (this model's own
+# occ0-into-logit skip, its usual default) -- unlike the flow cells, this is
+# NOT held fixed across the "direct vs flow" comparison on purpose: it is
+# the standard NFD recipe as trained everywhere else in this repo, which is
+# the point of a control.
+model:
+  type: nfd-unet3ch
+  in_channels: 3
+  out_channels: 1
+  features: [4, 8, 16]
+  kernel_size: 3
+  final_kernel_size: 1
+  activation: relu
+  residual: true
+  bottleneck_type: "None"
+  bottleneck_kwargs: {}
+  uses_physics: false
+
+dataset:
+  type: nfd-genesis-3ch
+  paths:
+    - slates_multistep/n20_L20mm_train_pilotsubset
+  val_pct: 15
+  test_pct: 15
+  resolution_scale: 0.5
+  include_physics: false
+  min_push_length_m: 0.0198
+  transforms:
+    - type: ensure_representation
+      representation: eulerian
+    - type: eulerian_aliases
+
+training:
+  epochs: 40
+  batch_size: 32
+  lr: 0.0001
+  lr_scheduler:
+    type: StepLR
+    step_size: 50
+    gamma: 0.75
+  augmentation: true
+  patience: 100
+  mixed_precision: true
+  grad_clip_norm: 1.0
+  save_every_n_epochs: 40
+  num_workers: 2
+  loss:
+    type: eulerian_combined
+    mse: 1.0
+    mass: 0.0
+    dice: 0.0
+    bce: 0.0
+    sharpness: 0.0
+    tv: 0.0
+    add: 0.0
+    remove: 0.0
+
+output:
+  log_dir: Baselines/NFD/runs/direct_control_L20mm_pilot

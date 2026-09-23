@@ -1975,14 +1975,26 @@ class SandboxManipulation:
             span = (t_max - lo).clamp_min(0.0)
             L = lo + torch.rand_like(span) * span
         else:
-            L = torch.full_like(t_max, float(push_length))
+            # A tensor push_length gives every env its OWN target distance,
+            # which is what binned collection needs: one batch's envs all sit
+            # in the same length bin (so they finish together) but are not all
+            # the same length. Broadcast it to t_max's (n_envs, n_samples, 1).
+            if torch.is_tensor(push_length):
+                L = push_length.to(t_max).reshape(t_max.shape).expand_as(t_max).clone()
+            else:
+                L = torch.full_like(t_max, float(push_length))
             short = (L > t_max + 1e-9).squeeze(-1)
-            if bool(short.any()):
+            # Loud for a scalar length (a single-operator dataset must not
+            # contain off-length pushes and nothing else would catch it);
+            # debug-only for the per-env case, whose callers redraw instead.
+            if bool(short.any()) and (self._debug or not torch.is_tensor(push_length)):
                 self._log(f"WARNING pile-aware: {int(short.sum())}/{short.numel()} "
-                          f"pushes cannot travel the requested "
-                          f"{push_length} m even from a clamped start, and were "
-                          f"shortened - those transitions are NOT at the "
-                          f"requested length")
+                          f"pushes cannot travel their requested length even "
+                          f"from a clamped start, and were shortened - those "
+                          f"transitions are NOT at the requested length. "
+                          f"(Callers that redraw on a short push, e.g. "
+                          f"binned_slate_collection.py, handle this "
+                          f"themselves; check realized = ||stop-start||.)")
             L = torch.minimum(L, t_max)
 
         return action_starts, torch.cat((starts_xy + u_dir * L,

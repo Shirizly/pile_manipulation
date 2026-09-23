@@ -31,6 +31,8 @@ downstream of it, including every scorer — fails outright there. The system
 | warp occupancy into the push frame | `to_push_frame` / `from_push_frame` / `push_frame_transform` / `warp_affine_occ` |
 | mask the corners lost to rotation | `push_frame_validity_mask` |
 | blend a push-frame prediction back | `blend_push_prediction` |
+| model-agnostic warp→predict→unwarp→blend, for any `fn` on the canonical frame | `push_frame_roundtrip` |
+| render start/stop plate channels directly in the canonical frame (no world render + warp) | `canonical_plate_channels` |
 | Genesis action → camera coords | `genesis_action_to_cam3d`, `genesis_particles_to_cam3d` |
 
 `to_push_frame`/`from_push_frame` compose into the **analytic pose-conditioned transform
@@ -66,6 +68,17 @@ Note the ridge here regularises **toward identity**, unlike `dmdc_baseline`'s to
 over `[0, max]`, `MIN_ROWS_PER_BIN = 50`, in `fit_switched.py`. Bin assignment is recomputed
 per call, so a multi-step rollout naturally uses a different operator per step.
 
+**HARD gate carries no length gradient.** `bin_index` is `torch.bucketize`: fine for offline
+scoring, useless as a gradient source (d(bin)/d(length) = 0 a.e., undefined at the edges). For
+gradient-descent MPC use `soft_bin_weights` / `predict_switched_soft` (EXP-0023): triangular
+interpolation between the two ADJACENT BIN CENTRES, i.e. linear interpolation of the per-bin
+operators in push length. It agrees EXACTLY with the hard gate at every bin centre.
+`predict_switched_soft` also pays the warp ONCE for the whole batch (all operators applied to
+the same canonical occupancy, then length-weighted) instead of once per bin, and has no masked
+in-place assignment for autograd to survive. **It is a RELAXATION of the fitted model, not the
+fitted model** — the hard gate backs every existing register row and is left untouched; anything
+scored through the soft gate must say so.
+
 ## Goals and control scoring
 
 | need | where |
@@ -98,6 +111,24 @@ a call site.
 
 **Metric definitions are owned by `experiments/METRICS.md`.** Do not redefine a value
 function that already has an entry there.
+
+**TRAP -- `accuracy` is a ratio of population means, never a mean of per-row
+ratios.** `accuracy = 1 - mean(err_pred) / mean(err_pers)`
+(`fit_linear_foresight.py::metrics`). Computing `err_pred_i / err_pers_i`
+per row and then averaging blows up silently into the millions whenever a
+single row's swept-region persistence error is near zero (a push that barely
+moved anything in the scored band) -- hit twice independently (EXP-0022
+RUN-0012's wall-proximity stratification, RUN-0013's length stratification
+under canonical-frame scoring). The fix used both times: aggregate
+`err_pred` and `err_pers` SEPARATELY within whatever group you are
+stratifying by (a stratum, a bootstrap resample, the whole population), and
+only then form the ratio -- exactly the order of operations `metrics()`
+already uses at the whole-population level. Use a bootstrap over rows for
+uncertainty on a per-stratum `accuracy` or its delta between two models, not
+a naive SEM of a per-row ratio. See
+`experiments/EXP-0022-warped-nfd-push-frame/code/wall_proximity_stratified_eval.py`
+(`per_transition_errors`, `accuracy_from_errors`, `bootstrap_delta`) for the
+worked, reusable implementation.
 
 ## Fitted objects — `weights/`
 
@@ -143,9 +174,111 @@ must be reported against this floor or it says nothing.
 `Baselines/SchenckCNN/`. All expose `predict_occ(batch) -> (B,H,W)` — an **offline
 slate-scoring** interface, not the live MPC adapter contract.
 
+**Warped NFD, Residual NFD, and Flow NFD moved out of `Baselines/NFD/` to
+`model/warped_nfd/`, `model/residual_nfd/`, `model/flow_nfd/` respectively**
+(each is a new model family with its own multi-file code, not a minor
+parameter change over the NFD baseline, so it belongs under `model/` per
+project convention — `Baselines/NFD/` now holds only the plain NFD baseline:
+`nfd_lib.py`, `predictor.py`'s plain `NFDPredictor`, `train_nfd.py`, its
+`configs/`, `SPEC.md`, `LOG.md`). Module paths below are current as of that
+move; anything in `experiments/EXP-0022-*` or `experiments/EXP-0025-*`
+citing the old `Baselines/NFD/*_lib.py` paths predates it (each record notes
+this).
+
+**Warped NFD** (`model/warped_nfd/lib.py`): the same NFD UNet, predicting in the
+CANONICAL PUSH FRAME (`transforms.functional.push_frame_roundtrip`) instead of the world
+frame. Registers dataset `nfd-genesis-3ch-warped` (`PileSweepData3ChWarped` + a
+`push_px`-carrying `EulerianDatasetWrapper` subclass) and model `nfd-unet-warped`
+(`WarpedNFDWrapper`; config knobs `plate_mode: canonical|warp`, `wall_channel: bool`,
+`canon_res`, `scale`). The canonical-frame input-stack builder
+(`model/warped_nfd/predictor.py::build_canonical_stack`) is shared verbatim between
+`WarpedNFDWrapper` (training) and `WarpedNFDPredictor`/`build_predictor_warped[_walls]`
+(eval), so the two paths cannot drift apart — training/eval parity measured at ~1e-6 world-
+frame prob diff. See `model/warped_nfd/WARPED_NFD_NOTES.md` for the coordinate-convention traps
+(push_frame's (col,row) vs draw_plate_soft's (row,col) point order) and the plate_mode timing
+derivation. `Baselines/NFD/train_nfd.py` imports both `Baselines.NFD.nfd_lib` and
+`model.warped_nfd.lib`. `model/warped_nfd/predictor.py` stays importable without
+`Genesis.training.dataset`/the dataset registry, same as `Baselines/NFD/predictor.py` — `model/`
+as a whole is Genesis-free, so this property is load-bearing, not incidental.
+
+**Residual NFD** (`model/residual_nfd/lib.py`, EXP-0022 R1/R2): image-space RESIDUAL
+PARAMETERISATION, not a residual objective — the loss stays `eulerian_combined` world-frame MSE
+against the absolute `occ1` target, unchanged. Registers model `nfd-unet3ch-residual` (R1,
+unwarped control; reuses the existing `nfd-genesis-3ch` dataset unchanged) and
+`nfd-unet-warped-residual` (R2, warped; reuses the existing `nfd-genesis-3ch-warped` dataset
+and `model/warped_nfd/predictor.py::build_canonical_stack`, unchanged). Both wrap a `UNetModels_modular.UNet`
+with `residual: false` (its OWN occ0-into-logit skip OFF — asserted, not silently coerced, to
+avoid double-counting) and instead apply an EXPLICIT `tanh` head (bounded, signed [-1,1] —
+`sigmoid` cannot express a negative delta) to get a residual, add it to `occ0`, clamp to [0,1],
+then convert back to a logit via the same safe-inverse-sigmoid trick `WarpedNFDWrapper` already
+uses, so the unmodified loss can still score it. R2's mechanism: warp the PRISTINE `occ0` into
+the canonical frame, predict the residual THERE, unwarp the RESIDUAL FIELD (not a reconstructed
+occupancy) back to world, add to the SAME pristine `occ0`, clamp — **no validity-mask blend**,
+because `grid_sample`'s zero-padding already means "no change" for a residual field (unlike for
+an absolute-occupancy field, where the same zero-pad would wrongly read as "no material").
+**Verified, not just argued** (`results/residual_pilot.md`): this bit-exact preservation holds
+ONLY where `push_frame_validity_mask` is EXACTLY 0 (~21-23% of pixels); a thin partial-coverage
+boundary band (~1.3% of pixels, mask strictly between 0 and 0.5) is NOT bit-exact and can carry
+substantial deviation — bilinear interpolation weights are non-negative, so a zero row-sum
+(mask=0) forces every individual weight to zero, but a small positive row-sum does not.
+Eval-time predictors: `model/residual_nfd/predictor.py` (`build_predictor_residual_unwarped`,
+`build_predictor_residual_warped`), registered in `Baselines/common/eval_report.py`'s `MODELS`
+as `nfd_residual_unwarped_L20mm_pilot`/`nfd_residual_warped_L20mm_pilot`.
+`Baselines/NFD/train_nfd.py` also imports `model.residual_nfd.lib`.
+
+**Flow NFD** (`model/flow_nfd/lib.py`, EXP-0025): predicts a per-pixel BACKWARD displacement
+field (dx, dy) and warps the current occupancy through it via `grid_sample` — mass-conserving
+and zero-flow-is-identity by construction. Registers model `nfd-flow-warp`; reuses the
+existing `nfd-genesis-3ch` dataset unchanged. Eval-time predictor in
+`model/flow_nfd/predictor.py`, registered in `Baselines/common/eval_report.py`'s `MODELS` as
+`flow_baseline`/`flow_coarse16`/`flow_smalldisp4`/`flow_largedisp24`/`flow_srcsink`/
+`flow_supervised*`. `model/flow_nfd/supervised.py` adds direct particle-correspondence
+supervision for the flow head (`build_flow_targets_for_split`, `augment_flow_batch_x8` — the
+x8 flip/rotation augmentation extended to rotate the flow field's vector components
+correctly, not just permute array layout). `Baselines/NFD/train_nfd.py` also imports
+`model.flow_nfd.lib` (not `model.flow_nfd.supervised`, which is driven by
+`experiments/EXP-0025-*/code/train_supervised_flow.py` directly).
+
 `simple_mpc/adapters.py::make_adapter` supports **only** Eulerian wrappers and
 `PropNetDiffDenModel`; it raises `NotImplementedError` for NFD, Schenck, and the fitted linear
-operators. Offline scoring works for those; live MPC does not.
+operators, because those are not driven from a rendered observation at all.
+
+**Occupancy-grid GRADIENT adapters (EXP-0023)** — `simple_mpc/adapters.py`, second half.
+`make_occ_adapter(model_id, device, goal_shape)` + the `OCC_ADAPTERS` registry are the
+LIVE-GRADIENT counterpart of `Baselines/common/eval_report.py`'s `MODELS` dict: **adding a
+model is one entry.** They close the gap the paragraph above describes for the 64×64 /
+±64 mm slate world: `predict_step(occ, act) -> occ1` is **differentiable w.r.t. the world-metre
+action `[sx,sy,ex,ey]`** (yaw derived by `action_to_pose`, exactly the corpus's own `angles`
+convention), and `dv(occ0, act)` is the Lyapunov cost the optimiser minimises.
+
+| need | where |
+|---|---|
+| a grad-carrying adapter for a registered model | `make_occ_adapter` / `OCC_ADAPTERS` |
+| the slate occupancy convention, shared with `binned_pool_cache.py` | `OCC_BOUNDS`, `OCC_GRID`, `OCC_FOOTPRINT_RADIUS`, `occ_from_particles` |
+| the `PileSweepData` geometry stub a predictor needs without a dataset | `SlateRawStub` (promoted from `experiments/temp/multistep-rollout/rollout.py::RawStub`) |
+| assert the `dv` sign convention in code | `assert_dv_convention` |
+
+**No prediction math is duplicated for the NFD family.** `PredictorGradientAdapter` calls the
+existing predictor's OWN `predict_occ` through `__wrapped__` — the function `@torch.no_grad()`
+decorated — so the adapter runs the identical forward offline eval runs, with grad mode simply
+left on. If a predictor's math changes, its adapter changes with it. (`.cpu()` inside those
+predictors is differentiable, so it does not break the chain.)
+
+**TRAP:** `predict_occ` is `@torch.no_grad()`. Calling it directly gives a detached tensor and
+an optimiser that silently does nothing. `experiments/EXP-0023-*/code/verify_gradients.py` is
+the reusable gate: it asserts finite, non-zero gradients in EVERY action component and 100 %
+sign agreement with a directional finite difference, for every registered arm.
+
+**Canonical-frame scoring (EXP-0022 A1).** `Baselines/common/eval_report.py --canonical-frame`
+adds swept-region `accuracy` scored in the CANONICAL push frame as an ADDITIONAL column
+(`accuracy_canonical`), alongside the unchanged world-frame `accuracy` -- never a replacement.
+Not symmetric: a native-canonical predictor (`model/warped_nfd/predictor.py::WarpedNFDPredictor
+.predict_occ_canonical`, added for this) is scored on its own canonical output with ZERO extra
+resamplings; every other model's already-computed world-frame prediction is warped ONCE
+(`to_push_frame`) to be scored here -- see `_accuracy_canonical`'s docstring. Any predictor
+that wants the fair (zero-extra-resample) treatment in this frame should expose a
+`predict_occ_canonical(batch) -> (pred_canon, start_px, end_px, canon_res, scale)` method;
+`eval_report.py` uses it via `hasattr` and falls back to warping the world prediction otherwise.
 
 ## Timing
 
@@ -209,10 +342,40 @@ near-duplicate across the boundary (the `readout-cv-folds-slate-aware` bug).
 |---|---|
 | 304,655 distinct real states pooled/deduplicated across every corpus above, with `n_objects`/corpus/source-file/spawn-mode/role/**group** on every row | `datasets/DS-0002-real-distinct-states/` (builder: `datasets/DS-0002-real-distinct-states/build.py`; 631,612 raw candidate rows collapsed 51.8% under a 1mm-tolerance sorted-position hash) |
 | exact yaw-aware overlap/legality test for cube footprints (SAT, replaces the old axis-aligned bound for placement work) | `Baselines/common/cube_overlap.py::overlaps_pairs`, `any_overlap_matrix`, `state_is_legal(xy, yaw, size, tol)` |
-| synthetic pile-state generator (2026-09-17, current): grid seed + per-object relaxation toward the centroid, `compaction` in [0,1] sets sweep count, `yaw_kappa` von-Mises-concentrates yaws, legality via `cube_overlap.state_is_legal` | `Baselines/common/pile_compaction.py::sample_compacted_state` — returns a CENTRED pile; placement inside the workspace is the caller's job (see `generate.py::_place_in_bounds`) |
+| **synthetic pile-state generator (CURRENT — this is what DS-0003 is built from)**: a state is a mix of scattered singletons and compact clumps. `clump_frac` sets CONTACTS (local density), `region_frac` sets SPREAD (global dispersion); the two are near-independent, which is what makes them calibratable separately | `Baselines/common/pile_synth.py::synthesize_state` — places its own units inside a sampled workspace region, so callers do NOT add a placement step |
+| the compact-clump COMPONENT that generator calls: grid seed + per-object relaxation toward the centroid; `compaction` in [0,1] is the fraction of available travel closed, `yaw_kappa` von-Mises-concentrates yaws | `Baselines/common/pile_compaction.py::sample_compacted_state` — returns a CENTRED pile. Rigid row/column translation does NOT compact (one pair per row always blocks: measured spread 0.0289 → 0.0283 at n=100, i.e. nothing); per-object relaxation does |
+| whole-state variant: 1..k independently-compacted clusters placed in the workspace | `pile_compaction.py::sample_multicluster_state` — **written but NOT used by the DS-0003 driver**; `synthesize_state`'s scatter+clump mixture superseded it. Kept because it reaches the dispersed extreme differently |
 | synthetic pile-state generator (RETIRED for DS-0003, function still importable): scattered (grid+jitter) mixed with sequential touching clumps, legality via the old axis-aligned bound | `Baselines/common/goal_configs.py::sample_synthetic_state` (+ `_place_clump`, `_place_scattered_point`, `_penetrates`, `_sample_placement_region`) — that bound rejects 91-99% of real DS-0002 states and cannot express contact, so nothing could ever be compacted against it; see `cube_overlap.py`'s module docstring |
 | synthetic states corpus + regeneration command | `datasets/DS-0003-synthetic-states/` (driver: `datasets/DS-0003-synthetic-states/generate.py`) |
 | real-vs-synthetic occupancy validation (fast rasteriser + `dmdc_baseline.occupancy_descriptors`) | `datasets/DS-0003-synthetic-states/validate.py` |
+
+**Calibration targets, and why these four statistics.** `synthesize_state`'s
+defaults are fitted to real **POST-SWEEP** states (DS-0002 `role=post_sweep`),
+not to initial states — post-sweep is what a dynamics or value model actually
+meets. Targets, per `n_objects`, as spread p5/p50/p95 (RMS distance of cubes
+from their own centre of mass) and contacts p50 (mean cubes within 0.00813 m):
+
+| n | spread p5/p50/p95 | contacts p50 | \|COM\| p50/p95 |
+|---|---|---|---|
+| 20 | .0136 / .0453 / .0554 | 0.90 | .0135 / .0412 |
+| 50 | .0196 / .0481 / .0557 | 1.64 | .0108 / .0387 |
+| 100 | .0371 / .0510 / .0591 | 2.64 | .0089 / .0281 |
+
+Real post-sweep piles are mostly DISPERSED with a compact tail — a generator
+tuned to make tidy compact piles is wrong by default. Three knobs needed
+MIXTURES rather than single distributions, each because a unimodal choice was
+measured to fail: region extent (a compact branch under a dispersed bulk — no
+power curve gives a long compact tail beneath a wide median), placement
+(centred AND edge-hugging — insetting the region pins wide states to the middle
+so material can never pile against a wall, but letting the boundary clip every
+state compresses spread instead), and clump share (scales with `n_objects` —
+real dense piles are many clumps spread out, not one blob).
+
+**Do not re-derive the packing floor.** Real n=100 states reach spread 0.0209,
+essentially the aligned-lattice limit at `CUBE_SIZE` pitch (0.0204). A
+single-layer yaw-only generator cannot go below ~0.024: real cubes TILT (mean
+5-13°, measured) and ~2% sit in a second layer, so real 2D compactness is
+partly a 3D effect.
 
 ## Collecting new data
 
@@ -234,6 +397,7 @@ for it.
 | which slates to plot (typical / worst / near-tie per model) | `scripts/probes/pool_survey.py` |
 | cache loading, `rk_curve`, `action_geometry`, `swept_rectangle_corners`, `MODEL_COLORS` | `scripts/probes/pool_common.py` (reads an embedded `occ0`/`ws_min`/`ws_max` when the cache carries them) |
 | a dV cache for `Genesis/data/slates_binned/*` (persistence, random, MODEL-0001/2/3) | `scripts/probes/binned_pool_cache.py` |
+| score a model as a SOURCE OF GRADIENTS (optimise an action against it, then execute in Genesis) rather than as a ranker | `experiments/EXP-0023-model-as-gradient-source/code/` — `verify_gradients.py` (the differentiability gate; run it before any optimisation), `stage1_optimise.py` (model side: rank pick + Adam on the model's own predicted `dv`, projected constraints), `stage2_genesis.py` (ground truth + Genesis-CEM oracle from a restored slate snapshot), `stage3_analyse.py` (`gradient_gain`, `pool_escape`, `capture_vs_oracle`, and the between-arm-vs-between-state power check) |
 
 **Known trap:** `persistence` predicts `dv=0` for every candidate, so as a *ranker* it is
 degenerate — `argmin` always returns row 0 and the induced order is row order. Use `random`
@@ -244,9 +408,17 @@ where the distance field is 0), so ~26 % of a slate ties at the minimum.
 ## The evidence layer
 
 `experiments/REGISTER.md` (claims) · `INVARIANTS.md` (tags) · `METRICS.md` (metric formulas) ·
+**`OPEN_ISSUES.md` (code defects and evidence debt awaiting an owner)** ·
 `COMMANDS.jsonl` · `TEMP_LOG.md` · `scripts/check_register.py` (must exit 0) ·
 `scripts/run_probe.py` (**`broken`: writes to `runs/COMMANDS.jsonl`, not the documented
 `experiments/COMMANDS.jsonl`**).
+
+**Found a real problem you cannot fix in this task? Append an entry to
+`experiments/OPEN_ISSUES.md`** — a defect too big to fix inline, a test that
+must be re-run because an input changed, or a record asserting something since
+disproved. It is the one place such findings survive a run report nobody
+re-reads. A claim goes in `REGISTER.md`, a property results rest on goes in
+`INVARIANTS.md`, a scratch probe goes in `TEMP_LOG.md`.
 
 Skills: `experiment-log` (storage, tiers, budgets), `register-validator` (frontmatter and
 grades), `project-overview` (module ownership), `subagent-experimenter` (running a contained

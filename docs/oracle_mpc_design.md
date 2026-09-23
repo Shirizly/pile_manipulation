@@ -22,6 +22,30 @@ and MPPI, both implemented, selectable via `mpc.optimizer` (`'cem' | 'mppi'`)
 since they share one `ask`/`tell`/`best` skeleton and differ only in the
 distribution-update rule.
 
+## Using it as a per-state ceiling rather than a control run (EXP-0023)
+
+`run_oracle_mpc` is a full receding-horizon controller with rendering, goal
+masks and transition recording. A study that only needs "the best single push
+from THIS state, with the simulator as the model" does not need any of that,
+and should drive `GenesisOracleEnv` directly:
+
+1. build the state as a snapshot dict `{'pos': (1,N,3), 'quat': (1,N,4)}` —
+   any particle state can be pushed in this way, including one read straight
+   off a corpus (`BinnedSlateCorpus.step(0).states` is exactly this shape),
+   which is how a slate pool's own states become oracle start states;
+2. `restore_snapshot` then `rollout_candidates(..., record=False)` per
+   optimizer iteration, at reduced fidelity;
+3. re-execute the winner with `use_rollout_fidelity=False`.
+
+`record_transitions` must be turned OFF in the config for this use, or every
+candidate rollout is written into `Genesis/data/mpc_runs`.
+
+**Reduced- and full-fidelity `dv` are not identical.** EXP-0023 selects the
+CEM winner under the reduced settle budget and then re-executes it at full
+fidelity, and the two `dv` values differ by a few percent. Select under one
+and report under the other, as that record does; do not quote the planning
+rollout's own cost as the achieved result.
+
 ## Architecture
 
 ### One Genesis scene, `n_envs` parallel copies, env 0 plays two roles

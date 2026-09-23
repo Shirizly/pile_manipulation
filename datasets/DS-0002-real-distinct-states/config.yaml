@@ -1,0 +1,15 @@
+dedup_tol_m: 0.001
+slate_post_sample: 5
+seed: 0
+corpora_included:
+  - Genesis/data/overnight_randlen_train
+  - Genesis/data/overnight_randlen_test
+  - Genesis/data/Sean
+  - Genesis/data/slates_binned/n20_scatter_s20a1000_L20-70mm
+  - Genesis/data/slates_multistep/n20_L10mm
+  - Genesis/data/slates_multistep/n20_L20mm
+  - Genesis/data/slates_multistep/n20_L40mm
+builder: datasets/DS-0002-real-distinct-states/build.py
+reader_dependency: Genesis/binned_slate_dataset.py::BinnedSlateCorpus
+template: none -- no dataset template existed for a pooled-real-states corpus; this is the
+  resolved config as written by the builder.
