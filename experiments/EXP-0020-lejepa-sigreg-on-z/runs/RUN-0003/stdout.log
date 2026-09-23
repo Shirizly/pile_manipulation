@@ -1,0 +1,23 @@
+latent stats: {
+  "mean_norm": 0.801690354200671,
+  "centred_rms": 1.0100166150100593,
+  "perdim_std_mean": 1.000512126442285,
+  "perdim_std_min": 0.5730731693458596,
+  "perdim_std_max": 1.3785722851767481,
+  "dz_rms": 0.6208083841145895,
+  "effective_rank": 18.554343487155577
+}
+push length train 0-80.00 mm -> 6 equal-width bins
+  lambda sweep global: 0.0001:+0.3328, 0.001:+0.3328, 0.01:+0.3328, 0.1:+0.3328, 1:+0.3329, 10:+0.3328, 100:+0.3320, 1000:+0.3294  -> lambda=1
+  lambda sweep switched: 0.0001:+0.4551, 0.001:+0.4552, 0.01:+0.4555, 0.1:+0.4564, 1:+0.4579, 10:+0.4590, 100:+0.4574, 1000:+0.4434  -> lambda=10
+  bin 0 [0.0,13.3) mm: n_train 7428 n_test 811  R2 +0.0777 (global op -4.6637)
+  bin 1 [13.3,26.7) mm: n_train 18330 n_test 2042  R2 +0.2934 (global op -0.0893)
+  bin 2 [26.7,40.0) mm: n_train 24925 n_test 2769  R2 +0.3062 (global op +0.2566)
+  bin 3 [40.0,53.3) mm: n_train 22275 n_test 2413  R2 +0.3722 (global op +0.3481)
+  bin 4 [53.3,66.7) mm: n_train 18680 n_test 1958  R2 +0.4763 (global op +0.3702)
+  bin 5 [66.7,80.0) mm: n_train 6666 n_test 759  R2 +0.5288 (global op +0.3561)
+
+== latent R2 (test, vs dz=0) ==
+  dz=0 (do nothing, in-latent persistence)         +0.0000  (train +0.0000)
+  global (single operator, one bin)                +0.2923  (train +0.3338)
+  switched HARD, 6 push-length bins                +0.4126  (train +0.4648)

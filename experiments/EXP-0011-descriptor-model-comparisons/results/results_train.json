@@ -1,0 +1,45 @@
+{
+  "n_train": 98304,
+  "n_test": 10752,
+  "max_params_1to10": 9830,
+  "persistence_descriptor_accuracy": 0.0,
+  "random_descriptor_accuracy": -1.290055274963379,
+  "sweep": [
+    {
+      "tag": "H48_relu_wd1e-4",
+      "n_params": 9406,
+      "best_epoch": 119,
+      "test_descriptor_accuracy": 0.1284741759300232
+    },
+    {
+      "tag": "H48_tanh_wd1e-4",
+      "n_params": 9406,
+      "best_epoch": 115,
+      "test_descriptor_accuracy": 0.10624468326568604
+    },
+    {
+      "tag": "H32_relu_wd1e-4",
+      "n_params": 6302,
+      "best_epoch": 119,
+      "test_descriptor_accuracy": -0.05222368240356445
+    },
+    {
+      "tag": "H48_relu_wd1e-3",
+      "n_params": 9406,
+      "best_epoch": 118,
+      "test_descriptor_accuracy": 0.09956276416778564
+    },
+    {
+      "tag": "H48_relu_wd0",
+      "n_params": 9406,
+      "best_epoch": 119,
+      "test_descriptor_accuracy": 0.13059169054031372
+    }
+  ],
+  "best": {
+    "tag": "H48_relu_wd0",
+    "n_params": 9406,
+    "descriptor_accuracy": 0.13059169054031372
+  },
+  "switched_linear_descriptor_accuracy_same_test_set": 0.4350243806838989
+}

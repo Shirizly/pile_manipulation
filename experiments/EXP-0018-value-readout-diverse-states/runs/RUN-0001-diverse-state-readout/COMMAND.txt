@@ -1,0 +1,5 @@
+# commit 6ea03278 (tree dirty)
+export OMP_NUM_THREADS=4 CUDA_VISIBLE_DEVICES=""
+/home/alon/anaconda3/envs/pme/bin/python -u experiments/EXP-0018-value-readout-diverse-states/code/stage1_generate_goals_v2.py
+/home/alon/anaconda3/envs/pme/bin/python -u experiments/EXP-0018-value-readout-diverse-states/code/stage2_build_cache.py
+/home/alon/anaconda3/envs/pme/bin/python -u experiments/EXP-0018-value-readout-diverse-states/code/stage3_fit.py

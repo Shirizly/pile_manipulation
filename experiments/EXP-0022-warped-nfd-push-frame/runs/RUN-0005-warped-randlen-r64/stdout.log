@@ -1,0 +1,49 @@
+Config: Baselines/NFD/configs/nfd_train_warped_randlen.yaml
+Device: cuda
+Training on cuda, epochs 0→30, log_dir=Baselines/NFD/runs/nfd_warped_randlen
+Train: 89081  Val: 4608  Test: 4607
+Epoch    1: trn=0.023777  val=0.010384  iou=0.8584  chg_mse=0.252450  best=1
+Epoch    2: trn=0.010133  val=0.010118  iou=0.8636  chg_mse=0.223961  best=2
+Epoch    3: trn=0.009952  val=0.009945  iou=0.8667  chg_mse=0.227521  best=3
+Epoch    4: trn=0.009872  val=0.009914  iou=0.8681  chg_mse=0.216576  best=4
+Epoch    5: trn=0.009820  val=0.009850  iou=0.8695  chg_mse=0.224321  best=5
+Epoch    6: trn=0.009772  val=0.009973  iou=0.8661  chg_mse=0.226469  best=5
+Epoch    7: trn=0.009736  val=0.009774  iou=0.8695  chg_mse=0.224203  best=7
+Epoch    8: trn=0.009704  val=0.009740  iou=0.8713  chg_mse=0.224827  best=8
+Epoch    9: trn=0.009668  val=0.009705  iou=0.8715  chg_mse=0.215976  best=9
+Epoch   10: trn=0.009612  val=0.009773  iou=0.8705  chg_mse=0.207700  best=9
+Epoch   11: trn=0.009552  val=0.009628  iou=0.8729  chg_mse=0.213234  best=11
+Epoch   12: trn=0.009509  val=0.009579  iou=0.8740  chg_mse=0.202242  best=12
+Epoch   13: trn=0.009474  val=0.009554  iou=0.8743  chg_mse=0.219132  best=13
+Epoch   14: trn=0.009447  val=0.009516  iou=0.8758  chg_mse=0.206369  best=14
+Epoch   15: trn=0.009427  val=0.009509  iou=0.8752  chg_mse=0.206811  best=15
+Epoch   16: trn=0.009407  val=0.009489  iou=0.8759  chg_mse=0.216468  best=16
+Epoch   17: trn=0.009389  val=0.009455  iou=0.8771  chg_mse=0.205293  best=17
+Epoch   18: trn=0.009366  val=0.009446  iou=0.8759  chg_mse=0.211667  best=18
+Epoch   19: trn=0.009338  val=0.009431  iou=0.8762  chg_mse=0.214777  best=19
+Epoch   20: trn=0.009310  val=0.009418  iou=0.8771  chg_mse=0.207469  best=20
+Epoch   21: trn=0.009288  val=0.009369  iou=0.8782  chg_mse=0.205371  best=21
+Epoch   22: trn=0.009269  val=0.009352  iou=0.8795  chg_mse=0.202679  best=22
+Epoch   23: trn=0.009255  val=0.009396  iou=0.8779  chg_mse=0.202904  best=22
+Epoch   24: trn=0.009238  val=0.009323  iou=0.8797  chg_mse=0.194876  best=24
+Epoch   25: trn=0.009228  val=0.009367  iou=0.8780  chg_mse=0.211070  best=24
+Epoch   26: trn=0.009217  val=0.009339  iou=0.8793  chg_mse=0.205178  best=24
+Epoch   27: trn=0.009204  val=0.009403  iou=0.8788  chg_mse=0.190246  best=24
+Epoch   28: trn=0.009193  val=0.009284  iou=0.8810  chg_mse=0.198016  best=28
+Epoch   29: trn=0.009187  val=0.009300  iou=0.8803  chg_mse=0.198057  best=28
+Epoch   30: trn=0.009176  val=0.009300  iou=0.8802  chg_mse=0.195495  best=28
+
+=== Test metrics ===
+  prob_mse: 0.009209
+  zero_mse: 0.070880
+  copy_mse: 0.017508
+  hard_iou: 0.884540
+  hard_dice: 0.936928
+  changed_mse: 0.201596
+  changed_copy_mse: 1.000000
+  changed_pixel_frac: 0.017508
+
+=== Training complete ===
+  Best val loss : 0.009284  (epoch 28)
+  Model card    : Baselines/NFD/runs/nfd_warped_randlen/model_card.yaml
+  Log dir       : Baselines/NFD/runs/nfd_warped_randlen

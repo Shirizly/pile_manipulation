@@ -1,0 +1,50 @@
+[
+ [
+  "enc fwd (no grad)",
+  512,
+  1062,
+  186.2
+ ],
+ [
+  "enc fwd (no grad)",
+  1024,
+  2094,
+  376.2
+ ],
+ [
+  "enc fwd (no grad)",
+  2048,
+  4160,
+  756.5
+ ],
+ [
+  "enc fwd (no grad)",
+  4096,
+  "OOM",
+  null
+ ],
+ [
+  "decoder train step",
+  256,
+  1085,
+  null
+ ],
+ [
+  "decoder train step",
+  512,
+  2060,
+  null
+ ],
+ [
+  "decoder train step",
+  1024,
+  4013,
+  null
+ ],
+ [
+  "decoder train step",
+  2048,
+  "OOM",
+  null
+ ]
+]

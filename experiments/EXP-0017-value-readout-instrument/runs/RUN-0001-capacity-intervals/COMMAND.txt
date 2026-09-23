@@ -1,0 +1,6 @@
+commit: 6ea03278 (dirty)
+env: OMP_NUM_THREADS=3 CUDA_VISIBLE_DEVICES=""   # CPU only, GPU reserved for another agent
+python: /home/alon/anaconda3/envs/pme/bin/python  (torch 2.11.0+cu130, sklearn 1.7.2)
+
+/home/alon/anaconda3/envs/pme/bin/python -u experiments/EXP-0017-value-readout-instrument/code/run0001_capacity_intervals.py
+OMP_NUM_THREADS=1 /home/alon/anaconda3/envs/pme/bin/python -u experiments/EXP-0017-value-readout-instrument/code/run0001b_cv_leak.py

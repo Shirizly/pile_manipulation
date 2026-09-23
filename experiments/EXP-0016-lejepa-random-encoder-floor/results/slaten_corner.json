@@ -1,0 +1,66 @@
+{
+  "persistence": {
+    "slateN_mean": -0.004231746100525094,
+    "slateN_sem": 0.0892026586754417,
+    "n_slates": 20,
+    "frac_pred_exactly_zero": 1.0,
+    "n_distinct_pred": 1
+  },
+  "random": {
+    "slateN_mean": -0.14086686601728923,
+    "slateN_sem": 0.1006714313258122,
+    "n_slates": 20,
+    "frac_pred_exactly_zero": 0.0,
+    "n_distinct_pred": 19987
+  },
+  "decode-z0 (no dynamics)": {
+    "slateN_mean": -0.004231746100525094,
+    "slateN_sem": 0.0892026586754417,
+    "n_slates": 20,
+    "frac_pred_exactly_zero": 0.0,
+    "n_distinct_pred": 21
+  },
+  "random-enc K=1": {
+    "slateN_mean": 0.4113996404303255,
+    "slateN_sem": 0.07438010346986194,
+    "n_slates": 20,
+    "frac_pred_exactly_zero": 0.0,
+    "n_distinct_pred": 19978
+  },
+  "random-enc K=4": {
+    "slateN_mean": 0.4353278872628586,
+    "slateN_sem": 0.05166585743116108,
+    "n_slates": 20,
+    "frac_pred_exactly_zero": 0.0,
+    "n_distinct_pred": 19971
+  },
+  "random-enc K=8": {
+    "slateN_mean": 0.305235942682178,
+    "slateN_sem": 0.06502472180351886,
+    "n_slates": 20,
+    "frac_pred_exactly_zero": 0.0,
+    "n_distinct_pred": 19966
+  },
+  "_dv_true": {
+    "mean": 0.0006574391736648977,
+    "sd": 0.025694793090224266,
+    "frac_zero": 0.03099999949336052,
+    "frac_improving": 0.5099999904632568
+  },
+  "_config": {
+    "corpus": "/home/alon/Code/pile_manipulation/Genesis/data/slates_binned/n20_scatter_s20a1000_L20-70mm",
+    "goal": "corner",
+    "step": 0,
+    "grid": 64,
+    "value_fn": "lyapunov",
+    "dyn_seed": 0,
+    "encoder": "frozen random, seed 0",
+    "reference_rows_EXP0014": {
+      "MODEL-0001": 0.7399,
+      "MODEL-0003": 0.5163,
+      "MODEL-0002": -0.0904,
+      "random": -0.1409,
+      "persistence": -0.0042
+    }
+  }
+}

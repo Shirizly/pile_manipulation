@@ -1,0 +1,1 @@
+OMP_NUM_THREADS=4 python -u ../EXP-0019-*/code/fit_switched_hard.py --latents artifacts/RUN-0002 --out artifacts/RUN-0003

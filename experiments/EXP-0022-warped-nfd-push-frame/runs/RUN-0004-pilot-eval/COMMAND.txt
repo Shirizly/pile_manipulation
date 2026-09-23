@@ -1,0 +1,9 @@
+OMP_NUM_THREADS=4 PYTHONPATH=. /home/alon/anaconda3/envs/pme/bin/python -u Baselines/common/eval_report.py \
+  --out-prefix experiments/EXP-0022-warped-nfd-push-frame/artifacts/RUN-0004-pilot-eval/pilot_eval \
+  --models nfd_unwarped_L20mm_pilot,nfd_warped_L20mm_pilot,nfd_warped_walls_L20mm_pilot \
+  --corpora L20mm
+commit=a175b98138372ab54e36f84d933ec157efa230bb
+
+# plus the ranking-robustness check:
+OMP_NUM_THREADS=4 PYTHONPATH=. /home/alon/anaconda3/envs/pme/bin/python -u \
+  experiments/EXP-0022-warped-nfd-push-frame/code/ranking_robustness_check.py

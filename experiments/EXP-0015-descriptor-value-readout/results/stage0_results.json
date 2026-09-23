@@ -1,0 +1,286 @@
+{
+  "results": {
+    "8": {
+      "dim": 87,
+      "goals": {
+        "quadrant0": {
+          "lyapunov": {
+            "r2_mean": 0.9014120232598005,
+            "r2_std": 0.06837981893122991
+          },
+          "mass_in_region": {
+            "r2_mean": 0.2173495977637264,
+            "r2_std": 0.360759533657208
+          },
+          "signed_mass_in_region": {
+            "r2_mean": 0.31047022362187676,
+            "r2_std": 0.3753738795293721
+          }
+        },
+        "quadrant1": {
+          "lyapunov": {
+            "r2_mean": 0.9707930775041508,
+            "r2_std": 0.00821210115757502
+          },
+          "mass_in_region": {
+            "r2_mean": 0.17831733885571197,
+            "r2_std": 0.09556953956352851
+          },
+          "signed_mass_in_region": {
+            "r2_mean": 0.14737673412234653,
+            "r2_std": 0.1172391127447809
+          }
+        },
+        "letter_T": {
+          "lyapunov": {
+            "r2_mean": 0.578229505005188,
+            "r2_std": 0.09356704379038486
+          },
+          "mass_in_region": {
+            "r2_mean": -6.60447550006015,
+            "r2_std": 4.888694060506412
+          },
+          "signed_mass_in_region": {
+            "r2_mean": -6.371086385713312,
+            "r2_std": 5.618409046010953
+          }
+        },
+        "letter_O": {
+          "lyapunov": {
+            "r2_mean": -1.4717545576842468,
+            "r2_std": 1.91195007978218
+          },
+          "mass_in_region": {
+            "r2_mean": -8.865554585947862,
+            "r2_std": 8.146185136138934
+          },
+          "signed_mass_in_region": {
+            "r2_mean": -7.58640052790562,
+            "r2_std": 7.422313033874006
+          }
+        }
+      }
+    },
+    "16": {
+      "dim": 295,
+      "goals": {
+        "quadrant0": {
+          "lyapunov": {
+            "r2_mean": 0.11686206046904905,
+            "r2_std": 0.6011106164839207
+          },
+          "mass_in_region": {
+            "r2_mean": -0.4912533362236215,
+            "r2_std": 1.0619668103367959
+          },
+          "signed_mass_in_region": {
+            "r2_mean": -0.47540902354569975,
+            "r2_std": 1.0514041169449426
+          }
+        },
+        "quadrant1": {
+          "lyapunov": {
+            "r2_mean": 0.6846603478989218,
+            "r2_std": 0.3045322890690349
+          },
+          "mass_in_region": {
+            "r2_mean": -5.545272144006315,
+            "r2_std": 4.8965157022823504
+          },
+          "signed_mass_in_region": {
+            "r2_mean": -2.479692474445681,
+            "r2_std": 2.128702892300173
+          }
+        },
+        "letter_T": {
+          "lyapunov": {
+            "r2_mean": -13.394176303421206,
+            "r2_std": 18.01505744384052
+          },
+          "mass_in_region": {
+            "r2_mean": -73.61729881053067,
+            "r2_std": 53.011610245277346
+          },
+          "signed_mass_in_region": {
+            "r2_mean": -73.54667356940412,
+            "r2_std": 46.67983216561574
+          }
+        },
+        "letter_O": {
+          "lyapunov": {
+            "r2_mean": -31.621825529505287,
+            "r2_std": 22.77822183455855
+          },
+          "mass_in_region": {
+            "r2_mean": -27.812613412027655,
+            "r2_std": 20.106979719403682
+          },
+          "signed_mass_in_region": {
+            "r2_mean": -21.78435194200792,
+            "r2_std": 20.117631475728164
+          }
+        }
+      }
+    },
+    "24": {
+      "dim": 631,
+      "goals": {
+        "quadrant0": {
+          "lyapunov": {
+            "r2_mean": -0.7637903815325426,
+            "r2_std": 1.1605331720485321
+          },
+          "mass_in_region": {
+            "r2_mean": -1.5118996652237608,
+            "r2_std": 1.452336004695685
+          },
+          "signed_mass_in_region": {
+            "r2_mean": -1.4600580881316791,
+            "r2_std": 1.434252146144775
+          }
+        },
+        "quadrant1": {
+          "lyapunov": {
+            "r2_mean": 0.6557981831976426,
+            "r2_std": 0.3134953421593704
+          },
+          "mass_in_region": {
+            "r2_mean": -1.2519785220491528,
+            "r2_std": 0.5129340431970716
+          },
+          "signed_mass_in_region": {
+            "r2_mean": -3.1080038559562495,
+            "r2_std": 2.0115527871478096
+          }
+        },
+        "letter_T": {
+          "lyapunov": {
+            "r2_mean": -0.9128474057000169,
+            "r2_std": 0.15420093654297207
+          },
+          "mass_in_region": {
+            "r2_mean": -78.93867306183337,
+            "r2_std": 109.64523559004786
+          },
+          "signed_mass_in_region": {
+            "r2_mean": -17.250060537927514,
+            "r2_std": 23.294304376614306
+          }
+        },
+        "letter_O": {
+          "lyapunov": {
+            "r2_mean": -9.34775748222656,
+            "r2_std": 7.266374567812157
+          },
+          "mass_in_region": {
+            "r2_mean": -2.3767476307210007,
+            "r2_std": 1.79909866608732
+          },
+          "signed_mass_in_region": {
+            "r2_mean": -3.204996604966214,
+            "r2_std": 3.031769326312483
+          }
+        }
+      }
+    },
+    "32": {
+      "dim": 1095,
+      "goals": {
+        "quadrant0": {
+          "lyapunov": {
+            "r2_mean": -0.7194417662813032,
+            "r2_std": 1.0566202405403382
+          },
+          "mass_in_region": {
+            "r2_mean": -1.3091127626430874,
+            "r2_std": 2.1423236394451712
+          },
+          "signed_mass_in_region": {
+            "r2_mean": -1.469361277087377,
+            "r2_std": 1.922884465589373
+          }
+        },
+        "quadrant1": {
+          "lyapunov": {
+            "r2_mean": 0.5361875589134927,
+            "r2_std": 0.4239982800619645
+          },
+          "mass_in_region": {
+            "r2_mean": -0.8111554476778787,
+            "r2_std": 0.33129064759375776
+          },
+          "signed_mass_in_region": {
+            "r2_mean": -0.4671695787677936,
+            "r2_std": 0.9309897141842453
+          }
+        },
+        "letter_T": {
+          "lyapunov": {
+            "r2_mean": -1.0335559116548807,
+            "r2_std": 0.4023350003371371
+          },
+          "mass_in_region": {
+            "r2_mean": -1.1211891582198639,
+            "r2_std": 1.9356284151429863
+          },
+          "signed_mass_in_region": {
+            "r2_mean": -1.043638882888196,
+            "r2_std": 2.08523278362779
+          }
+        },
+        "letter_O": {
+          "lyapunov": {
+            "r2_mean": -7.45879596980208,
+            "r2_std": 10.393098754867571
+          },
+          "mass_in_region": {
+            "r2_mean": -0.7973747798175475,
+            "r2_std": 0.6930866733947628
+          },
+          "signed_mass_in_region": {
+            "r2_mean": -0.49939192254215276,
+            "r2_std": 0.582282514059439
+          }
+        }
+      }
+    }
+  },
+  "n_fourier_grid": [
+    8,
+    16,
+    24,
+    32
+  ],
+  "goal_names": [
+    "quadrant0",
+    "quadrant1",
+    "letter_T",
+    "letter_O"
+  ],
+  "value_names": [
+    "lyapunov",
+    "mass_in_region",
+    "signed_mass_in_region"
+  ],
+  "per_slate_samples": 200,
+  "seed": 0,
+  "corpus": "/home/alon/Code/pile_manipulation/Genesis/data/slates_binned/n20_scatter_s20a1000_L20-70mm",
+  "provenance": {
+    "commit": "6ea03278",
+    "commit_full": "6ea0327808e34d8a8b5834a356142d376cfbdd81",
+    "dirty": true,
+    "dirty_files": [
+      ".claude/skills/experiment-log/SKILL.md",
+      ".claude/skills/project-overview/SKILL.md",
+      "Genesis/sandbox_manipulation_clean.py",
+      "docs/piled_collection.md",
+      "experiments/INVARIANTS.md",
+      "experiments/REGISTER.md",
+      "experiments/TEMP_LOG.md",
+      "scripts/probes/pool_common.py",
+      "scripts/probes/pool_inspect.py",
+      "weights/MODEL-0002-descriptor-only-D-all-local/tests.md"
+    ],
+    "branch": "baselines/overnight"
+  }
+}

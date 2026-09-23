@@ -1,0 +1,39 @@
+Config: Baselines/NFD/configs/nfd_train_warped_walls_L20mm_pilot.yaml
+Device: cuda
+Training on cuda, epochs 0→20, log_dir=Baselines/NFD/runs/nfd_warped_walls_L20mm_pilot
+Train: 10496  Val: 512  Test: 512
+Epoch    1: trn=0.173131  val=0.113411  iou=0.2182  chg_mse=0.370175  best=1
+Epoch    2: trn=0.078528  val=0.050815  iou=0.3319  chg_mse=0.331837  best=2
+Epoch    3: trn=0.035937  val=0.021652  iou=0.7665  chg_mse=0.249322  best=3
+Epoch    4: trn=0.016719  val=0.013192  iou=0.7755  chg_mse=0.239824  best=4
+Epoch    5: trn=0.008944  val=0.006754  iou=0.7768  chg_mse=0.238120  best=5
+Epoch    6: trn=0.006379  val=0.006003  iou=0.7816  chg_mse=0.230141  best=6
+Epoch    7: trn=0.005926  val=0.005785  iou=0.7826  chg_mse=0.230001  best=7
+Epoch    8: trn=0.005763  val=0.005656  iou=0.7827  chg_mse=0.235409  best=8
+Epoch    9: trn=0.005680  val=0.005613  iou=0.7843  chg_mse=0.244198  best=9
+Epoch   10: trn=0.005630  val=0.005562  iou=0.7874  chg_mse=0.231252  best=10
+Epoch   11: trn=0.005590  val=0.005572  iou=0.7855  chg_mse=0.227761  best=10
+Epoch   12: trn=0.005558  val=0.005532  iou=0.7903  chg_mse=0.218374  best=12
+Epoch   13: trn=0.005532  val=0.005499  iou=0.7880  chg_mse=0.237508  best=13
+Epoch   14: trn=0.005499  val=0.005482  iou=0.7931  chg_mse=0.241108  best=14
+Epoch   15: trn=0.005481  val=0.005453  iou=0.7922  chg_mse=0.228326  best=15
+Epoch   16: trn=0.005462  val=0.005446  iou=0.7917  chg_mse=0.237851  best=16
+Epoch   17: trn=0.005440  val=0.005491  iou=0.7931  chg_mse=0.206163  best=16
+Epoch   18: trn=0.005422  val=0.005457  iou=0.7910  chg_mse=0.254778  best=16
+Epoch   19: trn=0.005404  val=0.005528  iou=0.7922  chg_mse=0.202303  best=16
+Epoch   20: trn=0.005388  val=0.005508  iou=0.7906  chg_mse=0.209683  best=16
+
+=== Test metrics ===
+  prob_mse: 0.005729
+  zero_mse: 0.027773
+  copy_mse: 0.014259
+  hard_iou: 0.779022
+  hard_dice: 0.867904
+  changed_mse: 0.204065
+  changed_copy_mse: 1.000000
+  changed_pixel_frac: 0.014259
+
+=== Training complete ===
+  Best val loss : 0.005446  (epoch 16)
+  Model card    : Baselines/NFD/runs/nfd_warped_walls_L20mm_pilot/model_card.yaml
+  Log dir       : Baselines/NFD/runs/nfd_warped_walls_L20mm_pilot

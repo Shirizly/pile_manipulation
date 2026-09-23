@@ -1,0 +1,95 @@
+{
+  "bin_edges_mm": [
+    0.0,
+    13.333938598632812,
+    26.667877197265625,
+    40.00181579589844,
+    53.33575439453125,
+    66.66969299316406,
+    80.00363159179688
+  ],
+  "across_bin_full_pool": {
+    "K32": {
+      "mean": -0.019553597408749977,
+      "sem": 0.04258352557690934,
+      "n": 20
+    },
+    "K128": {
+      "mean": -0.016482113820354666,
+      "sem": 0.03437616256338387,
+      "n": 20
+    }
+  },
+  "within_bin": {
+    "1": {
+      "n_rows": 2675,
+      "n_slates_with_data": 20,
+      "min_pool_per_slate": 124,
+      "max_pool_per_slate": 145,
+      "mean_pool_per_slate": 133.75,
+      "slateN_exact_mean": -0.1987422858908149,
+      "slateN_exact_sem": 0.062110196907298874,
+      "n_exact": 20,
+      "slateN_k_capped_mean": -0.25249211252149667,
+      "slateN_k_capped_sem": 0.040547535456469344,
+      "n_k_capped": 20
+    },
+    "2": {
+      "n_rows": 5325,
+      "n_slates_with_data": 20,
+      "min_pool_per_slate": 255,
+      "max_pool_per_slate": 276,
+      "mean_pool_per_slate": 266.25,
+      "slateN_exact_mean": -0.2627559638327802,
+      "slateN_exact_sem": 0.0361278851812785,
+      "n_exact": 20,
+      "slateN_k_capped_mean": -0.2942951011502245,
+      "slateN_k_capped_sem": 0.036640158381984284,
+      "n_k_capped": 20
+    },
+    "3": {
+      "n_rows": 5347,
+      "n_slates_with_data": 20,
+      "min_pool_per_slate": 253,
+      "max_pool_per_slate": 284,
+      "mean_pool_per_slate": 267.35,
+      "slateN_exact_mean": -0.2322347236374735,
+      "slateN_exact_sem": 0.040391297986894406,
+      "n_exact": 20,
+      "slateN_k_capped_mean": -0.1899328294647304,
+      "slateN_k_capped_sem": 0.051657864181112303,
+      "n_k_capped": 20
+    },
+    "4": {
+      "n_rows": 5301,
+      "n_slates_with_data": 20,
+      "min_pool_per_slate": 241,
+      "max_pool_per_slate": 289,
+      "mean_pool_per_slate": 265.05,
+      "slateN_exact_mean": 0.17519560734720144,
+      "slateN_exact_sem": 0.09136277192844366,
+      "n_exact": 20,
+      "slateN_k_capped_mean": 0.14535393203904454,
+      "slateN_k_capped_sem": 0.0671570290644322,
+      "n_k_capped": 20
+    },
+    "5": {
+      "n_rows": 1352,
+      "n_slates_with_data": 20,
+      "min_pool_per_slate": 58,
+      "max_pool_per_slate": 77,
+      "mean_pool_per_slate": 67.6,
+      "slateN_exact_mean": 0.23819575572968107,
+      "slateN_exact_sem": 0.10403030835863185,
+      "n_exact": 20,
+      "slateN_k_capped_mean": 0.2864108084531563,
+      "slateN_k_capped_sem": 0.06375557421261142,
+      "n_k_capped": 20
+    }
+  },
+  "within_bin_pooled_exact": {
+    "mean": -0.05606832205683723,
+    "sem": 0.038336551935402155,
+    "n": 100
+  }
+}

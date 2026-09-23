@@ -1,0 +1,9 @@
+=== pool_inspect: experiments/temp/binned-pools/dv_cache_corner.pt goal=corner slate=0 n_candidates=1000 ===
+provenance=6ea03278 dirty=True
+dv_true: mean(pool)=-0.00625  min(oracle)=-0.08118  max=+0.10928  spread(max-min)=0.19047
+  random         picks candidate  872  realised dv_true=+0.02578  predicted dv=+0.00008  regret vs oracle=+0.10696
+  nfd            picks candidate  828  realised dv_true=-0.02460  predicted dv=-0.09622  regret vs oracle=+0.05659
+  random         true percentile of top-1/2/3 picks: 0.848 / 0.244 / 0.830  (0=truly best)
+  nfd            true percentile of top-1/2/3 picks: 0.276 / 0.079 / 0.145  (0=truly best)
+
+wrote experiments/temp/binned-pools/figs/binned_corner_nfd_typical_s0.png

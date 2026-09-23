@@ -1,0 +1,2 @@
+OMP_NUM_THREADS=4 python -u ../EXP-0019-lejepa-encoder-pushlen-switched/code/train_encoder.py --epochs 12 --steps-per-epoch 250 --bs 192 --lambda-sigreg 0.02 --sigreg-on-z 0.02 --sean-files 60 --seed 0 --latent-dim 256 --proj-dim 256 --lr 1e-3 --out artifacts/RUN-0001
+commit 6ea0327808e34d8a8b5834a356142d376cfbdd81 (dirty)

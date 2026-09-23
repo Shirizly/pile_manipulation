@@ -1,0 +1,41 @@
+OMP_NUM_THREADS=4 PYTHONPATH=. /home/alon/anaconda3/envs/pme/bin/python -u Baselines/common/eval_report.py \
+  --models nfd_randlen,nfd_warped_randlen,linear_switched_res64,linear_single_res64,linear_switched_res32,linear_single_res32 \
+  --corpora L20mm \
+  --canonical-frame --no-reference \
+  --out-prefix /tmp/smoke_canon_L20mm
+commit: a175b98138372ab54e36f84d933ec157efa230bb (dirty tree, pre-existing, unrelated to this run)
+
+OMP_NUM_THREADS=4 PYTHONPATH=. /home/alon/anaconda3/envs/pme/bin/python -u Baselines/common/eval_report.py \
+  --models nfd_randlen,nfd_warped_randlen,linear_switched_res64,linear_single_res64,linear_switched_res32,linear_single_res32 \
+  --corpora L40mm,randlen_test \
+  --canonical-frame --no-reference \
+  --out-prefix /tmp/smoke_canon_rest
+
+OMP_NUM_THREADS=4 PYTHONPATH=. /home/alon/anaconda3/envs/pme/bin/python -u \
+  experiments/EXP-0022-warped-nfd-push-frame/code/ranking_robustness_check_warped_goal_n40.py
+
+(The two eval_report.py invocations were split across two processes rather
+than one --corpora L20mm,L40mm,randlen_test call purely to unblock the A1/A2
+smoke test on L20mm first, per this task's own budget-management instructions
+-- not a difference in method. Their outputs were merged into
+../../artifacts/RUN-0011-frame-scoring/frame_scoring_merged.json before
+analysis. Outputs also saved individually as frame_scoring_L20mm.json and
+frame_scoring_L40mm_randlen_test.json.)
+
+Code changes made for this run (see docs/CODEMAP.md's new "Canonical-frame
+scoring" entry and results/frame_scoring.md for what they do and why):
+  - Baselines/NFD/predictor.py: WarpedNFDPredictor refactored to share pixel/
+    fn construction (_build_fn) between predict_occ (world, existing,
+    unchanged behavior) and the new predict_occ_canonical (native canonical
+    prediction, no unwarp/blend).
+  - Baselines/common/eval_report.py: new `_accuracy_canonical` + `--canonical-
+    frame` CLI flag, additive only -- default off, and even with it on the
+    existing `accuracy`/`capture` computation and printing is untouched.
+  - New: experiments/EXP-0022-warped-nfd-push-frame/code/
+    ranking_robustness_check_warped_goal_n40.py (A2).
+
+Also: Baselines/LinearForesight/runs/operators_res64.pt was missing from
+disk; copied in from experiments/temp/res32-vs-64/strays/operators_res64.pt
+(same res=64, same train_cfg, all expected keys) to unblock
+linear_switched_res64/linear_single_res64 scoring. See results/
+frame_scoring.md's "Anomaly found" section and the OPEN_ISSUES.md entry.

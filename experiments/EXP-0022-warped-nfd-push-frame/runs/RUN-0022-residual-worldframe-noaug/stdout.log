@@ -1,0 +1,31 @@
+Config: Baselines/NFD/configs/nfd_train_residual_unwarped_noaug_randlen.yaml
+Device: cuda
+Training on cuda, epochs 0→240, log_dir=Baselines/NFD/runs/nfd_residual_unwarped_noaug_randlen
+Train: 89081  Val: 4608  Test: 4607
+Epoch    1: trn=0.039274  val=0.017043  iou=0.7798  chg_mse=0.854181  best=1
+Epoch    2: trn=0.014723  val=0.010508  iou=0.8307  chg_mse=0.469898  best=2
+Epoch    3: trn=0.008467  val=0.007610  iou=0.8628  chg_mse=0.332133  best=3
+Epoch    4: trn=0.006924  val=0.006816  iou=0.8753  chg_mse=0.272292  best=4
+Epoch    5: trn=0.006443  val=0.006512  iou=0.8804  chg_mse=0.252764  best=5
+Epoch    6: trn=0.006190  val=0.006296  iou=0.8842  chg_mse=0.240901  best=6
+Epoch    7: trn=0.006039  val=0.006175  iou=0.8862  chg_mse=0.249148  best=7
+Epoch    8: trn=0.005925  val=0.006078  iou=0.8878  chg_mse=0.245026  best=8
+Epoch    9: trn=0.005840  val=0.006030  iou=0.8879  chg_mse=0.237819  best=9
+Epoch   10: trn=0.005769  val=0.005976  iou=0.8899  chg_mse=0.221182  best=10
+Epoch   11: trn=0.005706  val=0.005902  iou=0.8913  chg_mse=0.224109  best=11
+Epoch   12: trn=0.005653  val=0.005875  iou=0.8909  chg_mse=0.240862  best=12
+Epoch   13: trn=0.005607  val=0.005804  iou=0.8931  chg_mse=0.227829  best=13
+Epoch   14: trn=0.005564  val=0.005925  iou=0.8921  chg_mse=0.197073  best=13
+Epoch   15: trn=0.005527  val=0.005733  iou=0.8946  chg_mse=0.213710  best=15
+Epoch   16: trn=0.005492  val=0.005706  iou=0.8947  chg_mse=0.214746  best=16
+Epoch   17: trn=0.005459  val=0.005700  iou=0.8945  chg_mse=0.231037  best=17
+Epoch   18: trn=0.005431  val=0.005692  iou=0.8958  chg_mse=0.203342  best=18
+Epoch   19: trn=0.005403  val=0.005620  iou=0.8964  chg_mse=0.213893  best=19
+Epoch   20: trn=0.005379  val=0.005614  iou=0.8964  chg_mse=0.223264  best=20
+Epoch   21: trn=0.005354  val=0.005581  iou=0.8977  chg_mse=0.210229  best=21
+Epoch   22: trn=0.005334  val=0.005561  iou=0.8981  chg_mse=0.207844  best=22
+Epoch   23: trn=0.005314  val=0.005555  iou=0.8979  chg_mse=0.220804  best=23
+Epoch   24: trn=0.005295  val=0.005545  iou=0.8980  chg_mse=0.205399  best=24
+Epoch   25: trn=0.005278  val=0.005523  iou=0.8983  chg_mse=0.205700  best=25
+Epoch   26: trn=0.005262  val=0.005497  iou=0.8989  chg_mse=0.211704  best=26
+Epoch   27: trn=0.005245  val=0.005488  iou=0.8991  chg_mse=0.217462  best=27

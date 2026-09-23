@@ -1,0 +1,13 @@
+[L20mm] loaded 7680 transitions (67.3s)
+[L20mm / flow_supervised_augmented] accuracy=0.1499  device=cpu  (16.5s)
+    goal=random_quadrant  lyapunov=+0.7877  mass_in_region=+0.5861  signed_mass=+0.6667
+    goal=ring_O           lyapunov=+0.5791  mass_in_region=+0.3400  signed_mass=-0.2044
+    goal=T                lyapunov=+0.3610  mass_in_region=+0.4352  signed_mass=+0.3062
+    averaged         lyapunov=+0.5759  mass_in_region=+0.4538  signed_mass=+0.2562
+[L20mm / flow_supervised_masked_augmented] accuracy=0.1805  device=cpu  (15.4s)
+    goal=random_quadrant  lyapunov=+0.8517  mass_in_region=+0.7761  signed_mass=+0.8101
+    goal=ring_O           lyapunov=+0.6886  mass_in_region=+0.3150  signed_mass=-0.2118
+    goal=T                lyapunov=+0.5816  mass_in_region=+0.5860  signed_mass=+0.6342
+    averaged         lyapunov=+0.7073  mass_in_region=+0.5590  signed_mass=+0.4108
+
+wrote experiments/EXP-0025-flow-warp-nfd-pilot/runs/RUN-0014-supervised-flow-augmented-scoring/report.json

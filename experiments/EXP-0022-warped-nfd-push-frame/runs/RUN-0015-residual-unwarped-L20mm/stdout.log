@@ -1,0 +1,39 @@
+Config: Baselines/NFD/configs/nfd_train_residual_unwarped_L20mm_pilot.yaml
+Device: cuda
+Training on cuda, epochs 0→20, log_dir=Baselines/NFD/runs/nfd_residual_unwarped_L20mm_pilot_2
+Train: 10496  Val: 512  Test: 512
+Epoch    1: trn=0.010974  val=0.007535  iou=0.7135  chg_mse=0.491966  best=1
+Epoch    2: trn=0.006527  val=0.005773  iou=0.7755  chg_mse=0.316920  best=2
+Epoch    3: trn=0.005852  val=0.005610  iou=0.7720  chg_mse=0.284678  best=3
+Epoch    4: trn=0.005680  val=0.005552  iou=0.7724  chg_mse=0.275813  best=4
+Epoch    5: trn=0.005583  val=0.005362  iou=0.7831  chg_mse=0.277408  best=5
+Epoch    6: trn=0.005512  val=0.005274  iou=0.7881  chg_mse=0.267002  best=6
+Epoch    7: trn=0.005452  val=0.005351  iou=0.7788  chg_mse=0.309843  best=6
+Epoch    8: trn=0.005399  val=0.005459  iou=0.7898  chg_mse=0.248410  best=6
+Epoch    9: trn=0.005354  val=0.005157  iou=0.7887  chg_mse=0.257895  best=9
+Epoch   10: trn=0.005320  val=0.005168  iou=0.7895  chg_mse=0.258806  best=9
+Epoch   11: trn=0.005285  val=0.005121  iou=0.7877  chg_mse=0.259183  best=11
+Epoch   12: trn=0.005254  val=0.005196  iou=0.7849  chg_mse=0.264618  best=11
+Epoch   13: trn=0.005220  val=0.005113  iou=0.7898  chg_mse=0.243737  best=13
+Epoch   14: trn=0.005194  val=0.005145  iou=0.7874  chg_mse=0.250594  best=13
+Epoch   15: trn=0.005170  val=0.005076  iou=0.7910  chg_mse=0.232994  best=15
+Epoch   16: trn=0.005152  val=0.005087  iou=0.7893  chg_mse=0.254131  best=15
+Epoch   17: trn=0.005128  val=0.005088  iou=0.7950  chg_mse=0.218316  best=15
+Epoch   18: trn=0.005115  val=0.005015  iou=0.7946  chg_mse=0.255868  best=18
+Epoch   19: trn=0.005092  val=0.005057  iou=0.7895  chg_mse=0.260886  best=18
+Epoch   20: trn=0.005080  val=0.004989  iou=0.7911  chg_mse=0.232149  best=20
+
+=== Test metrics ===
+  prob_mse: 0.005230
+  zero_mse: 0.027773
+  copy_mse: 0.014259
+  hard_iou: 0.782792
+  hard_dice: 0.869536
+  changed_mse: 0.224411
+  changed_copy_mse: 1.000000
+  changed_pixel_frac: 0.014259
+
+=== Training complete ===
+  Best val loss : 0.004989  (epoch 20)
+  Model card    : Baselines/NFD/runs/nfd_residual_unwarped_L20mm_pilot_2/model_card.yaml
+  Log dir       : Baselines/NFD/runs/nfd_residual_unwarped_L20mm_pilot_2

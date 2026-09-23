@@ -65,3 +65,12 @@ Genesis/data/slates_binned/
 # top-performing model per family is tracked, and it is added explicitly --
 # see the repo's weights policy. `unet_epoch_*.pth` is already excluded above.
 unet.pth
+
+# Experiment run/artifact PAYLOADS. The tracked record (RUN.md, config.yaml,
+# COMMAND.txt, results/*.md) must be enough to regenerate these; see the
+# experiment-log skill's "What's tracked, what's not". Selected top-performing
+# checkpoints are tracked deliberately, under Baselines/<Name>/runs/, and added
+# with `git add -f`.
+experiments/*/runs/*/*.pt
+experiments/*/runs/*/*.pth
+experiments/*/artifacts/

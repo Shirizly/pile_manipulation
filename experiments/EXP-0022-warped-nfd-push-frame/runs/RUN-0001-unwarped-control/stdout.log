@@ -1,0 +1,39 @@
+Config: Baselines/NFD/configs/nfd_train_3ch_L20mm_pilot.yaml
+Device: cuda
+Training on cuda, epochs 0→20, log_dir=Baselines/NFD/runs/nfd_3ch_L20mm_pilot
+Train: 10496  Val: 512  Test: 512
+Epoch    1: trn=0.191401  val=0.135479  iou=0.6334  chg_mse=0.417242  best=1
+Epoch    2: trn=0.101133  val=0.072978  iou=0.6588  chg_mse=0.456625  best=2
+Epoch    3: trn=0.056045  val=0.033003  iou=0.6885  chg_mse=0.368749  best=3
+Epoch    4: trn=0.023983  val=0.017362  iou=0.7424  chg_mse=0.301928  best=4
+Epoch    5: trn=0.014389  val=0.011979  iou=0.7532  chg_mse=0.315686  best=5
+Epoch    6: trn=0.010751  val=0.009506  iou=0.7644  chg_mse=0.288272  best=6
+Epoch    7: trn=0.008454  val=0.007662  iou=0.7707  chg_mse=0.272851  best=7
+Epoch    8: trn=0.007438  val=0.006908  iou=0.7776  chg_mse=0.280429  best=8
+Epoch    9: trn=0.006779  val=0.006308  iou=0.7805  chg_mse=0.263298  best=9
+Epoch   10: trn=0.006318  val=0.005921  iou=0.7832  chg_mse=0.250930  best=10
+Epoch   11: trn=0.005970  val=0.005713  iou=0.7768  chg_mse=0.252729  best=11
+Epoch   12: trn=0.005751  val=0.005547  iou=0.7826  chg_mse=0.236305  best=12
+Epoch   13: trn=0.005606  val=0.005325  iou=0.7850  chg_mse=0.247777  best=13
+Epoch   14: trn=0.005499  val=0.005420  iou=0.7863  chg_mse=0.226572  best=13
+Epoch   15: trn=0.005421  val=0.005197  iou=0.7844  chg_mse=0.255472  best=15
+Epoch   16: trn=0.005356  val=0.005222  iou=0.7855  chg_mse=0.238135  best=15
+Epoch   17: trn=0.005312  val=0.005141  iou=0.7871  chg_mse=0.257690  best=17
+Epoch   18: trn=0.005275  val=0.005119  iou=0.7865  chg_mse=0.276627  best=18
+Epoch   19: trn=0.005244  val=0.005102  iou=0.7860  chg_mse=0.265217  best=19
+Epoch   20: trn=0.005218  val=0.005143  iou=0.7914  chg_mse=0.243921  best=19
+
+=== Test metrics ===
+  prob_mse: 0.005390
+  zero_mse: 0.027773
+  copy_mse: 0.014259
+  hard_iou: 0.783553
+  hard_dice: 0.869927
+  changed_mse: 0.239256
+  changed_copy_mse: 1.000000
+  changed_pixel_frac: 0.014259
+
+=== Training complete ===
+  Best val loss : 0.005102  (epoch 19)
+  Model card    : Baselines/NFD/runs/nfd_3ch_L20mm_pilot/model_card.yaml
+  Log dir       : Baselines/NFD/runs/nfd_3ch_L20mm_pilot

@@ -1,0 +1,1 @@
+OMP_NUM_THREADS=4 python -u ../EXP-0019-*/code/encode_states.py --ckpt artifacts/RUN-0001/encoder_lejepa.pt --out artifacts/RUN-0002

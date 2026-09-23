@@ -1,0 +1,2 @@
+OMP_NUM_THREADS=4 PYTHONPATH=. /home/alon/anaconda3/envs/pme/bin/python -u Baselines/NFD/train_nfd.py Baselines/NFD/configs/nfd_train_3ch_L20mm_pilot.yaml --no-resume
+commit=a175b98138372ab54e36f84d933ec157efa230bb

@@ -1,0 +1,2 @@
+/home/alon/anaconda3/envs/pme/bin/python -u Baselines/common/eval_report.py --out-prefix experiments/EXP-0025-flow-warp-nfd-pilot/artifacts/RUN-0007-sweep-eval/flow_sweep --models flow_direct_control,flow_baseline,flow_coarse16,flow_smalldisp4,flow_largedisp24,flow_srcsink --corpora L20mm
+commit: a175b98138372ab54e36f84d933ec157efa230bb

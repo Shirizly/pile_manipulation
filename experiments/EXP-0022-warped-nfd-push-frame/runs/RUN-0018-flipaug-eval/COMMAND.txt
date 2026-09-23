@@ -1,0 +1,2 @@
+/home/alon/anaconda3/envs/pme/bin/python -u Baselines/common/eval_report.py --out-prefix experiments/EXP-0022-warped-nfd-push-frame/artifacts/RUN-0018-flipaug-eval/flipaug_eval --models nfd_randlen,nfd_warped_randlen,nfd_warped_randlen_flipaug,nfd_warped_randlen_flipaug_epoch30 --corpora L20mm,L40mm,randlen_test --canonical-frame
+commit: a175b98138372ab54e36f84d933ec157efa230bb

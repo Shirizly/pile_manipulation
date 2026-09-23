@@ -1,0 +1,35 @@
+loading L20mm eval cell...
+N=7680 H=64 W=64
+built target flow field. nonzero-flow frac: 0.027302328497171402
+displacement stats (px), foreground only:
+  mean=1.779  median=0.222  p95=7.016  max=39.622
+
+GROUND-TRUTH FLOW RECONSTRUCTION (ceiling):
+  accuracy = 0.1668
+{'frobenius': 4.786561489105225, 'rms': 0.1843118816614151, 'l1_per_mass': 5729.64404296875, 'soft_iou': 0.6828556060791016, 'explained': 0.166823148727417, 'accuracy': 0.1668245792388916}
+saved cache
+
+GT-flow-ceiling slateN (averaged over goals):
+{
+  "lyapunov": 0.8129437160931318,
+  "mass_in_region": 0.7695218325322979,
+  "signed_mass": 0.5121785999272207
+}
+per goal:
+{
+  "random_quadrant": {
+    "lyapunov": 0.9166613835388105,
+    "mass_in_region": 0.9930677822169282,
+    "signed_mass": 0.9352239418264803
+  },
+  "ring_O": {
+    "lyapunov": 0.922671931371854,
+    "mass_in_region": 0.9832549065014984,
+    "signed_mass": 0.03715481862324142
+  },
+  "T": {
+    "lyapunov": 0.5994978333687311,
+    "mass_in_region": 0.3322428088784673,
+    "signed_mass": 0.5641570393319404
+  }
+}

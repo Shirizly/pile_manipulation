@@ -197,6 +197,8 @@ whether it predicts motion correctly.
 
 ## `candidate_throughput_ms` (added 2026-09-13, from EXP-0009)
 
+**`candidate_throughput_ms`** — see below.
+
 The wall-clock cost (median, ms) of a model's `predict_occ`-equivalent call
 on ONE current state repeated K times, paired with K real candidate actions
 cycled from an eval cell (the "same state, many candidate actions" shape an
@@ -231,3 +233,151 @@ model `i` can evaluate (`end2end`) in the time the FASTEST model in the
 comparison takes to evaluate its own reference batch size (linear
 interpolation on the measured (K, end2end_ms) curve) -- this is the actual
 quantity an equalised-wall-clock-budget control comparison needs.
+
+## `top1_regret` (added 2026-09-15, from EXP-0014)
+
+**`top1_regret`** — per slate, the realised value cost of the action the model actually picked,
+relative to the pool's best:
+
+    top1_regret = value_true[argmin_c value_pred[c]] - min_c value_true[c]
+
+in the value function's own units (Lyapunov units for `lyapunov`), `>= 0`,
+0 = picked the oracle's action. Reported as a mean +/- sem over slates.
+Implemented in `scripts/probes/pool_survey.py`.
+
+**Lower is better — the opposite sense to `slateN`/`accuracy`.** It is NOT a
+substitute for `slateN` and must not be reported alone: it is unnormalised,
+so it is incomparable across corpora and across value functions, and it reads
+only the top-1 pick while `slateN` reads the model's whole ordering. Its use
+is that it stays in interpretable physical units, where `slateN`'s ratio can
+hide whether a large captured fraction is a large or trivial absolute gain.
+
+Companion quantity, same script: `|R_K| = |M_K - P_K|`, the K-weighted
+expectation of the same regret over random K-candidate subsets, using the
+`M_K`/`P_K` defined in this file's `slateK_exact` entry (implemented in
+`scripts/probes/pool_common.py::rk_curve`, importing `slateK_exact`'s own
+validated `w_r(K)` weights rather than reimplementing them).
+
+## `value_readout_r2` (added 2026-09-15, from EXP-0015)
+
+**`value_readout_r2`** — coefficient of determination of a regression predicting a scalar value
+function `value(state, goal)` from features of an analytic descriptor of the
+state and of the goal:
+
+    value_readout_r2 = 1 - SS_res / SS_tot
+
+on a held-out split, where `SS_tot` uses the TRAINING-split mean, so the
+baseline "predict the training mean" scores ~0 rather than being flattened to
+0 by construction. Higher is better; negative means worse than that baseline.
+
+**Two splits, always reported as a pair — they answer different questions:**
+
+  * **held-out state** — unseen states, goals seen in training. Answers "does
+    this readout order states under a goal it knows?"
+  * **held-out goal** — entire goal shapes withheld. Answers "does it
+    generalise to a new target?" This is the one that matters for control,
+    and the two can diverge by orders of magnitude.
+
+**Mandatory baselines** (without them the number is uninterpretable, see
+EXP-0015): `mean_only`; `state_only` (features from the state alone — if it
+matches the full model, the goal term is doing nothing); and `goal_only`
+(ignores the state and predicts one constant per goal — if it matches the
+full model, the apparent skill is between-goal variance, not state ordering).
+
+**Bounded-metric caveat** (see this file's header guidance): R² saturates at
+1, so differences compress near the ceiling. Report the baselines beside it,
+not a raw difference against them.
+
+## `repeat_noise_ratio` (added 2026-09-23, from EXP-0024)
+
+**`repeat_noise_ratio`** — characterises the noise floor a resimulated `dv`
+ground truth would carry, relative to the signal `slateN` actually ranks on.
+For one settled start state and a fixed goal/value function:
+
+    within_var  = mean over actions of [ Var(dv) over R repeats of that SAME
+                  action from the SAME state ]
+    between_var = Var over actions of [ mean dv per action ]
+    repeat_noise_ratio = within_var / between_var
+
+`between_var` is exactly the quantity `slateN` ranks candidates on (dv spread
+across distinct actions from one state); `within_var` is the resimulation
+noise that would corrupt it if the "true" dv used for scoring were itself a
+single noisy draw. Ratio near 0: resimulating the same action would return
+(near-)identical dv, so slateN's ground truth is not noisy by this
+mechanism. Ratio approaching or exceeding 1: repeat noise is comparable to
+or swamps the between-action signal, and slateN has a real, measurable
+ceiling from this source alone. Requires R >= 3 repeats per action to be
+non-degenerate; reported per state, not pooled, since `between_var` differs
+by orders of magnitude state to state (a flat state has little to rank).
+
+## `gradient_gain` and friends (added 2026-09-23, from EXP-0023)
+
+Every metric above scores a model as a **ranker** of a fixed candidate pool.
+These score it as a **source of gradients** — an objective an MPC controller
+optimises against, which is how a dynamics model is actually used and a
+different ability, because optimisation actively seeks out the model's own
+errors. Design rationale:
+`experiments/EXP-0023-model-as-gradient-source/DESIGN.md`.
+
+All four are defined on the **true, simulated** `dv` of three actions taken
+from the same state and the same seed pool: `a_rank` (the model's best pick
+in the pool), `a_grad` (gradient descent through the model, started at
+`a_rank`), `a_oracle` (CEM with the simulator itself as the model).
+
+| key | definition | sense |
+|---|---|---|
+| **`gradient_gain`** | `dv_rank − dv_grad` | > 0: optimising against this model beat just picking from the pool. **< 0 is the informative outcome** — a model that ranks well can still be a bad thing to optimise against. |
+| **`pool_escape`** | `pool_ceiling − dv_grad`, `pool_ceiling = min_c dv_true[c]` over the seed pool | > 0: optimisation found something better than ANYTHING the pool contained. Separates "a wider pool would do" from "gradients add real value". |
+| `capture_vs_oracle` | `dv_grad / dv_oracle` | 1 = matched the oracle. Unstable near `dv_oracle ≈ 0`; report the raw `dv` values beside it and flag degenerate states. |
+| `regret_vs_oracle` | `dv_grad − dv_oracle` | absolute headroom left, in the value function's own units. |
+
+**SIGN — read this before using `dv` with any value function other than
+`lyapunov`.** `dv = value(after) − value(before)` **does NOT have a fixed
+direction across this project's value functions**, because the value functions
+themselves do not (see the table above):
+
+| value function | sense | an IMPROVING push gives |
+|---|---|---|
+| `lyapunov` | COST (lower better) | `dv < 0` |
+| `mass_in_region` | VALUE (higher better) | `dv > 0` |
+| `signed_mass_in_region` | VALUE (higher better) | `dv > 0` |
+
+So "`dv` is a cost" is true **only for `lyapunov`**, and a reader who carries
+that rule over to a mass value function will invert their conclusion. An
+earlier version of this note asserted the cost sense "repo-wide"; that was
+wrong, and it was wrong in a way no measurement caught, because every place
+that currently computes a raw `dv` happens to use `lyapunov` alone
+(`scripts/probes/binned_pool_cache.py` records `"value_fn": "lyapunov"` in its
+own metadata; EXP-0023 ran `corner`/`lyapunov` only).
+
+**What IS safe to rely on:**
+- `slateN`/capture is normalised and always reads **higher = better**
+  regardless of the underlying value function —
+  `Baselines/common/goals.py::slate_n_capture` takes `higher_is_better` and
+  switches argmax/argmin accordingly.
+- The three difference metrics above (`gradient_gain`, `pool_escape`,
+  `regret_vs_oracle`) are written so that **positive = better**, but their
+  subtraction order assumes the COST sense, i.e. they are currently correct
+  **only for `lyapunov`**. Using them with a mass value function requires
+  flipping the subtraction order, exactly as `slate_n_capture` flips argmax to
+  argmin.
+- `simple_mpc.adapters.assert_dv_convention` asserts the cost sense **for
+  `lyapunov` specifically** — it builds its test from the distance field and
+  its own assertion message names Lyapunov. It does not and cannot check a
+  mass value function, so passing it is not evidence that a mass-based `dv` is
+  signed as expected.
+
+EXP-0023's `DESIGN.md` originally stated the difference metrics with the
+opposite subtraction order under an implicit reward convention; that
+discrepancy is documented and corrected in both that design doc and its
+record.
+
+**Report per state, never only as a mean.** These are per-optimisation
+quantities on a handful of states, not pool statistics, and the honest power
+check is the spread of arm means against the spread of state means: if
+between-arm variation does not exceed between-state variation, the design
+could not separate the models and the record must say so.
+
+**Report bound-hit rates beside them.** An arm whose optimiser is pinned to
+the workspace or push-length constraint is being scored on the constraint,
+not on its gradients.

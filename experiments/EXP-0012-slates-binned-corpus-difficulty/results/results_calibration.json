@@ -1,0 +1,102 @@
+{
+  "step1_reproduction": {
+    "per_dataset": {
+      "n20_L10mm": {
+        "n_slates": 20,
+        "n_rows": 2560,
+        "pool_size": 128,
+        "switched_linear_slateN": 0.013894766459345963,
+        "persistence_slateN": 0.027961604579106604,
+        "random_slateN": -0.037310113180427776
+      },
+      "n20_L20mm": {
+        "n_slates": 20,
+        "n_rows": 2560,
+        "pool_size": 128,
+        "switched_linear_slateN": 0.538462527000828,
+        "persistence_slateN": -0.09728473428133769,
+        "random_slateN": -0.022505789067562246
+      },
+      "n20_L40mm": {
+        "n_slates": 20,
+        "n_rows": 2560,
+        "pool_size": 128,
+        "switched_linear_slateN": 0.8223363980581789,
+        "persistence_slateN": -0.22598829903771459,
+        "random_slateN": 0.10771659799351667
+      }
+    },
+    "pooled": {
+      "switched_linear": {
+        "mean": 0.4582312305061176,
+        "sem": 0.054146283483875714,
+        "n": 60
+      },
+      "persistence": {
+        "mean": -0.09843714291331522,
+        "sem": 0.06987564682106479,
+        "n": 60
+      },
+      "random": {
+        "mean": 0.015966898581842224,
+        "sem": 0.059729529225038075,
+        "n": 60
+      },
+      "published_EXP-0006": {
+        "switched_linear": [
+          0.461,
+          0.061
+        ],
+        "persistence": [
+          -0.093,
+          0.071
+        ],
+        "random": [
+          0.12,
+          0.052
+        ],
+        "n": 60
+      }
+    }
+  },
+  "step2_characterisation": {
+    "multistep_dv_true_spread_per_slate": {
+      "mean": 0.1846105795664092,
+      "std": 0.13438158891656798,
+      "min": 0.026322180405259132,
+      "max": 0.41470128297805786,
+      "median": 0.14463672786951065
+    },
+    "binned_dv_true_spread_per_slate": {
+      "mean": 0.15416498109698296,
+      "std": 0.041160383952560664,
+      "min": 0.10502219200134277,
+      "max": 0.27571815252304077,
+      "median": 0.14651714265346527
+    },
+    "binned_pool_size": 1000,
+    "multistep_pool_size": 128,
+    "K_fixed_references": {
+      "multistep": {
+        "32": {
+          "switched_linear_mean": 0.5348315520624531,
+          "persistence_mean": -0.004477873549418107
+        },
+        "128": {
+          "switched_linear_mean": 0.4656772947307139,
+          "persistence_mean": -0.004002261462699437
+        }
+      },
+      "binned": {
+        "32": {
+          "switched_linear_mean": -0.019553597408749977,
+          "persistence_mean": -0.007040454843346454
+        },
+        "128": {
+          "switched_linear_mean": -0.016482113820354666,
+          "persistence_mean": -0.008013609224028889
+        }
+      }
+    }
+  }
+}

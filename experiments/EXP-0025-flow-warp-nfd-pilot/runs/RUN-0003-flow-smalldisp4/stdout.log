@@ -1,0 +1,59 @@
+Config: Baselines/NFD/configs/nfd_train_flow_smalldisp4_L20mm_pilot.yaml
+Device: cuda
+Training on cuda, epochs 0→40, log_dir=Baselines/NFD/runs/flow_smalldisp4_L20mm_pilot
+Train: 768  Val: 128  Test: 128
+Epoch    1: trn=0.021946  val=0.017320  iou=0.4939  chg_mse=0.734155  best=1
+Epoch    2: trn=0.014559  val=0.013037  iou=0.6036  chg_mse=0.831841  best=2
+Epoch    3: trn=0.013344  val=0.012485  iou=0.6341  chg_mse=0.824091  best=3
+Epoch    4: trn=0.012779  val=0.011843  iou=0.6368  chg_mse=0.767740  best=4
+Epoch    5: trn=0.012114  val=0.011045  iou=0.6611  chg_mse=0.705245  best=5
+Epoch    6: trn=0.011467  val=0.010761  iou=0.6636  chg_mse=0.689372  best=6
+Epoch    7: trn=0.011190  val=0.010602  iou=0.6640  chg_mse=0.676703  best=7
+Epoch    8: trn=0.010990  val=0.010379  iou=0.6684  chg_mse=0.670150  best=8
+Epoch    9: trn=0.010838  val=0.010439  iou=0.6668  chg_mse=0.664095  best=8
+Epoch   10: trn=0.010761  val=0.010362  iou=0.6685  chg_mse=0.664800  best=10
+Epoch   11: trn=0.010629  val=0.010299  iou=0.6731  chg_mse=0.683027  best=11
+Epoch   12: trn=0.010545  val=0.010393  iou=0.6707  chg_mse=0.688511  best=11
+Epoch   13: trn=0.010435  val=0.010096  iou=0.6750  chg_mse=0.669841  best=13
+Epoch   14: trn=0.010363  val=0.010036  iou=0.6750  chg_mse=0.655585  best=14
+Epoch   15: trn=0.010271  val=0.010052  iou=0.6773  chg_mse=0.674652  best=14
+Epoch   16: trn=0.010198  val=0.009888  iou=0.6780  chg_mse=0.641826  best=16
+Epoch   17: trn=0.010105  val=0.009865  iou=0.6746  chg_mse=0.627774  best=17
+Epoch   18: trn=0.010042  val=0.009863  iou=0.6785  chg_mse=0.655210  best=18
+Epoch   19: trn=0.009960  val=0.009957  iou=0.6755  chg_mse=0.645587  best=18
+Epoch   20: trn=0.009907  val=0.009861  iou=0.6764  chg_mse=0.636197  best=20
+Epoch   21: trn=0.009852  val=0.009643  iou=0.6811  chg_mse=0.629046  best=21
+Epoch   22: trn=0.009803  val=0.009747  iou=0.6791  chg_mse=0.631173  best=21
+Epoch   23: trn=0.009718  val=0.009506  iou=0.6837  chg_mse=0.613108  best=23
+Epoch   24: trn=0.009734  val=0.009524  iou=0.6865  chg_mse=0.634780  best=23
+Epoch   25: trn=0.009659  val=0.009511  iou=0.6837  chg_mse=0.619901  best=23
+Epoch   26: trn=0.009624  val=0.009640  iou=0.6795  chg_mse=0.614694  best=23
+Epoch   27: trn=0.009584  val=0.009513  iou=0.6868  chg_mse=0.627033  best=23
+Epoch   28: trn=0.009549  val=0.009447  iou=0.6850  chg_mse=0.605060  best=28
+Epoch   29: trn=0.009497  val=0.009343  iou=0.6873  chg_mse=0.601803  best=29
+Epoch   30: trn=0.009469  val=0.009265  iou=0.6887  chg_mse=0.602655  best=30
+Epoch   31: trn=0.009459  val=0.009407  iou=0.6821  chg_mse=0.605003  best=30
+Epoch   32: trn=0.009391  val=0.009291  iou=0.6886  chg_mse=0.605716  best=30
+Epoch   33: trn=0.009397  val=0.009199  iou=0.6911  chg_mse=0.601429  best=33
+Epoch   34: trn=0.009377  val=0.009253  iou=0.6890  chg_mse=0.599866  best=33
+Epoch   35: trn=0.009308  val=0.009177  iou=0.6900  chg_mse=0.589895  best=35
+Epoch   36: trn=0.009306  val=0.009302  iou=0.6870  chg_mse=0.593677  best=35
+Epoch   37: trn=0.009271  val=0.009169  iou=0.6916  chg_mse=0.594817  best=37
+Epoch   38: trn=0.009302  val=0.009174  iou=0.6893  chg_mse=0.589541  best=37
+Epoch   39: trn=0.009217  val=0.009100  iou=0.6928  chg_mse=0.586569  best=39
+Epoch   40: trn=0.009213  val=0.009077  iou=0.6946  chg_mse=0.601114  best=40
+
+=== Test metrics ===
+  prob_mse: 0.009959
+  zero_mse: 0.027576
+  copy_mse: 0.014353
+  hard_iou: 0.666854
+  hard_dice: 0.774218
+  changed_mse: 0.613531
+  changed_copy_mse: 1.000000
+  changed_pixel_frac: 0.014353
+
+=== Training complete ===
+  Best val loss : 0.009077  (epoch 40)
+  Model card    : Baselines/NFD/runs/flow_smalldisp4_L20mm_pilot/model_card.yaml
+  Log dir       : Baselines/NFD/runs/flow_smalldisp4_L20mm_pilot

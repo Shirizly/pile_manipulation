@@ -1,0 +1,1 @@
+OMP_NUM_THREADS=4 python -u code/fit_switched_grouped_lam.py --latents artifacts/RUN-0002 --out artifacts/RUN-0004

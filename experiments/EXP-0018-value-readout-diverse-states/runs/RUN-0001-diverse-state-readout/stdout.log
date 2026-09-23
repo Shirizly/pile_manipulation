@@ -1,0 +1,57 @@
+fit states S=6000; corpora={np.str_('randlen'): np.int64(1959), np.str_('sean_inbetween'): np.int64(929), np.str_('sean_piled'): np.int64(1071), np.str_('sean_scattered'): np.int64(510), np.str_('slates_multistep'): np.int64(1531)}; groups=1405
+[1/51      4s] goal  /rep0             linear lyapunov               value_readout_r2=+0.6345 goal_only=+0.1475 state_only=+0.5425 incr=+0.4870 alpha=162.3776739188721
+[2/51      8s] goal  /rep0             linear mass_in_region         value_readout_r2=+0.4419 goal_only=+0.2599 state_only=+0.3451 incr=+0.1820 alpha=1128.8378916846884
+[3/51     12s] goal  /rep0             linear signed_mass_in_region  value_readout_r2=+0.6017 goal_only=+0.1733 state_only=+0.5342 incr=+0.4285 alpha=162.3776739188721
+/home/alon/anaconda3/envs/pme/lib/python3.10/site-packages/sklearn/neural_network/_multilayer_perceptron.py:781: ConvergenceWarning: Stochastic Optimizer: Maximum iterations (120) reached and the optimization hasn't converged yet.
+  warnings.warn(
+[4/51     57s] goal  /rep0             mlp    lyapunov               value_readout_r2=+0.7872 goal_only=+0.1363 state_only=+0.5079 incr=+0.6508 alpha=None
+[5/51     76s] goal  /rep0             mlp    mass_in_region         value_readout_r2=+0.6696 goal_only=+0.2379 state_only=+0.3229 incr=+0.4317 alpha=None
+[6/51     91s] goal  /rep0             mlp    signed_mass_in_region  value_readout_r2=+0.7761 goal_only=+0.1868 state_only=+0.5309 incr=+0.5893 alpha=None
+[7/51     95s] goal  /rep1             linear lyapunov               value_readout_r2=+0.6416 goal_only=+0.1335 state_only=+0.5486 incr=+0.5081 alpha=162.3776739188721
+[8/51     99s] goal  /rep1             linear mass_in_region         value_readout_r2=+0.4453 goal_only=+0.2336 state_only=+0.3565 incr=+0.2117 alpha=1128.8378916846884
+[9/51    103s] goal  /rep1             linear signed_mass_in_region  value_readout_r2=+0.6144 goal_only=+0.1663 state_only=+0.5535 incr=+0.4481 alpha=162.3776739188721
+[10/51    132s] goal  /rep1             mlp    lyapunov               value_readout_r2=+0.7463 goal_only=+0.0995 state_only=+0.5123 incr=+0.6469 alpha=None
+[11/51    152s] goal  /rep1             mlp    mass_in_region         value_readout_r2=+0.6690 goal_only=+0.2233 state_only=+0.3306 incr=+0.4456 alpha=None
+[12/51    169s] goal  /rep1             mlp    signed_mass_in_region  value_readout_r2=+0.7739 goal_only=+0.1871 state_only=+0.5375 incr=+0.5868 alpha=None
+[13/51    173s] goal  /rep2             linear lyapunov               value_readout_r2=+0.6720 goal_only=+0.1345 state_only=+0.5834 incr=+0.5376 alpha=428.13323987193957
+[14/51    177s] goal  /rep2             linear mass_in_region         value_readout_r2=+0.4544 goal_only=+0.2515 state_only=+0.3524 incr=+0.2028 alpha=1128.8378916846884
+[15/51    181s] goal  /rep2             linear signed_mass_in_region  value_readout_r2=+0.6386 goal_only=+0.1695 state_only=+0.5728 incr=+0.4691 alpha=428.13323987193957
+[16/51    224s] goal  /rep2             mlp    lyapunov               value_readout_r2=+0.7934 goal_only=+0.0847 state_only=+0.5319 incr=+0.7087 alpha=None
+[17/51    244s] goal  /rep2             mlp    mass_in_region         value_readout_r2=+0.6730 goal_only=+0.2316 state_only=+0.3441 incr=+0.4414 alpha=None
+[18/51    265s] goal  /rep2             mlp    signed_mass_in_region  value_readout_r2=+0.7874 goal_only=+0.1692 state_only=+0.5541 incr=+0.6182 alpha=None
+[19/51    269s] corpus/randlen          linear lyapunov               value_readout_r2=+0.8333 goal_only=+0.1276 state_only=+0.6962 incr=+0.7057 alpha=428.13323987193957
+[20/51    273s] corpus/randlen          linear mass_in_region         value_readout_r2=+0.0829 goal_only=-0.0176 state_only=+0.6364 incr=+0.1005 alpha=428.13323987193957
+[21/51    277s] corpus/randlen          linear signed_mass_in_region  value_readout_r2=-0.2488 goal_only=+0.0278 state_only=+0.5563 incr=-0.2766 alpha=428.13323987193957
+[22/51    308s] corpus/randlen          mlp    lyapunov               value_readout_r2=+0.7705 goal_only=-0.0217 state_only=+0.3486 incr=+0.7922 alpha=None
+[23/51    313s] corpus/sean_inbetween   linear lyapunov               value_readout_r2=+0.5449 goal_only=+0.2402 state_only=+0.3457 incr=+0.3047 alpha=1128.8378916846884
+[24/51    316s] corpus/sean_inbetween   linear mass_in_region         value_readout_r2=+0.4883 goal_only=+0.2199 state_only=+0.4090 incr=+0.2684 alpha=1128.8378916846884
+[25/51    321s] corpus/sean_inbetween   linear signed_mass_in_region  value_readout_r2=+0.5846 goal_only=+0.1745 state_only=+0.5203 incr=+0.4101 alpha=428.13323987193957
+[26/51    353s] corpus/sean_inbetween   mlp    lyapunov               value_readout_r2=+0.1918 goal_only=+0.0891 state_only=+0.1225 incr=+0.1026 alpha=None
+[27/51    357s] corpus/sean_piled       linear lyapunov               value_readout_r2=+0.3236 goal_only=+0.0997 state_only=+0.3081 incr=+0.2239 alpha=162.3776739188721
+[28/51    361s] corpus/sean_piled       linear mass_in_region         value_readout_r2=+0.4064 goal_only=+0.2307 state_only=+0.3279 incr=+0.1757 alpha=1128.8378916846884
+[29/51    365s] corpus/sean_piled       linear signed_mass_in_region  value_readout_r2=+0.2893 goal_only=+0.2792 state_only=+0.1956 incr=+0.0101 alpha=61.584821106602604
+[30/51    404s] corpus/sean_piled       mlp    lyapunov               value_readout_r2=+0.3798 goal_only=+0.1187 state_only=+0.3637 incr=+0.2612 alpha=None
+[31/51    408s] corpus/sean_scattered   linear lyapunov               value_readout_r2=+0.8243 goal_only=+0.1332 state_only=+0.6307 incr=+0.6910 alpha=1128.8378916846884
+[32/51    413s] corpus/sean_scattered   linear mass_in_region         value_readout_r2=+0.4149 goal_only=+0.4255 state_only=+0.2310 incr=-0.0106 alpha=2976.3514416313133
+[33/51    417s] corpus/sean_scattered   linear signed_mass_in_region  value_readout_r2=+0.8564 goal_only=+0.0996 state_only=+0.8164 incr=+0.7568 alpha=162.3776739188721
+[34/51    444s] corpus/sean_scattered   mlp    lyapunov               value_readout_r2=+0.6967 goal_only=+0.0482 state_only=+0.2709 incr=+0.6485 alpha=None
+[35/51    448s] corpus/slates_multistep linear lyapunov               value_readout_r2=+0.7384 goal_only=+0.0367 state_only=+0.6325 incr=+0.7017 alpha=1128.8378916846884
+[36/51    452s] corpus/slates_multistep linear mass_in_region         value_readout_r2=+0.0576 goal_only=-0.0117 state_only=+0.4890 incr=+0.0693 alpha=1128.8378916846884
+[37/51    456s] corpus/slates_multistep linear signed_mass_in_region  value_readout_r2=+0.7339 goal_only=-0.0102 state_only=+0.8604 incr=+0.7441 alpha=162.3776739188721
+[38/51    485s] corpus/slates_multistep mlp    lyapunov               value_readout_r2=+0.8246 goal_only=-0.0372 state_only=+0.7129 incr=+0.8618 alpha=None
+[39/51    490s] state /rep0             linear lyapunov               value_readout_r2=+0.6428 goal_only=+0.1322 state_only=+0.5491 incr=+0.5107 alpha=428.13323987193957
+[40/51    495s] state /rep0             linear mass_in_region         value_readout_r2=+0.4354 goal_only=+0.2505 state_only=+0.3356 incr=+0.1849 alpha=1128.8378916846884
+[41/51    500s] state /rep0             linear signed_mass_in_region  value_readout_r2=+0.6136 goal_only=+0.1638 state_only=+0.5479 incr=+0.4498 alpha=162.3776739188721
+[42/51    535s] state /rep0             mlp    lyapunov               value_readout_r2=+0.6529 goal_only=+0.1114 state_only=+0.4922 incr=+0.5416 alpha=None
+[43/51    551s] state /rep0             mlp    mass_in_region         value_readout_r2=+0.5752 goal_only=+0.2610 state_only=+0.3105 incr=+0.3142 alpha=None
+[44/51    567s] state /rep0             mlp    signed_mass_in_region  value_readout_r2=+0.7430 goal_only=+0.1819 state_only=+0.5388 incr=+0.5611 alpha=None
+[45/51    571s] state /rep1             linear lyapunov               value_readout_r2=+0.6408 goal_only=+0.1309 state_only=+0.5557 incr=+0.5099 alpha=1128.8378916846884
+[46/51    575s] state /rep1             linear mass_in_region         value_readout_r2=+0.4406 goal_only=+0.2448 state_only=+0.3526 incr=+0.1957 alpha=1128.8378916846884
+[47/51    579s] state /rep1             linear signed_mass_in_region  value_readout_r2=+0.6196 goal_only=+0.1615 state_only=+0.5616 incr=+0.4581 alpha=162.3776739188721
+/home/alon/anaconda3/envs/pme/lib/python3.10/site-packages/sklearn/neural_network/_multilayer_perceptron.py:781: ConvergenceWarning: Stochastic Optimizer: Maximum iterations (120) reached and the optimization hasn't converged yet.
+  warnings.warn(
+[48/51    619s] state /rep1             mlp    lyapunov               value_readout_r2=+0.7338 goal_only=+0.0960 state_only=+0.5164 incr=+0.6378 alpha=None
+[49/51    639s] state /rep1             mlp    mass_in_region         value_readout_r2=+0.5529 goal_only=+0.2435 state_only=+0.3278 incr=+0.3094 alpha=None
+[50/51    656s] state /rep1             mlp    signed_mass_in_region  value_readout_r2=+0.7482 goal_only=+0.1816 state_only=+0.5556 incr=+0.5665 alpha=None
+[51/51    735s] goal  /rep0             poly2  lyapunov               value_readout_r2=+0.6973 goal_only=+0.1286 state_only=+0.5124 incr=+0.5687 alpha=464.1588833612782
+DONE

@@ -1,0 +1,17 @@
+load_states: 252 files -> (214688, 100, 2) (N_pad=100, counts [20, 50, 100]) 0.6s
+train states: 214688 (both states and states_ of each transition) from 252 files; device cuda:0
+encoder 3593792 params, projector 527616, device cuda:0
+epoch -1 (at init): {"sigreg_of_z": 498.7499084472656, "perdim_std_mean": 0.045308955013751984, "perdim_std_min": 0.032722923904657364, "perdim_std_max": 0.07399767637252808, "mean_norm": 5.124663829803467, "centred_rms": 0.0458565391600132, "effective_rank": 44.59671342190899, "latent_dim": 256}
+ep  0 align 0.076352 sigreg 13.446 | z perdim_std mean 0.07452 min 0.0293 | eff_rank 10.2 | ||mean z|| 6.409 centred_rms 0.0767 | sigreg(z) 535.1 | 116s
+ep  1 align 0.067389 sigreg 5.0944 | z perdim_std mean 0.05726 min 0.0324 | eff_rank 13.9 | ||mean z|| 6.243 centred_rms 0.0585 | sigreg(z) 520.9 | 232s
+ep  2 align 0.039637 sigreg 3.3457 | z perdim_std mean 0.062 min 0.0323 | eff_rank 12.2 | ||mean z|| 6.101 centred_rms 0.0637 | sigreg(z) 524.3 | 348s
+ep  3 align 0.02469 sigreg 2.631 | z perdim_std mean 0.07712 min 0.036 | eff_rank 10.1 | ||mean z|| 6.032 centred_rms 0.0797 | sigreg(z) 531.7 | 464s
+ep  4 align 0.016508 sigreg 2.2572 | z perdim_std mean 0.1029 min 0.0431 | eff_rank 8.5 | ||mean z|| 5.658 centred_rms 0.1066 | sigreg(z) 522.8 | 580s
+ep  5 align 0.012852 sigreg 2.0018 | z perdim_std mean 0.1048 min 0.037 | eff_rank 8.1 | ||mean z|| 5.235 centred_rms 0.1090 | sigreg(z) 502 | 696s
+ep  6 align 0.010428 sigreg 1.8437 | z perdim_std mean 0.1281 min 0.0461 | eff_rank 7.9 | ||mean z|| 4.739 centred_rms 0.1328 | sigreg(z) 483.7 | 811s
+ep  7 align 0.0086867 sigreg 1.7291 | z perdim_std mean 0.1354 min 0.0472 | eff_rank 7.8 | ||mean z|| 4.309 centred_rms 0.1405 | sigreg(z) 481.1 | 927s
+ep  8 align 0.0074077 sigreg 1.6403 | z perdim_std mean 0.1624 min 0.0488 | eff_rank 7.5 | ||mean z|| 4.027 centred_rms 0.1685 | sigreg(z) 477.6 | 1044s
+ep  9 align 0.006324 sigreg 1.5763 | z perdim_std mean 0.1572 min 0.0495 | eff_rank 7.4 | ||mean z|| 4.052 centred_rms 0.1631 | sigreg(z) 474.8 | 1160s
+ep 10 align 0.0056366 sigreg 1.5299 | z perdim_std mean 0.1639 min 0.0594 | eff_rank 7.5 | ||mean z|| 3.951 centred_rms 0.1702 | sigreg(z) 480.6 | 1277s
+ep 11 align 0.0053127 sigreg 1.5131 | z perdim_std mean 0.162 min 0.0579 | eff_rank 7.5 | ||mean z|| 3.953 centred_rms 0.1681 | sigreg(z) 479.1 | 1393s
+done 1393s peak 5785 MiB

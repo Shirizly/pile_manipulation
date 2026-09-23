@@ -1,0 +1,11 @@
+OMP_NUM_THREADS=4 PYTHONPATH=. /home/alon/anaconda3/envs/pme/bin/python -u Baselines/common/eval_report.py \
+  --models nfd_randlen,nfd_warped_randlen \
+  --corpora L20mm,L40mm,randlen_test \
+  --out-prefix experiments/EXP-0022-warped-nfd-push-frame/artifacts/RUN-0009-randlen-eval/randlen_eval
+commit: a175b98138372ab54e36f84d933ec157efa230bb (dirty tree, pre-existing, unrelated to this run)
+
+Also run (same commit, same session):
+OMP_NUM_THREADS=4 PYTHONPATH=. /home/alon/anaconda3/envs/pme/bin/python -u \
+  experiments/EXP-0022-warped-nfd-push-frame/code/warp_accuracy_ceiling_multi.py
+OMP_NUM_THREADS=4 PYTHONPATH=. /home/alon/anaconda3/envs/pme/bin/python -u \
+  experiments/EXP-0022-warped-nfd-push-frame/code/ranking_robustness_check_n40.py

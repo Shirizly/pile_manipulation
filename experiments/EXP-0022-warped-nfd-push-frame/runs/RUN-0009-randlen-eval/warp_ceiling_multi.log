@@ -1,0 +1,12 @@
+
+=== L20mm: n=7680 grid=64x64 ===
+  canon_res=64  CEILING accuracy = 0.6640
+  round-trip |err| on occ1: max 0.8141 mean 0.00657
+
+=== L40mm: n=7680 grid=64x64 ===
+  canon_res=64  CEILING accuracy = 0.7804
+  round-trip |err| on occ1: max 0.7496 mean 0.00763
+
+=== randlen_test: n=10751 grid=64x64 ===
+  canon_res=64  CEILING accuracy = 0.6470
+  round-trip |err| on occ1: max 0.8750 mean 0.02025

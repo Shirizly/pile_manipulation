@@ -1,0 +1,39 @@
+Config: Baselines/NFD/configs/nfd_train_warped_L20mm_pilot.yaml
+Device: cuda
+Training on cuda, epochs 0→20, log_dir=Baselines/NFD/runs/nfd_warped_L20mm_pilot
+Train: 10496  Val: 512  Test: 512
+Epoch    1: trn=0.100001  val=0.042033  iou=0.5362  chg_mse=0.279565  best=1
+Epoch    2: trn=0.024194  val=0.013934  iou=0.7323  chg_mse=0.261196  best=2
+Epoch    3: trn=0.010713  val=0.008661  iou=0.7621  chg_mse=0.261624  best=3
+Epoch    4: trn=0.007988  val=0.007375  iou=0.7716  chg_mse=0.250057  best=4
+Epoch    5: trn=0.007121  val=0.006746  iou=0.7788  chg_mse=0.243238  best=5
+Epoch    6: trn=0.006600  val=0.006331  iou=0.7840  chg_mse=0.242110  best=6
+Epoch    7: trn=0.006267  val=0.006068  iou=0.7854  chg_mse=0.244458  best=7
+Epoch    8: trn=0.006060  val=0.005972  iou=0.7831  chg_mse=0.238166  best=8
+Epoch    9: trn=0.005920  val=0.005819  iou=0.7871  chg_mse=0.247417  best=9
+Epoch   10: trn=0.005825  val=0.005821  iou=0.7842  chg_mse=0.208383  best=9
+Epoch   11: trn=0.005755  val=0.005786  iou=0.7858  chg_mse=0.214356  best=11
+Epoch   12: trn=0.005700  val=0.005770  iou=0.7873  chg_mse=0.201750  best=12
+Epoch   13: trn=0.005661  val=0.005646  iou=0.7884  chg_mse=0.244933  best=13
+Epoch   14: trn=0.005630  val=0.005613  iou=0.7903  chg_mse=0.231818  best=14
+Epoch   15: trn=0.005608  val=0.005633  iou=0.7909  chg_mse=0.230257  best=14
+Epoch   16: trn=0.005581  val=0.005614  iou=0.7901  chg_mse=0.221442  best=14
+Epoch   17: trn=0.005553  val=0.005628  iou=0.7878  chg_mse=0.224841  best=14
+Epoch   18: trn=0.005532  val=0.005567  iou=0.7914  chg_mse=0.218856  best=18
+Epoch   19: trn=0.005508  val=0.005761  iou=0.7830  chg_mse=0.195965  best=18
+Epoch   20: trn=0.005491  val=0.005565  iou=0.7889  chg_mse=0.223188  best=20
+
+=== Test metrics ===
+  prob_mse: 0.005812
+  zero_mse: 0.027773
+  copy_mse: 0.014259
+  hard_iou: 0.778427
+  hard_dice: 0.867004
+  changed_mse: 0.215465
+  changed_copy_mse: 1.000000
+  changed_pixel_frac: 0.014259
+
+=== Training complete ===
+  Best val loss : 0.005565  (epoch 20)
+  Model card    : Baselines/NFD/runs/nfd_warped_L20mm_pilot/model_card.yaml
+  Log dir       : Baselines/NFD/runs/nfd_warped_L20mm_pilot

@@ -1,0 +1,46 @@
+i=0 k=0 flip=False  max_abs_diff=0.000000
+i=0 k=0 flip=True  max_abs_diff=0.000004
+i=0 k=1 flip=False  max_abs_diff=0.000004
+i=0 k=1 flip=True  max_abs_diff=0.000004
+i=0 k=2 flip=False  max_abs_diff=0.000004
+i=0 k=2 flip=True  max_abs_diff=0.000002
+i=0 k=3 flip=False  max_abs_diff=0.000002
+i=0 k=3 flip=True  max_abs_diff=0.000000
+i=1 k=0 flip=False  max_abs_diff=0.000000
+i=1 k=0 flip=True  max_abs_diff=0.000002
+i=1 k=1 flip=False  max_abs_diff=0.000002
+i=1 k=1 flip=True  max_abs_diff=0.000004
+i=1 k=2 flip=False  max_abs_diff=0.000004
+i=1 k=2 flip=True  max_abs_diff=0.000002
+i=1 k=3 flip=False  max_abs_diff=0.000002
+i=1 k=3 flip=True  max_abs_diff=0.000000
+i=2 k=0 flip=False  max_abs_diff=0.000000
+i=2 k=0 flip=True  max_abs_diff=0.000002
+i=2 k=1 flip=False  max_abs_diff=0.000002
+i=2 k=1 flip=True  max_abs_diff=0.000004
+i=2 k=2 flip=False  max_abs_diff=0.000004
+i=2 k=2 flip=True  max_abs_diff=0.000002
+i=2 k=3 flip=False  max_abs_diff=0.000002
+i=2 k=3 flip=True  max_abs_diff=0.000000
+i=100 k=0 flip=False  max_abs_diff=0.000000
+i=100 k=0 flip=True  max_abs_diff=0.000002
+i=100 k=1 flip=False  max_abs_diff=0.000002
+i=100 k=1 flip=True  max_abs_diff=0.000004
+i=100 k=2 flip=False  max_abs_diff=0.000004
+i=100 k=2 flip=True  max_abs_diff=0.000002
+i=100 k=3 flip=False  max_abs_diff=0.000002
+i=100 k=3 flip=True  max_abs_diff=0.000000
+i=500 k=0 flip=False  max_abs_diff=0.000000
+i=500 k=0 flip=True  max_abs_diff=0.000002
+i=500 k=1 flip=False  max_abs_diff=0.000002
+i=500 k=1 flip=True  max_abs_diff=0.000004
+i=500 k=2 flip=False  max_abs_diff=0.000004
+i=500 k=2 flip=True  max_abs_diff=0.000004
+i=500 k=3 flip=False  max_abs_diff=0.000004
+i=500 k=3 flip=True  max_abs_diff=0.000000
+
+WORST max_abs_diff across all checked (sample, k, flip): 3.814697265625e-06
+PASS
+
+--- negative control: vectors carried WITHOUT rotating components ---
+worst max_abs_diff with the bug (should be LARGE): 1.0

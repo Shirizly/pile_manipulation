@@ -1,0 +1,6 @@
+loaded 10751 rows in 81.7s
+canon_res=64: full-image RMS(occ0_roundtrip - occ0) mean=0.07316 median=0.06859  swept-region RMS mean=0.08781 median=0.08662
+canon_res=96: full-image RMS(occ0_roundtrip - occ0) mean=0.05275 median=0.04868  swept-region RMS mean=0.06306 median=0.06164
+
+fidelity gain 64->96 (full image):  27.9% RMS reduction
+fidelity gain 64->96 (swept region): 28.2% RMS reduction

@@ -1,0 +1,1 @@
+OMP_NUM_THREADS=4 python -u code/train_encoder.py --epochs 12 --steps-per-epoch 250 --bs 192 --lambda-sigreg 0.02 --sean-files 60 --out artifacts/RUN-0001

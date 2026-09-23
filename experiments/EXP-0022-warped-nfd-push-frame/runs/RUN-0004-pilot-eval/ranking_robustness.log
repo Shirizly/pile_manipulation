@@ -1,0 +1,6 @@
+slate 33: n_pool=128  spearman=0.9905 (p=1.72e-110)  top1_agree=True  (raw_idx=29, rt_idx=29)
+slate 31: n_pool=128  spearman=0.9956 (p=1.17e-131)  top1_agree=False  (raw_idx=25, rt_idx=28)
+slate 41: n_pool=128  spearman=0.9891 (p=8.79e-107)  top1_agree=True  (raw_idx=5, rt_idx=5)
+
+mean spearman: 0.9917626406731749
+top1 agreement rate: 0.6666666666666666

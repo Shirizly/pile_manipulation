@@ -1,0 +1,139 @@
+Config: Baselines/NFD/configs/nfd_train_residual_warped_flipaug_randlen.yaml
+Device: cuda
+Training on cuda, epochs 0→120, log_dir=Baselines/NFD/runs/nfd_residual_warped_flipaug_randlen
+Train: 89081  Val: 4608  Test: 4607
+Epoch    1: trn=0.008064  val=0.006880  iou=0.8730  chg_mse=0.281306  best=1
+Epoch    2: trn=0.006586  val=0.006651  iou=0.8760  chg_mse=0.264478  best=2
+Epoch    3: trn=0.006435  val=0.006552  iou=0.8768  chg_mse=0.265087  best=3
+Epoch    4: trn=0.006349  val=0.006546  iou=0.8768  chg_mse=0.264696  best=4
+Epoch    5: trn=0.006291  val=0.006443  iou=0.8792  chg_mse=0.249143  best=5
+Epoch    6: trn=0.006234  val=0.006370  iou=0.8801  chg_mse=0.242961  best=6
+Epoch    7: trn=0.006182  val=0.006351  iou=0.8794  chg_mse=0.253635  best=7
+Epoch    8: trn=0.006136  val=0.006372  iou=0.8798  chg_mse=0.237048  best=7
+Epoch    9: trn=0.006097  val=0.006287  iou=0.8812  chg_mse=0.241870  best=9
+Epoch   10: trn=0.006063  val=0.006259  iou=0.8815  chg_mse=0.243183  best=10
+Epoch   11: trn=0.006029  val=0.006231  iou=0.8813  chg_mse=0.243063  best=11
+Epoch   12: trn=0.005998  val=0.006176  iou=0.8825  chg_mse=0.234987  best=12
+Epoch   13: trn=0.005962  val=0.006133  iou=0.8827  chg_mse=0.240157  best=13
+Epoch   14: trn=0.005923  val=0.006090  iou=0.8838  chg_mse=0.236880  best=14
+Epoch   15: trn=0.005881  val=0.006024  iou=0.8861  chg_mse=0.224413  best=15
+Epoch   16: trn=0.005842  val=0.006073  iou=0.8845  chg_mse=0.224384  best=15
+Epoch   17: trn=0.005811  val=0.005966  iou=0.8868  chg_mse=0.217643  best=17
+Epoch   18: trn=0.005788  val=0.006055  iou=0.8850  chg_mse=0.219186  best=17
+Epoch   19: trn=0.005769  val=0.005943  iou=0.8867  chg_mse=0.221794  best=19
+Epoch   20: trn=0.005752  val=0.005929  iou=0.8871  chg_mse=0.222736  best=20
+Epoch   21: trn=0.005735  val=0.005928  iou=0.8870  chg_mse=0.220882  best=21
+Epoch   22: trn=0.005719  val=0.005897  iou=0.8878  chg_mse=0.222188  best=22
+Epoch   23: trn=0.005704  val=0.005885  iou=0.8878  chg_mse=0.222629  best=23
+Epoch   24: trn=0.005689  val=0.005867  iou=0.8882  chg_mse=0.219739  best=24
+Epoch   25: trn=0.005672  val=0.005874  iou=0.8883  chg_mse=0.222183  best=24
+Epoch   26: trn=0.005655  val=0.005900  iou=0.8873  chg_mse=0.213131  best=24
+Epoch   27: trn=0.005639  val=0.005845  iou=0.8885  chg_mse=0.217987  best=27
+Epoch   28: trn=0.005627  val=0.005938  iou=0.8867  chg_mse=0.226160  best=27
+Epoch   29: trn=0.005613  val=0.005818  iou=0.8894  chg_mse=0.214648  best=29
+Epoch   30: trn=0.005596  val=0.005781  iou=0.8895  chg_mse=0.219929  best=30
+Epoch   31: trn=0.005574  val=0.005793  iou=0.8891  chg_mse=0.225295  best=30
+Epoch   32: trn=0.005564  val=0.005763  iou=0.8899  chg_mse=0.214045  best=32
+Epoch   33: trn=0.005553  val=0.005777  iou=0.8899  chg_mse=0.211464  best=32
+Epoch   34: trn=0.005547  val=0.005834  iou=0.8890  chg_mse=0.222324  best=32
+Epoch   35: trn=0.005540  val=0.005753  iou=0.8901  chg_mse=0.213728  best=35
+Epoch   36: trn=0.005533  val=0.005760  iou=0.8904  chg_mse=0.211642  best=35
+Epoch   37: trn=0.005526  val=0.005745  iou=0.8901  chg_mse=0.222490  best=37
+Epoch   38: trn=0.005520  val=0.005749  iou=0.8905  chg_mse=0.211061  best=37
+Epoch   39: trn=0.005514  val=0.005797  iou=0.8894  chg_mse=0.220166  best=37
+Epoch   40: trn=0.005510  val=0.005727  iou=0.8907  chg_mse=0.211906  best=40
+Epoch   41: trn=0.005504  val=0.005772  iou=0.8897  chg_mse=0.217040  best=40
+Epoch   42: trn=0.005499  val=0.005732  iou=0.8911  chg_mse=0.210911  best=40
+Epoch   43: trn=0.005492  val=0.005709  iou=0.8910  chg_mse=0.216396  best=43
+Epoch   44: trn=0.005489  val=0.005752  iou=0.8910  chg_mse=0.207143  best=43
+Epoch   45: trn=0.005484  val=0.005711  iou=0.8915  chg_mse=0.208187  best=43
+Epoch   46: trn=0.005481  val=0.005770  iou=0.8902  chg_mse=0.219539  best=43
+Epoch   47: trn=0.005475  val=0.005767  iou=0.8899  chg_mse=0.216378  best=43
+Epoch   48: trn=0.005472  val=0.005706  iou=0.8910  chg_mse=0.214541  best=48
+Epoch   49: trn=0.005468  val=0.005730  iou=0.8910  chg_mse=0.215884  best=48
+Epoch   50: trn=0.005464  val=0.005712  iou=0.8917  chg_mse=0.203144  best=48
+Epoch   51: trn=0.005461  val=0.005717  iou=0.8909  chg_mse=0.218937  best=48
+Epoch   52: trn=0.005458  val=0.005726  iou=0.8914  chg_mse=0.210063  best=48
+Epoch   53: trn=0.005454  val=0.005702  iou=0.8917  chg_mse=0.206395  best=53
+Epoch   54: trn=0.005453  val=0.005705  iou=0.8915  chg_mse=0.210248  best=53
+Epoch   55: trn=0.005448  val=0.005686  iou=0.8917  chg_mse=0.211039  best=55
+Epoch   56: trn=0.005445  val=0.005705  iou=0.8910  chg_mse=0.217267  best=55
+Epoch   57: trn=0.005442  val=0.005674  iou=0.8918  chg_mse=0.211252  best=57
+Epoch   58: trn=0.005438  val=0.005685  iou=0.8921  chg_mse=0.209168  best=57
+Epoch   59: trn=0.005435  val=0.005692  iou=0.8918  chg_mse=0.206157  best=57
+Epoch   60: trn=0.005433  val=0.005671  iou=0.8919  chg_mse=0.209296  best=60
+Epoch   61: trn=0.005421  val=0.005670  iou=0.8918  chg_mse=0.210288  best=61
+Epoch   62: trn=0.005419  val=0.005665  iou=0.8922  chg_mse=0.209645  best=62
+Epoch   63: trn=0.005416  val=0.005667  iou=0.8923  chg_mse=0.207350  best=62
+Epoch   64: trn=0.005413  val=0.005679  iou=0.8918  chg_mse=0.211256  best=62
+Epoch   65: trn=0.005411  val=0.005679  iou=0.8919  chg_mse=0.207847  best=62
+Epoch   66: trn=0.005410  val=0.005692  iou=0.8916  chg_mse=0.216362  best=62
+Epoch   67: trn=0.005407  val=0.005693  iou=0.8915  chg_mse=0.212493  best=62
+Epoch   68: trn=0.005407  val=0.005671  iou=0.8919  chg_mse=0.211760  best=62
+Epoch   69: trn=0.005403  val=0.005660  iou=0.8922  chg_mse=0.211013  best=69
+Epoch   70: trn=0.005402  val=0.005690  iou=0.8915  chg_mse=0.215114  best=69
+Epoch   71: trn=0.005400  val=0.005677  iou=0.8918  chg_mse=0.209462  best=69
+Epoch   72: trn=0.005398  val=0.005654  iou=0.8923  chg_mse=0.209666  best=72
+Epoch   73: trn=0.005397  val=0.005668  iou=0.8922  chg_mse=0.210257  best=72
+Epoch   74: trn=0.005397  val=0.005681  iou=0.8921  chg_mse=0.206696  best=72
+Epoch   75: trn=0.005393  val=0.005678  iou=0.8922  chg_mse=0.202681  best=72
+Epoch   76: trn=0.005394  val=0.005676  iou=0.8923  chg_mse=0.203797  best=72
+Epoch   77: trn=0.005390  val=0.005666  iou=0.8923  chg_mse=0.202558  best=72
+Epoch   78: trn=0.005389  val=0.005681  iou=0.8923  chg_mse=0.204460  best=72
+Epoch   79: trn=0.005388  val=0.005662  iou=0.8924  chg_mse=0.211096  best=72
+Epoch   80: trn=0.005386  val=0.005666  iou=0.8926  chg_mse=0.206546  best=72
+Epoch   81: trn=0.005385  val=0.005676  iou=0.8926  chg_mse=0.201359  best=72
+Epoch   82: trn=0.005384  val=0.005650  iou=0.8926  chg_mse=0.208789  best=82
+Epoch   83: trn=0.005381  val=0.005664  iou=0.8926  chg_mse=0.204316  best=82
+Epoch   84: trn=0.005379  val=0.005669  iou=0.8920  chg_mse=0.219815  best=82
+Epoch   85: trn=0.005379  val=0.005665  iou=0.8922  chg_mse=0.207798  best=82
+Epoch   86: trn=0.005377  val=0.005652  iou=0.8924  chg_mse=0.210629  best=82
+Epoch   87: trn=0.005376  val=0.005667  iou=0.8922  chg_mse=0.209983  best=82
+Epoch   88: trn=0.005374  val=0.005639  iou=0.8927  chg_mse=0.207816  best=88
+Epoch   89: trn=0.005374  val=0.005679  iou=0.8922  chg_mse=0.202175  best=88
+Epoch   90: trn=0.005372  val=0.005661  iou=0.8924  chg_mse=0.209499  best=88
+Epoch   91: trn=0.005363  val=0.005652  iou=0.8928  chg_mse=0.203783  best=88
+Epoch   92: trn=0.005361  val=0.005656  iou=0.8926  chg_mse=0.206754  best=88
+Epoch   93: trn=0.005361  val=0.005638  iou=0.8928  chg_mse=0.205295  best=93
+Epoch   94: trn=0.005360  val=0.005667  iou=0.8924  chg_mse=0.208977  best=93
+Epoch   95: trn=0.005359  val=0.005648  iou=0.8925  chg_mse=0.211966  best=93
+Epoch   96: trn=0.005359  val=0.005636  iou=0.8929  chg_mse=0.208152  best=96
+Epoch   97: trn=0.005356  val=0.005653  iou=0.8926  chg_mse=0.210989  best=96
+Epoch   98: trn=0.005355  val=0.005648  iou=0.8928  chg_mse=0.207967  best=96
+Epoch   99: trn=0.005356  val=0.005656  iou=0.8927  chg_mse=0.204470  best=96
+Epoch  100: trn=0.005354  val=0.005658  iou=0.8926  chg_mse=0.210935  best=96
+Epoch  101: trn=0.005352  val=0.005646  iou=0.8925  chg_mse=0.211083  best=96
+Epoch  102: trn=0.005353  val=0.005659  iou=0.8924  chg_mse=0.206916  best=96
+Epoch  103: trn=0.005353  val=0.005649  iou=0.8923  chg_mse=0.209626  best=96
+Epoch  104: trn=0.005352  val=0.005659  iou=0.8924  chg_mse=0.207044  best=96
+Epoch  105: trn=0.005349  val=0.005649  iou=0.8928  chg_mse=0.207347  best=96
+Epoch  106: trn=0.005350  val=0.005648  iou=0.8928  chg_mse=0.209281  best=96
+Epoch  107: trn=0.005349  val=0.005652  iou=0.8930  chg_mse=0.204709  best=96
+Epoch  108: trn=0.005348  val=0.005646  iou=0.8928  chg_mse=0.205426  best=96
+Epoch  109: trn=0.005347  val=0.005704  iou=0.8917  chg_mse=0.211941  best=96
+Epoch  110: trn=0.005347  val=0.005647  iou=0.8927  chg_mse=0.209856  best=96
+Epoch  111: trn=0.005346  val=0.005649  iou=0.8927  chg_mse=0.208780  best=96
+Epoch  112: trn=0.005344  val=0.005634  iou=0.8929  chg_mse=0.210483  best=112
+Epoch  113: trn=0.005343  val=0.005656  iou=0.8923  chg_mse=0.210793  best=112
+Epoch  114: trn=0.005343  val=0.005641  iou=0.8928  chg_mse=0.208587  best=112
+Epoch  115: trn=0.005342  val=0.005661  iou=0.8924  chg_mse=0.210438  best=112
+Epoch  116: trn=0.005341  val=0.005685  iou=0.8917  chg_mse=0.216479  best=112
+Epoch  117: trn=0.005341  val=0.005645  iou=0.8926  chg_mse=0.209813  best=112
+Epoch  118: trn=0.005340  val=0.005639  iou=0.8929  chg_mse=0.206969  best=112
+Epoch  119: trn=0.005339  val=0.005644  iou=0.8929  chg_mse=0.209549  best=112
+Epoch  120: trn=0.005337  val=0.005651  iou=0.8930  chg_mse=0.200871  best=112
+
+=== Test metrics ===
+  prob_mse: 0.005507
+  zero_mse: 0.070880
+  copy_mse: 0.017508
+  hard_iou: 0.896270
+  hard_dice: 0.943469
+  changed_mse: 0.205559
+  changed_copy_mse: 1.000000
+  changed_pixel_frac: 0.017508
+
+=== Training complete ===
+  Best val loss : 0.005634  (epoch 112)
+  Model card    : Baselines/NFD/runs/nfd_residual_warped_flipaug_randlen/model_card.yaml
+  Log dir       : Baselines/NFD/runs/nfd_residual_warped_flipaug_randlen

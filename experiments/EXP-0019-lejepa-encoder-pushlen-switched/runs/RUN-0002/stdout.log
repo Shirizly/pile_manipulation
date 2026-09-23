@@ -1,0 +1,5 @@
+encoder cfg {'input_resolution': 64, 'latent_dim': 256, 'n_res_blocks': 2, 'channels': [32, 64, 128, 256]} from experiments/EXP-0019-lejepa-encoder-pushlen-switched/artifacts/RUN-0001/encoder_lejepa.pt (epoch 11), device cuda:0
+load_transitions: 192 files -> 98304 rows
+train: 98304 rows, push length 0.03-80.00 mm, 75.0s
+load_transitions: 21 files -> 10752 rows
+test: 10752 rows, push length 0.01-80.00 mm, 8.2s

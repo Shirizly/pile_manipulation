@@ -1,0 +1,107 @@
+# EXP-0022 -- WARPED + RESIDUAL + FLIP-ONLY AUGMENTATION, on overnight_randlen.
+#
+# This is the combination the record actually implies and which had never been
+# run: it stacks the two things that individually helped.
+#   * flip-only augmentation (RUN-0010) removed the warped arm's control
+#     deficit -- the x8 group collapses to 2 distinct canonical inputs for a
+#     push-frame model, so RUN-0005 saw 4x fewer distinct transitions per step;
+#   * the explicit tanh-residual parameterisation (RUN-0016) produced the
+#     largest single gain in the whole record at L20mm pilot scale, lifting the
+#     warped arm's accuracy 0.360 -> 0.401 and taking the top slateN spot on 2
+#     of 3 value functions.
+# Neither was measured together, and the residual result was only ever seen on
+# a SINGLE-PUSH-LENGTH corpus. This arm tests both at randlen scale.
+#
+# Compared against: the world-frame baseline (Baselines/NFD/runs/nfd_3ch_randlen,
+# EXP-0001), RUN-0005 (warped, x8 aug, direct) and RUN-0010 (warped, flip aug,
+# direct). Same corpus, split, recipe and gradient-step count as all of them.
+#
+# The residual is a PARAMETERISATION change, not an objective change: the loss
+# is still world-frame MSE against the same absolute occ1 target, computed on
+# clamp(occ0 + delta, 0, 1). `residual: false` on the UNet is REQUIRED so its
+# own occ0-into-logit skip does not double-count with the explicit residual.
+
+model:
+  type: nfd-unet-warped-residual
+  in_channels: 3
+  out_channels: 1
+  features: [4, 8, 16]
+  kernel_size: 3
+  final_kernel_size: 1
+  activation: relu
+  residual: false   # REQUIRED false -- see residual_nfd_lib.py module docstring
+  bottleneck_type: "None"
+  bottleneck_kwargs: {}
+  uses_physics: false
+  plate_mode: canonical
+  wall_channel: false
+  resolution_scale: 0.5
+  scale: 1.0
+
+dataset:
+  type: nfd-genesis-3ch-warped
+  paths:
+    - overnight_randlen_train/mixed_n20
+    - overnight_randlen_train/piled_n20
+    - overnight_randlen_train/piled_n50
+    - overnight_randlen_train/scattered_n20
+    - overnight_randlen_train/scattered_n50
+  val_pct: 5
+  test_pct: 5
+  resolution_scale: 0.5
+  include_physics: false
+  # Guard against literal zero-length pushes only (divide-by-zero in
+  # canonicalisation); the corpus's real short tail (measured min ~0.47mm,
+  # early-contact cutoffs) is intentionally part of this training distribution
+  # and is NOT filtered -- unlike the L20L40 configs' 0.0198m guard, which
+  # exists there to reject a DIFFERENT cell's nominal length, not to shape
+  # this one's.
+  min_push_length_m: 0.0001
+  transforms:
+    - type: ensure_representation
+      representation: eulerian
+    - type: eulerian_aliases
+
+training:
+  # 30 epochs, copied UNCHANGED from nfd_train_3ch_randlen.yaml so this arm
+  # takes the same number of gradient steps as the baseline it is compared
+  # against. That baseline's own derivation: 1 epoch measured at 207s on an
+  # idle GPU (89,081 train transitions, batch=32, ~2784 steps/epoch), and 30
+  # epochs gives ~83,500 updates, close to the in-distribution run's
+  # 100 x ~684 = 68,400 -- matched by total updates, not by epoch count.
+  # A WARPED arm is slower per epoch than that baseline (the warp adds two
+  # grid_sample passes, and a canon_res=96 arm also enlarges the UNet input),
+  # so expect a longer wall-clock for the SAME number of updates. The epoch
+  # count is deliberately NOT reduced to compensate: matching the baseline's
+  # update count is what keeps the comparison honest.
+  epochs: 120
+  batch_size: 32
+  lr: 0.0001
+  lr_scheduler:
+    type: StepLR
+    step_size: 30
+    gamma: 0.75
+  augmentation: flip
+  patience: 100
+  mixed_precision: true
+  grad_clip_norm: 1.0
+  save_every_n_epochs: 10
+  num_workers: 4
+  loss:
+    type: eulerian_combined
+    mse: 1.0
+    mass: 0.0
+    dice: 0.0
+    bce: 0.0
+    sharpness: 0.0
+    tv: 0.0
+    add: 0.0
+    remove: 0.0
+
+output:
+  log_dir: Baselines/NFD/runs/nfd_residual_warped_flipaug_randlen
+
+# NOTE (post-run refactor, pure code move, no behaviour/retrain change): the
+# Baselines/NFD/warped_nfd_lib.py / residual_nfd_lib.py module paths named in
+# the comments above moved to model/warped_nfd/lib.py / model/residual_nfd/lib.py
+# after this run -- registered type names are unchanged. See docs/CODEMAP.md.

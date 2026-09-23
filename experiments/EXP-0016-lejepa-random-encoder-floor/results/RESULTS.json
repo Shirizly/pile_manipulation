@@ -1,0 +1,207 @@
+{
+ "slateN_corner_DS0001": {
+  "persistence": {
+   "per_dynseed_mean": [
+    -0.0042,
+    -0.0042,
+    -0.0042
+   ],
+   "per_dynseed_sem": [
+    0.0892,
+    0.0892,
+    0.0892
+   ],
+   "mean_over_dynseeds": -0.0042,
+   "sd_over_dynseeds": 0.0
+  },
+  "random": {
+   "per_dynseed_mean": [
+    -0.1409,
+    -0.1409,
+    -0.1409
+   ],
+   "per_dynseed_sem": [
+    0.1007,
+    0.1007,
+    0.1007
+   ],
+   "mean_over_dynseeds": -0.1409,
+   "sd_over_dynseeds": 0.0
+  },
+  "decode-z0 (no dynamics)": {
+   "per_dynseed_mean": [
+    -0.0042,
+    -0.0042,
+    -0.0042
+   ],
+   "per_dynseed_sem": [
+    0.0892,
+    0.0892,
+    0.0892
+   ],
+   "mean_over_dynseeds": -0.0042,
+   "sd_over_dynseeds": 0.0
+  },
+  "random-enc K=1": {
+   "per_dynseed_mean": [
+    0.4114,
+    0.4133,
+    0.4325
+   ],
+   "per_dynseed_sem": [
+    0.0744,
+    0.08,
+    0.0649
+   ],
+   "mean_over_dynseeds": 0.4191,
+   "sd_over_dynseeds": 0.0117
+  },
+  "random-enc K=4": {
+   "per_dynseed_mean": [
+    0.4353,
+    0.4559,
+    0.344
+   ],
+   "per_dynseed_sem": [
+    0.0517,
+    0.0597,
+    0.0706
+   ],
+   "mean_over_dynseeds": 0.4117,
+   "sd_over_dynseeds": 0.0596
+  },
+  "random-enc K=8": {
+   "per_dynseed_mean": [
+    0.3052,
+    0.4178,
+    0.4063
+   ],
+   "per_dynseed_sem": [
+    0.065,
+    0.068,
+    0.0906
+   ],
+   "mean_over_dynseeds": 0.3765,
+   "sd_over_dynseeds": 0.062
+  }
+ },
+ "latent_r2_vs_dz0": {
+  "K=1": {
+   "r2_test_mean": 0.2483,
+   "r2_test_sd": 0.0004,
+   "r2_test_perdim_mean": 0.2358,
+   "r2_train_mean": 0.279,
+   "gate_entropy_nats": 0.0,
+   "gate_frac_confident_gt0.9": 1.0,
+   "wall_s_mean": 19.7,
+   "peak_mib": 248,
+   "n_params": 113633
+  },
+  "K=4": {
+   "r2_test_mean": 0.3683,
+   "r2_test_sd": 0.0024,
+   "r2_test_perdim_mean": 0.3508,
+   "r2_train_mean": 0.4588,
+   "gate_entropy_nats": 1.028,
+   "gate_frac_confident_gt0.9": 0.095,
+   "wall_s_mean": 22.2,
+   "peak_mib": 259,
+   "n_params": 335972
+  },
+  "K=8": {
+   "r2_test_mean": 0.3726,
+   "r2_test_sd": 0.0012,
+   "r2_test_perdim_mean": 0.3544,
+   "r2_train_mean": 0.4863,
+   "gate_entropy_nats": 1.71,
+   "gate_frac_confident_gt0.9": 0.0,
+   "wall_s_mean": 22.4,
+   "peak_mib": 278,
+   "n_params": 632424
+  }
+ },
+ "latent_stats": {
+  "n_train": 98304,
+  "n_test": 10752,
+  "z_perdim_std_mean": 0.05313294008374214,
+  "z_perdim_std_min": 0.038898006081581116,
+  "z_perdim_std_max": 0.09509655088186264,
+  "z_global_mean_norm": 5.516534805297852,
+  "z_centred_rms": 0.053985051810741425,
+  "dz_perdim_std_mean": 0.03854846954345703,
+  "dz_rms_over_z_centred_rms": 0.7384464144706726,
+  "effective_rank": 52.55615166985514,
+  "latent_dim": 256,
+  "singular_values_top20": [
+   44.54946517944336,
+   23.189559936523438,
+   21.667531967163086,
+   20.63601303100586,
+   19.272645950317383,
+   18.461498260498047,
+   17.23630714416504,
+   16.916223526000977,
+   16.364990234375,
+   15.195452690124512,
+   14.987439155578613,
+   14.905508041381836,
+   13.905012130737305,
+   13.237039566040039,
+   12.960289001464844,
+   12.536673545837402,
+   12.227075576782227,
+   11.775818824768066,
+   11.647544860839844,
+   11.45348072052002
+  ],
+  "singular_values_bottom5": [
+   0.07655365020036697,
+   0.050159089267253876,
+   0.026217404752969742,
+   0.01607498899102211,
+   0.0033713916782289743
+  ]
+ },
+ "decoder": {
+  "decoder_wall_s": 256.28926968574524,
+  "decoder_peak_mib": 1616.001953125,
+  "n_train": 24576,
+  "n_test": 6144,
+  "recon_mse": 0.03307287395000458,
+  "recon_accuracy_vs_zero": -0.1112586259841919,
+  "cells": [
+   {
+    "cell": "K=1",
+    "K": 1,
+    "dyn_seed": 0,
+    "accuracy_full": -1.0014076232910156,
+    "accuracy_swept": 0.13712722063064575,
+    "oracle_decode_accuracy_full": -0.990929126739502,
+    "oracle_decode_accuracy_swept": 0.17405271530151367
+   },
+   {
+    "cell": "K=8",
+    "K": 8,
+    "dyn_seed": 0,
+    "accuracy_full": -0.9876505136489868,
+    "accuracy_swept": 0.19081878662109375,
+    "oracle_decode_accuracy_full": -0.990929126739502,
+    "oracle_decode_accuracy_swept": 0.17405271530151367
+   }
+  ],
+  "persistence_through_decoder_full": -1.009803295135498
+ },
+ "dv_true": {
+  "mean": 0.0006574391736648977,
+  "sd": 0.025694793090224266,
+  "frac_zero": 0.03099999949336052,
+  "frac_improving": 0.5099999904632568
+ },
+ "reference_EXP0014": {
+  "MODEL-0001": 0.7399,
+  "MODEL-0003": 0.5163,
+  "MODEL-0002": -0.0904,
+  "random": -0.1409,
+  "persistence": -0.0042
+ }
+}

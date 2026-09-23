@@ -1,0 +1,10 @@
+OMP_NUM_THREADS=4 CUDA_VISIBLE_DEVICES="" PYTHONPATH=. /home/alon/anaconda3/envs/pme/bin/python -u experiments/EXP-0022-warped-nfd-push-frame/code/wall_proximity_stratified_eval.py --corpora randlen_test --n-bins 5 --frame canonical --out-prefix experiments/EXP-0022-warped-nfd-push-frame/artifacts/RUN-0013-length-stratified-canonical/wall_proximity_canonical
+
+# second, model-free check (action-encoding degeneracy vs push length):
+PYTHONPATH=. /home/alon/anaconda3/envs/pme/bin/python -u experiments/EXP-0022-warped-nfd-push-frame/code/action_encoding_degeneracy.py
+
+# both models run on CPU only; RUN-0010 (GPU training) was left untouched throughout.
+# raw output: artifacts/RUN-0013-length-stratified-canonical/wall_proximity_canonical.json,
+#             artifacts/RUN-0013-length-stratified-canonical/encoding_degeneracy.pt
+# logs: runs/RUN-0013-length-stratified-canonical/canonical.log, encoding_degeneracy.log
+# analysis: results/length_stratified.md

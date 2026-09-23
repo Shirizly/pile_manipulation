@@ -1,0 +1,524 @@
+{
+  "note": "control-metric (slateN) eval; descriptor-space models (switched_linear, mlp) scored via point-mass (COM+mass) readout, image accuracy undefined for them.",
+  "goal_shapes": [
+    "ring_O",
+    "T",
+    "random_quadrant"
+  ],
+  "value_fns": [
+    "lyapunov",
+    "mass_in_region",
+    "signed_mass_in_region"
+  ],
+  "switched_linear_checkpoint": "weights/MODEL-0002-descriptor-only-D-all-local/checkpoint.pt",
+  "mlp_checkpoint": "experiments/temp/desc-mlp/mlp_checkpoint.pt",
+  "datasets": {
+    "slates_binned_n20_scatter": {
+      "n_slates": 20,
+      "n_rows": 20000,
+      "goals": {
+        "ring_O": {
+          "lyapunov": {
+            "frac_dv_true_zero": 0.0,
+            "cells": {
+              "persistence": {
+                "slateN_mean": -0.051405840676267425,
+                "slateN_sem": 0.08065940782267722,
+                "n_slates_scored": 20
+              },
+              "random": {
+                "slateN_mean": -0.021889649053012217,
+                "slateN_sem": 0.11217609611678586,
+                "n_slates_scored": 20
+              },
+              "switched_linear": {
+                "slateN_mean": -0.061893850318626396,
+                "slateN_sem": 0.08623165491544593,
+                "n_slates_scored": 20
+              },
+              "mlp": {
+                "slateN_mean": -0.10090672711054804,
+                "slateN_sem": 0.07495850373699037,
+                "n_slates_scored": 20
+              }
+            },
+            "head_to_head": {
+              "mlp_vs_persistence": {
+                "wins": 7,
+                "losses": 11,
+                "ties": 2,
+                "paired_sem_goodness_diff": 0.0035853194270649745,
+                "mean_goodness_diff": -0.0017927207052707672
+              },
+              "mlp_vs_random": {
+                "wins": 8,
+                "losses": 12,
+                "ties": 0,
+                "paired_sem_goodness_diff": 0.005473421692697861,
+                "mean_goodness_diff": -0.002845175564289093
+              },
+              "mlp_vs_switched_linear": {
+                "wins": 9,
+                "losses": 5,
+                "ties": 6,
+                "paired_sem_goodness_diff": 0.002589033881845247,
+                "mean_goodness_diff": -0.0017912037670612334
+              },
+              "switched_linear_vs_persistence": {
+                "wins": 7,
+                "losses": 12,
+                "ties": 1,
+                "paired_sem_goodness_diff": 0.0039689330225717015,
+                "mean_goodness_diff": -1.5169382095336914e-06
+              }
+            }
+          },
+          "mass_in_region": {
+            "frac_dv_true_zero": 0.0,
+            "cells": {
+              "persistence": {
+                "slateN_mean": -0.010682017752421603,
+                "slateN_sem": 0.06321794561674406,
+                "n_slates_scored": 20
+              },
+              "random": {
+                "slateN_mean": 0.06907267666824447,
+                "slateN_sem": 0.07134794268032792,
+                "n_slates_scored": 20
+              },
+              "switched_linear": {
+                "slateN_mean": -0.005933786749116499,
+                "slateN_sem": 0.05246355688076027,
+                "n_slates_scored": 20
+              },
+              "mlp": {
+                "slateN_mean": -0.08710299334745798,
+                "slateN_sem": 0.037942788202648715,
+                "n_slates_scored": 20
+              }
+            },
+            "head_to_head": {
+              "mlp_vs_persistence": {
+                "wins": 8,
+                "losses": 10,
+                "ties": 2,
+                "paired_sem_goodness_diff": 1.1156187803895623,
+                "mean_goodness_diff": -1.45
+              },
+              "mlp_vs_random": {
+                "wins": 6,
+                "losses": 11,
+                "ties": 3,
+                "paired_sem_goodness_diff": 1.3776410043411544,
+                "mean_goodness_diff": -2.8
+              },
+              "mlp_vs_switched_linear": {
+                "wins": 6,
+                "losses": 10,
+                "ties": 4,
+                "paired_sem_goodness_diff": 0.9483364936894276,
+                "mean_goodness_diff": -1.25
+              },
+              "switched_linear_vs_persistence": {
+                "wins": 9,
+                "losses": 11,
+                "ties": 0,
+                "paired_sem_goodness_diff": 1.352580379944396,
+                "mean_goodness_diff": -0.2
+              }
+            }
+          },
+          "signed_mass_in_region": {
+            "frac_dv_true_zero": 0.0,
+            "cells": {
+              "persistence": {
+                "slateN_mean": -0.0014970895515138971,
+                "slateN_sem": 0.0671494034456126,
+                "n_slates_scored": 20
+              },
+              "random": {
+                "slateN_mean": 0.08529694439187867,
+                "slateN_sem": 0.06870634213819084,
+                "n_slates_scored": 20
+              },
+              "switched_linear": {
+                "slateN_mean": 0.02215396071919335,
+                "slateN_sem": 0.060338848161616665,
+                "n_slates_scored": 20
+              },
+              "mlp": {
+                "slateN_mean": -0.0814758536999147,
+                "slateN_sem": 0.04151483413662215,
+                "n_slates_scored": 20
+              }
+            },
+            "head_to_head": {
+              "mlp_vs_persistence": {
+                "wins": 9,
+                "losses": 10,
+                "ties": 1,
+                "paired_sem_goodness_diff": 2.3390000112508718,
+                "mean_goodness_diff": -3.05
+              },
+              "mlp_vs_random": {
+                "wins": 7,
+                "losses": 11,
+                "ties": 2,
+                "paired_sem_goodness_diff": 2.787637180952998,
+                "mean_goodness_diff": -5.95
+              },
+              "mlp_vs_switched_linear": {
+                "wins": 8,
+                "losses": 11,
+                "ties": 1,
+                "paired_sem_goodness_diff": 2.2694771018429494,
+                "mean_goodness_diff": -3.2
+              },
+              "switched_linear_vs_persistence": {
+                "wins": 9,
+                "losses": 11,
+                "ties": 0,
+                "paired_sem_goodness_diff": 3.026440500862879,
+                "mean_goodness_diff": 0.15
+              }
+            }
+          }
+        },
+        "T": {
+          "lyapunov": {
+            "frac_dv_true_zero": 0.0,
+            "cells": {
+              "persistence": {
+                "slateN_mean": 0.06070928801528147,
+                "slateN_sem": 0.10395946244942929,
+                "n_slates_scored": 20
+              },
+              "random": {
+                "slateN_mean": 0.054115497518840816,
+                "slateN_sem": 0.0736734116068804,
+                "n_slates_scored": 20
+              },
+              "switched_linear": {
+                "slateN_mean": -0.10799546895982207,
+                "slateN_sem": 0.10089841370391582,
+                "n_slates_scored": 20
+              },
+              "mlp": {
+                "slateN_mean": -0.07716096288997282,
+                "slateN_sem": 0.08408325222669497,
+                "n_slates_scored": 20
+              }
+            },
+            "head_to_head": {
+              "mlp_vs_persistence": {
+                "wins": 9,
+                "losses": 9,
+                "ties": 2,
+                "paired_sem_goodness_diff": 0.008048889301980843,
+                "mean_goodness_diff": -0.003209623694419861
+              },
+              "mlp_vs_random": {
+                "wins": 8,
+                "losses": 12,
+                "ties": 0,
+                "paired_sem_goodness_diff": 0.005575547682659164,
+                "mean_goodness_diff": -0.006866716593503952
+              },
+              "mlp_vs_switched_linear": {
+                "wins": 8,
+                "losses": 3,
+                "ties": 9,
+                "paired_sem_goodness_diff": 0.005030830197070069,
+                "mean_goodness_diff": 0.003791016340255737
+              },
+              "switched_linear_vs_persistence": {
+                "wins": 6,
+                "losses": 10,
+                "ties": 4,
+                "paired_sem_goodness_diff": 0.0075308130457020905,
+                "mean_goodness_diff": -0.007000640034675598
+              }
+            }
+          },
+          "mass_in_region": {
+            "frac_dv_true_zero": 0.0,
+            "cells": {
+              "persistence": {
+                "slateN_mean": 0.08818430844351013,
+                "slateN_sem": 0.07157678809448727,
+                "n_slates_scored": 20
+              },
+              "random": {
+                "slateN_mean": -0.000600931153604048,
+                "slateN_sem": 0.05325085035487429,
+                "n_slates_scored": 20
+              },
+              "switched_linear": {
+                "slateN_mean": -0.013996741594445167,
+                "slateN_sem": 0.06078118091243382,
+                "n_slates_scored": 20
+              },
+              "mlp": {
+                "slateN_mean": -0.1350684592213825,
+                "slateN_sem": 0.04871988314172882,
+                "n_slates_scored": 20
+              }
+            },
+            "head_to_head": {
+              "mlp_vs_persistence": {
+                "wins": 4,
+                "losses": 13,
+                "ties": 3,
+                "paired_sem_goodness_diff": 1.549363196861689,
+                "mean_goodness_diff": -3.3
+              },
+              "mlp_vs_random": {
+                "wins": 5,
+                "losses": 10,
+                "ties": 5,
+                "paired_sem_goodness_diff": 1.5612073600430634,
+                "mean_goodness_diff": -2.7
+              },
+              "mlp_vs_switched_linear": {
+                "wins": 5,
+                "losses": 11,
+                "ties": 4,
+                "paired_sem_goodness_diff": 0.9814060804462351,
+                "mean_goodness_diff": -2.0
+              },
+              "switched_linear_vs_persistence": {
+                "wins": 7,
+                "losses": 11,
+                "ties": 2,
+                "paired_sem_goodness_diff": 1.668753080028697,
+                "mean_goodness_diff": -1.3
+              }
+            }
+          },
+          "signed_mass_in_region": {
+            "frac_dv_true_zero": 0.0,
+            "cells": {
+              "persistence": {
+                "slateN_mean": 0.09976526917957491,
+                "slateN_sem": 0.06920598406810513,
+                "n_slates_scored": 20
+              },
+              "random": {
+                "slateN_mean": 0.01957509745111851,
+                "slateN_sem": 0.056975571478947745,
+                "n_slates_scored": 20
+              },
+              "switched_linear": {
+                "slateN_mean": -0.032083770444389724,
+                "slateN_sem": 0.06449451805412207,
+                "n_slates_scored": 20
+              },
+              "mlp": {
+                "slateN_mean": -0.16876115293979527,
+                "slateN_sem": 0.04749406968302257,
+                "n_slates_scored": 20
+              }
+            },
+            "head_to_head": {
+              "mlp_vs_persistence": {
+                "wins": 5,
+                "losses": 14,
+                "ties": 1,
+                "paired_sem_goodness_diff": 2.975337221046947,
+                "mean_goodness_diff": -8.0
+              },
+              "mlp_vs_random": {
+                "wins": 5,
+                "losses": 13,
+                "ties": 2,
+                "paired_sem_goodness_diff": 3.0426788750773723,
+                "mean_goodness_diff": -7.0
+              },
+              "mlp_vs_switched_linear": {
+                "wins": 5,
+                "losses": 14,
+                "ties": 1,
+                "paired_sem_goodness_diff": 1.782185234628072,
+                "mean_goodness_diff": -4.55
+              },
+              "switched_linear_vs_persistence": {
+                "wins": 8,
+                "losses": 12,
+                "ties": 0,
+                "paired_sem_goodness_diff": 3.360353208252151,
+                "mean_goodness_diff": -3.45
+              }
+            }
+          }
+        },
+        "random_quadrant": {
+          "lyapunov": {
+            "frac_dv_true_zero": 0.0,
+            "cells": {
+              "persistence": {
+                "slateN_mean": -0.03324279988705513,
+                "slateN_sem": 0.10299895193554046,
+                "n_slates_scored": 20
+              },
+              "random": {
+                "slateN_mean": -0.05178814905321549,
+                "slateN_sem": 0.11408247721461859,
+                "n_slates_scored": 20
+              },
+              "switched_linear": {
+                "slateN_mean": -0.09908902942261517,
+                "slateN_sem": 0.08491805079955282,
+                "n_slates_scored": 20
+              },
+              "mlp": {
+                "slateN_mean": 0.020061982208585006,
+                "slateN_sem": 0.09837417197778561,
+                "n_slates_scored": 20
+              }
+            },
+            "head_to_head": {
+              "mlp_vs_persistence": {
+                "wins": 6,
+                "losses": 7,
+                "ties": 7,
+                "paired_sem_goodness_diff": 0.0044850925518987485,
+                "mean_goodness_diff": 0.003894347697496414
+              },
+              "mlp_vs_random": {
+                "wins": 8,
+                "losses": 12,
+                "ties": 0,
+                "paired_sem_goodness_diff": 0.006502980994117917,
+                "mean_goodness_diff": 0.002625879645347595
+              },
+              "mlp_vs_switched_linear": {
+                "wins": 5,
+                "losses": 3,
+                "ties": 12,
+                "paired_sem_goodness_diff": 0.0069554171967804055,
+                "mean_goodness_diff": 0.005339828878641128
+              },
+              "switched_linear_vs_persistence": {
+                "wins": 5,
+                "losses": 9,
+                "ties": 6,
+                "paired_sem_goodness_diff": 0.009036387932917528,
+                "mean_goodness_diff": -0.0014454811811447144
+              }
+            }
+          },
+          "mass_in_region": {
+            "frac_dv_true_zero": 0.0,
+            "cells": {
+              "persistence": {
+                "slateN_mean": -0.04737206589562194,
+                "slateN_sem": 0.08999045676788413,
+                "n_slates_scored": 20
+              },
+              "random": {
+                "slateN_mean": -0.06443976979478948,
+                "slateN_sem": 0.0829159083080192,
+                "n_slates_scored": 20
+              },
+              "switched_linear": {
+                "slateN_mean": -0.08651617405767818,
+                "slateN_sem": 0.08647134444455766,
+                "n_slates_scored": 20
+              },
+              "mlp": {
+                "slateN_mean": 0.11233936052878132,
+                "slateN_sem": 0.10342485577735154,
+                "n_slates_scored": 20
+              }
+            },
+            "head_to_head": {
+              "mlp_vs_persistence": {
+                "wins": 12,
+                "losses": 8,
+                "ties": 0,
+                "paired_sem_goodness_diff": 2.952674969190515,
+                "mean_goodness_diff": 3.95
+              },
+              "mlp_vs_random": {
+                "wins": 9,
+                "losses": 9,
+                "ties": 2,
+                "paired_sem_goodness_diff": 2.8823418841008612,
+                "mean_goodness_diff": 4.5
+              },
+              "mlp_vs_switched_linear": {
+                "wins": 10,
+                "losses": 6,
+                "ties": 4,
+                "paired_sem_goodness_diff": 2.86916455839638,
+                "mean_goodness_diff": 4.7
+              },
+              "switched_linear_vs_persistence": {
+                "wins": 10,
+                "losses": 9,
+                "ties": 1,
+                "paired_sem_goodness_diff": 2.4081823239246565,
+                "mean_goodness_diff": -0.75
+              }
+            }
+          },
+          "signed_mass_in_region": {
+            "frac_dv_true_zero": 0.0,
+            "cells": {
+              "persistence": {
+                "slateN_mean": -0.044537160350922984,
+                "slateN_sem": 0.09751391255590545,
+                "n_slates_scored": 20
+              },
+              "random": {
+                "slateN_mean": -0.04920053398760109,
+                "slateN_sem": 0.0802203665359298,
+                "n_slates_scored": 20
+              },
+              "switched_linear": {
+                "slateN_mean": -0.08057588392296626,
+                "slateN_sem": 0.08245383224138624,
+                "n_slates_scored": 20
+              },
+              "mlp": {
+                "slateN_mean": 0.1385438605535279,
+                "slateN_sem": 0.10665173303211546,
+                "n_slates_scored": 20
+              }
+            },
+            "head_to_head": {
+              "mlp_vs_persistence": {
+                "wins": 11,
+                "losses": 8,
+                "ties": 1,
+                "paired_sem_goodness_diff": 6.133128333721277,
+                "mean_goodness_diff": 8.1
+              },
+              "mlp_vs_random": {
+                "wins": 11,
+                "losses": 9,
+                "ties": 0,
+                "paired_sem_goodness_diff": 5.654062349552892,
+                "mean_goodness_diff": 9.0
+              },
+              "mlp_vs_switched_linear": {
+                "wins": 11,
+                "losses": 7,
+                "ties": 2,
+                "paired_sem_goodness_diff": 5.731032790178857,
+                "mean_goodness_diff": 9.5
+              },
+              "switched_linear_vs_persistence": {
+                "wins": 11,
+                "losses": 9,
+                "ties": 0,
+                "paired_sem_goodness_diff": 5.046311837163329,
+                "mean_goodness_diff": -1.4
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,43 @@
+loading baseline predictor: Baselines/NFD/runs/nfd_3ch_randlen/unet_best.pth
+loading warped predictor:   Baselines/NFD/runs/nfd_warped_randlen/unet_best.pth
+  baseline model params on device: cpu
+  warped model params on device: cpu
+
+=== corpus: randlen_test ===
+  loaded 10751 transitions, grid 64x64, 81.2s
+  baseline predict: 7.8s, devices seen: {'cpu'}
+  warped   predict: 12.5s, devices seen: {'cpu'}
+  wall-distance mm: min 6.5 p10 14.1 p50 31.3 p90 51.6 max 63.8
+  push-length  mm: min 0.1 p10 16.7 p50 38.8 p90 64.2 max 80.0
+  Pearson corr(wall_distance_mm, push_length_mm) = 0.104
+
+  --- stratified by WALL DISTANCE (mm), 5 quantile bins ---
+
+  bin   n         wall_dist_mm      base_acc  warp_acc   delta       boot_sem  95%CI
+    0  2151   [    6.5,   21.5] mean=   13.7     0.4954    0.4390   -0.0563    0.0027  [-0.0617,-0.0511]
+    1  2243   [   21.5,   27.0] mean=   25.1     0.4711    0.4334   -0.0377    0.0023  [-0.0422,-0.0333]
+    2  2057   [   27.0,   36.4] mean=   31.5     0.4931    0.4611   -0.0321    0.0020  [-0.0360,-0.0281]
+    3  2150   [   36.4,   45.9] mean=   41.1     0.5045    0.4608   -0.0437    0.0020  [-0.0477,-0.0398]
+    4  2150   [   45.9,   63.8] mean=   52.3     0.5150    0.4661   -0.0489    0.0020  [-0.0530,-0.0450]
+
+  --- stratified by PUSH LENGTH (mm), 5 quantile bins (confound check) ---
+
+  bin   n          push_len_mm      base_acc  warp_acc   delta       boot_sem  95%CI
+    0  2151   [    0.1,   23.5] mean=   14.8     0.4491    0.3412   -0.1081    0.0049  [-0.1177,-0.0988]
+    1  2150   [   23.5,   33.3] mean=   28.3     0.4927    0.4369   -0.0559    0.0024  [-0.0604,-0.0514]
+    2  2150   [   33.3,   44.3] mean=   38.8     0.5044    0.4661   -0.0383    0.0020  [-0.0421,-0.0345]
+    3  2150   [   44.3,   56.9] mean=   50.4     0.5102    0.4803   -0.0300    0.0016  [-0.0331,-0.0269]
+    4  2150   [   56.9,   80.0] mean=   65.0     0.5032    0.4866   -0.0167    0.0014  [-0.0194,-0.0140]
+
+  --- WITHIN push-length band 2 (n=2150, range [33.3,44.3] mm), re-stratified by wall distance ---
+
+  bin   n         wall_dist_mm      base_acc  warp_acc   delta       boot_sem  95%CI
+    0   430   [    6.5,   23.0] mean=   15.1     0.5109    0.4652   -0.0458    0.0044  [-0.0546,-0.0371]
+    1   430   [   23.0,   29.2] mean=   26.2     0.4824    0.4571   -0.0254    0.0040  [-0.0332,-0.0176]
+    2   430   [   29.2,   39.8] mean=   34.2     0.4944    0.4620   -0.0325    0.0044  [-0.0409,-0.0239]
+    3   430   [   39.9,   49.7] mean=   44.9     0.5188    0.4793   -0.0395    0.0044  [-0.0486,-0.0312]
+    4   430   [   49.7,   63.7] mean=   55.0     0.5149    0.4667   -0.0482    0.0045  [-0.0568,-0.0394]
+
+  overall: baseline_acc=0.4960 warped_acc=0.4523 delta=-0.0437 boot_sem=0.0010 95%CI=[-0.0456,-0.0417]
+
+wrote raw output -> experiments/EXP-0022-warped-nfd-push-frame/artifacts/RUN-0013-length-stratified-canonical/wall_proximity_canonical.json

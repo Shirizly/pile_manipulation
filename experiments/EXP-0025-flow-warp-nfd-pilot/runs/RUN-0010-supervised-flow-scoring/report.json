@@ -1,0 +1,118 @@
+{
+  "L20mm": {
+    "persistence": {
+      "accuracy": 0.0,
+      "capture": {
+        "n_slates": 20,
+        "per_goal": {
+          "random_quadrant": {
+            "lyapunov": 0.12060664324244805,
+            "mass_in_region": 0.01200527690785207,
+            "signed_mass": 0.029035414186757653
+          },
+          "ring_O": {
+            "lyapunov": -0.021986233697668056,
+            "mass_in_region": -0.036632267567277665,
+            "signed_mass": -0.003121864275840733
+          },
+          "T": {
+            "lyapunov": 0.10102130679896615,
+            "mass_in_region": -0.02873234065789884,
+            "signed_mass": 0.0030919693748479417
+          }
+        },
+        "averaged_over_goals": {
+          "lyapunov": 0.06654723878124871,
+          "mass_in_region": -0.01778644377244148,
+          "signed_mass": 0.009668506428588287
+        }
+      }
+    },
+    "random": {
+      "accuracy": null,
+      "capture": {
+        "n_slates": null,
+        "per_goal": {
+          "random_quadrant": {
+            "lyapunov": -0.02952061718711933,
+            "mass_in_region": -0.0006444904516151873,
+            "signed_mass": -0.04258546718416979
+          },
+          "ring_O": {
+            "lyapunov": -0.014082666354519383,
+            "mass_in_region": 0.0016760446658142917,
+            "signed_mass": 0.0050117171034735645
+          },
+          "T": {
+            "lyapunov": 0.019823121340514196,
+            "mass_in_region": -0.017101675157873985,
+            "signed_mass": 0.0025400372766513535
+          }
+        },
+        "averaged_over_goals": {
+          "lyapunov": -0.007926720733708172,
+          "mass_in_region": -0.005356706981224961,
+          "signed_mass": -0.011677904268014959
+        }
+      }
+    },
+    "flow_supervised": {
+      "accuracy": -0.06712102890014648,
+      "capture": {
+        "n_slates": 20,
+        "per_goal": {
+          "random_quadrant": {
+            "lyapunov": 0.5465700222262558,
+            "mass_in_region": 0.1610968619424581,
+            "signed_mass": 0.4595569915836862
+          },
+          "ring_O": {
+            "lyapunov": 0.38070854199771703,
+            "mass_in_region": 0.03427354654900369,
+            "signed_mass": -0.07030323704613026
+          },
+          "T": {
+            "lyapunov": 0.12827900737833928,
+            "mass_in_region": -0.14867911845065815,
+            "signed_mass": 0.16597615864163232
+          }
+        },
+        "averaged_over_goals": {
+          "lyapunov": 0.35185252386743743,
+          "mass_in_region": 0.015563763346934545,
+          "signed_mass": 0.18507663772639607
+        }
+      },
+      "device": "cpu"
+    },
+    "flow_supervised_masked": {
+      "accuracy": -0.0004062652587890625,
+      "capture": {
+        "n_slates": 20,
+        "per_goal": {
+          "random_quadrant": {
+            "lyapunov": 0.010027341708140892,
+            "mass_in_region": -0.10244701644122747,
+            "signed_mass": -0.005240834091570229
+          },
+          "ring_O": {
+            "lyapunov": 0.17879429654996398,
+            "mass_in_region": -0.02053453131143864,
+            "signed_mass": -0.09862212356271063
+          },
+          "T": {
+            "lyapunov": -0.24377236014644463,
+            "mass_in_region": -0.1406966574157859,
+            "signed_mass": -0.13432646941129897
+          }
+        },
+        "averaged_over_goals": {
+          "lyapunov": -0.01831690729611325,
+          "mass_in_region": -0.08789273505615068,
+          "signed_mass": -0.0793964756885266
+        }
+      },
+      "device": "cpu"
+    }
+  }
+}
