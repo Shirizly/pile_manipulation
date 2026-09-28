@@ -22,6 +22,7 @@ class with the same API and register it in ``make_adapter``.
 from __future__ import annotations
 
 import numpy as np
+import math
 import torch
 
 from utils import depth2fgpcd, fps_np
@@ -775,6 +776,26 @@ def occ_from_particles(states: "torch.Tensor", device=None) -> "torch.Tensor":
                                    footprint_radius=OCC_FOOTPRINT_RADIUS)
 
 
+def occ_for_scoring(states: "torch.Tensor", device=None) -> "torch.Tensor":
+    """(B, n_particles, >=3) world-metre particle states -> (B, 64, 64) SCORING
+    density on the same grid and axis convention as `occ_from_particles`
+    (dim 0 = world x, `particles_to_occupancy`'s (x-lo)/(hi-lo)*(res-1)
+    pixel-centre mapping), but drawn with the mass-conserving
+    `transforms.functional.splat_particles_mass` instead of the hard
+    footprint, scaled so one particle carries the hard footprint's mean
+    pixel mass. Use it for TRUE outcomes (ground truth read from particle
+    states); `occ_from_particles` stays the model-input representation.
+    See experiments/METRICS.md, "Ground-truth scoring" (EXP-0027)."""
+    from transforms.functional import splat_particles_mass
+    pts = states[..., :3].float()
+    if device is not None:
+        pts = pts.to(device)
+    lo = torch.tensor([OCC_BOUNDS["x_min"], OCC_BOUNDS["y_min"]], device=pts.device)
+    hi = torch.tensor([OCC_BOUNDS["x_max"], OCC_BOUNDS["y_max"]], device=pts.device)
+    uv = (pts[..., :2] - lo) / (hi - lo) * (OCC_GRID - 1)
+    return splat_particles_mass(uv, (OCC_GRID, OCC_GRID), mass=math.pi * OCC_FOOTPRINT_RADIUS ** 2)
+
+
 class OccupancyGradientAdapter:
     """Base class: everything except `predict_step`.
 
@@ -788,6 +809,11 @@ class OccupancyGradientAdapter:
         self.goal_shape = goal_shape
         self.dw = lyapunov_weights((OCC_GRID, OCC_GRID), goal_shape, self.device)
         self.raw = SlateRawStub()
+        # The value function this adapter scores with, and its sense. A
+        # subclass that swaps `value` for a mass function must change BOTH;
+        # `assert_dv_convention` checks the pair against goal geometry.
+        self.value_fn = "lyapunov"
+        self.higher_is_better = False
 
     # ── state ────────────────────────────────────────────────────────────────
     def state_from_particles(self, states):
@@ -897,11 +923,11 @@ class SwitchedLinearGradientAdapter(OccupancyGradientAdapter):
 
 # ── registry: adding a model is ONE entry here ───────────────────────────────
 
-def _nfd(ckpt, channels=3):
+def _nfd(ckpt, channels=3, features=None):
     def f(device, goal_shape):
         from Baselines.NFD.predictor import NFDPredictor
         return PredictorGradientAdapter(
-            "x", NFDPredictor(ckpt, channels=channels), device, goal_shape)
+            "x", NFDPredictor(ckpt, channels=channels, features=features), device, goal_shape)
     return f
 
 
@@ -924,6 +950,25 @@ def _nfd_residual_warped(ckpt, plate_mode="canonical", wall_channel=False,
     return f
 
 
+def _nfd_residual_unwarped(ckpt):
+    def f(device, goal_shape):
+        from model.residual_nfd.predictor import ResidualNFDPredictor
+        return PredictorGradientAdapter("x", ResidualNFDPredictor(ckpt), device, goal_shape)
+    return f
+
+
+def _retrieval_nfd_ref(ckpt, zero_ref=False):
+    """EXP-0059 section 8: NFD with a retrieved reference (`model/
+    retrieval_nfd/predictor.py::RetrievalRefPredictor`). `zero_ref=True` is
+    the "test-time zeroed reference" control (iii): same checkpoint, donor
+    channels forced to 0 at inference."""
+    def f(device, goal_shape):
+        from model.retrieval_nfd.predictor import RetrievalRefPredictor
+        return PredictorGradientAdapter(
+            "x", RetrievalRefPredictor(ckpt, zero_ref=zero_ref), device, goal_shape)
+    return f
+
+
 def _switched(ckpt_path, res=32, gate="soft"):
     def f(device, goal_shape):
         ck = torch.load(ckpt_path, map_location="cpu", weights_only=False)
@@ -940,10 +985,72 @@ OCC_ADAPTERS = {
     "nfd_warped_randlen":         _nfd_warped("Baselines/NFD/runs/nfd_warped_randlen/unet_best.pth"),
     "nfd_residual_warped":        _nfd_residual_warped(
         "Baselines/NFD/runs/nfd_residual_warped_L20mm_pilot_2/unet_best.pth"),
+    # randlen-trained NFD variants (same checkpoints as eval_report.MODELS), added
+    # 2026-09-24 for the DS-0005 state-superiority analysis (TODO G3a)
+    "nfd_warped_randlen_flipaug": _nfd_warped("Baselines/NFD/runs/nfd_warped_randlen_flipaug/unet_best.pth"),
+    "nfd_warped_randlen_flipaug_epoch30": _nfd_warped(
+        "Baselines/NFD/runs/nfd_warped_randlen_flipaug/unet_epoch_30.pth"),
+    "nfd_residual_warped_flipaug_randlen": _nfd_residual_warped(
+        "Baselines/NFD/runs/nfd_residual_warped_flipaug_randlen/unet_best.pth"),
+    "nfd_residual_worldframe_noaug_ep43": _nfd_residual_unwarped(
+        "Baselines/NFD/runs/nfd_residual_unwarped_noaug_randlen/unet_best.pth"),
     "linear_switched_soft":       _switched("weights/MODEL-0001-stage2-visual-switched/checkpoint.pt"),
     "linear_switched_hard":       _switched("weights/MODEL-0001-stage2-visual-switched/checkpoint.pt",
                                             gate="hard"),
 }
+
+
+# EXP-0036 training seeds of the world-frame NFD baseline: registered only once
+# their checkpoint exists, so the registry (and its tests) never point at a file
+# that has not been trained yet.
+import os as _os
+for _k in (1, 2, 3):
+    _ck = f"Baselines/NFD/runs/nfd_3ch_randlen_seed{_k}/unet_best.pth"
+    if _os.path.exists(_ck):
+        OCC_ADAPTERS[f"nfd_3ch_randlen_seed{_k}"] = _nfd(_ck)
+
+# Overnight 2026-09-25 narrow-domain models (n20 single layer, 20 mm perpendicular; EXP-0053),
+# registered once trained.
+for _name, _feat in (("nfd_3ch_narrow_l20", None), ("nfd_3ch_narrow_l20_wide", [16, 32, 64])):
+    _ck = f"Baselines/NFD/runs/{_name}/unet_best.pth"
+    if _os.path.exists(_ck):
+        OCC_ADAPTERS[_name] = _nfd(_ck, features=_feat)
+for _res in (32, 64):
+    _ck = f"Baselines/LinearForesight/runs/operator_narrow_l20_res{_res}.pt"
+    if _os.path.exists(_ck):
+        OCC_ADAPTERS[f"linear_narrow_l20_res{_res}"] = _switched(_ck, res=_res)
+
+# EXP-0059 clean-data re-collection (2026-09-28): v2 (ISS-010-fix sampler, train_v2/DS-0015)
+# narrow-domain models, same recipe as the v1 (nfd_3ch_narrow_l20 / linear_narrow_l20_res{32,64})
+# entries above, trained on the clean corpus for a fair v1-vs-v2 / retrieval comparison.
+if _os.path.exists("Baselines/NFD/runs/nfd_3ch_narrow_l20_v2/unet_best.pth"):
+    OCC_ADAPTERS["nfd_3ch_narrow_l20_v2"] = _nfd("Baselines/NFD/runs/nfd_3ch_narrow_l20_v2/unet_best.pth")
+for _ep in (10, 20, 30, 40, 50, 60):
+    _ck = f"Baselines/NFD/runs/nfd_3ch_narrow_l20_v2/unet_epoch_{_ep}.pth"
+    if _os.path.exists(_ck):
+        OCC_ADAPTERS[f"nfd_3ch_narrow_l20_v2_epoch{_ep}"] = _nfd(_ck)
+for _res in (32, 64):
+    _ck = f"Baselines/LinearForesight/runs/operator_narrow_l20_v2_res{_res}.pt"
+    if _os.path.exists(_ck):
+        OCC_ADAPTERS[f"linear_narrow_l20_v2_res{_res}"] = _switched(_ck, res=_res)
+
+# EXP-0059 section 8: NFD with a retrieved reference + controls, registered
+# once each is trained.
+_RETRIEVAL_NFD_CK = "model/retrieval_nfd/runs/retrieval_nfd_ref/unet_best.pth"
+_RETRIEVAL_NFD_RANDOM_CK = "model/retrieval_nfd/runs/retrieval_nfd_random_donor/unet_best.pth"
+_RETRIEVAL_NFD_NOREF_CK = "model/retrieval_nfd/runs/retrieval_nfd_noref/unet_best.pth"
+if _os.path.exists(_RETRIEVAL_NFD_CK):
+    OCC_ADAPTERS["retrieval_nfd_ref"] = _retrieval_nfd_ref(_RETRIEVAL_NFD_CK)
+    OCC_ADAPTERS["retrieval_nfd_ref_zeroed"] = _retrieval_nfd_ref(_RETRIEVAL_NFD_CK, zero_ref=True)
+if _os.path.exists(_RETRIEVAL_NFD_RANDOM_CK):
+    OCC_ADAPTERS["retrieval_nfd_random_donor"] = _retrieval_nfd_ref(_RETRIEVAL_NFD_RANDOM_CK)
+if _os.path.exists(_RETRIEVAL_NFD_NOREF_CK):
+    # no-reference twin (coordinator 07:34): donor channels always zero in
+    # TRAINING (dataset dropout_p=1.0) AND eval (zero_ref=True here too) --
+    # the fair "ref vs no-reference at all" control the earlier random-donor
+    # comparison could not isolate (random-donor's noisy-but-present channels
+    # may simply hurt, which is not the same claim as "reference helps").
+    OCC_ADAPTERS["retrieval_nfd_noref"] = _retrieval_nfd_ref(_RETRIEVAL_NFD_NOREF_CK, zero_ref=True)
 
 
 def make_occ_adapter(model_id: str, device: str = "cuda", goal_shape: str = "corner"):
@@ -963,21 +1070,27 @@ def make_occ_adapter(model_id: str, device: str = "cuda", goal_shape: str = "cor
 
 def assert_dv_convention(adapter, tol: float = 1e-9) -> None:
     """Assert, in code, that `adapter.dv` is `value(after) - value(before)`
-    and therefore a COST **for a LYAPUNOV-style value function**.  Uses a
-    synthetic pair of occupancies whose values are known to be ordered, so a
-    flipped sign fails loudly here instead of inverting every conclusion
-    downstream.
+    AND that the adapter's declared `higher_is_better` agrees with what its
+    value function actually does, so a flipped sign fails loudly here instead
+    of inverting every conclusion downstream.
 
-    SCOPE, do not over-read this: the check builds its test from the distance
-    field `adapter.dw` and asserts "closer to the goal has the LOWER value".
-    That holds for `lyapunov` and is FALSE for `mass_in_region` /
-    `signed_mass_in_region`, which are VALUE functions where an improving push
-    RAISES the value and so gives a POSITIVE dv.  Passing this assertion is
-    therefore not evidence that a mass-based `dv` is signed as expected -- see
-    the SIGN section of `experiments/METRICS.md`.  If this adapter family is
-    ever extended to a VALUE function, this assertion needs a
-    `higher_is_better` flag of its own, the way
-    `Baselines/common/goals.py::slate_n_capture` already has one."""
+    The test is built from goal GEOMETRY, independent of the value function:
+    a single-pixel occupancy at the distance field's minimum (`near`, on the
+    goal) against one at its maximum (`far`). Moving mass far -> near is an
+    improving push under every value function in this repo, so its `dv` must
+    be `< 0` for a COST (`lyapunov`) and `> 0` for a VALUE (`mass_in_region`,
+    `signed_mass_in_region`). The adapter must declare `value_fn` and
+    `higher_is_better`, and the declared sense must match
+    `Baselines.common.goals.higher_is_better_for(value_fn)`
+    (experiments/METRICS.md, SIGN section; TODO M4)."""
+    from Baselines.common.goals import higher_is_better_for, improvement
+    value_fn = getattr(adapter, "value_fn", None)
+    hib = getattr(adapter, "higher_is_better", None)
+    assert value_fn is not None and hib is not None, (
+        "adapter must declare `value_fn` and `higher_is_better`")
+    assert hib == higher_is_better_for(value_fn), (
+        f"adapter declares higher_is_better={hib} but value_fn={value_fn!r} "
+        f"is registered as higher_is_better={higher_is_better_for(value_fn)}")
     g = OCC_GRID
     dev = adapter.device
     near = torch.zeros(1, g, g, device=dev)
@@ -986,9 +1099,8 @@ def assert_dv_convention(adapter, tol: float = 1e-9) -> None:
     lo = int(torch.argmin(dwf)); hi = int(torch.argmax(dwf))
     near[0, lo // g, lo % g] = 1.0
     far[0, hi // g, hi % g] = 1.0
-    v_near = float(adapter.value(near)); v_far = float(adapter.value(far))
-    assert v_near < v_far - tol, (
-        f"Lyapunov value is not 'lower = closer to goal' ({v_near} vs {v_far})")
-    # dv from far -> near must be negative under 'value(after) - value(before)'
-    dv = v_near - v_far
-    assert dv < 0, f"dv convention broken: improving push gave dv={dv:+.6g} (expected < 0)"
+    dv = float(adapter.value(near)) - float(adapter.value(far))
+    gain = improvement(dv, 0.0, higher_is_better=hib)
+    assert gain > tol, (
+        f"dv convention broken for {value_fn} (higher_is_better={hib}): moving mass "
+        f"onto the goal gave dv={dv:+.6g}, which reads as NOT an improvement")

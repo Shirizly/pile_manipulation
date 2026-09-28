@@ -63,11 +63,14 @@ class NFDPredictor:
     0.5/1.0-intensity soft-union encoding exactly as
     Genesis/training/dataset.py::PileSweepData._draw_plate builds it."""
 
-    def __init__(self, ckpt_path: str, channels: int = 3, name: str | None = None):
+    def __init__(self, ckpt_path: str, channels: int = 3, name: str | None = None,
+                 features: list | None = None):
         assert channels in (2, 3)
         self.channels = channels
         self.name = name or f"nfd_unet{channels}ch"
         structure = _STRUCTURE_3CH if channels == 3 else _STRUCTURE_2CH
+        if features is not None:          # wider/deeper variants (e.g. [16, 32, 64], overnight 2026-09-25)
+            structure = dict(structure, features=list(features))
         self.model = UNet(structure)
         state = torch.load(ckpt_path, map_location="cpu", weights_only=True)
         self.model.load_state_dict(state)

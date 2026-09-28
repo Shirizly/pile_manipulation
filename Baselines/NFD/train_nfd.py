@@ -50,7 +50,19 @@ def main(argv=None) -> None:
                      help="Start from scratch even if a checkpoint already exists in log_dir.")
     ap.add_argument("--override", nargs="*", default=[], metavar="KEY=VALUE",
                      help="e.g. --override training.epochs=2")
+    ap.add_argument("--seed", type=int, default=None,
+                     help="seed torch / numpy / random BEFORE the model and loaders are built "
+                          "(weight init, augmentation, shuffling). Default: unseeded -- the "
+                          "historical behaviour, which made runs irreproducible (TODO H1).")
     args = ap.parse_args(argv)
+
+    if args.seed is not None:
+        import random
+        import numpy as np
+        import torch
+        random.seed(args.seed); np.random.seed(args.seed); torch.manual_seed(args.seed)
+        torch.cuda.manual_seed_all(args.seed)
+        print(f"Seed: {args.seed}")
 
     from training.trainer import Trainer, DEVICE
     print(f"Config: {args.config}")

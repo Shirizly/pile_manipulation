@@ -98,6 +98,29 @@ def random_quadrant_mask(H: int, W: int, seed) -> tuple[np.ndarray, int]:
     return quadrant_mask(H, W, q), q
 
 
+def two_squares_mask(H: int, W: int, side_frac: float = 12 / 64,
+                     centre_frac: float = 16 / 64) -> np.ndarray:
+    """Two DISCONNECTED axis-aligned squares (EXP-0046, goal name
+    "two_squares"), in convention A (row = world x, col = world y).
+
+    Each square is `round(side_frac * H)` px on a side (12 px ~ 24.4 mm on the
+    64 px / +-64 mm slate grid: 16 non-overlapping 5 mm cubes fit, so each
+    square alone holds ~10 cubes comfortably), centred on world y = 0
+    (middle column) at rows `centre_frac * H` and `(1 - centre_frac) * H`,
+    i.e. world x ~ -32 mm and ~ +32 mm. The gap between them (~20 px) is far
+    wider than a cube, so the two regions are separate targets: a 20-cube
+    optimum must SPLIT the material. Symmetric under x -> -x, NOT under the
+    x<->y transpose (so it also exercises the axis convention)."""
+    side = max(1, int(round(side_frac * H)))
+    side_c = max(1, int(round(side_frac * W)))
+    mask = np.zeros((H, W), dtype=bool)
+    c0 = W // 2 - side_c // 2
+    for rc in (int(round(centre_frac * H)), int(round((1 - centre_frac) * H))):
+        r0 = rc - side // 2
+        mask[r0:r0 + side, c0:c0 + side_c] = True
+    return mask
+
+
 def letter_mask(name: str, H: int, W: int, font_name: str = LETTER_FONT) -> np.ndarray:
     """Binary mask for a font glyph, thresholded EXACTLY as
     `utils.py::gen_goal_shape` does internally (`goal <= 0.5`) on the SAME
@@ -189,3 +212,62 @@ def slate_n_capture(value_pred: torch.Tensor, value_true: torch.Tensor,
     if abs(denom) < 1e-9:
         return float("nan")
     return (chosen - mean_true) / denom
+
+
+# ── value-function sense, and sense-safe difference metrics (TODO M4) ─────────
+# `dv = value(after) - value(before)` has NO fixed direction across this
+# repo's value functions (experiments/METRICS.md, SIGN section): `lyapunov` is
+# a COST, the mass functions are VALUES. Every difference metric below takes
+# the sense as a REQUIRED keyword, with no default, so the wrong case cannot
+# silently return a plausible number with the wrong sign -- the same rule
+# `slate_n_capture` follows. Look the sense up by name with
+# `higher_is_better_for`, which raises on an unknown name.
+
+VALUE_FN_HIGHER_IS_BETTER = {
+    "lyapunov": False,
+    "mass_in_region": True,
+    "signed_mass_in_region": True,
+    "signed_mass": True,          # eval_report.VALUE_FNS spelling of the same
+}
+
+
+def higher_is_better_for(value_fn: str) -> bool:
+    """The sense of `value_fn`; KeyError for a name not registered above."""
+    if value_fn not in VALUE_FN_HIGHER_IS_BETTER:
+        raise KeyError(f"no registered sense for value function {value_fn!r}; "
+                       f"known: {sorted(VALUE_FN_HIGHER_IS_BETTER)}")
+    return VALUE_FN_HIGHER_IS_BETTER[value_fn]
+
+
+def improvement(dv_new, dv_ref, *, higher_is_better: bool):
+    """How much better `dv_new` is than `dv_ref`: > 0 means `dv_new` is
+    better, under either sense. Works on floats, numpy arrays and tensors."""
+    return (dv_new - dv_ref) if higher_is_better else (dv_ref - dv_new)
+
+
+def best_of(dv, *, higher_is_better: bool):
+    """The best entry of a pool of true `dv` values, under the given sense."""
+    return dv.max() if higher_is_better else dv.min()
+
+
+def gradient_benchmark_metrics(dv_rank: float, dv_grad: float, dv_oracle: float,
+                               pool_true, *, higher_is_better: bool) -> dict:
+    """EXP-0023's difference metrics (experiments/METRICS.md, `gradient_gain`
+    and friends), every one reading POSITIVE = BETTER under either sense:
+
+        gradient_gain    = improvement(dv_grad, dv_rank)       optimising helped
+        pool_escape      = improvement(dv_grad, pool_ceiling)  beat the whole pool
+        regret_vs_oracle = improvement(dv_oracle, dv_grad)     headroom left (>= 0 ideally)
+        capture_vs_oracle = dv_grad / dv_oracle                 sense-free (same v0)
+
+    For `higher_is_better=False` these reduce exactly to the COST-sense
+    formulae EXP-0023 hard-coded (`dv_rank - dv_grad`, `pool_ceil - dv_grad`,
+    `dv_grad - dv_oracle`)."""
+    pool_ceiling = float(best_of(pool_true, higher_is_better=higher_is_better))
+    return dict(
+        pool_ceiling=pool_ceiling,
+        gradient_gain=float(improvement(dv_grad, dv_rank, higher_is_better=higher_is_better)),
+        pool_escape=float(improvement(dv_grad, pool_ceiling, higher_is_better=higher_is_better)),
+        regret_vs_oracle=float(improvement(dv_oracle, dv_grad, higher_is_better=higher_is_better)),
+        capture_vs_oracle=(float(dv_grad / dv_oracle) if abs(dv_oracle) > 1e-4 else float("nan")),
+    )

@@ -123,6 +123,46 @@ def particles_to_occupancy(
     return occ  # (B, *resolution)
 
 
+SCORE_SPLAT_SIGMA_PX = 1.0
+"""Gaussian width (pixels) of the SCORING rasteriser, `splat_particles_mass`.
+Chosen in EXP-0027 RUN-0005: at 0.75-1.0 px the image-based lyapunov dv of 83
+repeats of one push (particles within ~1 mm) has sd 2e-4, matching the
+particle-centre value (3e-4); the hard 1.25 px footprint gives 4e-3."""
+
+
+def splat_particles_mass(uv: torch.Tensor, resolution: Tuple[int, int],
+                         sigma: float = SCORE_SPLAT_SIGMA_PX,
+                         mass: float = 1.0) -> torch.Tensor:
+    """Mass-conserving soft rasteriser for SCORING ground truth.
+
+    uv : (B, N, 2) continuous pixel coordinates, dim 0 first (u -> grid dim 0,
+         v -> grid dim 1), in "pixel-centre" units: pixel i's centre is at i.
+    Returns (B, H, W) float32. Each particle contributes a separable Gaussian
+    normalised to EXACTLY `mass` over the grid, wherever its centre falls, so
+    a sub-pixel shift never changes a particle's weight. Overlaps ADD (a
+    density, not a clipped occupancy).
+
+    Why this exists: the hard footprint rasterisers (`particles_to_occupancy`
+    with `footprint_radius`, and `PileSweepData._draw_particle_grid`, which
+    also truncates centres to integer pixels) give one particle 4, 5 or 6
+    pixels depending on its sub-pixel position, and value functions
+    normalised by total occupied pixels then swing by up to ~40% of a push's
+    effect under ~1 mm of motion (EXP-0027 RUN-0005, invariant
+    `occupancy-dv-subpixel-stable`). Use this for TRUE outcomes scored from
+    particle states; model predictions stay in the representation the model
+    was trained on. See experiments/METRICS.md, "Ground-truth scoring".
+    """
+    H, W = resolution
+    dev = uv.device
+    iu = torch.arange(H, device=dev, dtype=torch.float32)
+    iv = torch.arange(W, device=dev, dtype=torch.float32)
+    gu = torch.exp(-(iu[None, None] - uv[..., 0:1].float()) ** 2 / (2 * sigma ** 2))   # (B,N,H)
+    gv = torch.exp(-(iv[None, None] - uv[..., 1:2].float()) ** 2 / (2 * sigma ** 2))   # (B,N,W)
+    gu = gu / gu.sum(-1, keepdim=True).clamp_min(1e-12)
+    gv = gv / gv.sum(-1, keepdim=True).clamp_min(1e-12)
+    return mass * torch.einsum("bnh,bnw->bhw", gu, gv)
+
+
 def footprint_radius_voxels(
     particle_size_m: float,
     global_scale: float,

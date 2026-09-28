@@ -42,8 +42,8 @@ from fit_linear_foresight import actions_to_pixels, metrics, swept_region_mask
 from Baselines.common.data import load_cell
 from Baselines.common.eval_baseline import _predictor_batch
 from Baselines.common.goals import (
-    dist_field_from_mask, letter_mask, mass_in_region, random_quadrant_mask,
-    signed_mass_in_region, slate_n_capture,
+    dist_field_from_mask, letter_mask, mass_in_region, quadrant_mask, random_quadrant_mask,
+    signed_mass_in_region, slate_n_capture, two_squares_mask,
 )
 from Baselines.common.randlen_data import load_randlen_cell
 from Baselines.GNN.perception import resample_occupancy_through_nodes
@@ -228,6 +228,24 @@ MODELS = {
     # the canonical frame, added to pristine world occ0, no blend -- see
     # model/residual_nfd/lib.py). Same L20mm_train recipe as
     # RUN-0001/RUN-0002 above, directly comparable.
+    # RUN-0022: WORLD-FRAME NFD + explicit tanh residual on overnight_randlen,
+    # NO augmentation. **INTERRUPTED at epoch 43 of a planned 240** (the session
+    # hosting it was restarted), so it reached ~120k of the intended 668,100
+    # gradient steps -- roughly 18% of the budget the baseline and every other
+    # randlen arm were trained on. These two entries are NOT step-matched to
+    # anything; read them as an early-training snapshot, not as an arm.
+    "nfd_residual_worldframe_noaug_ep43": dict(
+        module="model.residual_nfd.predictor", factory="build_predictor_residual_unwarped",
+        ckpt_env="NFD_RESIDUAL_CKPT",
+        ckpt="Baselines/NFD/runs/nfd_residual_unwarped_noaug_randlen/unet_best.pth",
+        is_gnn=False,
+    ),
+    "nfd_residual_worldframe_noaug_ep30": dict(
+        module="model.residual_nfd.predictor", factory="build_predictor_residual_unwarped",
+        ckpt_env="NFD_RESIDUAL_CKPT",
+        ckpt="Baselines/NFD/runs/nfd_residual_unwarped_noaug_randlen/unet_epoch_30.pth",
+        is_gnn=False,
+    ),
     "nfd_residual_unwarped_L20mm_pilot": dict(
         module="model.residual_nfd.predictor", factory="build_predictor_residual_unwarped",
         ckpt_env="NFD_RESIDUAL_CKPT",
@@ -311,14 +329,49 @@ def _load_cell(corpus_spec: dict, tag: str):
     return load_randlen_cell(corpus_spec["cfg"], "train", tag=tag)
 
 
-def _accuracy(model_spec: dict, predictor, cell) -> float:
+_TRUTH_FIELDS = ("occ1", "states_")
+
+
+def _predict(predictor, cell, device: str = "cpu", chunk: int = 1024,
+             move_inputs: bool = True) -> torch.Tensor:
+    """predictor.predict_occ over the whole cell, on `device`, in row chunks,
+    returned on CPU. On CPU this is exactly the historical single call. On
+    cuda every per-row tensor field of the batch is sliced and moved (truth
+    fields are sliced but never moved -- predictors never read them), which
+    fixes `eval-baseline-scorer-batch-on-requested-device` for this harness
+    (predictors take their compute device from `batch.occ0.device`)."""
+    import dataclasses
+    batch = _predictor_batch(cell) if hasattr(cell, "states") else cell
+    if device == "cpu" and move_inputs:
+        return predictor.predict_occ(batch).to(torch.float32)
+    N = batch.occ0.shape[0]
+    outs = []
+    for i in range(0, N, chunk):
+        upd = {}
+        for f in dataclasses.fields(batch):
+            v = getattr(batch, f.name)
+            if torch.is_tensor(v) and v.dim() > 0 and v.shape[0] == N:
+                v = v[i:i + chunk]
+                if f.name not in _TRUTH_FIELDS and move_inputs:
+                    v = v.to(device)
+                upd[f.name] = v
+        with torch.no_grad():
+            outs.append(predictor.predict_occ(dataclasses.replace(batch, **upd)).to(torch.float32).cpu())
+    return torch.cat(outs)
+
+
+def _accuracy(model_spec: dict, predictor, cell, device: str = "cpu") -> float:
     H, W = cell.occ0.shape[-2:]
     s_px, e_px = actions_to_pixels(cell.actions, cell.workspace_min, cell.workspace_max, (H, W))
     plate_px = 0.04 / 0.128 * W
     region = swept_region_mask(s_px, e_px, (H, W), 0.5 * plate_px + 2.0, 0.5 * plate_px)
 
-    batch = _predictor_batch(cell) if hasattr(cell, "states") else cell
-    pred = predictor.predict_occ(batch).to(torch.float32)
+    # GNN predictors are ALWAYS run the historical way (one unchunked call, CPU
+    # inputs): `GNNPredictor.predict_occ` seeds its node sampling by the row's
+    # POSITION in the batch (`sample_nodes_xy(..., seed=i)`), so chunking changes
+    # its predictions (found 2026-09-24 while adding --device; invariant
+    # `gnn-node-sampling-consistent-within-state`). It picks its own device.
+    pred = _predict(predictor, cell, "cpu") if model_spec["is_gnn"] else _predict(predictor, cell, device)
 
     if model_spec["is_gnn"]:
         n_particles = predictor.n_particles
@@ -414,34 +467,115 @@ def _accuracy_canonical(model_spec: dict, predictor, cell, pred_world: torch.Ten
     return acc, native
 
 
-def _capture_report(cell, pred: torch.Tensor) -> dict:
+GOAL_SETS = ("default", "many", "many_plus")
+# Opt-in goals that are NOT part of the 30-goal "many" set (other results
+# depend on that set staying fixed); "many_plus" = "many" + these (EXP-0046).
+EXTRA_GOALS = ("two_squares",)
+MANY_LETTERS = tuple("ABCDEFGHIJKLMNOPQRSTUVWXYZ")
+
+
+def goal_names(goal_set: str = "default") -> tuple[str, ...]:
+    """Goal names, in report order, for a goal set.
+
+    "default": the original three (a per-slate seeded random quadrant, the
+    letters O and T). "many" (EXP-0027): the SAME family widened -- all 26
+    `helvetica_thin` letters plus all 4 quadrants, fixed across slates. The
+    default is unchanged so every existing row stays comparable."""
+    if goal_set == "default":
+        return GOAL_NAMES
+    if goal_set == "many":
+        return tuple(f"letter_{c}" for c in MANY_LETTERS) + tuple(f"quadrant_{q}" for q in range(4))
+    if goal_set == "many_plus":
+        return goal_names("many") + EXTRA_GOALS
+    raise ValueError(f"unknown goal set {goal_set!r}; known: {GOAL_SETS}")
+
+
+def _fixed_goal(name: str, H: int, W: int):
+    """(mask, dist) for a slate-independent goal name."""
+    if name == "ring_O":
+        m = letter_mask("O", H, W)
+    elif name.startswith("letter_"):
+        m = letter_mask(name[len("letter_"):], H, W)
+    elif name.startswith("quadrant_"):
+        m = quadrant_mask(H, W, int(name[len("quadrant_"):]))
+    elif name == "two_squares":
+        m = two_squares_mask(H, W)
+    else:
+        m = letter_mask(name, H, W)
+    return (torch.from_numpy(m.astype(np.float32)),
+            torch.from_numpy(dist_field_from_mask(m > 0)).float())
+
+
+def _goals_for_slate(goal_set: str, H: int, W: int, sid: int, cache: dict):
+    """[(name, mask, dist)] for one slate; fixed goals are built once."""
+    out = []
+    for name in goal_names(goal_set):
+        if name == "random_quadrant":
+            q_np, _ = random_quadrant_mask(H, W, seed=int(sid))
+            out.append((name, torch.from_numpy(q_np.astype(np.float32)),
+                        torch.from_numpy(dist_field_from_mask(q_np)).float()))
+        else:
+            if name not in cache:
+                cache[name] = _fixed_goal(name, H, W)
+            out.append((name, *cache[name]))
+    return out
+
+
+TRUTH_SCORINGS = ("soft", "image")
+
+
+def truth_for_scoring(cell, rows: torch.Tensor) -> torch.Tensor:
+    """Ground-truth post-push images for `rows`, redrawn from each row's stored
+    particle states with the mass-conserving scoring rasteriser
+    (`transforms.functional.splat_particles_mass`), in the dataset's own pixel
+    frame: u = pos * raw.to_pxl + raw.ctr_in_PXL - 1.0, dim 0 = world x
+    (matching `_draw_particle_grid`'s final transpose). The -1.0 is MEASURED,
+    not derived: the dataset draws `int()`-truncated centres and fills
+    `cv2.boxPoints` polygons, and on L40mm / randlen_test step-0 rows a -0.5
+    offset left the soft centroid +0.47/+0.30 and +0.57/+0.62 px above the
+    hard image's (dim 0 / dim 1); -1.0 centres it (EXP-0027). One particle carries mass 1 -- value functions here are either
+    mass-normalised (lyapunov) or scored through slateN, which is scale-free.
+
+    Why: the dataset's own `occ1` is a hard rasterisation whose per-particle
+    pixel count depends on sub-pixel position; it adds noise of ~12% of the
+    between-action spread to every true dv (EXP-0027 RUN-0005). See
+    experiments/METRICS.md, "Ground-truth scoring"."""
+    from Baselines.common.data import _resolve_sample
+    from transforms.functional import splat_particles_mass
+    raw = cell.raw
+    H, W = cell.occ0.shape[-2:]
+    ctr = torch.as_tensor(raw.ctr_in_PXL[:2], dtype=torch.float32)
+    out = torch.zeros(len(rows), H, W)
+    for k, i in enumerate(rows.tolist()):
+        r, smp = _resolve_sample(raw, int(i))
+        pos = torch.as_tensor(raw.runs[r]["states_"][smp][:, :2], dtype=torch.float32)
+        uv = pos * float(raw.to_pxl) + ctr - 1.0
+        out[k] = splat_particles_mass(uv[None], (H, W))[0]
+    return out
+
+
+def _capture_report(cell, pred: torch.Tensor, goal_set: str = "default",
+                    truth_s0: torch.Tensor | None = None) -> dict:
     """Per (goal, value_fn) capture, averaged over step-0 same-state pools,
-    plus a per-value-fn average over goals."""
+    plus a per-value-fn average over goals. `truth_s0`: step-0 ground-truth
+    images to score against (default: the dataset's hard `occ1`; pass
+    `truth_for_scoring(...)` for the soft, mass-conserving truth)."""
     step0 = (cell.step_idx == 0)
     slate_ids = cell.slate_idx[step0]
-    occ1_s0 = cell.occ1[step0].to(torch.float32)
+    occ1_s0 = (cell.occ1[step0] if truth_s0 is None else truth_s0).to(torch.float32)
     pred_s0 = pred[step0].to(torch.float32)
     unique_slates = slate_ids.unique().tolist()
     H, W = cell.occ0.shape[-2:]
+    names = goal_names(goal_set)
+    cache = {}
 
-    o_mask = torch.from_numpy(letter_mask("O", H, W).astype(np.float32))
-    t_mask = torch.from_numpy(letter_mask("T", H, W).astype(np.float32))
-    o_dist = torch.from_numpy(dist_field_from_mask(o_mask.numpy() > 0)).float()
-    t_dist = torch.from_numpy(dist_field_from_mask(t_mask.numpy() > 0)).float()
-
-    per_goal = {g: {v: [] for v in VALUE_FNS} for g in GOAL_NAMES}
+    per_goal = {g: {v: [] for v in VALUE_FNS} for g in names}
     for sid in unique_slates:
         rows = (slate_ids == sid).nonzero(as_tuple=True)[0]
         true_pool = occ1_s0[rows]
         pred_pool = pred_s0[rows]
 
-        q_mask_np, _ = random_quadrant_mask(H, W, seed=int(sid))
-        q_mask = torch.from_numpy(q_mask_np.astype(np.float32))
-        q_dist = torch.from_numpy(dist_field_from_mask(q_mask_np)).float()
-
-        for goal, mask, dist in (("random_quadrant", q_mask, q_dist),
-                                  ("ring_O", o_mask, o_dist),
-                                  ("T", t_mask, t_dist)):
+        for goal, mask, dist in _goals_for_slate(goal_set, H, W, sid, cache):
             v_true = lyapunov(true_pool, dist)
             v_pred = lyapunov(pred_pool, dist)
             per_goal[goal]["lyapunov"].append(
@@ -461,16 +595,25 @@ def _capture_report(cell, pred: torch.Tensor) -> dict:
         xs = [x for x in xs if x == x]  # drop NaN
         return float(np.mean(xs)) if xs else float("nan")
 
-    out = {"n_slates": len(unique_slates), "per_goal": {}, "averaged_over_goals": {}}
-    for goal in GOAL_NAMES:
+    # `per_slate` keeps the raw per-slate capture (same order as `slate_ids`),
+    # so a paired, slate-resampled comparison between two models is possible
+    # (EXP-0026) -- the summary means below are unchanged by it.
+    out = {"n_slates": len(unique_slates), "goal_set": goal_set,
+           "truth_scoring": "image" if truth_s0 is None else "soft",
+           "per_goal": {}, "averaged_over_goals": {},
+           "slate_ids": [int(s) for s in unique_slates],
+           "per_slate": {g: {v: [float(x) for x in per_goal[g][v]] for v in VALUE_FNS}
+                         for g in names}}
+    for goal in names:
         out["per_goal"][goal] = {v: _mean(per_goal[goal][v]) for v in VALUE_FNS}
     for v in VALUE_FNS:
         out["averaged_over_goals"][v] = _mean(
-            [out["per_goal"][g][v] for g in GOAL_NAMES])
+            [out["per_goal"][g][v] for g in names])
     return out
 
 
-def _random_floor_capture(cell, n_seeds: int = 20) -> dict:
+def _random_floor_capture(cell, n_seeds: int = 20, goal_set: str = "default",
+                          truth_s0: torch.Tensor | None = None) -> dict:
     """`random` ranking floor: score every step-0 pool with i.i.d. random
     noise images standing in for a "prediction" -- the induced `v_pred` is
     then unrelated to `v_true`, so `slate_n_capture`'s own argmax reduces to
@@ -479,25 +622,27 @@ def _random_floor_capture(cell, n_seeds: int = 20) -> dict:
     EXACTLY 0 under a uniform random pick, since `E[true[uniform idx]] =
     mean_true` over the pool -- so this is a Monte-Carlo check of an exact
     analytic fact, not an independent floor to be trusted on its own."""
-    accs = {g: {v: [] for v in VALUE_FNS} for g in GOAL_NAMES}
+    names = goal_names(goal_set)
+    accs = {g: {v: [] for v in VALUE_FNS} for g in names}
     for seed in range(n_seeds):
         g = torch.Generator().manual_seed(seed)
         noise = torch.rand(cell.occ0.shape, generator=g)
-        rep = _capture_report(cell, noise)
-        for goal in GOAL_NAMES:
+        rep = _capture_report(cell, noise, goal_set, truth_s0)
+        for goal in names:
             for v in VALUE_FNS:
                 accs[goal][v].append(rep["per_goal"][goal][v])
     out = {"n_slates": None, "per_goal": {}, "averaged_over_goals": {}}
-    for goal in GOAL_NAMES:
+    for goal in names:
         out["per_goal"][goal] = {v: float(np.nanmean(accs[goal][v])) for v in VALUE_FNS}
     for v in VALUE_FNS:
         out["averaged_over_goals"][v] = float(np.mean(
-            [out["per_goal"][g][v] for g in GOAL_NAMES]))
+            [out["per_goal"][g][v] for g in names]))
     return out
 
 
 def _print_capture(tag: str, capture: dict) -> None:
-    for goal in GOAL_NAMES:
+    goals = list(capture["per_goal"])
+    for goal in (goals if len(goals) <= len(GOAL_NAMES) else []):
         row = capture["per_goal"][goal]
         print(f"    goal={goal:16s} "
               f"lyapunov={row['lyapunov']:+.4f}  "
@@ -507,7 +652,15 @@ def _print_capture(tag: str, capture: dict) -> None:
     print(f"    {'averaged':16s} "
           f"lyapunov={avg['lyapunov']:+.4f}  "
           f"mass_in_region={avg['mass_in_region']:+.4f}  "
-          f"signed_mass={avg['signed_mass']:+.4f}")
+          f"signed_mass={avg['signed_mass']:+.4f}"
+          + (f"  ({len(goals)} goals)" if len(goals) > len(GOAL_NAMES) else ""))
+
+
+def _write_json_atomic(path: str, obj) -> None:
+    tmp = f"{path}.tmp"
+    with open(tmp, "w") as f:
+        json.dump(obj, f, indent=2)
+    os.replace(tmp, path)
 
 
 def main():
@@ -515,6 +668,21 @@ def main():
     ap.add_argument("--out-prefix", default="Baselines/common/runs/cross_corpus_report")
     ap.add_argument("--models", default=",".join(MODELS))
     ap.add_argument("--corpora", default=",".join(CORPORA))
+    ap.add_argument("--goal-set", default="default", choices=GOAL_SETS,
+                     help="slateN goal set: 'default' = the original 3 goals; 'many' = "
+                          "26 letters + 4 quadrants (EXP-0027), the same family widened")
+    ap.add_argument("--device", default="cpu", choices=["cpu", "cuda"],
+                     help="where predictors run (chunked). 'cpu' reproduces every earlier report "
+                          "exactly; 'cuda' is much faster (G2c).")
+    ap.add_argument("--truth-scoring", default="soft", choices=TRUTH_SCORINGS,
+                     help="how TRUE post-push outcomes are rasterised for slateN: 'soft' (default "
+                          "since 2026-09-24) = redrawn from particle states with the mass-conserving "
+                          "splat; 'image' = the dataset's hard occ1 (every slateN before 2026-09-24). "
+                          "Model predictions are scored as images either way.")
+    ap.add_argument("--ckpt", action="append", default=[], metavar="MODEL=PATH",
+                     help="score MODEL with checkpoint PATH instead of its MODELS default (repeatable). "
+                          "Setting the model's env var (e.g. NFD_CKPT) does NOT work: the loader "
+                          "writes spec['ckpt'] into that variable before building.")
     ap.add_argument("--no-reference", action="store_true",
                      help="skip the persistence/random reference rows (they are ON by default)")
     ap.add_argument("--canonical-frame", action="store_true",
@@ -524,6 +692,10 @@ def main():
                           "Skipped for GNN models (is_gnn=True). Off by default so the "
                           "existing world-frame-only report is unchanged.")
     args = ap.parse_args()
+    for kv in args.ckpt:
+        name, path = kv.split("=", 1)
+        MODELS[name] = dict(MODELS[name], ckpt=path)
+        print(f"[ckpt override] {name} -> {path}")
 
     os.makedirs(os.path.dirname(args.out_prefix), exist_ok=True)
     model_names = args.models.split(",")
@@ -536,6 +708,9 @@ def main():
         cell = _load_cell(corpus_spec, tag=corpus_name)
         print(f"[{corpus_name}] loaded {cell.occ0.shape[0]} transitions "
               f"({time.time() - t0:.1f}s)")
+        truth_s0 = None
+        if args.truth_scoring == "soft":
+            truth_s0 = truth_for_scoring(cell, (cell.step_idx == 0).nonzero(as_tuple=True)[0])
 
         if not args.no_reference:
             # persistence: accuracy is 0 by construction (metrics()'s own
@@ -550,12 +725,12 @@ def main():
             region = swept_region_mask(s_px, e_px, (H, W), 0.5 * plate_px + 2.0, 0.5 * plate_px)
             acc_persist = metrics(cell.occ0.to(torch.float32), cell.occ1.to(torch.float32),
                                    cell.occ0.to(torch.float32), region=region)["accuracy"]
-            capture_persist = _capture_report(cell, cell.occ0)
+            capture_persist = _capture_report(cell, cell.occ0, args.goal_set, truth_s0)
             print(f"[{corpus_name} / persistence] accuracy={acc_persist:.4f} "
                   f"(reference floor; slateN row below is DEGENERATE, see docstring)")
             _print_capture(corpus_name, capture_persist)
 
-            capture_random = _random_floor_capture(cell)
+            capture_random = _random_floor_capture(cell, goal_set=args.goal_set, truth_s0=truth_s0)
             print(f"[{corpus_name} / random] accuracy=n/a (ranking-only floor)")
             _print_capture(corpus_name, capture_random)
 
@@ -568,10 +743,9 @@ def main():
             model_spec = MODELS[model_name]
             t0 = time.time()
             predictor = _load_predictor(model_spec)
-            batch = _predictor_batch(cell) if hasattr(cell, "states") else cell
-            device = batch.occ0.device
-            acc, pred = _accuracy(model_spec, predictor, cell)
-            capture = _capture_report(cell, pred)
+            device = "cpu" if model_spec["is_gnn"] else args.device
+            acc, pred = _accuracy(model_spec, predictor, cell, args.device)
+            capture = _capture_report(cell, pred, args.goal_set, truth_s0)
             dt = time.time() - t0
             print(f"[{corpus_name} / {model_name}] accuracy={acc:.4f}  device={device}  "
                   f"({dt:.1f}s)")
@@ -592,10 +766,12 @@ def main():
                     row["canonical_native"] = native
 
             results.setdefault(corpus_name, {})[model_name] = row
+            # checkpoint after every model: a cut-off run keeps everything
+            # finished so far (atomic replace, never a half-written file)
+            _write_json_atomic(f"{args.out_prefix}.json", results)
 
     out_path = f"{args.out_prefix}.json"
-    with open(out_path, "w") as f:
-        json.dump(results, f, indent=2)
+    _write_json_atomic(out_path, results)
     print(f"\nwrote {out_path}")
 
 

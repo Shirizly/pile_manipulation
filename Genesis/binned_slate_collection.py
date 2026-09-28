@@ -105,6 +105,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import time
 from pathlib import Path
 
@@ -122,7 +123,16 @@ def parse_args():
     ap.add_argument("--n-cubes", type=int, default=20)
     ap.add_argument("--size", type=float, default=0.005, help="cube edge, metres")
     ap.add_argument("--density", type=float, default=1000.0)
-    ap.add_argument("--friction", type=float, default=0.3)
+    ap.add_argument("--friction", type=float, default=0.3,
+                    help="particle friction (and box friction unless --box-friction is given). "
+                         "NOTE: overnight_randlen / Sean (the training corpora) use particle 0.7, "
+                         "box 0.5, density 450 -- the 0.3 / 1000 defaults do NOT match them")
+    ap.add_argument("--box-friction", type=float, default=None,
+                    help="box (tray) friction; default = --friction (the historical behaviour)")
+    ap.add_argument("--settle-steps", type=int, default=None,
+                    help="override simulation.settle_steps (a cap: settling stops early once still)")
+    ap.add_argument("--safety-margin", type=float, default=None,
+                    help="override the top-level safety_margin (action-sampling margin)")
     ap.add_argument("--n-envs", type=int, default=128,
                     help="environments simulated concurrently. Unrelated to "
                          "the slate layout: chains are packed into batches of "
@@ -160,6 +170,9 @@ def parse_args():
                     help="relative to Genesis/, matching the other collection "
                          "drivers' convention")
     ap.add_argument("--tag", default="n20_binned")
+    ap.add_argument("--checkpoint-every", type=int, default=5,
+                    help="write step{k}.partial.pt + manifest.json every N simulated batches "
+                         "(atomic), so a cut-off run keeps everything simulated so far")
     ap.add_argument("--debug", action="store_true")
     return ap.parse_args()
 
@@ -239,6 +252,21 @@ def load_states(sim, states, idx):
     return padded
 
 
+def _save_atomic(obj, path: Path) -> None:
+    tmp = path.with_suffix(path.suffix + ".tmp")
+    torch.save(obj, tmp)
+    os.replace(tmp, path)
+
+
+def _write_manifest(manifest: dict, out_dir: Path) -> None:
+    """Rewritten after every checkpoint and every step (atomic): `in_progress`
+    says how far a running/cut-off step got, `complete` marks a finished run."""
+    tmp = out_dir / "manifest.json.tmp"
+    with open(tmp, "w") as f:
+        json.dump(manifest, f, indent=2)
+    os.replace(tmp, out_dir / "manifest.json")
+
+
 def main():
     args = parse_args()
     from .sandbox_manipulation_clean import SandboxManipulation
@@ -259,7 +287,12 @@ def main():
     cfg["material"].update({"shape": "cube", "particle_size": args.size,
                             "n_particles": args.n_cubes, "density": args.density,
                             "particle_friction": args.friction})
-    cfg["box"]["friction"] = args.friction
+    box_friction = args.friction if args.box_friction is None else args.box_friction
+    cfg["box"]["friction"] = box_friction
+    if args.settle_steps is not None:
+        cfg.setdefault("simulation", {})["settle_steps"] = args.settle_steps
+    if args.safety_margin is not None:
+        cfg["safety_margin"] = args.safety_margin
     cfg.setdefault("rigid_options", {})["max_collision_pairs"] = max(150, args.n_cubes // 2)
     cfg["spawn"] = {"mode": args.spawn_mode, "heap_base_frac": args.heap_base_frac}
     cfg.setdefault("data_collection", {}).update({
@@ -279,7 +312,7 @@ def main():
     sim.build()
     sim.set_material_properties({"particle_friction": args.friction,
                                  "particle_density": args.density,
-                                 "box_friction": args.friction,
+                                 "box_friction": box_friction,
                                  "sampled_particle_friction": None,
                                  "sampled_particle_density": None})
     print(f"build: {time.time() - t0:.0f}s", flush=True)
@@ -311,7 +344,9 @@ def main():
     n_particles = cur.shape[1]
 
     manifest = {"n_cubes": args.n_cubes, "size": args.size, "density": args.density,
-                "friction": args.friction, "n_envs": n_envs, "n_states": n_states,
+                "friction": args.friction, "box_friction": box_friction,
+                "settle_steps": cfg.get("simulation", {}).get("settle_steps"),
+                "safety_margin": cfg.get("safety_margin"), "n_envs": n_envs, "n_states": n_states,
                 "n_actions_per_state": n_actions, "n_steps": n_steps, "n_chains": n_chains,
                 "bin_edges": [float(x) for x in edges],
                 "max_length_tries": args.max_length_tries,
@@ -365,6 +400,17 @@ def main():
         n_batches = sum(int(np.ceil(int((got_bin == b).sum()) / n_envs))
                         for b in [UNDERFLOW_BIN, *range(n_bins)])
         done_batches = 0
+        done_mask = torch.zeros(n_chains, dtype=torch.bool, device="cpu")
+
+        def _step_payload(done):
+            return {"states": cur.clone(), "states_": nxt.clone(),
+                    "p_starts": starts, "p_stops": stops, "angles": angles,
+                    "len_target": target, "len_realized": realized,
+                    "bin_requested": torch.from_numpy(req_bin).long(),
+                    "bin_realized": torch.from_numpy(got_bin).long(),
+                    "slate_idx": torch.from_numpy(slate_idx).long(),
+                    "reached_goal": reached, "simulated": done.clone()}
+
         for b in [UNDERFLOW_BIN, *range(n_bins)]:
             members = np.flatnonzero(got_bin == b)
             if len(members) == 0:
@@ -383,20 +429,26 @@ def main():
                 reached[chunk] = ok[:n].cpu().bool()
 
                 done_batches += 1
+                done_mask[chunk] = True
+                if done_batches % args.checkpoint_every == 0 or done_batches == n_batches:
+                    _save_atomic(_step_payload(done_mask), out_dir / f"step{k}.partial.pt")
+                    manifest["in_progress"] = {"step": k, "done_batches": done_batches,
+                                               "n_batches": n_batches,
+                                               "n_chains_done": int(done_mask.sum()),
+                                               "partial_file": f"step{k}.partial.pt",
+                                               "elapsed_s": round(time.time() - t_collect, 1)}
+                    _write_manifest(manifest, out_dir)
                 rate = (time.time() - t_exec) / done_batches
                 print(f"  step {k + 1}/{n_steps} bin {b}: batch "
                       f"{done_batches}/{n_batches} ({n} pushes) -- "
                       f"{rate:.0f}s/batch, ~{rate * (n_batches - done_batches) / 60:.0f}"
                       f" min left in this step", flush=True)
 
-        torch.save({"states": cur.clone(), "states_": nxt,
-                    "p_starts": starts, "p_stops": stops, "angles": angles,
-                    "len_target": target, "len_realized": realized,
-                    "bin_requested": torch.from_numpy(req_bin).long(),
-                    "bin_realized": torch.from_numpy(got_bin).long(),
-                    "slate_idx": torch.from_numpy(slate_idx).long(),
-                    "reached_goal": reached},
-                   out_dir / f"step{k}.pt")
+        payload = _step_payload(done_mask)
+        payload.pop("simulated")               # a finished step file is complete by definition
+        _save_atomic(payload, out_dir / f"step{k}.pt")
+        (out_dir / f"step{k}.partial.pt").unlink(missing_ok=True)
+        manifest.pop("in_progress", None)
 
         hist_req = np.bincount(req_bin, minlength=n_bins).tolist()
         hist_got = [int((got_bin == b).sum()) for b in range(n_bins)]
@@ -414,10 +466,11 @@ def main():
               f"(+{n_under} underflow); {on_target}/{n_chains} reached their bin; "
               f"{time.time() - t_collect:.0f}s elapsed", flush=True)
 
+        _write_manifest(manifest, out_dir)
         cur = nxt
 
-    with open(out_dir / "manifest.json", "w") as f:
-        json.dump(manifest, f, indent=2)
+    manifest["complete"] = True
+    _write_manifest(manifest, out_dir)
     print(f"done: {n_states} slates x {n_actions} chains x {n_steps} steps "
           f"= {n_chains * n_steps} pushes ({n_particles} particles) in "
           f"{time.time() - t_collect:.0f}s -> {out_dir}", flush=True)
