@@ -324,3 +324,7 @@ none of the concurrently-dirty files are imported by it.
   GROUND TRUTH ITSELF wobble on resimulation". Neither of those existing
   records answers the question this one was asked to resolve; this record
   is the first to measure resimulation noise on `dv` directly.
+
+## Correction note (2026-09-24, EXP-0027)
+
+EXP-0027 briefly marked this record `invalidated` on finding that repeated `rollout_candidates` calls do not reproduce outcomes bit-for-bit. Its RUN-0005 then showed the PHYSICAL difference is small (particles within 0.9 mm median / 4.4 mm max; particle-based dv sd 3e-4 vs 3.2e-2 between actions), and that the large dv differences come from the image-based scoring (invariant `occupancy-dv-subpixel-stable`, broken: sd 4e-3, ~12% of between-action sd). The invalidation was withdrawn: the numbers here stand, carrying that extra scoring noise.

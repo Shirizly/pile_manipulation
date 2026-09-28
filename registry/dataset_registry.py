@@ -334,6 +334,11 @@ def _build_genesis_dataset(cfg: dict, split: str) -> EulerianDatasetWrapper:
         min_push_length_m:     float | None (default None) — drop samples whose
                                             actual push travel is <= this many
                                             metres (see PileSweepData docstring)
+        exclude_flagged:       bool       (default False) — drop gap_out_of_window/
+                                            invalid/illegal/null-transition rows,
+                                            see PileSweepData's own docstring
+                                            (EXP-0059 clean-data re-collection,
+                                            2026-09-28)
         physics.normalization: dict       — bounds used by PileSweepData._det_physics;
                                             passed to the dataset so normalisation
                                             is config-driven rather than hardcoded.
@@ -357,6 +362,7 @@ def _build_genesis_dataset(cfg: dict, split: str) -> EulerianDatasetWrapper:
         min_push_length_m=(
             float(min_push_length_m) if min_push_length_m is not None else None
         ),
+        exclude_flagged=bool(cfg.get("exclude_flagged", False)),
     )
     return EulerianDatasetWrapper(
         raw,

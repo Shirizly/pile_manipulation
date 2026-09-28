@@ -3,6 +3,15 @@
 **Status:** active
 **Payload:** `Genesis/data/slates_binned/n20_scatter_s20a1000_L20-70mm` (23 MB, gitignored)
 
+## Physics caveat (added 2026-09-24)
+
+Collected with the binned collector's defaults: particle AND box friction 0.3,
+density 1000. The dynamics models in this repo were trained on
+overnight_randlen (particle friction 0.7, box friction 0.5, density 450), so
+scoring them on DS-0001 tests them off their training physics
+(`benchmark-physics-matches-training`, broken). DS-0006 is the matched-physics
+successor (160 states x 128 actions).
+
 ## What this is
 
 20 distinct settled start states, each with **1000 candidate single pushes**

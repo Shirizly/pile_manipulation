@@ -1,0 +1,65 @@
+{
+ "mode": "pools",
+ "physics": {
+  "particle_friction": 0.7,
+  "particle_density": 450.0,
+  "box_friction": 0.5,
+  "settle_steps": 3000
+ },
+ "sampler": {
+  "pile_aware": true,
+  "min_swath_particles": 3,
+  "push_length": 0.02,
+  "start_gap_range": [
+   0.005,
+   0.005
+  ]
+ },
+ "push_length": 0.02,
+ "starts": "mixed",
+ "seed": 2002,
+ "n_envs": 32,
+ "steps": 8,
+ "pool": 64,
+ "clump_fn": "Genesis.clump_states:clump_starts",
+ "starts_file": null,
+ "start_gap_resolved": [
+  0.005,
+  0.015
+ ],
+ "chunks": {
+  "0": {
+   "rows": 2048,
+   "valid": 2048,
+   "single_layer_after": null,
+   "seconds": 1185.7036128044128,
+   "gap_out_of_window": 0,
+   "kinds": {
+    "clump": 16,
+    "scatter": 16
+   }
+  }
+ },
+ "complete": true,
+ "argv": [
+  "Genesis/chain_collection.py",
+  "--mode",
+  "pools",
+  "--out",
+  "Genesis/data/narrow_l20_n20/test_pools_v2",
+  "--n-chunks",
+  "1",
+  "--pool",
+  "64",
+  "--n-envs",
+  "32",
+  "--starts",
+  "mixed",
+  "--clump-fn",
+  "Genesis.clump_states:clump_starts",
+  "--sampler",
+  "{\"pile_aware\": true, \"min_swath_particles\": 3, \"push_length\": 0.02, \"start_gap_range\": [0.005, 0.005]}",
+  "--seed",
+  "2002"
+ ]
+}

@@ -456,3 +456,332 @@ def pile_contact_starts(particles_xy: torch.Tensor, headings: torch.Tensor,
     a_start = a_near - clearance
     starts = a_start.unsqueeze(-1) * u + best_c.unsqueeze(-1) * nvec
     return starts, best_n, ok
+
+
+# ---------------------------------------------------------------------------
+# Touchdown legality (ISS-010 fix, 2026-09-28)
+# ---------------------------------------------------------------------------
+#
+# `_pile_aware_stops` (Genesis/sandbox_manipulation_clean.py) used to clamp a
+# collision-free `pile_contact_starts` draw into the sampling box with no cube
+# check, and the clamped position routinely lands ON a cube -- measured 44-56%
+# of rows in DS-0008/9/11/12/13 (docs: experiments/OPEN_ISSUES.md ISS-010).
+# `pile_aware_action_batch` below is the Genesis-free replacement: it composes
+# `pile_contact_starts` + the box clamp + a fixed/free push length exactly as
+# `_pile_aware_stops` did, but tests the FINAL (post-clamp) touchdown footprint
+# against every particle with an exact SAT test and REDRAWS (a fresh heading,
+# never a shortened/lengthened push) any illegal slot, up to `max_redraws`
+# times.
+
+
+def _rect_axes(yaw: torch.Tensor) -> torch.Tensor:
+    """(...,) radians -> (..., 2, 2): each box's own two unique edge normals."""
+    c, s = torch.cos(yaw), torch.sin(yaw)
+    return torch.stack([torch.stack([c, s], dim=-1),
+                        torch.stack([-s, c], dim=-1)], dim=-2)
+
+
+def overlaps_rect_pairs_torch(xy_a: torch.Tensor, yaw_a: torch.Tensor, half_a,
+                              xy_b: torch.Tensor, yaw_b: torch.Tensor, half_b,
+                              tol: float = 0.0) -> torch.Tensor:
+    """Torch/batched/broadcastable equivalent of
+    `Baselines.common.cube_overlap.overlaps_rect_pairs` (exact SAT test for
+    yaw-rotated rectangles), kept Genesis-free so it is usable both inside a
+    live sim step and in a plain unit test. Numerically identical to the numpy
+    version (see `tests/test_action_sampling.py`); the duplication is
+    deliberate -- the numpy one is used by offline audit/curation scripts
+    (`experiments/EXP-0059-*/code/audit_tool_placement.py`) that have no torch
+    device to keep tensors on, this one is used inside the sampler where
+    everything is already a (possibly CUDA) torch tensor and converting to
+    numpy every redraw iteration would force a device sync per attempt.
+
+    xy_a, xy_b : (..., 2) box centres, any common broadcastable leading shape.
+    yaw_a, yaw_b : (...,) radians.
+    half_a, half_b : (..., 2) or broadcastable (e.g. (2,)) half-extents along
+        each box's OWN local axes (axis 0 = (cos,sin) "length" direction,
+        axis 1 = (-sin,cos) "width" direction).
+    tol : > 0 shrinks both boxes (a contact gap < tol counts as separated);
+        < 0 inflates both (the margin variant).
+    Returns bool, broadcast shape of `yaw_a`/`yaw_b`.
+    """
+    xy_a, xy_b = torch.as_tensor(xy_a), torch.as_tensor(xy_b)
+    half_a = torch.as_tensor(half_a, dtype=xy_a.dtype, device=xy_a.device)
+    half_b = torch.as_tensor(half_b, dtype=xy_b.dtype, device=xy_b.device)
+    ha, hb = half_a - 0.5 * tol, half_b - 0.5 * tol
+    d = xy_b - xy_a
+    A, B = _rect_axes(yaw_a), _rect_axes(yaw_b)
+    sep = torch.zeros(torch.broadcast_shapes(yaw_a.shape, yaw_b.shape),
+                      dtype=torch.bool, device=xy_a.device)
+    for axes in (A, B):
+        for k in range(2):
+            n = axes[..., k, :]
+            ra = (ha[..., 0] * (A[..., 0, :] * n).sum(-1).abs()
+                 + ha[..., 1] * (A[..., 1, :] * n).sum(-1).abs())
+            rb = (hb[..., 0] * (B[..., 0, :] * n).sum(-1).abs()
+                 + hb[..., 1] * (B[..., 1, :] * n).sum(-1).abs())
+            sep = sep | ((d * n).sum(-1).abs() > (ra + rb))
+    return ~sep
+
+
+def quat_yaw(quat: torch.Tensor) -> torch.Tensor:
+    """(..., 4) quaternion in (w, x, y, z) order -> (...,) yaw, radians.
+
+    `2*atan2(qz, qw)`, exact for a pure z-rotation. Duplicated (deliberately,
+    to keep this module Genesis-free and dependency-free of `model/`) from
+    `model/retrieval/frame.py::yaw_from_quat`, which carries the same
+    docstring note on why this is exact enough for a real single-layer cube's
+    small residual roll/pitch.
+    """
+    w, z = quat[..., 0], quat[..., 3]
+    return 2.0 * torch.atan2(z, w)
+
+
+def pile_aware_action_batch(particles_xy: torch.Tensor, particles_yaw: torch.Tensor,
+                            cube_half_xy, headings: torch.Tensor,
+                            blade_half_length: float, blade_half_width: float,
+                            granular_vol, safety_margin: float, clearance: float,
+                            push_length=None, push_length_lo: float | None = None,
+                            start_gap_range: tuple[float, float] | None = None,
+                            min_swath: int = 3, max_tries: int = 8,
+                            max_redraws: int = 200,
+                            generator: torch.Generator | None = None):
+    """Legal-by-construction pile-aware touchdown + push, Genesis-free.
+
+    Composes `pile_contact_starts` (collision-free touchdown before the box
+    clamp) with the same box-clamp + push-length logic
+    `sandbox_manipulation_clean.py::_pile_aware_stops` used, but checks the
+    FINAL touchdown footprint against every particle (exact SAT,
+    `overlaps_rect_pairs_torch`) and redraws a fresh heading for any illegal
+    slot -- never shortens or lengthens the push, per the data-collection
+    skill's rule on wall-shortened pushes.
+
+    Parameters
+    ----------
+    particles_xy : (E, N, 2) this env's ACTIVE particle centres, metres.
+    particles_yaw : (E, N) their yaws, radians (see `quat_yaw`).
+    cube_half_xy : (2,) or (E, N, 2) each particle's half-extent, metres.
+    headings : (E, S) initial push-direction draw (radians); only entries that
+        turn out illegal are ever redrawn.
+    blade_half_length, blade_half_width : blade footprint half-extents, metres.
+    granular_vol, safety_margin : forwarded to `sampling_box`.
+    clearance : blade-to-nearest-particle gap at touchdown, metres (one
+        particle width is the intended value). Used AS GIVEN (fixed, the old
+        behaviour) unless `start_gap_range` is set.
+    push_length : None (drawn uniformly per slot) or a scalar/tensor fixed
+        target distance, exactly as `_pile_aware_stops` accepted.
+    push_length_lo : lower bound for the free-length draw; defaults to
+        `clearance` (matching the old behaviour, which used the material's
+        own particle size there).
+    start_gap_range : None (default -- OLD behaviour: every touchdown sits
+        exactly `clearance` metres behind the nearest swath particle's
+        CENTRE, fixed) or a `(lo_margin, hi_margin)` pair, metres. When set,
+        the start gap -- the coordinator's 2026-09-28 spec, measured ALONG
+        THE PUSH AXIS from the blade's FRONT FACE to the NEAR FACE of the
+        first cube its swath will contact -- is instead SAMPLED per action,
+        uniformly, in `[lo_margin, L - hi_margin]` where `L` is the (scalar)
+        `push_length` -- e.g. `(0.005, 0.005)` with `L=0.02` gives a 5-15 mm
+        gap and that cube travels 5-15 mm. Applied at the SAME point the old
+        fixed distance was (`pile_contact_starts`'s own `clearance`
+        argument), not as a post-hoc shift: since that argument is CENTRE-
+        based (`a_start = a_near[particle centre] - clearance`), the sampled
+        face-to-face gap is converted once, uniformly, into the centre-based
+        value `pile_contact_starts` expects (`+ blade_half_width + cube_half`,
+        both along the push axis) -- see `draw_gap`. Requires a UNIFORM
+        particle size (raises `NotImplementedError` otherwise: converting
+        face-gap to centre-clearance needs the contacted cube's half-extent
+        before it is known WHICH cube that is) and a SCALAR `push_length` (`L`
+        must be known before `pile_contact_starts` runs, which a free-length
+        draw -- depends on the post-clamp box -- or a per-env tensor length
+        cannot provide; raises `NotImplementedError`). The legality
+        check+redraw below still runs after it, and every redraw attempt
+        draws a FRESH gap along with the fresh heading; a redraw ALSO fires
+        whenever the box clamp moves the touchdown at all (see `full_draw`),
+        because the clamp acts in world (x, y) and any movement there
+        invalidates the along-push-axis gap the draw was built with, whether
+        or not the moved point happens to still be legal -- found via a real
+        smoke test after the first version of this fix only redrew on
+        illegality (gap p95 ~34mm against a requested 5-15mm window; unit
+        test: `test_a_clamped_draw_is_redrawn_not_silently_kept_with_a_corrupted_gap`).
+    max_redraws : redraw attempts per illegal-or-gap-out-of-window slot before
+        giving up and accepting the best found as a last resort (default 200:
+        action sampling is cheap next to the physics step it precedes, so a
+        generous budget costs little total collection time -- see the
+        docstring's ETA note in `_pile_aware_action_legal`). Illegal touchdowns
+        are reported via the returned `n_illegal`, never silently dropped; a
+        slot that never finds an in-window candidate is reported via the
+        returned `gap_out_of_window` mask instead of silently accepted.
+
+    Returns
+    -------
+    action_starts_xy, action_stops_xy : (E, S, 2)
+    angles : (E, S) blade yaw (perpendicular-push convention)
+    ok : (E, S) bool, `pile_contact_starts`' own `min_swath` flag (last draw)
+    n_illegal_remaining : int, touchdowns still illegal after `max_redraws`
+    n_redraws_used : int, redraw rounds actually run (<= max_redraws)
+    gap_out_of_window : (E, S) bool, True where `start_gap_range` was set but
+        no legal AND in-window candidate was found within `max_redraws` --
+        the accepted touchdown is legal but its along-push-axis gap is not
+        guaranteed to be in the requested window. All-False when
+        `start_gap_range` is None.
+    """
+    E, S = headings.shape
+    N = particles_xy.shape[1]
+    dev, dtype = particles_xy.device, particles_xy.dtype
+    half_blade = torch.tensor([blade_half_length, blade_half_width],
+                              device=dev, dtype=dtype)
+    cube_half = torch.as_tensor(cube_half_xy, device=dev, dtype=dtype)
+    if cube_half.ndim == 1:
+        cube_half = cube_half.view(1, 1, 2).expand(E, N, 2)
+    lo_len = clearance if push_length_lo is None else push_length_lo
+
+    if start_gap_range is not None:
+        if push_length is None or torch.is_tensor(push_length):
+            raise NotImplementedError(
+                "start_gap_range requires a SCALAR push_length: L must be "
+                "known before pile_contact_starts runs, which a free-length "
+                "draw or a per-env tensor length cannot provide. Not "
+                "implemented for that case -- see this function's docstring.")
+        gap_lo, gap_hi_margin = start_gap_range
+        gap_L = float(push_length)
+        if gap_L - gap_hi_margin <= gap_lo:
+            raise ValueError(
+                f"start_gap_range={start_gap_range} leaves no room in a push "
+                f"of length {gap_L} m (need L > lo_margin + hi_margin)")
+        # `pile_contact_starts`'s own `clearance` is CENTRE-based (a_start =
+        # a_near[particle CENTRE] - clearance), but the requested window is
+        # FACE-based (blade FRONT FACE to the first-contact cube's NEAR FACE,
+        # the coordinator's 2026-09-28 spec). Converting once here, uniformly,
+        # keeps the sampled window's semantics correct without a post-hoc
+        # shift elsewhere: centre_clearance = face_gap + blade_half_width (the
+        # blade's own half-thickness along the push axis) + cube_half (the
+        # particle's own half-extent along the push axis). Requires uniform
+        # particle size -- true for every dataset this task touches; asserted
+        # rather than silently averaged over a mixed-size pile.
+        cube_half_ax = cube_half[..., 0].reshape(-1)
+        if not torch.allclose(cube_half_ax, cube_half_ax[:1].expand_as(cube_half_ax),
+                              atol=1e-6):
+            raise NotImplementedError(
+                "start_gap_range assumes a UNIFORM particle size (needed to "
+                "convert the requested face-to-face gap into pile_contact_starts' "
+                "centre-based clearance without knowing which particle will be "
+                "picked); this pile has mixed sizes. Not implemented for that case.")
+        gap_cube_half = float(cube_half_ax[0])
+
+    def draw_gap():
+        if start_gap_range is None:
+            return clearance
+        gap_lo, gap_hi_margin = start_gap_range
+        gap_L = float(push_length)
+        span = gap_L - gap_hi_margin - gap_lo
+        face_gap = gap_lo + torch.rand((E, S), generator=generator, device=dev,
+                                       dtype=dtype) * span
+        return face_gap + blade_half_width + gap_cube_half
+
+    pxy = particles_xy.unsqueeze(1).expand(-1, S, -1, -1)     # (E,S,N,2)
+    pyaw = particles_yaw.unsqueeze(1).expand(-1, S, -1)        # (E,S,N)
+    chalf = cube_half.unsqueeze(1).expand(-1, S, -1, -1)       # (E,S,N,2)
+
+    def illegal_mask(starts_xy, angles):
+        bxy = starts_xy.unsqueeze(2).expand(-1, -1, N, -1)
+        byaw = angles.unsqueeze(-1).expand(-1, -1, N)
+        ov = overlaps_rect_pairs_torch(bxy, byaw, half_blade, pxy, pyaw, chalf)
+        return ov.any(dim=-1)
+
+    def full_draw(hdg):
+        starts_xy, n_in, ok = pile_contact_starts(
+            pxy, hdg, blade_half_length=blade_half_length, clearance=draw_gap(),
+            min_swath=min_swath, max_tries=max_tries, generator=generator)
+        angles = hdg + torch.pi / 2
+        angles = torch.remainder(angles + torch.pi / 2, torch.pi) - torch.pi / 2
+        u_dir = torch.stack([torch.cos(hdg), torch.sin(hdg)], dim=-1)
+        low, high = sampling_box(angles, granular_vol, 2 * blade_half_length,
+                                 2 * blade_half_width, safety_margin)
+        # The clamp moves the touchdown in WORLD (x, y), which is not the same
+        # axes `pile_contact_starts` placed it in (push/lateral) -- so it can
+        # break the along-push-axis gap the clamped draw was built with,
+        # whether or not the moved point happens to land ON a cube (the
+        # original ISS-010 mechanism). Rather than trust a coarse "was this
+        # clamped" proxy (an earlier version of this fix did, and it let a
+        # clamped-but-still-legal draw silently keep an arbitrary gap), the
+        # scoring below RECOMPUTES the actual realized gap after the clamp
+        # (`_gap_window_ok`) and redraws on THAT, directly.
+        starts_xy = starts_xy.clamp(min=low, max=high)
+        t_max = ray_box_max_travel(starts_xy, u_dir, low, high)
+        if push_length is None:
+            span = (t_max - lo_len).clamp_min(0.0)
+            L = lo_len + torch.rand_like(span) * span
+        else:
+            if torch.is_tensor(push_length):
+                L = push_length.to(t_max).reshape(t_max.shape).expand_as(t_max).clone()
+            else:
+                L = torch.full_like(t_max, float(push_length))
+            L = torch.minimum(L, t_max)
+        stops_xy = starts_xy + u_dir * L
+        return starts_xy, stops_xy, angles, ok, u_dir
+
+    def draw_headings():
+        return torch.rand((E, S), generator=generator, device=dev,
+                          dtype=dtype) * (2 * torch.pi)
+
+    def _gap_bad(starts_xy, u_dir):
+        """True where, measured EXACTLY the way the coordinator's spec and the
+        offline audit both do (along-push-axis, blade FRONT FACE to the NEAR
+        FACE of the first cube ahead in the swept swath), this touchdown has
+        either no contact cube ahead at all, or one outside the requested
+        `[lo_margin, L - hi_margin]` window -- regardless of whether the box
+        clamp actually moved the point. Only meaningful when `start_gap_range`
+        is set; returns all-False otherwise (old behaviour, unchanged)."""
+        if start_gap_range is None:
+            return torch.zeros(starts_xy.shape[:-1], dtype=torch.bool, device=dev)
+        gap_lo, gap_hi_margin = start_gap_range
+        gap_L = float(push_length)
+        nvec = torch.stack([-u_dir[..., 1], u_dir[..., 0]], dim=-1)
+        rel = pxy - starts_xy.unsqueeze(2)                     # (E,S,N,2)
+        a = (rel * u_dir.unsqueeze(2)).sum(-1)
+        lat = (rel * nvec.unsqueeze(2)).sum(-1)
+        in_swath = lat.abs() <= blade_half_length
+        near_face_a = a - gap_cube_half
+        ahead = near_face_a > blade_half_width
+        cand = in_swath & ahead
+        has_contact = cand.any(dim=-1)
+        gap_vals = torch.where(cand, near_face_a - blade_half_width,
+                               torch.full_like(near_face_a, float("inf")))
+        min_gap = gap_vals.min(dim=-1).values
+        in_window = (min_gap >= gap_lo - 1e-9) & (min_gap <= (gap_L - gap_hi_margin) + 1e-9)
+        return ~(has_contact & in_window)
+
+    def _score(illegal, gap_bad):
+        """0 = legal & gap in window (or start_gap_range unset) -- best.
+        1 = legal but gap out of window / no contact ahead -- accept only if
+            nothing better is found within `max_redraws` (last resort; flagged
+            via the returned `gap_out_of_window`).
+        2 = illegal -- must never be preferred over either, even to fix (1);
+            this ordering is what keeps the clamp/gap-precision redraw from
+            ever regressing the hard legality guarantee (an earlier version
+            without this ordering let illegal touchdowns rise to 2-5/32 in a
+            real smoke run when both conditions shared one undifferentiated
+            redraw budget)."""
+        return torch.where(illegal, torch.full_like(illegal, 2, dtype=torch.long),
+                           torch.where(gap_bad, torch.ones_like(illegal, dtype=torch.long),
+                                      torch.zeros_like(illegal, dtype=torch.long)))
+
+    starts_xy, stops_xy, angles, ok, u_dir = full_draw(headings)
+    best_score = _score(illegal_mask(starts_xy, angles), _gap_bad(starts_xy, u_dir))
+
+    n_redraws = 0
+    while bool((best_score > 0).any()) and n_redraws < max_redraws:
+        n_redraws += 1
+        new_hdg = draw_headings()
+        new_starts, new_stops, new_angles, new_ok, new_u_dir = full_draw(new_hdg)
+        new_score = _score(illegal_mask(new_starts, new_angles), _gap_bad(new_starts, new_u_dir))
+        better = new_score < best_score
+        m2 = better.unsqueeze(-1)
+        starts_xy = torch.where(m2, new_starts, starts_xy)
+        stops_xy = torch.where(m2, new_stops, stops_xy)
+        angles = torch.where(better, new_angles, angles)
+        ok = torch.where(better, new_ok, ok)
+        best_score = torch.where(better, new_score, best_score)
+
+    n_illegal = int((best_score == 2).sum())
+    gap_out_of_window = best_score == 1
+    return starts_xy, stops_xy, angles, ok, n_illegal, n_redraws, gap_out_of_window

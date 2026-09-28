@@ -1,0 +1,2 @@
+# RUN-0001 — 768 batched closed-loop episodes, tuned planners
+gpu_queue5.sh -> run_probe (tag exp0044_goal_breadth) -> experiments/EXP-0043-batched-closed-loop/code/batched_closed_loop.py --tag goal_breadth_tuned --results-dir experiments/EXP-0044-closed-loop-goal-breadth/results, 12 goals x starts 40-47 x 4 models x {gd, cem}, cells {"tuned": {gd: lr 5e-3, 32 restarts; cem: n_cand = pop 1024, elite 0.25}}, 1.0 s, 8 pushes. 2026-09-24 19:12-21:34, exit 0; commit 3bae8cd7, dirty. Analysis: code/analyse.py -> results/analysis.json.

@@ -1,0 +1,59 @@
+model:
+  type: nfd-unet3ch
+  in_channels: 3
+  out_channels: 1
+  features:
+  - 4
+  - 8
+  - 16
+  kernel_size: 3
+  final_kernel_size: 1
+  activation: relu
+  residual: true
+  bottleneck_type: None
+  bottleneck_kwargs: {}
+  uses_physics: false
+dataset:
+  type: nfd-genesis-3ch
+  paths:
+  - overnight_randlen_train/mixed_n20
+  - overnight_randlen_train/piled_n20
+  - overnight_randlen_train/piled_n50
+  - overnight_randlen_train/scattered_n20
+  - overnight_randlen_train/scattered_n50
+  val_pct: 5
+  test_pct: 5
+  resolution_scale: 0.5
+  include_physics: false
+  min_push_length_m: 0.0001
+  transforms:
+  - type: ensure_representation
+    representation: eulerian
+  - type: eulerian_aliases
+training:
+  epochs: 30
+  batch_size: 32
+  lr: 0.0001
+  lr_scheduler:
+    type: StepLR
+    step_size: 30
+    gamma: 0.75
+  augmentation: true
+  patience: 100
+  mixed_precision: true
+  grad_clip_norm: 1.0
+  save_every_n_epochs: 10
+  num_workers: 4
+  loss:
+    type: eulerian_combined
+    mse: 1.0
+    mass: 0.0
+    dice: 0.0
+    bce: 0.0
+    sharpness: 0.0
+    tv: 0.0
+    add: 0.0
+    remove: 0.0
+output:
+  log_dir: Baselines/NFD/runs/nfd_3ch_randlen_seed1
+_config_path: /home/alon/Code/pile_manipulation/experiments/EXP-0036-seed-noise-floor/configs/nfd_3ch_randlen_seed1.yaml

@@ -27,6 +27,7 @@ class PileSweepData(Dataset):
             resolution_scale: float = 1.0,
             physics_bounds: PhysicsBounds | None = None,
             min_push_length_m: float | None = None,
+            exclude_flagged: bool = False,
         ):
         """
         Initialize dataset with either a folder containing data or a specific run.
@@ -49,6 +50,25 @@ class PileSweepData(Dataset):
                 40mm nominal). Applied uniformly, before any split-internal
                 indexing, so it shrinks the pool the same way for train/val/
                 test alike.
+            @param exclude_flagged: if True, drop rows that are (a) marked
+                ``gap_out_of_window`` (the ISS-010-fix sampler's own
+                last-resort-accept flag, EXP-0059 2026-09-28) or ``valid ==
+                False`` (a push whose length/perpendicularity check failed
+                and could not be redrawn) when either key is present in a
+                run's saved dict, and (b) NULL transitions -- max per-cube xy
+                displacement < 1mm, computed inline from ``states``/
+                ``states_`` with the exact same threshold and formula
+                ``experiments/EXP-0059-*/code/flag_null_transitions.py`` and
+                the retrieval bank's own ``moved`` flag use. Illegal
+                (tool-on-cube) touchdowns are NOT separately excluded here:
+                the ISS-010-fix sampler (``Genesis/action_sampling.py::
+                pile_aware_action_batch``) redraws until legal by
+                construction for any corpus collected with it, so no
+                per-row legality flag exists in these files at all -- if a
+                ``<stem>_legality.pt`` sidecar (the older, pre-fix corpora's
+                post-hoc audit format) is found next to a run's data file,
+                its ``illegal_0mm`` rows are excluded too, for backward
+                compatibility with those corpora.
         """
         assert split in ("train", "val", "test"), f"Invalid split: {split!r}"
         if val_pct < 0 or test_pct < 0 or val_pct + test_pct >= 100:
@@ -58,6 +78,7 @@ class PileSweepData(Dataset):
         self.runs = []
         self.configs = []
         self._run_lengths = []
+        self._run_data_paths = []
         self._plate_cache = {}
         self._physics = torch.zeros((3,), dtype=torch.float32)
         self._physics_bounds = physics_bounds or PhysicsBounds.default()
@@ -86,6 +107,7 @@ class PileSweepData(Dataset):
                 self.runs.append(torch.load(data_file, map_location="cpu"))
                 self.configs.append(yaml.full_load(config_file.read_text()))
                 self._run_lengths.append(self._count_samples_in_run(self.runs[-1]))
+                self._run_data_paths.append(data_file)
         
         if not self.configs:
             raise ValueError("No configs found for dataset.")
@@ -125,6 +147,59 @@ class PileSweepData(Dataset):
                     f"sample (of {len(self._run_lookup)})."
                 )
             self._index_map = keep
+
+        self._exclude_flagged = bool(exclude_flagged)
+        if self._exclude_flagged:
+            base_indices = (
+                range(len(self._run_lookup)) if self._index_map is None else self._index_map
+            )
+            legality_cache: dict[int, torch.Tensor | None] = {}
+            n_gow = n_invalid = n_null = 0
+            keep2 = []
+            for global_idx in base_indices:
+                run_idx = self._run_lookup[global_idx]
+                sample_idx = global_idx - self._offsets[run_idx]
+                run = self.runs[run_idx]
+                bad = False
+                if "gap_out_of_window" in run and bool(run["gap_out_of_window"][sample_idx]):
+                    bad, n_gow = True, n_gow + 1
+                if not bad and "valid" in run and not bool(run["valid"][sample_idx]):
+                    bad, n_invalid = True, n_invalid + 1
+                if not bad:
+                    if run_idx not in legality_cache:
+                        legality_path = self._run_data_paths[run_idx]
+                        legality_path = legality_path.with_name(
+                            legality_path.stem + "_legality.pt"
+                        )
+                        legality_cache[run_idx] = (
+                            torch.load(legality_path, map_location="cpu", weights_only=False)[
+                                "illegal_0mm"
+                            ].bool()
+                            if legality_path.exists()
+                            else None
+                        )
+                    illegal = legality_cache[run_idx]
+                    if illegal is not None and bool(illegal[sample_idx]):
+                        bad, n_invalid = True, n_invalid + 1
+                if not bad:
+                    s0 = run["states"][sample_idx, :, :2].float()
+                    s1 = run["states_"][sample_idx, :, :2].float()
+                    max_disp_mm = (s1 - s0).norm(dim=-1).max().item() * 1000.0
+                    if max_disp_mm < 1.0:
+                        bad, n_null = True, n_null + 1
+                if not bad:
+                    keep2.append(global_idx)
+            if not keep2:
+                raise ValueError(
+                    f"exclude_flagged=True dropped every sample (of {len(list(base_indices))})."
+                )
+            print(
+                f"PileSweepData(exclude_flagged=True): dropped {n_gow} gap_out_of_window/"
+                f"invalid-redraw-exhausted, {n_invalid} invalid/illegal, {n_null} null "
+                f"(<1mm) transitions -- kept {len(keep2)}/{len(list(base_indices))} rows",
+                flush=True,
+            )
+            self._index_map = keep2
 
         self._create_grids(self.configs[0])
 

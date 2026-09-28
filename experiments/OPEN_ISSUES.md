@@ -313,3 +313,103 @@ the file's disappearance and should be the ground truth for what a correct
 fit looks like). If they match, delete the stray copy; if they don't,
 `operators_res64_accuracy.json` and everything scored against the restored
 file needs re-examination. Found 2026-09-23 during RUN-0011.
+
+## ISS-010 — Pile-aware action sampling routinely places the tool ON a cube at touchdown
+
+**status:** closed (sampler fix) · **found:** 2026-09-28 · **closed:** 2026-09-28 ·
+**severity:** high (affected the retrieval bank, DS-0008/9/11/12/13, and every model/metric fit
+or scored on them)
+
+Measured directly: `experiments/EXP-0059-retrieval-transition-model/code/audit_tool_placement.py`
+tests every recorded transition's touchdown pose (`p_start`, blade yaw `angles`) against every
+cube's actual rotated-square footprint with an exact SAT test
+(`Baselines/common/cube_overlap.py::overlaps_rect_pairs`, a new rectangle-vs-rectangle
+generalization of the existing same-size-square `overlaps_pairs`). Full numbers:
+`experiments/EXP-0059-*/results/tool_placement_audit.json`; per-row flags saved next to every
+source file as `<name>_legality.pt` (`illegal_0mm`, `illegal_1mm_margin`, per-row cube counts),
+originals untouched.
+
+**Illegal-at-touchdown rate (valid rows, exact SAT overlap, blade 40x2mm vs 5mm cubes):**
+
+| dataset | frac illegal (0mm) | frac illegal (1mm margin) |
+|---|---|---|
+| DS-0008 train | 0.443 | 0.689 |
+| DS-0009 test_chains | 0.462 | 0.692 |
+| DS-0009 test_pools | 0.561 | 0.767 |
+| DS-0010 extra_18_22 | 0.0002 | 0.334 |
+| DS-0011 val_pools | 0.478 | 0.736 |
+| DS-0012 reservoir | 0.458 | 0.702 |
+| DS-0013 seqpools | 0.517 | 0.737 |
+
+Roughly HALF of every `pile_aware`-sampled dataset's rows have the tool overlapping a cube at
+touchdown. Consistent patterns: clump starts are worse than scatter (e.g. DS-0008 0.530 vs
+0.356); illegal rate falls slightly across chain steps within an episode (DS-0008 step 0 0.490
+-> step 7 0.408 — earlier pushes spread the pile out); DS-0009 pools (0.561) are worse than its
+chains (0.462) — pools start from a freshly-spawned, denser state with no prior pushes to
+de-clump it. DS-0010 is the outlier: essentially zero EXACT overlaps but a third of rows sit
+within 1mm of one, consistent with a DIFFERENT, older sampler (see below).
+
+**Root cause (read, not just measured):** `Genesis/sandbox_manipulation_clean.py::
+_apply_pile_aware_starts` (+ `action_sampling.py::pile_contact_starts`) computes a genuinely
+collision-free touchdown ("one particle-width behind the pile's near face, in the swath").
+`_pile_aware_stops` (same file, ~line 1953-1966) THEN unconditionally clamps that start into the
+yaw-dependent tray/blade-footprint sampling box (`action_sampling.sampling_box` — a pure
+wall-margin bound with ZERO pile-occupancy awareness), because, in its own comment, "the pile
+spreads well past its spawn extent" (particle radius reaches p95 34.6mm / max 54mm against a
+blade box of only 23.5-42.5mm half-extent) — **its own measurement, quoted verbatim in that
+comment: "35.8% of starts out of box and 3.3% of pushes travelling ~0mm"**. The clamp is
+explicitly justified as "starting just inside the pile rather than just behind it, which still
+sweeps material" — the author flagged the trade-off but not that "inside the pile" can mean
+directly on top of an individual cube's footprint. This is the dominant mechanism for DS-0008/9/
+11/12/13 (all `pile_aware=True`, confirmed per `chain_collection.py` commands in each
+DATASET.md). DS-0010 comes from `overnight_randlen_train/{mixed,piled}_n20` + `Sean/n20`
+(`datasets/DS-0010-*/extract.py`) — an older pipeline; its near-zero exact-overlap / high
+1mm-margin rate instead matches `placement_sampling.py::free_placements`'s DEFAULT
+`clearance=0.0` (a placement-aware, not pile-aware, sampler that draws touchdowns flush against
+a cube, not overlapping one) — plausible for the "mixed"/"placement_aware" portion of that
+older corpus, not independently re-verified per source file.
+
+**What this invalidates:** any physics recorded at these ~45-55% of rows is not a clean push —
+the first simulation step resolves a spawned interpenetration as a violent, physically
+meaningless ejection, not a "the blade pushed this cube" transition. This affects the retrieval
+bank (`model/retrieval/bank.py` loads DS-0008+DS-0010 unfiltered), `eval_retrieval.py`'s
+DS-0009 numbers, and by extension every EXP-0059 accuracy_1/slateN/rollout number recorded so
+far (not necessarily invalidated — the corrupted rows are a large but not overwhelming minority
+of the population mean — but not clean either). Likely affects EXP-0053's narrow NFD training/
+eval too (same DS-0008/9 source), not yet audited there.
+
+**To close (original plan):** EXP-0059 built a curated bank (DS-0014) that excludes
+`illegal_0mm` rows by default and restricts retrieval to a geometric interaction set, and
+re-scores affected models on legal-only subsets for a fair comparison (see
+`experiments/EXP-0059-*/LOG.md`, post-fix rerun).
+
+**CLOSED 2026-09-28 -- the sampler itself is fixed, not just worked around.**
+`Genesis/sandbox_manipulation_clean.py::_pile_aware_stops`'s clamp (item (1) above) is replaced
+by `_pile_aware_action_legal` -> `Genesis/action_sampling.py::pile_aware_action_batch`: the
+box-clamped touchdown is checked with an exact SAT test against every cube and REDRAWN (a fresh
+heading, never a shortened/lengthened push) whenever it is illegal, up to `max_redraws=200`.
+Also added the same task: a `start_gap_range` sampler config key that SAMPLES the touchdown gap
+(blade front face to the first contacted cube's near face, along the push axis) uniformly in a
+requested window instead of a fixed one-particle-width gap, retargeting (not accepting
+out-of-window) until `max_redraws` is spent, then flagging `gap_out_of_window` as a last resort.
+Two subtle bugs were found and fixed during this same task, both worth remembering for the next
+sampler change in this area: (a) `pile_contact_starts`'s `clearance` is CENTRE-based but the
+requested gap is FACE-based -- converting between them needs `+ blade_half_width + cube_half`,
+easy to get wrong by ~3.5mm; (b) the box clamp moves the touchdown in WORLD (x,y), which can
+silently invalidate the along-push-axis gap a draw was built with even when the clamped point is
+still legal -- redrawing on illegality alone is not enough once gap PRECISION also matters, not
+just legality.
+
+Fresh corpora collected with the fixed sampler, verified at full scale (not just a smoke test):
+**DS-0015** (train, replaces DS-0008+DS-0010, 0/12032 illegal, 0/12032 gap_out_of_window),
+**DS-0016** (test chains+pools, replaces DS-0009, 0/1024 and 0/2048 illegal, 0 gap_out_of_window),
+**DS-0017** (val pools, replaces DS-0011, collection status: see that record). The `Genesis/
+training/dataset.py::PileSweepData(exclude_flagged=True)` training loader independently
+confirmed the same drop counts. DS-0008/9/10/11/12/13's own payloads are UNCHANGED and their
+DATASET.md files now say so; DS-0012/0013 were not recollected (out of this task's scope) and
+still carry the original defect if used directly.
+
+**Still open, not part of this closure:** (2) audit EXP-0053's narrow NFD train/eval numbers
+against the pre-fix legality flags; (3) verify DS-0010's actual per-source-file sampler flags
+rather than inferring them from the measured rate; (4) DS-0012 (reservoir) and DS-0013
+(seqpools) were left uncollected under the fixed sampler -- recollect if either is needed clean.

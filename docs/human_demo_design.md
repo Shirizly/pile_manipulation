@@ -295,3 +295,17 @@ Episode** resets and starts the next one.
 - **Not wired into `run_experiments.py`.** Like `run_oracle_mpc.py`
   (`oracle_mpc_design.md`'s own known limitation), this is a standalone
   entry point.
+
+## Benchmark-task human demonstrations (`human_benchmark_gui.py`, EXP-0058)
+
+A separate, smaller GUI for collecting PURE human play on the closed-loop benchmark tasks
+(EXP-0055/EXP-0057: 8 goals x DS-0006 starts 40/41), for comparison with the oracle and
+learned-model runs. It differs from `human_mpc_gui.py` in that:
+- it uses the benchmark tasks and scoring (in-goal mass >= 0.9 x EXP-0046 optimum, max 20 pushes)
+  and the oracle.py simulator setup (one env), not the configurable oracle MPC scenario;
+- the drawn push executes as drawn after `project_push` (20-70 mm, in the tray): **no local
+  grid-search refinement**, no free yaw (the blade is always perpendicular to the push), no undo;
+- it records one atomic JSON per task with think time and sim time per push.
+
+Usage: `python human_benchmark_gui.py --operator <name> [--goals ...] [--starts 40 41]`;
+analysis: `experiments/EXP-0058-human-demonstrations/code/analyse.py`. Design: that experiment's DESIGN.md.

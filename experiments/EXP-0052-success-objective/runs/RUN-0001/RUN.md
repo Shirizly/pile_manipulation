@@ -1,0 +1,2 @@
+# RUN-0001
+queue_O.sh -> run_probe (tag exp0052_objective) -> EXP-0043 batched_closed_loop.py --record-states, worldframe x {gd, cem} tuned x cells mass_w1 / mass_w3 x letters O T S L X Z + two_squares x starts 40-41, 1 s, 24 pushes (56 episodes). 2026-09-25 03:26-04:12, exit 0; commit 3bae8cd7 dirty; GPU shared with EXP-0050's simulator CEM. Analysis code/analyse.py (control = EXP-0051 lyapunov-only episodes, same cells).

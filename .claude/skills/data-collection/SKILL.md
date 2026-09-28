@@ -10,6 +10,11 @@ user-invocable: true
 Everything here runs under `conda activate pme` and needs a GPU. Always
 `python -u` (see `subagent-experimenter` rule 2).
 
+**Checkpointing is mandatory** for anything longer than a few minutes: rewrite
+results/manifests atomically after every unit of work so a cut-off run loses
+at most one unit. The full rule is in `project-overview`, "Every job must
+survive being cut off".
+
 ## Pick a driver by the corpus shape you need
 
 | driver (`python -m Genesis.<mod>`) | corpus shape |
@@ -19,6 +24,7 @@ Everything here runs under `conda activate pme` and needs a GPU. Always
 | `same_state_slate_collection.py` | **same-state slates**: one settled state broadcast to all envs, each env a different candidate action. `--n-steps>1` makes each env an independent chain from that shared start. **One fixed push length per corpus** (`data/slates`, `data/slates_multistep`). |
 | `binned_slate_collection.py` | same-state slates as above, but push length drawn from 5 bins over 20–70 mm, mixed along each chain. Sampling and simulation are separate passes so each simulated batch is length-homogeneous (`data/slates_binned`). |
 | `run_collection.py` | the batch/config-sweep entry point over the above. |
+| `chain_collection.py` | chained pushes from GIVEN start states (not settled fresh each time): `--mode chains` (K different states, each its own --steps chain; DS-0008/DS-0010's recipe), `--mode pools` (same-state pools, one push each; DS-0009/DS-A), `--mode seqpools` (same-state pools of MULTI-STEP sequences -- one shared start broadcast to `--pool` envs, sub-batched by `--n-envs`, each running its own `--steps`-push chain; DS-B). All three write one atomic, resumable file per chunk; `seqpools` reuses `chains`' own `chain_env`/`chain_step` field names (sequence id / push index) plus a `pool_idx` column, so its output is a drop-in for `eval_retrieval.py`'s existing chain-rollout code. |
 
 A slate corpus is what scores a model **as an action ranker** (the true result
 of every candidate is known because all of them were simulated). An
@@ -45,12 +51,33 @@ supported seam; do not fork the buffer/save logic.
 
 Set on `generate_action_samples` / `collect_data_samples`:
 
-- `pile_aware=True` — blade starts one particle-width off the pile's near face,
-  laterally aligned so its swath holds `min_swath_particles`. **Owns the
-  geometry end to end and returns early**, so `placement_aware`,
-  `perpendicular_pushes` and the fixed-length constraint below are all dead
-  when it is on (it applies its own). Blind sampling put only ~14 % of the pile
-  in a typical push's path, which is why this exists (`docs/piled_collection.md`).
+- `pile_aware=True` — blade starts one particle-width off the pile's near face
+  (or a SAMPLED gap, see `start_gap_range` below), laterally aligned so its
+  swath holds `min_swath_particles`. **Owns the geometry end to end and
+  returns early**, so `placement_aware`, `perpendicular_pushes` and the
+  fixed-length constraint below are all dead when it is on (it applies its
+  own). Blind sampling put only ~14 % of the pile in a typical push's path,
+  which is why this exists (`docs/piled_collection.md`). **Legal by
+  construction since 2026-09-28 (ISS-010 fix):** the touchdown is checked with
+  an exact SAT test against every cube and REDRAWN (a fresh heading, never a
+  shortened/lengthened push) whenever it overlaps one, up to `max_redraws`
+  (default 200) — see `Genesis/action_sampling.py::pile_aware_action_batch`
+  and the trap below for what this replaced.
+- `start_gap_range=(lo_margin, hi_margin)` — pile-aware only. SAMPLES the
+  touchdown gap (blade front face to the first contacted cube's near face,
+  along the push axis) uniformly in `[lo_margin, L - hi_margin]` (`L` = the
+  scalar `push_length`) instead of the old fixed one-particle-width gap —
+  e.g. `(0.005, 0.005)` with `L=0.02` gives a 5-15 mm gap, so the contacted
+  cube travels 5-15 mm. `None` (default) reproduces the old fixed gap exactly.
+  A slot with no legal AND in-window candidate after `max_redraws` is
+  RETARGETED (fresh heading/contact cube), never accepted as drawn; only as a
+  last resort is it accepted and flagged `gap_out_of_window=True` in the saved
+  row (report this count — it should be ~0 at `max_redraws=200` for an n=20
+  narrow-domain pile; check before trusting the gap distribution on a denser
+  or larger pile). Requires a uniform particle size and a SCALAR `push_length`
+  (raises `NotImplementedError` for a free-length draw or per-env tensor
+  length — the target gap depends on knowing `L` before the touchdown is
+  placed, which those cases cannot provide before the fact).
 - `placement_aware=True` — touchdown pose drawn from the tool's free
   configuration space. Composes with `perpendicular_pushes` + `push_length`,
   which run *after* it in `_constrain_push_geometry`. Use this, not
@@ -96,6 +123,48 @@ frequently wall-limited depending on where the pile put the contact point.
 
 ## Traps that have actually corrupted corpora
 
+- **(FIXED 2026-09-28, ISS-010) The old pile-aware clamp placed the tool ON a
+  cube at touchdown in ~44-56% of rows.** `_pile_aware_stops` computed a
+  genuinely collision-free touchdown (`pile_contact_starts`, one
+  particle-width behind the pile's near face) and then unconditionally
+  clamped it into the yaw-dependent sampling box with ZERO cube check,
+  because the pile routinely spreads past the box (its own comment: "35.8% of
+  starts out of box"). The clamp traded "start exactly at the pile edge" for
+  "start just inside the pile", which can mean directly on top of an
+  individual cube's footprint — measured on DS-0008/9/11/12/13, all
+  `pile_aware=True` (DS-0010's older/mixed pipeline was ~clean by a different
+  mechanism). **Fixed**: `_pile_aware_action_legal` ->
+  `Genesis/action_sampling.py::pile_aware_action_batch` checks the FINAL
+  touchdown with an exact SAT test and redraws any illegal slot instead of
+  accepting it. Every corpus collected before the fix (DS-0008/9/10/11/12/13)
+  keeps its original, still-illegal payload — check a corpus's own DATASET.md
+  for whether a clean `_v2`/replacement set exists (DS-0015/16/17 replace
+  DS-0008/10, DS-0009, DS-0011; DS-0012/13 do not yet have one) before reusing
+  it. **If you are writing a NEW pile-aware collector or changing this
+  geometry again**: the clamp is not the only place a "gap precision" bug can
+  hide — a follow-up fix (`start_gap_range`, same date) found that the box
+  clamp also silently invalidates the along-push-axis GAP a touchdown was
+  built with (it moves the point in world x,y, not the push/lateral frame the
+  gap was computed in), independently of whether the clamped point is still
+  legal. If a future change sets the touchdown gap to anything other than the
+  old fixed one-particle-width value, redraw on that condition too (see
+  `pile_aware_action_batch`'s `_gap_bad`), not just on illegality — and if you
+  add a NEW redraw condition to a loop that already has one, give the
+  conditions a priority order (legality must always win) rather than an
+  unconditional OR: sharing one redraw budget across two conditions
+  undifferentiated let illegal touchdowns actually INCREASE in one measured
+  case, because attempts were spent fixing the newer condition on slots that
+  were already legal while genuinely illegal slots ran out of budget.
+
+- **The binned collector's physics defaults do NOT match the training corpora.**
+  `binned_slate_collection.py` defaults to friction 0.3 (particle and box) and
+  density 1000; overnight_randlen and Sean use particle friction 0.7, box friction
+  0.5, density 450, safety_margin 0.005. DS-0001 was collected on the defaults, so
+  every model scored on it was tested off its training physics. For a test corpus,
+  pass `--friction 0.7 --box-friction 0.5 --density 450 --safety-margin 0.005
+  --settle-steps 3000` (or whatever the models' training corpus used -- read its
+  `_config.yaml`), and state the physics in the DATASET.md.
+
 - **A shortened push is not in its length bin.** `constrain_push` moves the
   START rather than shortening; `_pile_aware_stops` shortens and warns. Always
   recompute `‖p_stop − p_start‖` and check it against what you asked for before
@@ -121,6 +190,21 @@ frequently wall-limited depending on where the pile put the contact point.
 - **Single-push-length corpora leave most length bins empty**, which left 4 of 6
   length operators byte-identical to their initialisation in one fit. Use
   `binned_slate_collection.py` if the model is length-conditioned.
+
+## The unified benchmark shape (target for every new TEST corpus, 2026-09-24)
+
+A benchmark test corpus is a set of **same-state pools**: many candidate pushes
+simulated from one identical start state, the true outcome of each stored as
+full particle states. Store it as flat rows:
+`states (R,n,7)`, `states_ (R,n,7)`, `p_starts (R,3)`, `p_stops (R,3)`,
+`angles (R,)`, `pool_idx (R,)` (= start-state id), plus source bookkeeping,
+and a DATASET.md stating: particle count, spawn style, **physics (particle
+friction, box friction, density -- must match the models' training corpus)**,
+push-length distribution, pool sizes. Truth is scored from `states_` with the
+soft rasteriser (METRICS.md "Ground-truth scoring"), never from a stored image.
+Two disjoint pools per state (or >= 2x the pool size you score with) lets
+"state vs pool" be separated (EXP-0029). DS-0006 (binned corpus: `slate_idx` =
+`pool_idx`) and DS-0007 already have this shape.
 
 ## Reading a corpus off disk
 

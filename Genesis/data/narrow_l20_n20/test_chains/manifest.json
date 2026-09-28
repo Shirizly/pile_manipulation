@@ -1,0 +1,84 @@
+{
+ "mode": "chains",
+ "physics": {
+  "particle_friction": 0.7,
+  "particle_density": 450.0,
+  "box_friction": 0.5,
+  "settle_steps": 3000
+ },
+ "sampler": {
+  "pile_aware": true,
+  "min_swath_particles": 3,
+  "push_length": 0.02
+ },
+ "push_length": 0.02,
+ "starts": "mixed",
+ "seed": 101,
+ "n_envs": 32,
+ "steps": 8,
+ "pool": 64,
+ "clump_fn": "Genesis.clump_states:clump_starts",
+ "starts_file": null,
+ "chunks": {
+  "0": {
+   "rows": 256,
+   "valid": 256,
+   "single_layer_after": 256,
+   "seconds": 138.4791853427887,
+   "kinds": {
+    "clump": 16,
+    "scatter": 16
+   }
+  },
+  "1": {
+   "rows": 256,
+   "valid": 256,
+   "single_layer_after": 256,
+   "seconds": 105.75974631309509,
+   "kinds": {
+    "clump": 16,
+    "scatter": 16
+   }
+  },
+  "2": {
+   "rows": 256,
+   "valid": 256,
+   "single_layer_after": 256,
+   "seconds": 106.84327483177185,
+   "kinds": {
+    "clump": 16,
+    "scatter": 16
+   }
+  },
+  "3": {
+   "rows": 256,
+   "valid": 256,
+   "single_layer_after": 256,
+   "seconds": 134.06289863586426,
+   "kinds": {
+    "clump": 16,
+    "scatter": 16
+   }
+  }
+ },
+ "complete": true,
+ "argv": [
+  "Genesis/chain_collection.py",
+  "--mode",
+  "chains",
+  "--out",
+  "Genesis/data/narrow_l20_n20/test_chains",
+  "--n-chunks",
+  "4",
+  "--steps",
+  "8",
+  "--starts",
+  "mixed",
+  "--clump-fn",
+  "Genesis.clump_states:clump_starts",
+  "--sampler",
+  "{\"pile_aware\": true, \"min_swath_particles\": 3, \"push_length\": 0.02}",
+  "--seed",
+  "101"
+ ]
+}

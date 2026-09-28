@@ -1,0 +1,6 @@
+# written by scripts/run_probe.py before the run started
+# run_id oracle_A_default-2026-09-25T22:16:59-1474743
+# exp     EXP-0057
+# commit  3bae8cd7 dirty=True
+# log     experiments/EXP-0057-oracle-budget-ablation/runs/oracle_A_default.log
+/home/alon/anaconda3/envs/pme/bin/python -u /home/alon/Code/pile_manipulation/experiments/EXP-0050-oracle-ceiling/code/oracle.py --mode cem --tag oracle_A_default --n-envs 128 --cem-pop 64 --cem-iters 4 --cem-elite 16 --steps 20 --goals letter_O letter_T letter_S letter_X letter_L letter_I two_squares quadrant_0 --starts 40 41 --out-dir /home/alon/Code/pile_manipulation/experiments/EXP-0057-oracle-budget-ablation/results

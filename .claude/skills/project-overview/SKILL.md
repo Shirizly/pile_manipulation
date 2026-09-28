@@ -92,6 +92,10 @@ per-slate figure and should be extended, not reimplemented.
 | predicted-vs-true rollout video | `simple_mpc/debug_vis.py::save_predicted_trajectory_video` |
 | OT planner diagnostics (distributions, vector field, divergence) | `simple_mpc/ot_planner.py::plot_*` |
 | per-episode reward curve | `simple_mpc/human_mpc.py::_plot_episode_reward` |
+| **one (state, push) transition through one model** (2x3: input, the model's own action channels, truth, RMS/accuracy/changed-IoU bars, prediction, signed error map) | `scripts/probes/transition_panel.py --model <id> --index i ...` |
+| push-by-push GIF of a recorded closed-loop episode (goal mask, cubes, blade; side-by-side cells) | `experiments/EXP-0051-*/code/demo_gifs.py::draw_frame` / `write_gif`; for EXP-0055/0056 cells `experiments/EXP-0055-*/code/demo_gifs.py`. Draw the world **x right, y DOWN** -- the letter goals read correctly only that way |
+| a rotated-square cube footprint (from yaw), a push arrow, or a blade/plate line segment perpendicular to a push -- the 3 primitives that were independently re-derived in `transition_panel.py`/`demo_gifs.py`/the retrieval debug figure below | `scripts/probes/cube_viz.py::cube_patch`/`push_arrow`/`blade_endpoints` (matplotlib patches only; not a general framework -- callers still own their own figure/axes) |
+| **retrieval-model visual debug** (EXP-0059): global-frame query state + push, query vs its top-1/top-5 neighbours' pre-push states with Hungarian correspondence, 1-NN and combined (k5 cube-median) transferred predictions vs truth, per-cube mm error + confidence, all in the query's own push frame | `experiments/EXP-0059-retrieval-transition-model/code/retrieval_debug.py::plot_retrieval_debug` (function) + its CLI (batch of ~12 queries → `experiments/EXP-0059-*/figures/retrieval_debug/`, indexed by `README.md`) |
 
 Corpus-level structure (trajectories, per-slate sequences, per-bin selections)
 is queried through `Genesis/binned_slate_dataset.py::BinnedSlateCorpus`, not by
@@ -135,6 +139,30 @@ Concretely, before considering such a change done:
 **Prefer small, targeted architectural changes.** Do not create a new
 project-level module or document merely to house one experiment's composition
 of capabilities.
+
+## Every job must survive being cut off (standing rule, 2026-09-24)
+
+A run can be killed at any moment (session restart, OOM, a shared-GPU
+collision). The cost of that must be minutes, not the whole run. So every
+script that runs for more than a few minutes -- collection, training,
+evaluation, sweeps, probes -- **writes its progress to disk as it goes**:
+
+- **Checkpoint after every unit of work** (per model, per corpus, per slate,
+  per batch, per epoch): rewrite the results / manifest file with everything
+  finished so far. Replacing the previous checkpoint each step is fine -- the
+  point is that the latest completed unit is always on disk.
+- **Write atomically**: write `<file>.tmp`, then `os.replace` it onto the
+  target, so a kill mid-write never leaves a truncated file.
+- **Keep a manifest** beside large outputs: what has been produced, with what
+  config, up to which unit -- so a later session can see exactly how far a run
+  got without re-reading the payload.
+- A restart-from-midpoint path is NOT required in advance; a run whose
+  partial results are on disk can always be completed or re-scoped later.
+  A run whose results exist only in memory cannot.
+
+Reference implementations: `Baselines/common/eval_report.py::_write_json_atomic`
+(results rewritten after every model), `simple_mpc/gt_bank.py` (atomic per-state
+files), EXP-0027 `stage1_grad_many.py` (saved after every arm).
 
 ## Environment
 

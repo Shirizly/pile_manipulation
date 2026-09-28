@@ -544,3 +544,22 @@ through the SAME `eval_report.py` path, or the comparison is not one.
     L20mm pilot (.360 -> .401) to full randlen scale (.409 -> .462). Whether an
     explicit residual head helps a WORLD-FRAME NFD at randlen scale was never
     tested and is the obvious next run.
+- **2026-09-23/24** — **RUN-0022 (world-frame NFD + residual, no augmentation)
+  was INTERRUPTED at epoch 43 of 240** when its host session restarted;
+  RUN-0023 (flip-only) never started. Scored the surviving epoch-30 and
+  epoch-43 checkpoints anyway (RUN-0024) — and **they are the best-scoring
+  models on `accuracy` anywhere in EXP-0022**, beating the world-frame baseline
+  in all three corpora (+0.025/+0.016/+0.028) and topping `slateN`/lyapunov on
+  `randlen_test` (0.9529 vs 0.9417). See `results/residual_worldframe_partial.md`.
+  - **"18% of the budget" is the wrong reading.** Gradient steps and data
+    exposure diverge under different augmentation: this run is
+    under-OPTIMISED (119,669 vs 668,100 steps, 0.18x) and simultaneously
+    over-EXPOSED (43 vs 30 dataset passes, 1.43x), because with no
+    augmentation one pass costs 2,783 steps instead of 22,270.
+  - **Not a clean comparison** — it differs from the baseline in TWO ways at
+    once (residual head AND augmentation), so the gain cannot be attributed to
+    the residual alone, and the 0.016-0.028 accuracy margins are the size a
+    seed-level noise floor might or might not cover.
+  - **This makes TODO M1 (augmentation-matched controls) the blocking item.**
+    The clean design is `{plain, residual} x {no aug, x8}`, step-matched;
+    three of those four cells do not exist.

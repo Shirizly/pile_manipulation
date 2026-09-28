@@ -1,0 +1,51 @@
+model:
+  type: nfd-unet3ch
+  in_channels: 5
+  out_channels: 1
+  features:
+  - 4
+  - 8
+  - 16
+  kernel_size: 3
+  final_kernel_size: 1
+  activation: relu
+  residual: true
+  bottleneck_type: None
+  bottleneck_kwargs: {}
+  uses_physics: false
+dataset:
+  type: nfd-genesis-retrieval-ref
+  donor_field: random
+  dropout_p: 1.0
+  include_physics: false
+  transforms:
+  - type: ensure_representation
+    representation: eulerian
+  - type: eulerian_aliases
+training:
+  epochs: 60
+  batch_size: 64
+  lr: 0.0001
+  lr_scheduler:
+    type: StepLR
+    step_size: 60
+    gamma: 0.75
+  augmentation: true
+  patience: 60
+  mixed_precision: true
+  grad_clip_norm: 1.0
+  save_every_n_epochs: 5
+  num_workers: 4
+  loss:
+    type: eulerian_combined
+    mse: 1.0
+    mass: 0.0
+    dice: 0.0
+    bce: 0.0
+    sharpness: 0.0
+    tv: 0.0
+    add: 0.0
+    remove: 0.0
+output:
+  log_dir: model/retrieval_nfd/runs/retrieval_nfd_noref
+_config_path: /home/alon/Code/pile_manipulation/model/retrieval_nfd/configs/retrieval_nfd_noref.yaml

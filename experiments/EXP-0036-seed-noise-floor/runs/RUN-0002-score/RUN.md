@@ -1,0 +1,2 @@
+# RUN-0002 — slateN of the 4 seeds (DS-0006, DS-0007 n20/n50)
+`CUDA_VISIBLE_DEVICES="" scripts/run_probe.py --tag exp0036_score_seeds ... -- python experiments/EXP-0036-seed-noise-floor/code/score_seeds.py`, 2026-09-24 12:51, ~3 min CPU, exit 0; commit 3bae8cd7, dirty. Predictions: artifacts/RUN-0002/pred_<corpus>_<seed>.pt; results/slaten_seeds.json. Then `code/ensemble_compare.py` (CPU, <1 min) -> results/ensemble_compare.json.

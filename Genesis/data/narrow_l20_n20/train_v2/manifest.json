@@ -1,0 +1,571 @@
+{
+ "mode": "chains",
+ "physics": {
+  "particle_friction": 0.7,
+  "particle_density": 450.0,
+  "box_friction": 0.5,
+  "settle_steps": 3000
+ },
+ "sampler": {
+  "pile_aware": true,
+  "min_swath_particles": 3,
+  "push_length": 0.02,
+  "start_gap_range": [
+   0.005,
+   0.005
+  ]
+ },
+ "push_length": 0.02,
+ "starts": "mixed",
+ "seed": 2003,
+ "n_envs": 32,
+ "steps": 8,
+ "pool": 64,
+ "clump_fn": "Genesis.clump_states:clump_starts",
+ "starts_file": null,
+ "start_gap_resolved": [
+  0.005,
+  0.015
+ ],
+ "chunks": {
+  "0": {
+   "rows": 256,
+   "valid": 244,
+   "single_layer_after": 256,
+   "seconds": 179.8961911201477,
+   "gap_out_of_window": 0,
+   "kinds": {
+    "clump": 16,
+    "scatter": 16
+   }
+  },
+  "1": {
+   "rows": 256,
+   "valid": 252,
+   "single_layer_after": 256,
+   "seconds": 226.52052664756775,
+   "gap_out_of_window": 0,
+   "kinds": {
+    "clump": 16,
+    "scatter": 16
+   }
+  },
+  "2": {
+   "rows": 256,
+   "valid": 249,
+   "single_layer_after": 256,
+   "seconds": 213.13528776168823,
+   "gap_out_of_window": 0,
+   "kinds": {
+    "clump": 16,
+    "scatter": 16
+   }
+  },
+  "3": {
+   "rows": 256,
+   "valid": 245,
+   "single_layer_after": 256,
+   "seconds": 203.1467297077179,
+   "gap_out_of_window": 0,
+   "kinds": {
+    "clump": 16,
+    "scatter": 16
+   }
+  },
+  "4": {
+   "rows": 256,
+   "valid": 245,
+   "single_layer_after": 256,
+   "seconds": 137.43723845481873,
+   "gap_out_of_window": 0,
+   "kinds": {
+    "clump": 16,
+    "scatter": 16
+   }
+  },
+  "5": {
+   "rows": 256,
+   "valid": 252,
+   "single_layer_after": 256,
+   "seconds": 107.40407204627991,
+   "gap_out_of_window": 0,
+   "kinds": {
+    "clump": 16,
+    "scatter": 16
+   }
+  },
+  "6": {
+   "rows": 256,
+   "valid": 252,
+   "single_layer_after": 256,
+   "seconds": 128.2027907371521,
+   "gap_out_of_window": 0,
+   "kinds": {
+    "clump": 16,
+    "scatter": 16
+   }
+  },
+  "7": {
+   "rows": 256,
+   "valid": 253,
+   "single_layer_after": 256,
+   "seconds": 54.2812819480896,
+   "gap_out_of_window": 0,
+   "kinds": {
+    "clump": 16,
+    "scatter": 16
+   }
+  },
+  "8": {
+   "rows": 256,
+   "valid": 250,
+   "single_layer_after": 256,
+   "seconds": 52.33516597747803,
+   "gap_out_of_window": 0,
+   "kinds": {
+    "clump": 16,
+    "scatter": 16
+   }
+  },
+  "9": {
+   "rows": 256,
+   "valid": 241,
+   "single_layer_after": 256,
+   "seconds": 57.48894119262695,
+   "gap_out_of_window": 0,
+   "kinds": {
+    "clump": 16,
+    "scatter": 16
+   }
+  },
+  "10": {
+   "rows": 256,
+   "valid": 247,
+   "single_layer_after": 256,
+   "seconds": 54.85804724693298,
+   "gap_out_of_window": 0,
+   "kinds": {
+    "clump": 16,
+    "scatter": 16
+   }
+  },
+  "11": {
+   "rows": 256,
+   "valid": 246,
+   "single_layer_after": 256,
+   "seconds": 55.81675457954407,
+   "gap_out_of_window": 0,
+   "kinds": {
+    "clump": 16,
+    "scatter": 16
+   }
+  },
+  "12": {
+   "rows": 256,
+   "valid": 238,
+   "single_layer_after": 256,
+   "seconds": 58.74209451675415,
+   "gap_out_of_window": 0,
+   "kinds": {
+    "clump": 16,
+    "scatter": 16
+   }
+  },
+  "13": {
+   "rows": 256,
+   "valid": 254,
+   "single_layer_after": 256,
+   "seconds": 50.37751770019531,
+   "gap_out_of_window": 0,
+   "kinds": {
+    "clump": 16,
+    "scatter": 16
+   }
+  },
+  "14": {
+   "rows": 256,
+   "valid": 254,
+   "single_layer_after": 256,
+   "seconds": 50.132142305374146,
+   "gap_out_of_window": 0,
+   "kinds": {
+    "clump": 16,
+    "scatter": 16
+   }
+  },
+  "15": {
+   "rows": 256,
+   "valid": 250,
+   "single_layer_after": 256,
+   "seconds": 54.03669619560242,
+   "gap_out_of_window": 0,
+   "kinds": {
+    "clump": 16,
+    "scatter": 16
+   }
+  },
+  "16": {
+   "rows": 256,
+   "valid": 250,
+   "single_layer_after": 256,
+   "seconds": 60.48321604728699,
+   "gap_out_of_window": 0,
+   "kinds": {
+    "clump": 16,
+    "scatter": 16
+   }
+  },
+  "17": {
+   "rows": 256,
+   "valid": 248,
+   "single_layer_after": 256,
+   "seconds": 56.78504729270935,
+   "gap_out_of_window": 0,
+   "kinds": {
+    "clump": 16,
+    "scatter": 16
+   }
+  },
+  "18": {
+   "rows": 256,
+   "valid": 242,
+   "single_layer_after": 256,
+   "seconds": 55.514304637908936,
+   "gap_out_of_window": 0,
+   "kinds": {
+    "clump": 16,
+    "scatter": 16
+   }
+  },
+  "19": {
+   "rows": 256,
+   "valid": 251,
+   "single_layer_after": 256,
+   "seconds": 51.052738428115845,
+   "gap_out_of_window": 0,
+   "kinds": {
+    "clump": 16,
+    "scatter": 16
+   }
+  },
+  "20": {
+   "rows": 256,
+   "valid": 248,
+   "single_layer_after": 256,
+   "seconds": 57.449591875076294,
+   "gap_out_of_window": 0,
+   "kinds": {
+    "clump": 16,
+    "scatter": 16
+   }
+  },
+  "21": {
+   "rows": 256,
+   "valid": 247,
+   "single_layer_after": 256,
+   "seconds": 54.6613564491272,
+   "gap_out_of_window": 0,
+   "kinds": {
+    "clump": 16,
+    "scatter": 16
+   }
+  },
+  "22": {
+   "rows": 256,
+   "valid": 246,
+   "single_layer_after": 256,
+   "seconds": 53.71162414550781,
+   "gap_out_of_window": 0,
+   "kinds": {
+    "clump": 16,
+    "scatter": 16
+   }
+  },
+  "23": {
+   "rows": 256,
+   "valid": 250,
+   "single_layer_after": 256,
+   "seconds": 55.861090898513794,
+   "gap_out_of_window": 0,
+   "kinds": {
+    "clump": 16,
+    "scatter": 16
+   }
+  },
+  "24": {
+   "rows": 256,
+   "valid": 247,
+   "single_layer_after": 256,
+   "seconds": 59.39876890182495,
+   "gap_out_of_window": 0,
+   "kinds": {
+    "clump": 16,
+    "scatter": 16
+   }
+  },
+  "25": {
+   "rows": 256,
+   "valid": 247,
+   "single_layer_after": 256,
+   "seconds": 57.19689607620239,
+   "gap_out_of_window": 0,
+   "kinds": {
+    "clump": 16,
+    "scatter": 16
+   }
+  },
+  "26": {
+   "rows": 256,
+   "valid": 249,
+   "single_layer_after": 256,
+   "seconds": 50.476250648498535,
+   "gap_out_of_window": 0,
+   "kinds": {
+    "clump": 16,
+    "scatter": 16
+   }
+  },
+  "27": {
+   "rows": 256,
+   "valid": 252,
+   "single_layer_after": 256,
+   "seconds": 51.84131979942322,
+   "gap_out_of_window": 0,
+   "kinds": {
+    "clump": 16,
+    "scatter": 16
+   }
+  },
+  "28": {
+   "rows": 256,
+   "valid": 247,
+   "single_layer_after": 256,
+   "seconds": 56.89528942108154,
+   "gap_out_of_window": 0,
+   "kinds": {
+    "clump": 16,
+    "scatter": 16
+   }
+  },
+  "29": {
+   "rows": 256,
+   "valid": 255,
+   "single_layer_after": 256,
+   "seconds": 50.243470907211304,
+   "gap_out_of_window": 0,
+   "kinds": {
+    "clump": 16,
+    "scatter": 16
+   }
+  },
+  "30": {
+   "rows": 256,
+   "valid": 249,
+   "single_layer_after": 256,
+   "seconds": 56.89860463142395,
+   "gap_out_of_window": 0,
+   "kinds": {
+    "clump": 16,
+    "scatter": 16
+   }
+  },
+  "31": {
+   "rows": 256,
+   "valid": 251,
+   "single_layer_after": 256,
+   "seconds": 55.422884941101074,
+   "gap_out_of_window": 0,
+   "kinds": {
+    "clump": 16,
+    "scatter": 16
+   }
+  },
+  "32": {
+   "rows": 256,
+   "valid": 251,
+   "single_layer_after": 256,
+   "seconds": 52.09716057777405,
+   "gap_out_of_window": 0,
+   "kinds": {
+    "clump": 16,
+    "scatter": 16
+   }
+  },
+  "33": {
+   "rows": 256,
+   "valid": 252,
+   "single_layer_after": 256,
+   "seconds": 52.841689348220825,
+   "gap_out_of_window": 0,
+   "kinds": {
+    "clump": 16,
+    "scatter": 16
+   }
+  },
+  "34": {
+   "rows": 256,
+   "valid": 231,
+   "single_layer_after": 256,
+   "seconds": 55.088072061538696,
+   "gap_out_of_window": 0,
+   "kinds": {
+    "clump": 16,
+    "scatter": 16
+   }
+  },
+  "35": {
+   "rows": 256,
+   "valid": 245,
+   "single_layer_after": 256,
+   "seconds": 54.18816089630127,
+   "gap_out_of_window": 0,
+   "kinds": {
+    "clump": 16,
+    "scatter": 16
+   }
+  },
+  "36": {
+   "rows": 256,
+   "valid": 254,
+   "single_layer_after": 256,
+   "seconds": 49.590168476104736,
+   "gap_out_of_window": 0,
+   "kinds": {
+    "clump": 16,
+    "scatter": 16
+   }
+  },
+  "37": {
+   "rows": 256,
+   "valid": 248,
+   "single_layer_after": 256,
+   "seconds": 56.929712533950806,
+   "gap_out_of_window": 0,
+   "kinds": {
+    "clump": 16,
+    "scatter": 16
+   }
+  },
+  "38": {
+   "rows": 256,
+   "valid": 247,
+   "single_layer_after": 256,
+   "seconds": 56.437211990356445,
+   "gap_out_of_window": 0,
+   "kinds": {
+    "clump": 16,
+    "scatter": 16
+   }
+  },
+  "39": {
+   "rows": 256,
+   "valid": 242,
+   "single_layer_after": 256,
+   "seconds": 54.99253058433533,
+   "gap_out_of_window": 0,
+   "kinds": {
+    "clump": 16,
+    "scatter": 16
+   }
+  },
+  "40": {
+   "rows": 256,
+   "valid": 246,
+   "single_layer_after": 256,
+   "seconds": 53.2081458568573,
+   "gap_out_of_window": 0,
+   "kinds": {
+    "clump": 16,
+    "scatter": 16
+   }
+  },
+  "41": {
+   "rows": 256,
+   "valid": 247,
+   "single_layer_after": 256,
+   "seconds": 55.524149656295776,
+   "gap_out_of_window": 0,
+   "kinds": {
+    "clump": 16,
+    "scatter": 16
+   }
+  },
+  "42": {
+   "rows": 256,
+   "valid": 254,
+   "single_layer_after": 256,
+   "seconds": 49.64900350570679,
+   "gap_out_of_window": 0,
+   "kinds": {
+    "clump": 16,
+    "scatter": 16
+   }
+  },
+  "43": {
+   "rows": 256,
+   "valid": 256,
+   "single_layer_after": 256,
+   "seconds": 54.43902826309204,
+   "gap_out_of_window": 0,
+   "kinds": {
+    "clump": 16,
+    "scatter": 16
+   }
+  },
+  "44": {
+   "rows": 256,
+   "valid": 255,
+   "single_layer_after": 256,
+   "seconds": 51.09683132171631,
+   "gap_out_of_window": 0,
+   "kinds": {
+    "clump": 16,
+    "scatter": 16
+   }
+  },
+  "45": {
+   "rows": 256,
+   "valid": 232,
+   "single_layer_after": 256,
+   "seconds": 53.72288537025452,
+   "gap_out_of_window": 0,
+   "kinds": {
+    "clump": 16,
+    "scatter": 16
+   }
+  },
+  "46": {
+   "rows": 256,
+   "valid": 248,
+   "single_layer_after": 256,
+   "seconds": 53.746155977249146,
+   "gap_out_of_window": 0,
+   "kinds": {
+    "clump": 16,
+    "scatter": 16
+   }
+  }
+ },
+ "complete": true,
+ "argv": [
+  "Genesis/chain_collection.py",
+  "--mode",
+  "chains",
+  "--out",
+  "Genesis/data/narrow_l20_n20/train_v2",
+  "--n-chunks",
+  "47",
+  "--steps",
+  "8",
+  "--n-envs",
+  "32",
+  "--starts",
+  "mixed",
+  "--clump-fn",
+  "Genesis.clump_states:clump_starts",
+  "--sampler",
+  "{\"pile_aware\": true, \"min_swath_particles\": 3, \"push_length\": 0.02, \"start_gap_range\": [0.005, 0.005]}",
+  "--seed",
+  "2003"
+ ]
+}

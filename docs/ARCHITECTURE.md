@@ -98,6 +98,181 @@ model/
                         consolidation/are skipped/broken, see its README)
   futureintegration/    salvaged architectures not yet promoted to the top
                         level — see its README for the breakdown
+  retrieval/            EXP-0059: retrieval-based transition model groundwork
+                        (`docs/experimental_design/retrieval_based_modeling.md`).
+                        Genesis-free (torch/numpy/scipy only). A PARTICLE-IN/
+                        PARTICLE-OUT contract (`predict_particles(states0,
+                        p_start, p_stop) -> states1`), deliberately NOT the
+                        occupancy-in/out contract `simple_mpc.adapters
+                        .OCC_ADAPTERS` uses — a retrieval model needs the
+                        query's raw cube positions to retrieve against, which
+                        an occupancy grid has already discarded.
+    frame.py                 metre-space push-frame canonicalisation of raw
+                            (x, y) positions and cube yaws (origin at the
+                            push START, +u along the push direction, +v
+                            lateral) — the object-centred analogue of
+                            `transforms.functional.push_frame_transform`,
+                            which is image-centred (origin at the push
+                            MIDPOINT) and only warps rasterised occupancy.
+                            `tray_corners_push_frame` gives the tray walls in
+                            the same per-transition frame.
+    bank.py                  `TransitionBank` — a flat, per-object transition
+                            database (`D = {(s_i, a_i, s'_i, Delta_i)}`) built
+                            from DS-0008 (+DS-0010), canonicalised into every
+                            transition's own push frame; `moved` per-object
+                            mask (displacement threshold, a parameter) and
+                            `moved_count_histogram` for the sanity stat.
+                            Save/load persists it as one `.pt` file.
+                            `load_curated` (2026-09-28, DS-0014) is the
+                            preferred loader going forward: reads the
+                            curated bank (interaction-set mask `in_set` +
+                            ISS-010 touchdown-legality flag `legal` per
+                            row), excluding illegal rows by default —
+                            `.build()`/`.from_states()` are UNCHANGED (still
+                            what `model/retrieval_nfd/donors.py` asserts its
+                            own bank matches row-for-row).
+    distance.py               `DistanceConfig` — a configurable windowed
+                            symmetric push-frame chamfer distance (optional
+                            cap + separate mismatch penalty for "no
+                            plausible match", corridor upweighting for
+                            cubes the plate actually sweeps vs merely
+                            nearby, optional wall-distance feature) and
+                            `topk_search`: an EXHAUSTIVE, GPU-batched top-k
+                            search over the whole bank (chunked over the
+                            bank dimension so a `(query, bank_chunk, n, n)`
+                            tensor stays bounded regardless of bank size —
+                            see `bank.py`'s `MAX_RECOMMENDED_BANK_SIZE`).
+                            `bank_valid`/query `valid` masks stop a
+                            transition with nothing in its own window from
+                            winning on a spurious zero-weight "0 distance".
+    predictor.py             `PersistencePredictor` (states1=states0; the
+                            reference floor — accuracy=0 by construction of
+                            `eval_narrow.py`'s own `acc()`) and
+                            `RetrievalPredictor` (configurable whole-bank
+                            k-NN via `distance.py`; aggregations `nn1` /
+                            `cube_median` / `cube_weighted_mean` /
+                            `occ_mean` / `occ_weighted_mean`; a Hungarian
+                            cube correspondence transfers each neighbour's
+                            push-frame displacement/yaw-delta, gated by the
+                            donor cube's own `moved` flag). **FIXED
+                            2026-09-28** (a real bug, not a toggle): the
+                            match used to run over ALL n query/donor cubes
+                            with no distance limit, so a query cube far from
+                            everything could inherit a large,
+                            physically-nonsensical displacement from
+                            whatever donor cube it was force-paired with
+                            (`retrieval_debug.py`'s `q0908` figure). Now both
+                            sides are restricted to their own geometric
+                            interaction set (`interaction.py`, read from
+                            `bank.in_set` when curated, else every cube is
+                            eligible — old behaviour) AND every matched pair
+                            is gated by `distance_gate` (default 6mm) —
+                            farther apart transfers nothing, the cube stays.
+                            `NearestTransitionPredictor` is a thin k=1/nn1
+                            backward-compatible alias.
+                            **Hedged occupancy is scoring-only** (2026-09-28
+                            user guidance): `predict_particles` ALWAYS
+                            returns one CLEAN, committed-to state — the
+                            `occ_mean`/`occ_weighted_mean` aggregations'
+                            hedge is exposed ONLY via the optional
+                            `predict_occ` method (same `hasattr` pattern as
+                            `WarpedNFDPredictor.predict_occ_canonical`), and
+                            only `eval_retrieval.py`'s single-step
+                            `accuracy_1` uses it — rollout and `slateN`
+                            always call `predict_particles`. Per-cube
+                            overlap is NOT resolved (documented limitation).
+                            Every predictor also exposes
+                            `predict_particles_with_confidence` — the clean
+                            prediction plus `top1_dist`/`knn_disagreement`
+                            computed from the SAME search (no extra cost),
+                            for finding actions the bank predicts least
+                            well, not for scoring.
+    val_split.py              leakage-safe DS-0008 train/validation split
+                            for hyperparameter tuning, grouped by CHAIN
+                            (`(file_index, chain_env)`, never row-random —
+                            a chain's 8 steps are near-duplicates) so tuning
+                            never touches DS-0009. Returns a tuning
+                            `TransitionBank` (held-in DS-0008 chains + all
+                            of DS-0010) and the held-out chains repackaged
+                            in `eval_retrieval.py`'s chain-dict shape.
+                            DS-0008 has no same-state action pools, so
+                            `slateN` cannot be validated this way — only
+                            `accuracy_1`/`rollout_accuracy_4` can; `slateN`
+                            is reported as a DS-0009 TEST number only, for
+                            the shortlisted best configs
+                            (`sweep_retrieval.py`).
+    interaction.py            (2026-09-28, coordinator follow-up B) `interaction_set` — a
+                            TRUTH-FREE geometric "affected set" per transition (design doc
+                            section 6.1): cubes the blade sweeps + a forward contact-chain
+                            closure, batched (no ground truth needed, so a query — including a
+                            rollout step with no future — can always compute it). Tuned on
+                            training data (tau=12mm, angle_max_deg=60) to reach ~96% recall of
+                            the bank's own truth `moved` set at ~90% precision. `recall_precision`
+                            is the small pooled-over-cubes scorer that tuning used.
+  retrieval_nfd/        EXP-0059 section 8: "NFD with a retrieved reference"
+                        -- an IMAGE-space model (occupancy-in/out, plugs into
+                        `simple_mpc.adapters.OCC_ADAPTERS` like every other
+                        NFD variant), NOT the particle-in/out `retrieval/`
+                        package above. The narrow NFD's UNet
+                        (features [4,8,16], residual head) with 2 extra
+                        input channels: a k=1 (eval) / random-of-top-3
+                        (train) retrieved donor transition's before/after
+                        cubes, mapped from the DONOR's push frame into the
+                        QUERY's push frame then world, and rasterised with
+                        the SAME cv2-box rasteriser (`render_cube_boxes_batch`,
+                        reimplementing `Genesis.training.dataset.PileSweepData
+                        ._draw_particle_grid`'s box path) that produces channel
+                        0, which itself comes directly from the REAL
+                        `Baselines.NFD.nfd_lib.PileSweepData3Ch` -- bit-exact
+                        with the narrow NFD's own training data (a from-scratch
+                        soft-cube approximation was tried and reverted once the
+                        donor SEARCH was fixed to be fast enough that the exact
+                        rasteriser fit the time budget). Everything is
+                        precomputed ONCE into a flat cache
+                        (`cache/retrieval_ref_cache.pt`) -- training reads no
+                        raw corpus and does no retrieval search.
+    render.py                 `render_cube_boxes_batch`: the cv2-box
+                            rasteriser, batched over rows in a Python loop
+                            (cv2 has no batched primitive; measured ~2ms/row).
+    donors.py                 also `build_query_rows_from_pilesweepdata`,
+                            which builds channels 0-2/target + raw states
+                            directly off `PileSweepData3Ch` (bit-exact,
+                            not re-derived); the donor top-k search is fully
+                            vectorised (chain keys -> integer ids, boolean
+                            mask + stable argsort per chunk -- the earlier
+                            per-row `.tolist()` Python loop was the actual
+                            ~70-minute bottleneck, not the chamfer search).
+    donors.py                 reloads DS-0008+DS-0010 with a parallel
+                            per-row CHAIN KEY (file+chain_env / source_file)
+                            `model/retrieval/bank.py::TransitionBank` itself
+                            does not keep, so donor search can exclude the
+                            query's own chain; the frozen EXP-0059 R1
+                            sweep-chosen retrieval key; chain-excluding
+                            top-k search and a corridor-cube-count-bucketed
+                            random donor for the control model.
+    precompute.py             one-time cache builder; runs the MANDATORY
+                            unit tests inline (query's own cubes through the
+                            donor-render path reproduce occ0; the push-frame
+                            v-mirror round-trips against an independently
+                            derived world-space reflection).
+    dataset.py / lib.py       flat cache-backed `Dataset` + its
+                            `nfd-genesis-retrieval-ref` dataset-registry
+                            entry (`registry.dataset_registry
+                            .EulerianDatasetWrapper` contract); reuses
+                            `Baselines.NFD.nfd_lib`'s existing generic
+                            `nfd-unet3ch` model factory unchanged
+                            (`in_channels: 5`) -- no new model type.
+    predictor.py              `RetrievalRefPredictor`, matching
+                            `Baselines/NFD/predictor.py::NFDPredictor`'s
+                            `predict_occ(batch)` contract, PLUS
+                            `predict_step_particles(occ0, act, states0)`,
+                            which `eval_extended.py::eval_occ_model` now
+                            dispatches to (patched, 3 call sites) whenever a
+                            TRUE particle state is available -- pseudo-cube
+                            extraction from `occ0` via connected-components
+                            centroids is now only a fallback for rollout
+                            steps after the first. `zero_ref=True` is the test-time
+                            zeroed-reference control.
   warped_nfd/           "warped NFD": the NFD UNet baseline predicting in
                         the canonical PUSH FRAME instead of the world frame
                         (a new model family, not a minor parameter change
@@ -194,6 +369,26 @@ simple_mpc/
                         heuristic models, via adapters)
   adapters.py           EulerianAdapter, GNNAdapter, make_adapter
                         (the adapter surface defined in INTERFACES.md §3.4)
+  learned_mpc.py        closed-loop MPC with a LEARNED model as the objective under
+                        a fixed wall-clock budget per decision: planners rank / gd
+                        (projected Adam, restarts) / cem / mppi over
+                        OCC_ADAPTERS models; progress scored with soft truth
+                        (occ_for_scoring); project_push = the 20-70 mm / 4 mm
+                        legality projection (EXP-0023's). Executor-agnostic
+                        (`execute` callable), per-step checkpoint hook. TODO G1b
+  value_functions.py    capacity-aware MPC value functions (sliced EMD to the
+                        uniform goal target, linearised-EMD distance field,
+                        over-capacity repulsion) + coverage metrics/ceiling;
+                        used via ModelObjective(value=...) (EXP-0055)
+  goal_aware_sampling.py goal-aware selection of the planner's starting
+                        candidates from a pile-aware bank (carry model,
+                        misplaced mass, deposit quality, OT proposals) (EXP-0056)
+  gt_bank.py            GroundTruthBank -- append-only store of simulated push
+                        OUTCOMES (final particle states), keyed by execution
+                        path (SIM_PATHS) + start-state hash + exact action
+                        bytes, so any goal/value fn can be re-scored without
+                        Genesis. Genesis-free (evaluate() takes a simulate
+                        callable). Payload: datasets/DS-0004-ground-truth-bank/
   action_sampler.py     candidate-action samplers (uniform, physics-aware,
                         collision-aware, OT-guided)
   ot_planner.py         OTPlannerSparse (Sinkhorn OT action initializer)
@@ -520,6 +715,12 @@ Baselines/common/
                         pile; placing it in a workspace is the caller's job.
                         Backs datasets/DS-0003-synthetic-states/ (2026-09-17
                         rewrite, replacing sample_synthetic_state above).
+  paired_stats.py       paired, state-resampled model comparison for every
+                        benchmark: variance_components, friedman,
+                        paired_comparison (bootstrap CI + sign-flip p + Holm),
+                        rank_stability, required_n / power_table. The STATE is
+                        the replication unit; input (models, states), higher =
+                        better (EXP-0026)
 
 Baselines/NFD/
   nfd_lib.py            the plain NFD baseline: registers dataset

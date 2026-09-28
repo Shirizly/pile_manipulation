@@ -98,8 +98,10 @@ def _build_nfd_genesis_3ch(cfg: dict, split: str) -> EulerianDatasetWrapper:
 
     Config keys: paths, val_pct (5), test_pct (5), resolution_scale (1.0),
     include_physics (false -- nfd-unet3ch consumes no physics),
-    min_push_length_m (None), physics.normalization (bounds, unused unless
-    include_physics=true).
+    min_push_length_m (None), exclude_flagged (False -- drop gap_out_of_
+    window/invalid/illegal/null-transition rows, see PileSweepData's own
+    docstring; EXP-0059 clean-data re-collection, 2026-09-28), physics.
+    normalization (bounds, unused unless include_physics=true).
     """
     bounds = (
         PhysicsBounds.from_config(cfg["physics"])
@@ -117,6 +119,7 @@ def _build_nfd_genesis_3ch(cfg: dict, split: str) -> EulerianDatasetWrapper:
         min_push_length_m=(
             float(min_push_length_m) if min_push_length_m is not None else None
         ),
+        exclude_flagged=bool(cfg.get("exclude_flagged", False)),
     )
     return EulerianDatasetWrapper(
         raw,

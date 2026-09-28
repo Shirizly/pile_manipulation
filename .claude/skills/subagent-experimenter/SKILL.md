@@ -52,6 +52,11 @@ end that. Add to it when you find something it lacks.
 else. A comparison carrying only `accuracy` is not finished — repeat it under
 `slateN` before concluding. See `experiment-log`'s Metrics section.
 
+**Checkpointing is mandatory** for anything longer than a few minutes: rewrite
+results/manifests atomically after every unit of work so a cut-off run loses
+at most one unit. The full rule is in `project-overview`, "Every job must
+survive being cut off".
+
 ## Measurement traps this repo has already hit
 
 - **Assert the device.** `eval_baseline.py::_predictor_batch` leaves tensors on CPU, so

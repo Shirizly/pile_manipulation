@@ -1,0 +1,9 @@
+# RUN-0001 — per-slate slateN for 12 models x 3 corpora (eval_report harness)
+
+- **Commit:** 3bae8cd7, dirty (uncommitted: this session's edits to `Baselines/common/eval_report.py` (per-slate output, additive), `Baselines/common/goals.py`, `simple_mpc/adapters.py`, new `Baselines/common/paired_stats.py`, `simple_mpc/gt_bank.py`; plus pre-existing user edits to eval_report.py's MODELS dict and unrelated EXP-0022 logs). The exact run-time git state is in the `.json` meta beside the log.
+- **Python:** /home/alon/anaconda3/envs/pme/bin/python via `scripts/run_probe.py` (python -u, 4 threads). Ledger entries: `runs/COMMANDS.jsonl` (run_probe's actual path, invariant run-probe-ledger-path-matches-doc is broken), copied into experiments/COMMANDS.jsonl.
+- **Command:** see `exp0026_slaten_per_slate.json` (argv): `Baselines/common/eval_report.py --out-prefix experiments/EXP-0026-benchmark-power/artifacts/RUN-0001-slaten-per-slate/report --models <12> --corpora L20mm,L40mm,randlen_test`
+- **Models:** nfd_randlen, nfd_warped_randlen, nfd_warped_randlen_flipaug, nfd_warped_randlen_flipaug_epoch30, nfd_residual_warped_flipaug_randlen, nfd_residual_worldframe_noaug_ep43 (interrupted-training snapshot, not step-matched), linear_switched_res32/res64, linear_single_res32/res64, gnn_l20l40, gnn_randlen_n30 — checkpoints as registered in `eval_report.MODELS`.
+- **Runtime:** ~25 min, all predictions on CPU (the harness's batch device). A first attempt failed at import (background shell lacked the conda env) and was discarded before producing output.
+- **Output:** `artifacts/RUN-0001-slaten-per-slate/report.json` (per-slate capture per goal x value fn).
+- **Check:** every goal-averaged number in experiments/HANDOFF-model-benchmarks.md's reference table is reproduced to 3 decimals; the stored Baselines/common/runs/cross_corpus_report.json (2026-09-10) is NOT (diffs up to 0.063) and is stale.

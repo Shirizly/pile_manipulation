@@ -310,6 +310,51 @@ ceiling from this source alone. Requires R >= 3 repeats per action to be
 non-degenerate; reported per state, not pooled, since `between_var` differs
 by orders of magnitude state to state (a flat state has little to rank).
 
+## Ground-truth scoring (changed 2026-09-24, EXP-0027 / EXP-0028)
+
+**Every true `dv` is now computed from particle states drawn with a
+mass-conserving soft splat, not from a hard-footprint occupancy image.**
+Model predictions are unchanged (scored as the images the models output).
+
+*Why.* The hard rasterisers give one particle 4, 5 or 6 pixels depending on
+its sub-pixel position (`simple_mpc.adapters.occ_from_particles`: 1.25 px
+disk; `PileSweepData._draw_particle_grid`: `int()`-truncated `cv2` boxes),
+and `lyapunov` divides by the total occupied pixels. On 83 repeats of one push
+whose particles landed within ~1 mm of each other, image-based `dv` spread
+0.019 (sd 4.0e-3, ~12% of the 3.2e-2 between-action sd on that state), while
+the same distance field sampled at particle centres spread 0.0015 (sd 3e-4).
+Fixing only the divisor (a fixed per-state normaliser) left sd 2.5e-3; the soft
+splat gives 2e-4 with an unchanged mean (-0.0485 vs -0.0487). Invariant
+`occupancy-dv-subpixel-stable` (broken) records the defect;
+`score-occupancy-subpixel-stable` (holds) the fix.
+
+*What.* `transforms/functional.py::splat_particles_mass` -- a separable
+Gaussian per particle (sigma `SCORE_SPLAT_SIGMA_PX` = 1.0 px), each normalised
+to exactly the same mass wherever it falls, overlaps added. Two entry points:
+- `simple_mpc.adapters.occ_for_scoring(states)` -- the 64x64 +/-64 mm slate
+  grid (DS-0001, gradient benchmarks, the ground-truth bank); same grid and
+  axis convention as `occ_from_particles`.
+- `Baselines/common/eval_report.py::truth_for_scoring(cell, rows)` -- the
+  corpus-image frame, redrawn from each row's `states_`
+  (u = pos * to_pxl + ctr - 1.0; the -1.0 is measured: it centres the soft
+  truth on the dataset's own image to within 0.2 px on L40mm and randlen_test).
+
+*Harness.* `eval_report.py --truth-scoring soft` is the default;
+`--truth-scoring image` reproduces every slateN reported before 2026-09-24,
+and each output records `capture.truth_scoring`. **Numbers from the two
+settings are not the same quantity; compare within one setting.** The effect
+on the reference table is small (EXP-0028: lyapunov rank agreement tau
+0.91-0.97, mean shifts ~0.01, paired model-vs-model noise unchanged) -- the
+harness's slate-to-slate noise is model x state / pool variation, not truth
+aliasing. The fix matters most where true outcomes are compared directly
+(repeats, gradient benchmarks, closed-loop progress).
+
+*Not changed.* `mass_in_region` / `signed_mass_in_region` are computed with the
+same functions on whichever image they are given, so under soft truth they
+also stop aliasing. `accuracy` (image prediction) still compares against the
+dataset's hard `occ1` -- it is an image-reconstruction score and the models
+were trained on that representation.
+
 ## `gradient_gain` and friends (added 2026-09-23, from EXP-0023)
 
 Every metric above scores a model as a **ranker** of a fixed candidate pool.
@@ -356,16 +401,14 @@ own metadata; EXP-0023 ran `corner`/`lyapunov` only).
   `Baselines/common/goals.py::slate_n_capture` takes `higher_is_better` and
   switches argmax/argmin accordingly.
 - The three difference metrics above (`gradient_gain`, `pool_escape`,
-  `regret_vs_oracle`) are written so that **positive = better**, but their
-  subtraction order assumes the COST sense, i.e. they are currently correct
-  **only for `lyapunov`**. Using them with a mass value function requires
-  flipping the subtraction order, exactly as `slate_n_capture` flips argmax to
-  argmin.
-- `simple_mpc.adapters.assert_dv_convention` asserts the cost sense **for
-  `lyapunov` specifically** — it builds its test from the distance field and
-  its own assertion message names Lyapunov. It does not and cannot check a
-  mass value function, so passing it is not evidence that a mass-based `dv` is
-  signed as expected.
+  `regret_vs_oracle`) read **positive = better**. As first written (EXP-0023's
+  `stage3_analyse.py`) their subtraction order assumed the COST sense; use
+  `goals.gradient_benchmark_metrics(..., higher_is_better=...)`, which flips it
+  exactly as `slate_n_capture` flips argmax to argmin.
+- `simple_mpc.adapters.assert_dv_convention` checks the adapter's declared
+  `value_fn` / `higher_is_better` against the registry in `goals.py` AND
+  against goal geometry (moving mass onto the goal must read as an
+  improvement), so it now covers mass value functions as well.
 
 EXP-0023's `DESIGN.md` originally stated the difference metrics with the
 opposite subtraction order under an implicit reward convention; that
@@ -373,11 +416,90 @@ discrepancy is documented and corrected in both that design doc and its
 record.
 
 **Report per state, never only as a mean.** These are per-optimisation
-quantities on a handful of states, not pool statistics, and the honest power
-check is the spread of arm means against the spread of state means: if
-between-arm variation does not exceed between-state variation, the design
-could not separate the models and the record must say so.
+quantities on a handful of states, not pool statistics.
+
+**The power check is PAIRED (changed 2026-09-23, EXP-0026).** The earlier rule
+here -- "between-arm sd of means must exceed between-state sd of means" -- is
+not a power check: the between-state sd is a property of the state population
+and does not shrink with more states, and it is not the noise an arm-vs-arm
+comparison sees (every arm runs on the same states, so state difficulty
+cancels). Use `Baselines/common/paired_stats.py` instead: per-pair differences
+per state, bootstrap CI over states, sign-flip permutation p with Holm over
+pairs, Friedman / two-way ANOVA for the global model effect, and
+`required_n(sd_diff, delta)` for sizing. Note the floor: an exact sign-flip test
+on S states cannot go below p = 2/2^S, so with S = 10 and 15 Holm-corrected
+pairs NO pair can reach 0.05 whatever the data -- size S from `required_n`
+first.
+
+**`pool_escape` carries no ranking information beyond `dv_grad`.** Its
+`pool_ceiling` term is constant per state, so it cancels in every arm-vs-arm
+difference (EXP-0026: identical pairwise statistics). Keep it for its absolute
+reading ("did GD beat the pool?"), not for ordering arms. `gradient_gain` is the
+difference of two per-arm quantities and is the NOISIEST of the four; for
+ranking models as MPC objectives, lead with `dv_grad` (EXP-0026).
+
+**Sense-safe implementation:** `Baselines/common/goals.py::gradient_benchmark_metrics`
+computes all four with a REQUIRED `higher_is_better` keyword (look it up with
+`higher_is_better_for(value_fn)`), so they are correct for mass value
+functions too; `simple_mpc.adapters.assert_dv_convention` now checks an
+adapter's declared `value_fn`/`higher_is_better` against goal geometry
+(tests: `tests/test_value_sense.py`). TODO M4.
 
 **Report bound-hit rates beside them.** An arm whose optimiser is pinned to
 the workspace or push-length constraint is being scored on the constraint,
 not on its gradients.
+
+## `achieved_fraction` (added 2026-09-25, from EXP-0046)
+
+**`achieved_fraction`** — closed-loop progress normalised by the goal's
+reachable ceiling. For one episode on goal g with true soft-lyapunov values
+V_0 (start), V_k (after k pushes), and the goal ceiling V*(g):
+
+    achieved_fraction_k = (V_0 - V_k) / (V_0 - V*(g))
+
+V*(g) = the lowest `lyapunov(occ_for_scoring(states), dist_field_from_mask(g))`
+over single-layer placements of the episode's 20 non-overlapping axis-aligned
+5 mm cubes inside the tray (centres on a 0.5 mm grid; greedy + lattice +
+coordinate-descent packing; EXP-0046 `code/vstar.py`, table in
+`results/vstar.json`). 1 = reached the best flat arrangement, 0 = no progress.
+V* is an achievable (upper-bound) optimum of a heuristic packer, and
+stacking is excluded, so values slightly > 1 are possible in principle.
+Report per episode, then mean over episodes (and the ratio of means
+mean(V_0 - V_k) / mean(V_0 - V*) alongside it). For the 30 `many` goals
+V* is 0-0.006 (vs V_0 ~ 0.3), so `achieved_fraction` ~ (V_0 - V_k)/V_0;
+it matters mainly for goals whose capacity < 20 cubes (letter_I, J, Y).
+
+## `completion_time` (added 2026-09-25, EXP-0051; the headline control utility)
+For one closed-loop episode with per-push planning times t_1..t_K and a simulated execution
+time t_act per push: completion push k* = first k >= 1 with mass_in_region(s_k) / total mass
+>= theta x the goal's optimum (EXP-0046 `mass_frac_best_placement`; theta = 0.9 unless
+stated), or, for the coverage variant, covered_frac(s_k) >= 0.8 x the goal's layout ceiling.
+completion_time = sum_{j<=k*} t_j + t_act k*. Episodes that never complete are censored at
+K (1 s + t_act) when averaged (`mean_time_tact2_censored`: t_act = 2 s, K = 20 -> 60 s).
+Lower is better. Code: EXP-0051 / EXP-0055 `code/analyse.py`.
+
+## `coverage_emd`, `covered_frac` (added 2026-09-25, EXP-0055)
+Uniform-coverage metrics for "the material should match the shape", on SCORING images
+(`occ_for_scoring`), code `simple_mpc/value_functions.py::coverage_metrics`:
+- `coverage_emd` = sliced W1 between the mass-normalised image p and the uniform distribution
+  over the goal mask, 64 px grid, 64 equally spaced projection directions over [0, pi),
+  distances in 64-px pixel units: mean over directions of sum_i |CDF_p - CDF_t|_i * gap_i
+  along the sorted pixel projections. Lower is better. Reported as `emd_ach` =
+  (E_0 - E_k) / (E_0 - E*), E* the goal's ceiling.
+- `covered_frac` = |{goal pixels x : blur_{sigma=1.25 px}(p)(x) >= 0.5 / |mask|}| / |mask|.
+  Higher is better. Reported as `cover_rel` = covered_frac / ceiling.
+- Ceiling per goal: best (lowest E) of 8 Lloyd layouts of 20 cube centres over the mask
+  pixels (`uniform_layout`, seeds 0-7), rasterised with occ_for_scoring. For large goals
+  (quadrants) 20 cubes cannot cover the mask, so the ceiling covered_frac is < 1.
+
+## `oracle_completion_pushes` (added 2026-09-25, EXP-0057)
+Number-of-actions-to-solve for the simulator-as-model oracle ablation, per episode: the
+completion push k* from `completion_time` above (mass-only variant, theta = 0.9), directly on
+the recorded push index (not converted to wall time -- the oracle's planning time is the
+quantity under study, not held fixed). Never-solved-by-push-20 episodes are CENSORED AT 21
+(steps + 1), distinct from `completion_time`'s K-push convention, so the censored value is
+never confused with an episode that solved exactly on the last push. Reported per cell as:
+`frac_solved`, `median_pushes_solved_only` (solved episodes only), and `censored_mean_pushes`
+(mean over all episodes with unsolved -> 21). Paired differences (same task set, same cell
+comparison) use `delta_completion_pushes` = target cell's k* minus the default cell's k*, per
+(goal, start), bootstrapped 95% CI. Code: `experiments/EXP-0057-*/code/analyse.py`.

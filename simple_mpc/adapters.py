@@ -957,6 +957,18 @@ def _nfd_residual_unwarped(ckpt):
     return f
 
 
+def _retrieval_nfd_ref(ckpt, zero_ref=False):
+    """EXP-0059 section 8: NFD with a retrieved reference (`model/
+    retrieval_nfd/predictor.py::RetrievalRefPredictor`). `zero_ref=True` is
+    the "test-time zeroed reference" control (iii): same checkpoint, donor
+    channels forced to 0 at inference."""
+    def f(device, goal_shape):
+        from model.retrieval_nfd.predictor import RetrievalRefPredictor
+        return PredictorGradientAdapter(
+            "x", RetrievalRefPredictor(ckpt, zero_ref=zero_ref), device, goal_shape)
+    return f
+
+
 def _switched(ckpt_path, res=32, gate="soft"):
     def f(device, goal_shape):
         ck = torch.load(ckpt_path, map_location="cpu", weights_only=False)
@@ -1007,6 +1019,38 @@ for _res in (32, 64):
     _ck = f"Baselines/LinearForesight/runs/operator_narrow_l20_res{_res}.pt"
     if _os.path.exists(_ck):
         OCC_ADAPTERS[f"linear_narrow_l20_res{_res}"] = _switched(_ck, res=_res)
+
+# EXP-0059 clean-data re-collection (2026-09-28): v2 (ISS-010-fix sampler, train_v2/DS-0015)
+# narrow-domain models, same recipe as the v1 (nfd_3ch_narrow_l20 / linear_narrow_l20_res{32,64})
+# entries above, trained on the clean corpus for a fair v1-vs-v2 / retrieval comparison.
+if _os.path.exists("Baselines/NFD/runs/nfd_3ch_narrow_l20_v2/unet_best.pth"):
+    OCC_ADAPTERS["nfd_3ch_narrow_l20_v2"] = _nfd("Baselines/NFD/runs/nfd_3ch_narrow_l20_v2/unet_best.pth")
+for _ep in (10, 20, 30, 40, 50, 60):
+    _ck = f"Baselines/NFD/runs/nfd_3ch_narrow_l20_v2/unet_epoch_{_ep}.pth"
+    if _os.path.exists(_ck):
+        OCC_ADAPTERS[f"nfd_3ch_narrow_l20_v2_epoch{_ep}"] = _nfd(_ck)
+for _res in (32, 64):
+    _ck = f"Baselines/LinearForesight/runs/operator_narrow_l20_v2_res{_res}.pt"
+    if _os.path.exists(_ck):
+        OCC_ADAPTERS[f"linear_narrow_l20_v2_res{_res}"] = _switched(_ck, res=_res)
+
+# EXP-0059 section 8: NFD with a retrieved reference + controls, registered
+# once each is trained.
+_RETRIEVAL_NFD_CK = "model/retrieval_nfd/runs/retrieval_nfd_ref/unet_best.pth"
+_RETRIEVAL_NFD_RANDOM_CK = "model/retrieval_nfd/runs/retrieval_nfd_random_donor/unet_best.pth"
+_RETRIEVAL_NFD_NOREF_CK = "model/retrieval_nfd/runs/retrieval_nfd_noref/unet_best.pth"
+if _os.path.exists(_RETRIEVAL_NFD_CK):
+    OCC_ADAPTERS["retrieval_nfd_ref"] = _retrieval_nfd_ref(_RETRIEVAL_NFD_CK)
+    OCC_ADAPTERS["retrieval_nfd_ref_zeroed"] = _retrieval_nfd_ref(_RETRIEVAL_NFD_CK, zero_ref=True)
+if _os.path.exists(_RETRIEVAL_NFD_RANDOM_CK):
+    OCC_ADAPTERS["retrieval_nfd_random_donor"] = _retrieval_nfd_ref(_RETRIEVAL_NFD_RANDOM_CK)
+if _os.path.exists(_RETRIEVAL_NFD_NOREF_CK):
+    # no-reference twin (coordinator 07:34): donor channels always zero in
+    # TRAINING (dataset dropout_p=1.0) AND eval (zero_ref=True here too) --
+    # the fair "ref vs no-reference at all" control the earlier random-donor
+    # comparison could not isolate (random-donor's noisy-but-present channels
+    # may simply hurt, which is not the same claim as "reference helps").
+    OCC_ADAPTERS["retrieval_nfd_noref"] = _retrieval_nfd_ref(_RETRIEVAL_NFD_NOREF_CK, zero_ref=True)
 
 
 def make_occ_adapter(model_id: str, device: str = "cuda", goal_shape: str = "corner"):

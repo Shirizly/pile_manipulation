@@ -1,0 +1,2 @@
+/home/alon/anaconda3/envs/pme/bin/python -u Baselines/common/eval_report.py --out-prefix /tmp/claude-1000/-home-alon-Code-pile-manipulation/0200a1cb-398e-4e01-9553-2dce13cb540b/scratchpad/noaug_eval --models nfd_randlen,nfd_residual_warped_flipaug_randlen,nfd_residual_worldframe_noaug_ep30,nfd_residual_worldframe_noaug_ep43 --corpora L20mm,L40mm,randlen_test
+commit: 3bae8cd70fa83088426ddefb2ab93ff783e429d3

@@ -1,0 +1,14 @@
+# Narrow domain CLEAN v2 train (EXP-0059 clean-data re-collection, 2026-09-28):
+# Genesis/data/narrow_l20_n20/train_v2, ISS-010-fix sampler (ISS-010 tool-on-
+# cube bug fixed; legality/null/gap_out_of_window rows excluded via
+# exclude_flagged). Replaces genesis_narrow_l20_train_plus_extra.yaml
+# (DS-0008+DS-0010) for the v2 fair-comparison pass.
+type: genesis
+paths:
+  - narrow_l20_n20/train_v2
+val_pct: 0
+test_pct: 0
+resolution_scale: 0.5
+min_push_length_m: 0.0001
+include_physics: false
+exclude_flagged: true

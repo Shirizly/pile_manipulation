@@ -487,3 +487,301 @@ def test_duplicate_action_mask_wraps_the_heading_circle():
     headings = torch.tensor([torch.pi - 1e-4, -torch.pi + 1e-4])
     dup = duplicate_action_mask(starts, headings, pos_tol=1e-3, angle_tol=1e-3)
     assert dup.all()
+
+
+# ---------------------------------------------------------------------------
+# ISS-010 fix: touchdown legality (overlaps_rect_pairs_torch, quat_yaw,
+# pile_aware_action_batch) -- Genesis-free
+# ---------------------------------------------------------------------------
+
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+from Baselines.common.cube_overlap import overlaps_rect_pairs as _overlaps_np  # noqa: E402
+
+from action_sampling import (  # noqa: E402
+    overlaps_rect_pairs_torch, pile_aware_action_batch, quat_yaw,
+)
+
+
+def test_overlaps_rect_pairs_torch_matches_the_numpy_reference():
+    g = torch.Generator().manual_seed(21)
+    m = 500
+    xy_a = (torch.rand(m, 2, generator=g) - 0.5) * 0.05
+    xy_b = (torch.rand(m, 2, generator=g) - 0.5) * 0.05
+    yaw_a = torch.rand(m, generator=g) * torch.pi
+    yaw_b = torch.rand(m, generator=g) * torch.pi
+    half_a = torch.tensor([0.02, 0.001])
+    half_b = torch.tensor([0.0025, 0.0025])
+
+    got = overlaps_rect_pairs_torch(xy_a, yaw_a, half_a, xy_b, yaw_b, half_b)
+    want = _overlaps_np(xy_a.numpy(), yaw_a.numpy(), half_a.numpy(),
+                        xy_b.numpy(), yaw_b.numpy(), half_b.numpy())
+    assert (got.numpy() == want).all()
+
+
+def test_overlaps_rect_pairs_torch_agrees_at_a_tolerance_margin():
+    g = torch.Generator().manual_seed(22)
+    m = 300
+    xy_a = (torch.rand(m, 2, generator=g) - 0.5) * 0.05
+    xy_b = (torch.rand(m, 2, generator=g) - 0.5) * 0.05
+    yaw_a = torch.rand(m, generator=g) * torch.pi
+    yaw_b = torch.rand(m, generator=g) * torch.pi
+    half = torch.tensor([0.0025, 0.0025])
+
+    for tol in (0.0, 0.001, -0.001):
+        got = overlaps_rect_pairs_torch(xy_a, yaw_a, half, xy_b, yaw_b, half, tol=tol)
+        want = _overlaps_np(xy_a.numpy(), yaw_a.numpy(), half.numpy(),
+                            xy_b.numpy(), yaw_b.numpy(), half.numpy(), tol=tol)
+        assert (got.numpy() == want).all(), f"mismatch at tol={tol}"
+
+
+def test_quat_yaw_recovers_a_pure_z_rotation():
+    yaw = torch.tensor([0.0, 0.3, -1.2, torch.pi / 2])
+    quat = torch.stack([torch.cos(yaw / 2), torch.zeros_like(yaw),
+                        torch.zeros_like(yaw), torch.sin(yaw / 2)], dim=-1)
+    got = quat_yaw(quat)
+    assert torch.allclose(got, yaw, atol=1e-6)
+
+
+def _dense_disk_pile(n=300, rmax=0.04, seed=0, envs=1):
+    """A disk-shaped pile dense enough that the sampling box interior is
+    packed with cubes -- reproduces the real corpora's "pile spreads well
+    past its spawn extent" condition (ISS-010), unlike the thin-shell
+    `test_pile_contact_start_can_be_far_outside_a_small_box` fixture, which
+    never actually overlaps the box boundary it clamps into."""
+    g = torch.Generator().manual_seed(seed)
+    r = rmax * torch.sqrt(torch.rand(n, generator=g))
+    ang = torch.rand(n, generator=g) * 2 * torch.pi
+    p = torch.stack([r * torch.cos(ang), r * torch.sin(ang)], dim=-1)
+    return p.unsqueeze(0).expand(envs, -1, -1).clone()
+
+
+def test_pile_aware_action_batch_reproduces_illegal_touchdowns_without_redraw():
+    """Sanity check on the FIXTURE, not the fix: with max_redraws=0 the old
+    clamp-with-no-cube-check behaviour is recovered, and it must produce
+    illegal touchdowns on this dense pile -- otherwise the fixture doesn't
+    exercise the bug and the next test proves nothing."""
+    E, S = 64, 4
+    p = _dense_disk_pile(envs=E)
+    yaw = torch.zeros(E, p.shape[1])
+    cube_half = torch.tensor([0.0025, 0.0025])
+    headings = torch.rand(E, S, generator=torch.Generator().manual_seed(1)) * 2 * torch.pi
+
+    _, _, _, _, n_illegal, n_redraws, _ = pile_aware_action_batch(
+        p, yaw, cube_half, headings,
+        blade_half_length=0.02, blade_half_width=0.001,
+        granular_vol=VOL, safety_margin=MARGIN, clearance=0.005,
+        max_redraws=0)
+    assert n_redraws == 0
+    assert n_illegal > 0, "dense-disk fixture should reproduce ISS-010's bug"
+
+
+def test_pile_aware_action_batch_redraws_to_zero_illegal_touchdowns():
+    """The actual fix: with redraws enabled, every returned touchdown clears
+    every particle's footprint -- checked directly with the SAME exact SAT
+    test the audit script uses, not re-derived."""
+    E, S = 64, 4
+    p = _dense_disk_pile(envs=E)
+    yaw = torch.zeros(E, p.shape[1])
+    cube_half = torch.tensor([0.0025, 0.0025])
+    headings = torch.rand(E, S, generator=torch.Generator().manual_seed(1)) * 2 * torch.pi
+
+    starts_xy, stops_xy, angles, ok, n_illegal, n_redraws, _ = pile_aware_action_batch(
+        p, yaw, cube_half, headings,
+        blade_half_length=0.02, blade_half_width=0.001,
+        granular_vol=VOL, safety_margin=MARGIN, clearance=0.005,
+        max_redraws=40, generator=torch.Generator().manual_seed(2))
+
+    assert n_illegal == 0, f"{n_illegal} touchdowns still illegal after redraws"
+
+    # Independent re-check with the numpy reference the audit script itself
+    # uses, so this test does not just trust the same function under test.
+    N = p.shape[1]
+    bxy = starts_xy.reshape(-1, 1, 2).expand(-1, N, -1).reshape(-1, 2).numpy()
+    byaw = angles.reshape(-1, 1).expand(-1, N).reshape(-1).numpy()
+    cxy = p.unsqueeze(1).expand(-1, S, -1, -1).reshape(-1, 2).numpy()
+    cyaw = yaw.unsqueeze(1).expand(-1, S, -1).reshape(-1).numpy()
+    ov = _overlaps_np(bxy, byaw, [0.02, 0.001], cxy, cyaw, [0.0025, 0.0025])
+    assert not ov.any()
+
+
+def test_pile_aware_action_batch_never_shortens_a_fixed_length_push():
+    """The one hard rule the fix must not violate: a legal touchdown is found
+    by redrawing the START (a fresh heading), never by shortening or
+    lengthening the push once a start is accepted."""
+    E, S = 32, 4
+    p = _dense_disk_pile(envs=E, seed=5)
+    yaw = torch.zeros(E, p.shape[1])
+    cube_half = torch.tensor([0.0025, 0.0025])
+    headings = torch.rand(E, S, generator=torch.Generator().manual_seed(3)) * 2 * torch.pi
+    length = 0.02
+
+    starts_xy, stops_xy, angles, ok, n_illegal, _, _ = pile_aware_action_batch(
+        p, yaw, cube_half, headings,
+        blade_half_length=0.02, blade_half_width=0.001,
+        granular_vol=VOL, safety_margin=MARGIN, clearance=0.005,
+        push_length=length, max_redraws=40,
+        generator=torch.Generator().manual_seed(4))
+
+    travelled = (stops_xy - starts_xy).norm(dim=-1)
+    # Every push that reached its target inside the box travels exactly
+    # `length`; only a push whose clamped start has no room at all is capped
+    # by t_max (a real tray-boundary limit, not a shortening introduced by
+    # the redraw logic) -- assert the exact-length case is the overwhelming
+    # majority, matching the old code's own behaviour under the same box.
+    at_length = torch.isclose(travelled, torch.full_like(travelled, length), atol=1e-6)
+    assert at_length.float().mean() > 0.9
+    assert n_illegal == 0
+
+
+# ---------------------------------------------------------------------------
+# start_gap_range (2026-09-28 coordinator spec): sample the touchdown gap
+# instead of a fixed clearance, applied at pile_contact_starts's own
+# `clearance` argument. A single-particle-at-the-origin fixture makes the
+# realized gap exactly recoverable (a_near = 0 identically, regardless of the
+# lateral jitter `pile_contact_starts` draws), so this checks the actual
+# sampled distribution rather than just "it runs".
+# ---------------------------------------------------------------------------
+
+import pytest  # noqa: E402
+
+
+def test_start_gap_range_samples_uniformly_in_the_requested_window():
+    E, S = 1, 20000
+    L, lo, hi_margin = 0.02, 0.005, 0.005
+    p = torch.zeros(E, 1, 2)          # one particle at the origin
+    yaw = torch.zeros(E, 1)
+    cube_half = torch.tensor([0.0025, 0.0025])
+    headings = torch.zeros(E, S)      # push direction = +x -> a_near = 0 always
+
+    starts_xy, stops_xy, angles, ok, n_illegal, _, _ = pile_aware_action_batch(
+        p, yaw, cube_half, headings,
+        blade_half_length=0.02, blade_half_width=0.001,
+        granular_vol=VOL, safety_margin=MARGIN, clearance=0.005,
+        push_length=L, start_gap_range=(lo, hi_margin), max_redraws=0,
+        generator=torch.Generator().manual_seed(15))
+
+    # a_start = a_near(=0) - centre_clearance; centre_clearance is the
+    # face-to-face gap PLUS blade_half_width PLUS cube_half (see
+    # pile_aware_action_batch's start_gap_range docstring) -- recover the
+    # face-to-face gap the coordinator's spec is actually about.
+    centre_clearance = -starts_xy[..., 0]
+    gap = centre_clearance - 0.001 - 0.0025
+    assert n_illegal == 0
+    assert float(gap.min()) >= lo - 1e-6
+    assert float(gap.max()) <= (L - hi_margin) + 1e-6
+    mid = (lo + (L - hi_margin)) / 2
+    assert abs(float(gap.mean()) - mid) < 5e-4, "should be roughly uniform, not clustered"
+    assert (gap < lo + 0.001).any() and (gap > (L - hi_margin) - 0.001).any(), \
+        "both ends of the window should be populated at this sample count"
+
+    # the push is never shortened/lengthened to make room for the sampled gap
+    travelled = (stops_xy - starts_xy).norm(dim=-1)
+    assert torch.allclose(travelled, torch.full_like(travelled, L), atol=1e-6)
+
+
+def test_no_start_gap_range_reproduces_the_old_fixed_clearance():
+    E, S = 1, 50
+    p = torch.zeros(E, 1, 2)
+    yaw = torch.zeros(E, 1)
+    cube_half = torch.tensor([0.0025, 0.0025])
+    headings = torch.zeros(E, S)
+
+    starts_xy, *_ = pile_aware_action_batch(
+        p, yaw, cube_half, headings,
+        blade_half_length=0.02, blade_half_width=0.001,
+        granular_vol=VOL, safety_margin=MARGIN, clearance=0.005,
+        push_length=0.02, start_gap_range=None, max_redraws=0)
+
+    gap = -starts_xy[..., 0]
+    assert torch.allclose(gap, torch.full_like(gap, 0.005), atol=1e-6)
+
+
+def test_start_gap_range_requires_a_scalar_push_length():
+    p = torch.zeros(1, 1, 2)
+    yaw = torch.zeros(1, 1)
+    cube_half = torch.tensor([0.0025, 0.0025])
+    headings = torch.zeros(1, 3)
+    with pytest.raises(NotImplementedError):
+        pile_aware_action_batch(
+            p, yaw, cube_half, headings,
+            blade_half_length=0.02, blade_half_width=0.001,
+            granular_vol=VOL, safety_margin=MARGIN, clearance=0.005,
+            push_length=None, start_gap_range=(0.005, 0.005))
+
+
+def test_a_clamped_draw_is_redrawn_not_silently_kept_with_a_corrupted_gap():
+    """The coordinator's 2026-09-28 review fix: `pile_contact_starts` places
+    the touchdown in (push, lateral) coordinates, but the box clamp moves it
+    in WORLD (x, y) -- any clamp therefore invalidates the along-push-axis
+    gap the draw was built with, whether or not the clamped point happens to
+    still be legal. Before this fix, only the illegal case triggered a
+    redraw, so a legal-but-clamped draw silently kept an arbitrary
+    (occasionally far-outside-the-window) realized gap -- this is what a real
+    smoke test caught (gap p95 ~34mm against a requested 5-15mm window).
+
+    Uses REAL narrow-domain geometry (configs/basic.yaml-scale tray/blade) and
+    a pile some of whose particles sit near/outside the tightest box extent,
+    so clamping is exercised for a meaningful fraction of draws -- then checks
+    the ACCEPTED touchdown's along-axis gap to its own first-contact cube
+    (recomputed independently, the same way the audit script would) against
+    the requested window."""
+    granular_vol = [0.127, 0.127]
+    safety_margin = 0.005
+    tool_length, tool_width = 0.04, 0.002
+    L, lo, hi_margin = 0.02, 0.005, 0.005
+    cube_size = 0.005
+
+    E, S = 48, 8
+    p = _dense_disk_pile(n=40, rmax=0.032, envs=E, seed=17)   # spans past the tightest box half-extent
+    yaw = torch.zeros(E, p.shape[1])
+    cube_half = torch.tensor([cube_size / 2, cube_size / 2])
+    headings = torch.rand(E, S, generator=torch.Generator().manual_seed(18)) * 2 * torch.pi
+
+    starts_xy, stops_xy, angles, ok, n_illegal, _, _ = pile_aware_action_batch(
+        p, yaw, cube_half, headings,
+        blade_half_length=tool_length / 2, blade_half_width=tool_width / 2,
+        granular_vol=granular_vol, safety_margin=safety_margin, clearance=0.005,
+        push_length=L, start_gap_range=(lo, hi_margin), max_redraws=40,
+        generator=torch.Generator().manual_seed(19))
+    assert n_illegal == 0
+
+    direction = stops_xy - starts_xy
+    length = direction.norm(dim=-1, keepdim=True)
+    u = direction / length
+    nvec = torch.stack([-u[..., 1], u[..., 0]], dim=-1)
+    rel = p.unsqueeze(1) - starts_xy.unsqueeze(2)             # (E,S,N,2)
+    a = (rel * u.unsqueeze(2)).sum(-1)                        # along push axis
+    lat = (rel * nvec.unsqueeze(2)).sum(-1)
+    in_swath = lat.abs() <= (tool_length / 2)
+    near_face_a = a - cube_size / 2
+    ahead = near_face_a > (tool_width / 2)
+    gap = near_face_a - tool_width / 2
+
+    ok_count = 0
+    total = 0
+    for e in range(E):
+        for s in range(S):
+            cand = in_swath[e, s] & ahead[e, s]
+            if not bool(cand.any()):
+                continue
+            total += 1
+            g = float(gap[e, s][cand].min())
+            if lo - 1e-3 <= g <= (L - hi_margin) + 1e-3:
+                ok_count += 1
+    assert total > 0
+    assert ok_count / total > 0.9, (
+        f"only {ok_count}/{total} accepted touchdowns kept a gap inside the "
+        f"requested window -- the clamp-invalidates-the-gap case is not fixed")
+
+
+def test_start_gap_range_rejects_a_window_that_does_not_fit_the_push_length():
+    p = torch.zeros(1, 1, 2)
+    yaw = torch.zeros(1, 1)
+    cube_half = torch.tensor([0.0025, 0.0025])
+    headings = torch.zeros(1, 3)
+    with pytest.raises(ValueError):
+        pile_aware_action_batch(
+            p, yaw, cube_half, headings,
+            blade_half_length=0.02, blade_half_width=0.001,
+            granular_vol=VOL, safety_margin=MARGIN, clearance=0.005,
+            push_length=0.02, start_gap_range=(0.015, 0.015))

@@ -1,0 +1,12 @@
+# Narrow domain CLEAN v2 TEST (EXP-0059 clean-data re-collection, 2026-09-28):
+# Genesis/data/narrow_l20_n20/test_chains_v2 -- never used for training.
+# Replaces genesis_narrow_l20_test_chains.yaml (old DS-0009) for the v2 pass.
+type: genesis
+paths:
+  - narrow_l20_n20/test_chains_v2
+val_pct: 0
+test_pct: 0
+resolution_scale: 0.5
+min_push_length_m: 0.0001
+include_physics: false
+exclude_flagged: true

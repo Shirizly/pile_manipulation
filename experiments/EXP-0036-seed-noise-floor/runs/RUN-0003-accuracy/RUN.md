@@ -1,0 +1,2 @@
+# RUN-0003 — accuracy + slateN on randlen_test for the 4 seeds
+Attempt 1 (tag exp0036_accuracy_seeds, 12:54): NFD_CKPT ignored by eval_report -> 4x the original checkpoint; outputs moved to results/randlen_test_wrong_ckpt/. Attempt 2 (tag exp0036_accuracy_seeds_v2, ~15:40): `code/accuracy_seeds.sh` with eval_report `--ckpt nfd_randlen=<seed ckpt>`, CPU, --goal-set many, soft truth -> results/randlen_test/seed{0..3}.json. Commit 3bae8cd7, dirty.

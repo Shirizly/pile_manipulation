@@ -138,8 +138,9 @@ result: >
   0.02263, means +0.00103 (Genesis) vs +0.00196 (cache).
 
 verdict: inconclusive
-downgrades: [imprecision, provenance]
-grade: low
+invalidated_by: null
+downgrades: [imprecision, provenance, untested-dependency]
+grade: very-low
 ---
 
 # EXP-0023 — a dynamics model as a source of gradients
@@ -390,3 +391,7 @@ snapshot-restore-and-execute), which is why this record carries the
   true optimum, so it is an upper bound on captured fraction.
 - More states. The power check below is the honest limit on how far the arm
   ordering can be read.
+
+## Correction note (2026-09-24, EXP-0027)
+
+EXP-0027 briefly marked this record `invalidated` on finding that repeated `rollout_candidates` calls do not reproduce outcomes bit-for-bit. Its RUN-0005 then showed the PHYSICAL difference is small (particles within 0.9 mm median / 4.4 mm max; particle-based dv sd 3e-4 vs 3.2e-2 between actions), and that the large dv differences come from the image-based scoring (invariant `occupancy-dv-subpixel-stable`, broken: sd 4e-3, ~12% of between-action sd). The invalidation was withdrawn: the numbers here stand, carrying that extra scoring noise.

@@ -1,0 +1,57 @@
+# EXP-0059 section 8: "NFD with a retrieved reference" -- main model.
+# Same UNet/loss/split/augmentation recipe as Baselines/NFD/configs/
+# nfd_3ch_narrow_l20.yaml (features [4,8,16], residual head, eulerian_combined
+# mse=1.0), 5 input channels instead of 3: [occ0, r_start, r_stop,
+# donor_occ0, donor_occ1]. Dataset is a precomputed flat cache
+# (model/retrieval_nfd/cache/retrieval_ref_cache.pt, built by precompute.py)
+# -- no Genesis/registry dataset paths here.
+model:
+  type: nfd-unet3ch          # generic factory (Baselines/NFD/nfd_lib.py); in_channels forwarded
+  in_channels: 5
+  out_channels: 1
+  features: [4, 8, 16]
+  kernel_size: 3
+  final_kernel_size: 1
+  activation: relu
+  residual: true
+  bottleneck_type: "None"
+  bottleneck_kwargs: {}
+  uses_physics: false
+
+dataset:
+  type: nfd-genesis-retrieval-ref
+  donor_field: main          # random-of-3 cached top-3 donor candidates each epoch
+  dropout_p: 0.15            # reference dropout: zero channels 3/4 with this prob
+  include_physics: false
+  transforms:
+    - type: ensure_representation
+      representation: eulerian
+    - type: eulerian_aliases
+
+training:
+  epochs: 60
+  batch_size: 64
+  lr: 0.0001
+  lr_scheduler:
+    type: StepLR
+    step_size: 60
+    gamma: 0.75
+  augmentation: true
+  patience: 60
+  mixed_precision: true
+  grad_clip_norm: 1.0
+  save_every_n_epochs: 5
+  num_workers: 4
+  loss:
+    type: eulerian_combined
+    mse: 1.0
+    mass: 0.0
+    dice: 0.0
+    bce: 0.0
+    sharpness: 0.0
+    tv: 0.0
+    add: 0.0
+    remove: 0.0
+
+output:
+  log_dir: model/retrieval_nfd/runs/retrieval_nfd_ref

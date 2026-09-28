@@ -1,0 +1,336 @@
+{
+ "mode": "seqpools",
+ "physics": {
+  "particle_friction": 0.7,
+  "particle_density": 450.0,
+  "box_friction": 0.5,
+  "settle_steps": 3000
+ },
+ "sampler": {
+  "pile_aware": true,
+  "min_swath_particles": 3,
+  "push_length": 0.02
+ },
+ "push_length": 0.02,
+ "starts": "mixed",
+ "seed": 401,
+ "n_envs": 32,
+ "steps": 3,
+ "pool": 64,
+ "clump_fn": "Genesis.clump_states:clump_starts",
+ "starts_file": null,
+ "chunks": {
+  "0": {
+   "rows": 192,
+   "valid": 192,
+   "single_layer_after": 192,
+   "seconds": 144.46080231666565,
+   "kinds": {
+    "scatter": 64
+   }
+  },
+  "1": {
+   "rows": 192,
+   "valid": 192,
+   "single_layer_after": 192,
+   "seconds": 559.3663146495819,
+   "kinds": {
+    "clump": 64
+   }
+  },
+  "2": {
+   "rows": 192,
+   "valid": 192,
+   "single_layer_after": 192,
+   "seconds": 157.75384068489075,
+   "kinds": {
+    "scatter": 64
+   }
+  },
+  "3": {
+   "rows": 192,
+   "valid": 192,
+   "single_layer_after": 192,
+   "seconds": 127.2549340724945,
+   "kinds": {
+    "clump": 64
+   }
+  },
+  "4": {
+   "rows": 192,
+   "valid": 192,
+   "single_layer_after": 192,
+   "seconds": 127.65642714500427,
+   "kinds": {
+    "scatter": 64
+   }
+  },
+  "5": {
+   "rows": 192,
+   "valid": 192,
+   "single_layer_after": 192,
+   "seconds": 210.37661409378052,
+   "kinds": {
+    "clump": 64
+   }
+  },
+  "6": {
+   "rows": 192,
+   "valid": 192,
+   "single_layer_after": 192,
+   "seconds": 132.28400015830994,
+   "kinds": {
+    "scatter": 64
+   }
+  },
+  "7": {
+   "rows": 192,
+   "valid": 192,
+   "single_layer_after": 192,
+   "seconds": 217.49833178520203,
+   "kinds": {
+    "clump": 64
+   }
+  },
+  "8": {
+   "rows": 192,
+   "valid": 192,
+   "single_layer_after": 192,
+   "seconds": 180.83982682228088,
+   "kinds": {
+    "scatter": 64
+   }
+  },
+  "9": {
+   "rows": 192,
+   "valid": 192,
+   "single_layer_after": 192,
+   "seconds": 324.46517276763916,
+   "kinds": {
+    "clump": 64
+   }
+  },
+  "10": {
+   "rows": 192,
+   "valid": 192,
+   "single_layer_after": 192,
+   "seconds": 128.23800945281982,
+   "kinds": {
+    "scatter": 64
+   }
+  },
+  "11": {
+   "rows": 192,
+   "valid": 192,
+   "single_layer_after": 192,
+   "seconds": 168.32227087020874,
+   "kinds": {
+    "clump": 64
+   }
+  },
+  "12": {
+   "rows": 192,
+   "valid": 192,
+   "single_layer_after": 192,
+   "seconds": 152.1666135787964,
+   "kinds": {
+    "scatter": 64
+   }
+  },
+  "13": {
+   "rows": 192,
+   "valid": 192,
+   "single_layer_after": 192,
+   "seconds": 186.1564905643463,
+   "kinds": {
+    "clump": 64
+   }
+  },
+  "14": {
+   "rows": 192,
+   "valid": 192,
+   "single_layer_after": 192,
+   "seconds": 150.31418466567993,
+   "kinds": {
+    "scatter": 64
+   }
+  },
+  "15": {
+   "rows": 192,
+   "valid": 192,
+   "single_layer_after": 192,
+   "seconds": 164.34323120117188,
+   "kinds": {
+    "clump": 64
+   }
+  },
+  "16": {
+   "rows": 192,
+   "valid": 192,
+   "single_layer_after": 192,
+   "seconds": 147.43213367462158,
+   "kinds": {
+    "scatter": 64
+   }
+  },
+  "17": {
+   "rows": 192,
+   "valid": 192,
+   "single_layer_after": 192,
+   "seconds": 235.2056622505188,
+   "kinds": {
+    "clump": 64
+   }
+  },
+  "18": {
+   "rows": 192,
+   "valid": 192,
+   "single_layer_after": 192,
+   "seconds": 156.06127381324768,
+   "kinds": {
+    "scatter": 64
+   }
+  },
+  "19": {
+   "rows": 192,
+   "valid": 192,
+   "single_layer_after": 192,
+   "seconds": 247.83377599716187,
+   "kinds": {
+    "clump": 64
+   }
+  },
+  "20": {
+   "rows": 192,
+   "valid": 192,
+   "single_layer_after": 192,
+   "seconds": 154.00663948059082,
+   "kinds": {
+    "scatter": 64
+   }
+  },
+  "21": {
+   "rows": 192,
+   "valid": 192,
+   "single_layer_after": 192,
+   "seconds": 190.55002117156982,
+   "kinds": {
+    "clump": 64
+   }
+  },
+  "22": {
+   "rows": 192,
+   "valid": 192,
+   "single_layer_after": 192,
+   "seconds": 138.87894201278687,
+   "kinds": {
+    "scatter": 64
+   }
+  },
+  "23": {
+   "rows": 192,
+   "valid": 192,
+   "single_layer_after": 192,
+   "seconds": 199.17919516563416,
+   "kinds": {
+    "clump": 64
+   }
+  },
+  "24": {
+   "rows": 192,
+   "valid": 192,
+   "single_layer_after": 192,
+   "seconds": 118.68283605575562,
+   "kinds": {
+    "scatter": 64
+   }
+  },
+  "25": {
+   "rows": 192,
+   "valid": 192,
+   "single_layer_after": 192,
+   "seconds": 177.0673418045044,
+   "kinds": {
+    "clump": 64
+   }
+  },
+  "26": {
+   "rows": 192,
+   "valid": 192,
+   "single_layer_after": 192,
+   "seconds": 174.12143206596375,
+   "kinds": {
+    "scatter": 64
+   }
+  },
+  "27": {
+   "rows": 192,
+   "valid": 192,
+   "single_layer_after": 192,
+   "seconds": 153.46406292915344,
+   "kinds": {
+    "clump": 64
+   }
+  },
+  "28": {
+   "rows": 192,
+   "valid": 192,
+   "single_layer_after": 192,
+   "seconds": 113.96809411048889,
+   "kinds": {
+    "scatter": 64
+   }
+  },
+  "29": {
+   "rows": 192,
+   "valid": 192,
+   "single_layer_after": 192,
+   "seconds": 163.0817403793335,
+   "kinds": {
+    "clump": 64
+   }
+  },
+  "30": {
+   "rows": 192,
+   "valid": 192,
+   "single_layer_after": 192,
+   "seconds": 87.74373960494995,
+   "kinds": {
+    "scatter": 64
+   }
+  },
+  "31": {
+   "rows": 192,
+   "valid": 192,
+   "single_layer_after": 192,
+   "seconds": 104.79720735549927,
+   "kinds": {
+    "clump": 64
+   }
+  }
+ },
+ "complete": true,
+ "argv": [
+  "Genesis/chain_collection.py",
+  "--mode",
+  "seqpools",
+  "--out",
+  "Genesis/data/narrow_l20_n20/seqpools_dsB",
+  "--n-chunks",
+  "32",
+  "--pool",
+  "64",
+  "--steps",
+  "3",
+  "--n-envs",
+  "32",
+  "--starts",
+  "mixed",
+  "--clump-fn",
+  "Genesis.clump_states:clump_starts",
+  "--sampler",
+  "{\"pile_aware\": true, \"min_swath_particles\": 3, \"push_length\": 0.02}",
+  "--seed",
+  "401"
+ ]
+}

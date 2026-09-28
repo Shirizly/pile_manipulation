@@ -1,0 +1,284 @@
+{
+ "mode": "chains",
+ "physics": {
+  "particle_friction": 0.7,
+  "particle_density": 450.0,
+  "box_friction": 0.5,
+  "settle_steps": 3000
+ },
+ "sampler": {
+  "pile_aware": true,
+  "min_swath_particles": 3,
+  "push_length": 0.02
+ },
+ "push_length": 0.02,
+ "starts": "mixed",
+ "seed": 1,
+ "n_envs": 32,
+ "steps": 8,
+ "pool": 64,
+ "clump_fn": "Genesis.clump_states:clump_starts",
+ "starts_file": null,
+ "chunks": {
+  "0": {
+   "rows": 256,
+   "valid": 256,
+   "single_layer_after": 256,
+   "seconds": 117.46359133720398,
+   "kinds": {
+    "clump": 16,
+    "scatter": 16
+   }
+  },
+  "1": {
+   "rows": 256,
+   "valid": 256,
+   "single_layer_after": 256,
+   "seconds": 109.6438000202179,
+   "kinds": {
+    "clump": 16,
+    "scatter": 16
+   }
+  },
+  "2": {
+   "rows": 256,
+   "valid": 256,
+   "single_layer_after": 256,
+   "seconds": 105.27699398994446,
+   "kinds": {
+    "clump": 16,
+    "scatter": 16
+   }
+  },
+  "3": {
+   "rows": 256,
+   "valid": 256,
+   "single_layer_after": 256,
+   "seconds": 118.35459327697754,
+   "kinds": {
+    "clump": 16,
+    "scatter": 16
+   }
+  },
+  "4": {
+   "rows": 256,
+   "valid": 256,
+   "single_layer_after": 256,
+   "seconds": 105.3284432888031,
+   "kinds": {
+    "clump": 16,
+    "scatter": 16
+   }
+  },
+  "5": {
+   "rows": 256,
+   "valid": 256,
+   "single_layer_after": 256,
+   "seconds": 110.89738535881042,
+   "kinds": {
+    "clump": 16,
+    "scatter": 16
+   }
+  },
+  "6": {
+   "rows": 256,
+   "valid": 256,
+   "single_layer_after": 256,
+   "seconds": 127.52241468429565,
+   "kinds": {
+    "clump": 16,
+    "scatter": 16
+   }
+  },
+  "7": {
+   "rows": 256,
+   "valid": 256,
+   "single_layer_after": 256,
+   "seconds": 110.34414768218994,
+   "kinds": {
+    "clump": 16,
+    "scatter": 16
+   }
+  },
+  "8": {
+   "rows": 256,
+   "valid": 256,
+   "single_layer_after": 256,
+   "seconds": 124.88324117660522,
+   "kinds": {
+    "clump": 16,
+    "scatter": 16
+   }
+  },
+  "9": {
+   "rows": 256,
+   "valid": 256,
+   "single_layer_after": 256,
+   "seconds": 106.11518239974976,
+   "kinds": {
+    "clump": 16,
+    "scatter": 16
+   }
+  },
+  "10": {
+   "rows": 256,
+   "valid": 256,
+   "single_layer_after": 256,
+   "seconds": 129.05193042755127,
+   "kinds": {
+    "clump": 16,
+    "scatter": 16
+   }
+  },
+  "11": {
+   "rows": 256,
+   "valid": 256,
+   "single_layer_after": 256,
+   "seconds": 160.04578471183777,
+   "kinds": {
+    "clump": 16,
+    "scatter": 16
+   }
+  },
+  "12": {
+   "rows": 256,
+   "valid": 256,
+   "single_layer_after": 256,
+   "seconds": 105.93674683570862,
+   "kinds": {
+    "clump": 16,
+    "scatter": 16
+   }
+  },
+  "13": {
+   "rows": 256,
+   "valid": 256,
+   "single_layer_after": 256,
+   "seconds": 109.69886565208435,
+   "kinds": {
+    "clump": 16,
+    "scatter": 16
+   }
+  },
+  "14": {
+   "rows": 256,
+   "valid": 256,
+   "single_layer_after": 256,
+   "seconds": 136.19915652275085,
+   "kinds": {
+    "clump": 16,
+    "scatter": 16
+   }
+  },
+  "15": {
+   "rows": 256,
+   "valid": 256,
+   "single_layer_after": 256,
+   "seconds": 136.41388320922852,
+   "kinds": {
+    "clump": 16,
+    "scatter": 16
+   }
+  },
+  "16": {
+   "rows": 256,
+   "valid": 256,
+   "single_layer_after": 256,
+   "seconds": 111.15222716331482,
+   "kinds": {
+    "clump": 16,
+    "scatter": 16
+   }
+  },
+  "17": {
+   "rows": 256,
+   "valid": 256,
+   "single_layer_after": 256,
+   "seconds": 127.1208107471466,
+   "kinds": {
+    "clump": 16,
+    "scatter": 16
+   }
+  },
+  "18": {
+   "rows": 256,
+   "valid": 256,
+   "single_layer_after": 256,
+   "seconds": 160.1911256313324,
+   "kinds": {
+    "clump": 16,
+    "scatter": 16
+   }
+  },
+  "19": {
+   "rows": 256,
+   "valid": 256,
+   "single_layer_after": 256,
+   "seconds": 142.51800632476807,
+   "kinds": {
+    "clump": 16,
+    "scatter": 16
+   }
+  },
+  "20": {
+   "rows": 256,
+   "valid": 256,
+   "single_layer_after": 256,
+   "seconds": 106.3279595375061,
+   "kinds": {
+    "clump": 16,
+    "scatter": 16
+   }
+  },
+  "21": {
+   "rows": 256,
+   "valid": 256,
+   "single_layer_after": 256,
+   "seconds": 89.23174691200256,
+   "kinds": {
+    "clump": 16,
+    "scatter": 16
+   }
+  },
+  "22": {
+   "rows": 256,
+   "valid": 256,
+   "single_layer_after": 256,
+   "seconds": 51.09875559806824,
+   "kinds": {
+    "clump": 16,
+    "scatter": 16
+   }
+  },
+  "23": {
+   "rows": 256,
+   "valid": 256,
+   "single_layer_after": 256,
+   "seconds": 55.05186414718628,
+   "kinds": {
+    "clump": 16,
+    "scatter": 16
+   }
+  }
+ },
+ "complete": true,
+ "argv": [
+  "Genesis/chain_collection.py",
+  "--mode",
+  "chains",
+  "--out",
+  "Genesis/data/narrow_l20_n20/train",
+  "--n-chunks",
+  "24",
+  "--steps",
+  "8",
+  "--starts",
+  "mixed",
+  "--clump-fn",
+  "Genesis.clump_states:clump_starts",
+  "--sampler",
+  "{\"pile_aware\": true, \"min_swath_particles\": 3, \"push_length\": 0.02}",
+  "--seed",
+  "1"
+ ]
+}

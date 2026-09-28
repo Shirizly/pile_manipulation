@@ -1758,6 +1758,7 @@ class SandboxManipulation:
             pile_aware: bool = False,
             pile_clearance: float | None = None,
             min_swath_particles: int = 3,
+            start_gap_range: tuple[float, float] | None = None,
         ):
         """
         Generate random action samples for all environments.
@@ -1842,12 +1843,10 @@ class SandboxManipulation:
         angles = angles.reshape(self._n_envs, n_samples)
 
         if pile_aware:
-            action_starts, angles, u_dir = self._apply_pile_aware_starts(
+            action_starts, action_stops, angles = self._pile_aware_action_legal(
                 n_samples, tool_length, tool_width,
-                clearance=pile_clearance, min_swath=min_swath_particles)
-            action_starts, action_stops = self._pile_aware_stops(
-                action_starts, angles, u_dir, tool_length, tool_width,
-                push_length)
+                clearance=pile_clearance, min_swath=min_swath_particles,
+                push_length=push_length, start_gap_range=start_gap_range)
             # The geometry is already exactly perpendicular, exactly the
             # requested length, and pointed INTO the pile, so the
             # perpendicular/fixed-length constraint below must not touch it:
@@ -2117,9 +2116,89 @@ class SandboxManipulation:
                             device=gs.device),
                 dofs_idx=self._particle_dofs_idx, skip_forward=True)
 
+    def _pile_aware_action_legal(self, n_samples, tool_length, tool_width, *,
+                                 clearance=None, min_swath=3, push_length=None,
+                                 start_gap_range=None, max_redraws=200):
+        """Legal-by-construction replacement for
+        `_apply_pile_aware_starts` + `_pile_aware_stops` (ISS-010 fix,
+        2026-09-28, `docs/OPEN_ISSUES.md`). The old pair computed a genuinely
+        collision-free touchdown and then unconditionally clamped it into the
+        sampling box with no cube check, which landed the blade ON a cube at
+        touchdown in ~44-56% of rows across DS-0008/9/11/12/13. This calls the
+        Genesis-free composed sampler in `action_sampling.py`, which does the
+        same box-clamp + push-length logic but checks the FINAL touchdown
+        footprint with an exact SAT test and redraws (a fresh heading, never a
+        shortened/lengthened push) any illegal slot.
+
+        Returns ``(action_starts, action_stops, angles)`` each shaped like the
+        blind draw's, so it drops into `generate_action_samples` in the same
+        slot the old pair did.
+        """
+        from .action_sampling import pile_aware_action_batch, quat_yaw
+
+        if clearance is None:
+            clearance = float(self._material_params.get("particle_size") or 0.005)
+        n_active = getattr(self, "_n_active", len(self.material))
+        pxy = self._particle_state[:, :n_active, :2]
+        pyaw = quat_yaw(self._particle_state[:, :n_active, 3:7])
+
+        sizes = self._sampled_params.get("particle_sizes", None)
+        if sizes is None:
+            sizes = [p.morph.size if hasattr(p.morph, "size")
+                     else (p.morph.radius * 2,) * 3 for p in self.material]
+        # (N, 2) -- same per-particle sizes in every env (this project's
+        # datasets are all uniform-size, but the shape is general) --
+        # broadcast to (E, N, 2), what pile_aware_action_batch expects for a
+        # non-uniform cube_half_xy.
+        cube_half = (torch.as_tensor(sizes, dtype=torch.float32,
+                                     device=gs.device)[:n_active, :2] * 0.5
+                    ).unsqueeze(0).expand(self._n_envs, -1, -1)
+
+        headings = torch.rand((self._n_envs, n_samples), device=gs.device) * (2 * torch.pi)
+        starts_xy, stops_xy, angles, ok, n_illegal, n_redraws, gap_out_of_window = pile_aware_action_batch(
+            pxy, pyaw, cube_half, headings,
+            blade_half_length=float(tool_length) / 2.0,
+            blade_half_width=float(tool_width) / 2.0,
+            granular_vol=self._granular_vol, safety_margin=self._safety_margin,
+            clearance=clearance, push_length=push_length,
+            start_gap_range=start_gap_range,
+            min_swath=min_swath, max_redraws=max_redraws)
+
+        # Exposed for callers that want to save it per row (e.g.
+        # Genesis/chain_collection.py's `gap_out_of_window` column) without
+        # widening this method's own return signature, which every existing
+        # caller destructures positionally.
+        self._last_gap_out_of_window = gap_out_of_window.detach().cpu()
+
+        n_gow = int(gap_out_of_window.sum())
+        if self._debug or not bool(ok.all()) or n_illegal or n_gow:
+            self._log(f"pile-aware (legal): {n_redraws} redraw round(s), "
+                      f"{n_illegal}/{ok.numel()} touchdowns STILL illegal after "
+                      f"{max_redraws} redraws; {n_gow}/{ok.numel()} accepted with "
+                      f"gap_out_of_window (last resort); {int((~ok).sum())}/{ok.numel()} "
+                      f"draws could not reach min_swath={min_swath}")
+        if n_illegal:
+            # Loud regardless of debug: an illegal touchdown reaching the
+            # simulator is exactly what this fix exists to prevent.
+            self._log(f"WARNING pile-aware: {n_illegal}/{ok.numel()} touchdowns "
+                      f"remain illegal (tool overlaps a cube) after "
+                      f"{max_redraws} redraws -- likely a very dense/small tray; "
+                      f"consider raising max_redraws.")
+
+        z = torch.full((self._n_envs, n_samples, 1), self._operation_height,
+                       device=gs.device)
+        action_starts = torch.cat((starts_xy, z), dim=-1)
+        action_stops = torch.cat((stops_xy, z), dim=-1)
+        return action_starts, action_stops, angles
+
     def _apply_pile_aware_starts(self, n_samples, tool_length, tool_width,
                                  clearance=None, min_swath=3):
-        """Draw blade poses that begin in contact with the pile.
+        """SUPERSEDED by `_pile_aware_action_legal` (ISS-010 fix, kept only
+        because `_pile_aware_stops` below is still directly importable/
+        referenced for its docstring's account of the clamp this fix
+        replaces; no code path calls this pair by default any more).
+
+        Draw blade poses that begin in contact with the pile.
 
         Returns ``(action_starts, angles)`` shaped like the blind draw's, so it
         drops into ``generate_action_samples`` in the same slot as
@@ -2453,6 +2532,7 @@ class SandboxManipulation:
             pile_aware: bool = False,
             pile_clearance: float | None = None,
             min_swath_particles: int = 3,
+            start_gap_range: tuple[float, float] | None = None,
         ):
         """
         Collect data samples from all environments efficiently.
@@ -2500,6 +2580,7 @@ class SandboxManipulation:
             "pile_aware": bool(pile_aware),
             "pile_clearance": (None if pile_clearance is None else float(pile_clearance)),
             "min_swath_particles": int(min_swath_particles),
+            "start_gap_range": (None if start_gap_range is None else list(start_gap_range)),
             "spawn_mode": self._spawn_mode,
             "spawn_pile_extent": self._pile_extent,
             "spawn_pile_layers": self._pile_layers,
@@ -2528,7 +2609,8 @@ class SandboxManipulation:
             push_length=push_length,
             pile_aware=pile_aware,
             pile_clearance=pile_clearance,
-            min_swath_particles=min_swath_particles)
+            min_swath_particles=min_swath_particles,
+            start_gap_range=start_gap_range)
 
         # Pile-aware actions are aimed AT the pile, so they must be drawn from
         # the pile's current position -- one push moves the material the next

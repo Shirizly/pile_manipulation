@@ -393,6 +393,11 @@ whatever its output file already holds and write up what's there, or run it
 in the foreground with a bounded timeout and a small enough configuration to
 finish. An unwritten result is worth nothing; a partial one is worth a lot.
 
+**Checkpointing is mandatory** for anything longer than a few minutes: rewrite
+results/manifests atomically after every unit of work so a cut-off run loses
+at most one unit. The full rule is in `project-overview`, "Every job must
+survive being cut off".
+
 ## Model-instance test history
 
 A specific trained instance maintains a concise reverse index,
