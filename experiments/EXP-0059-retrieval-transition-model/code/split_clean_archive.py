@@ -209,6 +209,15 @@ def main():
         "DS-0016_test_chains_v2", str(D / "test_chains_v2/_*_data.pt"),
         D / "test_chains_v2_clean", D / "test_chains_v2/archive_removed", is_fresh=True)
 
+    # DS-0018 (multi-step test, replaces DS-0013): seqpools files reuse chains' own
+    # chain_env/chain_step field names (chain_env = sequence id 0..63 WITHIN this file's
+    # pool, chain_step = push index 0..2) -- torch.unique(chain_env) per file already
+    # scopes "whole sequence" correctly to one pool, same as split_chain_sequences does
+    # for a chains-mode chunk.
+    results["DS-0018_seqpools_v2"] = split_chain_sequences(
+        "DS-0018_seqpools_v2", str(D / "seqpools_v2/_*_data.pt"),
+        D / "seqpools_v2_clean", D / "seqpools_v2/archive_removed", is_fresh=True)
+
     out = REPO / "experiments/EXP-0059-retrieval-transition-model/results/split_clean_archive.json"
     out.write_text(json.dumps(results, indent=1))
     print("wrote", out)

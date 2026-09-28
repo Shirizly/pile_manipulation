@@ -54,7 +54,8 @@ RES = Path(__file__).resolve().parents[1] / "results" / "test_v2.json"
 _CAPPED = dict(cap=0.02, mismatch_penalty=0.04, corridor_weight=3.0)
 
 OCC_MODELS = ["persistence", "nfd_3ch_narrow_l20_v2", "linear_narrow_l20_v2_res64",
-             "linear_narrow_l20_v2_res32"]
+             "linear_narrow_l20_v2_res32", "nfd_3ch_narrow_l20_v2_seed1",
+             "nfd_3ch_narrow_l20_v2_seed2"]
 PARTICLE_MODELS = ["random", "retrieval_k5_cube_median_v2", "retrieval_k1_v2"]
 
 
@@ -157,13 +158,16 @@ def main():
     print("\n=== bootstrap CIs (slateN_tough, 32 test_pools_v2 pools as replication unit) ===")
     ci_out = {}
     for m, d in out.items():
+        if m == "_bootstrap_ci":
+            continue  # a rerun's own previously-saved aggregate, not a model entry
         raw = d["raw"]["slateN_tough_raw"]
         mean, lo, hi = CO.pool_bootstrap_ci(raw)
         ci_out[m] = dict(point=d["metrics"]["slateN_tough"], boot_mean=mean, ci95=[lo, hi])
         print(f"  {m:32s} slateN_tough={d['metrics']['slateN_tough']:.4f}  boot CI95=[{lo:.4f},{hi:.4f}]")
 
     winner = "retrieval_k5_cube_median_v2"
-    for other in ("nfd_3ch_narrow_l20_v2", "linear_narrow_l20_v2_res64"):
+    for other in ("nfd_3ch_narrow_l20_v2", "linear_narrow_l20_v2_res64",
+                 "nfd_3ch_narrow_l20_v2_seed1", "nfd_3ch_narrow_l20_v2_seed2"):
         if winner in out and other in out:
             point, lo, hi, frac_gt0 = paired_delta_ci(
                 out[other]["raw"]["slateN_tough_raw"], out[winner]["raw"]["slateN_tough_raw"])

@@ -1,7 +1,7 @@
 ---
 id: DS-0008
 title: Narrow-domain TRAIN chains -- n20 single layer, exact 20 mm perpendicular pushes, training physics
-status: active
+status: superseded  # 2026-09-28, ISS-010 illegal touchdowns; replaced by DS-0015
 date: 2026-09-25
 path: Genesis/data/narrow_l20_n20/train
 producer: Genesis/chain_collection.py --mode chains (run: datasets/DS-0008-narrow-l20-n20-train/runs/ds0008_train.*)

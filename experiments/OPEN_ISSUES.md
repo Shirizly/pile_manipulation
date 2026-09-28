@@ -411,5 +411,21 @@ still carry the original defect if used directly.
 
 **Still open, not part of this closure:** (2) audit EXP-0053's narrow NFD train/eval numbers
 against the pre-fix legality flags; (3) verify DS-0010's actual per-source-file sampler flags
-rather than inferring them from the measured rate; (4) DS-0012 (reservoir) and DS-0013
-(seqpools) were left uncollected under the fixed sampler -- recollect if either is needed clean.
+rather than inferring them from the measured rate; (4) DS-0012 (reservoir) was left uncollected
+under the fixed sampler -- recollect if it is needed clean. (DS-0013 is closed: **DS-0018**
+recollects it with the fixed sampler, 0/6144 illegal, 2042/2048 sequences (99.7%) survive
+whole-sequence archiving of the few remaining `valid==False` rows -- see
+`datasets/DS-0018-narrow-l20-seqpools-clean/DATASET.md`.)
+
+## ISS-011 — `train_nfd.py --override output.log_dir=...` silently resumes from the ORIGINAL log_dir's checkpoint
+
+Found 2026-09-28 (EXP-0059, launching NFD v2 seeds 1/2). `Trainer.from_config(resume=True)`
+runs `_try_resume()` against the YAML's own `output.log_dir` BEFORE the CLI override is
+applied, so a "fresh" run pointed at a new log_dir resumes from whatever checkpoint sits in the
+config's original directory (here: seed 0's `unet_epoch_60.pth`). Caught from the log line
+"Resumed weights from .../nfd_3ch_narrow_l20_v2/unet_epoch_60.pth"; both runs were killed and
+relaunched with `--no-resume` before anything was scored. **Workaround:** always pass
+`--no-resume` when overriding `output.log_dir`, or give each run its own config. **Fix owed:**
+apply overrides before resume resolution in `Baselines/NFD/train_nfd.py` / `training/trainer.py`.
+**Possible exposure:** any earlier run that used `--override output.log_dir` without
+`--no-resume` while the config's own log_dir held checkpoints — not audited.

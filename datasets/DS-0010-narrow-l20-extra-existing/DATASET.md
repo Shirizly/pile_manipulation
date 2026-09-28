@@ -1,7 +1,7 @@
 ---
 id: DS-0010
 title: Existing matched-physics rows for the narrow domain (18-22 mm, n20 single layer) -- TRAINING ONLY
-status: active
+status: superseded  # 2026-09-28, ISS-010 illegal touchdowns; replaced by DS-0015
 date: 2026-09-25
 path: Genesis/data/narrow_l20_n20/extra_18_22
 producer: datasets/DS-0010-narrow-l20-extra-existing/extract.py

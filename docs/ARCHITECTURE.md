@@ -98,8 +98,12 @@ model/
                         consolidation/are skipped/broken, see its README)
   futureintegration/    salvaged architectures not yet promoted to the top
                         level — see its README for the breakdown
-  retrieval/            EXP-0059: retrieval-based transition model groundwork
+  retrieval/            EXP-0059: retrieval-based transition model
                         (`docs/experimental_design/retrieval_based_modeling.md`).
+                        Status 2026-09-28: on clean data (DS-0015..18) it
+                        ranks actions better than any single NFD / linear
+                        model trained on the same rows (C-061); clean bank
+                        built by experiments/EXP-0059-*/code/build_bank_v2.py.
                         Genesis-free (torch/numpy/scipy only). A PARTICLE-IN/
                         PARTICLE-OUT contract (`predict_particles(states0,
                         p_start, p_stop) -> states1`), deliberately NOT the
@@ -118,7 +122,8 @@ model/
                             the same per-transition frame.
     bank.py                  `TransitionBank` — a flat, per-object transition
                             database (`D = {(s_i, a_i, s'_i, Delta_i)}`) built
-                            from DS-0008 (+DS-0010), canonicalised into every
+                            from DS-0008 (+DS-0010) [legacy, ISS-010; clean:
+                            DS-0015], canonicalised into every
                             transition's own push frame; `moved` per-object
                             mask (displacement threshold, a parameter) and
                             `moved_count_histogram` for the sanity stat.
@@ -187,7 +192,8 @@ model/
                             computed from the SAME search (no extra cost),
                             for finding actions the bank predicts least
                             well, not for scoring.
-    val_split.py              leakage-safe DS-0008 train/validation split
+    val_split.py              [legacy data] leakage-safe DS-0008 train/validation split
+                            (clean rungs select on DS-0017 val pools instead)
                             for hyperparameter tuning, grouped by CHAIN
                             (`(file_index, chain_env)`, never row-random —
                             a chain's 8 steps are near-duplicates) so tuning

@@ -197,4 +197,30 @@ DS-0016, DS-0017.
 **ALL FOUR TASK-4 COLLECTIONS NOW COMPLETE AND CLEAN**: DS-0015 (train), DS-0016 (test
 chains+pools), DS-0017 (val pools).
 
+## Task 6 -- multi-step test set (replaces DS-0013) -- LAUNCHED 2026-09-28 17:31, running
+
+`Genesis/chain_collection.py --mode seqpools --out Genesis/data/narrow_l20_n20/seqpools_v2
+--n-chunks 32 --pool 64 --steps 3 --n-envs 32 --starts mixed --clump-fn
+Genesis.clump_states:clump_starts --sampler '{"pile_aware": true, "min_swath_particles": 3,
+"push_length": 0.02, "start_gap_range": [0.005, 0.005]}' --seed 2005` -- same recipe as DS-0013
+(32 pools x 64 sequences x 3 pushes), fixed sampler, no smoke rerun (nothing changed since the
+v2 runs). PID 1595481 (python) / 1595477 (wrapper), log
+`experiments/EXP-0059-*/runs/seqpools_v2.log`. GPU: 205MB/7.6GB free at launch; an experimenter
+is training 2 NFD seeds concurrently, expected fine per coordinator. ETA ~90-100 min (DS-0013's
+own 32-chunk run took ~93 min total, 88-560s/chunk; negligible added redraw overhead per the
+earlier v2 timing measurement). **COMPLETE 2026-09-28 (32/32 chunks).** Full-scale audit: 6144 rows (32 pools x 64 sequences x
+3 pushes) -- **0/6144 illegal (0.0%), 0/6144 gap_out_of_window (0.0%)**, 6/6144 `valid==False`
+(0.098%), 3/6144 null (all ⊆ the 6 invalid rows). Whole-sequence split
+(`split_clean_archive.py`, CPU-only): 2,048 sequences -> **6 whole sequences removed (0.29%),
+18 rows -> 6,126 clean rows / 2,042 clean sequences (99.7% of sequences survive)**. Clean:
+`Genesis/data/narrow_l20_n20/seqpools_v2_clean/`. Archive:
+`Genesis/data/narrow_l20_n20/seqpools_v2/archive_removed/_{k}_data_removed.pt`. Registered as
+**DS-0018** (`datasets/DS-0018-narrow-l20-seqpools-clean/DATASET.md`); DS-0013 marked
+superseded (payload unchanged). CODEMAP datasets table and ISS-010's "still open" item (4)
+updated -- only DS-0012 (reservoir) remains uncollected under the fixed sampler.
+
+**ALL FIVE clean multi-step/train/test/val sets now registered: DS-0015, DS-0016, DS-0017,
+DS-0018.** Only DS-0012 (reservoir, lowest priority per the original brief) remains
+un-recollected.
+
 ## Task 5 -- registration / doc updates -- NOT STARTED

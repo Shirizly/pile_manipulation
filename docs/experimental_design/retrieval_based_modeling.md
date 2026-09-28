@@ -4,215 +4,152 @@ Owner of the record: `experiments/EXP-0059-retrieval-transition-model/`. Code: `
 The plan (sections 0-12) is below the results summary. Full numbers live in the experiment
 records, not here.
 
-## Results & conclusions (2026-09-28 overnight)
+## Results & conclusions (2026-09-28, clean data)
 
-### Evidence and its limits
+**Sources.** `experiments/EXP-0059-retrieval-transition-model/EXPERIMENT.md`: "Clean-data v2
+rung", "Multi-step rung" and "3-seed NFD comparison" sections.
 
 **Test sets.**
-- 1-step: DS-0009, 32 same-state pools × 64 pushes.
-- Multi-step: DS-0013, 32 pools × 64 sequences of 3 pushes.
+- 1-step: DS-0016, 32 same-state pools × 64 pushes.
+- 3-push: DS-0018, 32 pools × ~64 three-push sequences (2,042 total).
 - Metric: `slateN_tough` (8-goal lyapunov).
+- 95% CIs are paired pool-bootstrap intervals.
 
-**Confidence intervals.** 95% pool-bootstrap CIs where given. "No CI" marks a point estimate.
+**Training data.** Every model uses the same DS-0015 rows (11,659 clean). Retrieval k was chosen
+on DS-0017 validation pools.
 
-**Seeds.** One training seed per learned model. slateN seed sd is ~0.02-0.04 (EXP-0036), so gaps
-under ~0.05 between single-seed models are not established.
+### Two bugs changed the verdict (both found and fixed on 2026-09-28)
 
-Sources: `experiments/EXP-0059-*/results/` and EXP-0060.
+1. **Transfer bug.** Retrieval Hungarian-matched *all 20* cubes with no distance limit, so
+   far-away cubes inherited the pushed cubes' displacements.
+   - Fix: retrieval now uses only a geometric **interaction set**, computed without truth: the
+     swept corridor plus a chain closure (τ = 12 mm, 60 deg). It recovers 96% of truly moved
+     cubes at 90% precision.
+   - The set is computed once and stored in the bank (DS-0014, `build_bank_v2.py`). Cube pairing
+     is gated at 6 mm.
+2. **Data bug (ISS-010).** In 44-56% of the old narrow transitions (DS-0008/9/11/12/13) the tool
+   touched down *on* a cube, a side effect of the pile-aware stop clamp; a further 8-12% moved
+   nothing.
+   - Fix: the sampler checks legality and redraws, and samples the start gap from 5 mm to L − 5 mm
+     along the push axis (`start_gap_range`).
+   - The old sets are flagged and archived. Clean replacements: DS-0015 (train), DS-0016 (test),
+     DS-0017 (validation), DS-0018 (3-push pools).
+
+All earlier retrieval numbers, including the previous "no" verdict, are superseded. So are the
+EXP-0053 baselines, which were trained and tested on illegal data.
 
 ### The main question: is retrieval better at evaluating action sets, especially multi-step?
 
-**No.** With a bank of up to 98k narrow transitions, pure retrieval ranks action sets worse than
-every existing learned model, at 1 push and at 3 pushes.
+**Yes against any single trained model, and more clearly multi-step. Not clearly against an
+NFD ensemble.**
 
-| model | 1-step slateN_tough (DS-0009) | 3-push terminal slateN_tough (DS-0013) |
+| model (trained on DS-0015) | 1-step `slateN_tough` (DS-0016) | 3-push terminal (DS-0018) |
 |---|---|---|
-| simulator, exact state | 0.932 | — |
-| simulator, 0.5 mm state noise (shared by the pool) | 0.923 | — |
-| simulator, 1 mm state noise (shared by the pool) | 0.863 | — |
-| wide NFD | 0.827 | 0.777 [0.715, 0.832] |
-| narrow NFD | 0.778 | 0.708 [0.637, 0.772] |
-| broad residual NFD | 0.749 | 0.665 [0.600, 0.730] |
-| linear operator res64 | 0.633 | 0.715 [0.632, 0.788] |
-| **retrieval, k5 per-cube median, 25k bank** | **0.591 [0.499, 0.672]** | **0.546 (no CI)** |
-| retrieval 1-NN | 0.516 | 0.480 (no CI) |
-| retrieval with a random donor | 0.302 | — |
-| persistence | — | 0.075 [−0.003, 0.151] |
+| **retrieval, k5 per-cube median** | **0.792 [0.755, 0.829]** | **0.821 [0.779, 0.858]** |
+| retrieval, k1 | 0.757 [0.706, 0.801] | 0.787 [0.741, 0.830] |
+| NFD, seeds 0 / 1 / 2 | 0.731 / 0.708 / 0.700 (sd 0.016) | 0.693 / 0.695 / 0.633 (sd 0.035) |
+| NFD 3-seed ensemble (average of predicted dv) | 0.818 [0.768, 0.865] | 0.785 [0.726, 0.837] |
+| linear32 | 0.666 [0.585, 0.746] | 0.729 [0.653, 0.799] |
+| linear64 | 0.626 [0.535, 0.718] | 0.678 [0.593, 0.753] |
+| persistence | 0.005 | 0.044 |
 
-**Is it information or noise? For retrieval, information, just not enough of it.**
-- **Neighbour-rank curve.** slateN_tough falls monotonically from 0.516 at the 1st neighbour to
-  0.302 with a random donor. accuracy_1 falls from 0.197 to 0.006.
-- **Oracle diagnostics.** Pick the best donor by truth. Among the top-50 by key distance it gives
-  1.98 mm and slateN 0.53. Among 50 *random* donors it gives 2.51 mm and slateN 0.28.
-  Weak: 8 pools only.
-- So the retrieved transitions carry real, state-matched information.
+**Paired differences, retrieval k5 minus each model:**
 
-**For the models in general, ranking follows information, while `accuracy` partly follows blur.**
-- Blurring the narrow NFD's output leaves slateN flat (0.778 / 0.784 / 0.773 at σ = 0 / 1 / 2 px)
-  while lifting accuracy_1 from 0.51 to 0.70.
-- A simulator whose state is off by 0.5 mm has accuracy_1 of only 0.43, yet slateN 0.92.
-- "Adding the right noise" does not buy ranking here. The NFDs' accuracy advantage over sharp
-  models is not a ranking advantage.
+| compared with | 1-step | 3-push |
+|---|---|---|
+| NFD seed 0 | +0.062 [−0.010, +0.137] | +0.128 [+0.050, +0.206] |
+| NFD seed 1 | +0.085 [+0.015, +0.160] | +0.126 [+0.050, +0.207] |
+| NFD seed 2 | +0.092 [+0.019, +0.172] | +0.188 [+0.106, +0.272] |
+| linear64 | +0.167 [+0.090, +0.244] | +0.143 [+0.073, +0.221] |
+| linear32 | — | +0.092 [+0.031, +0.157] |
+| NFD 3-seed ensemble | −0.026 [−0.074, +0.025] | +0.036 [−0.017, +0.092] |
 
-**Where retrieval loses.**
-- In EXP-0060's pool-bootstrap CIs, retrieval 1-NN's within-pool rank correlation is +0.52,
-  against +0.61 to +0.81 for the occupancy models.
-- Its general ordering is closer to theirs than its slateN suggests. It fails mostly at picking
-  the single best action.
+- At 3 pushes, retrieval beats every NFD seed and both linear models, each CI excluding 0. At
+  1 step it beats 2 of 3 NFD seeds.
+- Against the 3-seed NFD ensemble the difference is not resolved in either direction.
 
-**Headroom.** Simulators with 0.5-1 mm state noise reach 0.86-0.92, against 0.83 for the best
-learned model. So a better model can still gain about 0.05-0.1 in 1-step ranking.
-
-That simulator noise was drawn **once per pool**, i.e. common to all 64 candidates. Section
-"Next steps" item 2 tests whether that common-mode structure, rather than small error, is what
-keeps its ranking high.
-
-### Good-science answers
-
-**How much data.** Whole-window retrieval plateaus by 25k.
-
-| bank size | slateN_tough [95% CI] |
-|---|---|
-| 12k | 0.546 [0.433, 0.650] |
-| 25k | 0.591 [0.499, 0.672] |
-| 50k | 0.583 [0.481, 0.669] |
-| 98k | 0.573 [0.473, 0.666] |
-
-- Paired difference, 98k minus 25k: −0.018 [−0.067, +0.030].
-- accuracy_1 and mm error keep improving with more data, and so does oracle mm, but ranking does
-  not.
-- Random data of this structure does not bind at the ≤ 50k budget.
-- A 12k bank drawn from the new reservoir alone (DS-0012) gives 0.552, about the same as
-  DS-0008+0010.
-
-**What structure of data.** Not tested: pool-shaped vs chain-shaped, stratified,
-coverage-greedy (R4) and targeted acquisition (R5, section 7) were not run.
-
-**Distance metric.**
-- It matters, but it captures little of what decides the outcome. The rank curve is monotone,
-  yet among the 50 nearest donors the truth-best is only modestly better than among 50 random
-  ones: 1.98 vs 2.51 mm.
-- Capped Chamfer plus corridor weighting gave small gains. Yaw had no effect. Wall features were
-  slightly negative.
-- A learned reranker was not tested.
-
-**How to apply deltas.**
-- Under the oracle donor, per-cube displacement (1.18 mm) ≈ displacement + non-overlap
-  projection (1.17 mm), and both are far better than paste (4.74 mm).
-- The hedged occupancy mean, which is effectively an additive image delta:
-  - scores better on accuracy_1: 0.393 against 0.227 for the clean k5 median;
-  - ranks worse: slateN 0.451 against 0.513, both on the 13-goal set;
-  - collapses in rollout: rollout_4 0.008.
-- The best clean variant is the k5 per-cube median.
-
-**Relevant state and action sensitivity.** Same-state leave-one-out uses the exact start state
-and a sibling action as donor.
-- All siblings: accuracy_1 0.366, 2.89 mm.
-- Siblings within 5 mm / 10 deg of the query action: accuracy_1 0.41, 2.15 mm.
-- Even a perfect state match leaves about 2 mm of error from action mismatch at this action
-  density.
-- This bounds any delta-copy method. LOO slateN was not measured.
-
-**Confidence model.**
-- **kNN disagreement predicts error:**
-  - row-level Spearman +0.22 against mm error and +0.45 against swept rms;
-  - within-pool +0.22 / +0.35;
-  - it passes the pre-set bars, marginally for mm.
-- **Top-1 distance does not:** −0.23 against swept rms, and the least-confident decile has 0.75×
-  the average error, i.e. the wrong direction.
-- Test 4 (does it pick better data?) was not run.
-
-**Metric study (EXP-0060, n = 6 models, underpowered).**
-
-| metric | Kendall τ with slateN_tough |
-|---|---|
-| accuracy_1 | +0.87 (p = 0.017) |
-| blurred accuracy, mass-in-goal error | +0.73 (p = 0.056) |
-| EMD | +0.20 (n.s.) |
-
-The perturbed simulators were not scored on the candidate metrics, and they contradict
-accuracy_1 (0.43 accuracy, 0.92 slateN). **No replacement metric can be recommended yet.**
-
-**Multi-step trend** (step 1 / 2 / 3 slateN_tough on DS-0013; the step-k value is truth at step k).
+**Horizon behaviour** (step 1 / 2 / 3):
 
 | model | step 1 | step 2 | step 3 |
 |---|---|---|---|
-| linear64 | 0.586 | 0.672 | 0.715 |
-| narrow NFD | 0.782 | 0.756 | 0.708 |
-| wide NFD | 0.809 | 0.805 | 0.777 |
+| retrieval k5 | 0.835 | 0.840 | 0.821 |
+| NFD seed 0 | 0.761 | 0.676 | 0.693 |
+| linear32 | 0.628 | 0.703 | 0.729 |
 
-- At 3 pushes, linear64 ≈ narrow NFD: +0.007 [−0.034, +0.049].
-- Reading, as a hypothesis: over longer horizons ranking is dominated by coarse mass transport. A
-  smooth linear operator gets that right, while per-step detail errors compound in the NFD.
-- Part of the rise may be the denominator: the value spread grows with horizon (persistence goes
-  0.036 → 0.075). Report regret_dv per step before believing it.
+Retrieval's ranking holds across the horizon and the NFD's dips. Linear32 rises again, as it did
+before the cleanup.
 
-**NFD with a retrieved reference.** 20 epochs, no CIs, epochs unequal to the 60-epoch narrow NFD.
+**Consistency.** Retrieval's CIs are about half as wide as the NFD's. It ranks more consistently
+from one state to the next.
 
-| variant | 1-step | 3-push terminal |
-|---|---|---|
-| with reference | 0.686 | 0.642 |
-| reference zeroed at test | 0.715 | 0.613 |
-| random-donor twin | 0.597 | 0.553 |
+**Information or noise?** The evidence points to information:
+- `accuracy` still favours the NFD (accuracy_1 0.557 vs 0.485), so retrieval's lead is not a
+  "prettier image" artefact.
+- Blurring predictions did not change `slateN` for the NFD or the simulators, measured before
+  the cleanup (DS-0009).
+- Before the cleanup, the neighbour-rank curve fell monotonically to a random donor. It has not
+  been re-run on clean data.
+- **Not yet tested:** whether the lead comes from cube-level feasibility (discrete,
+  cube-conserving outputs) rather than better transition information. The planned control is
+  the sharpened NFD, whose predicted cloud is turned into 20 cubes (section 3).
 
-- The random-donor twin is far below the zeroed reference, so the network does read the
-  reference channels.
-- At 1 step the real reference does not help (zeroed ≥ reference). At 3 pushes it helps a
-  little.
-- **60-epoch NFD-with-reference vs identical no-reference twin (1-step, single seed, no
-  paired CI): a wash.** slateN_tough DS-0011 / DS-0009: reference 0.790 / 0.752, no-reference
-  twin 0.752 / 0.778, reference zeroed at test 0.777 / 0.775; acc1 0.478 / 0.486 / 0.496,
-  rollout4 0.324 / 0.322 / 0.326. The two datasets disagree in sign, and the gaps are inside
-  the ~0.05 single-seed band, so there is no evidence the retrieved reference helps. The
-  reference model was still improving at epoch 60 (the twin plateaued at 53). Multi-step
-  (DS-0013) not yet run on the 60-epoch pair. Source: `experiments/EXP-0059-*/results/coder_status.md`.
+**Caveats.**
+- **Unequal inputs.** Retrieval reads true cube poses; the NFD and linear models read occupancy.
+  Cube centres can be recovered from occupancy, yaw cannot (yaw was irrelevant in R1).
+- **One retrieval configuration.** The 6 mm gate was held fixed, not swept.
+- **Small test sets.** Only 32 pools per test set.
+- **One domain.** Narrow only: n20, single layer, exact 20 mm pushes.
+- **No closed loop yet.**
+
+### Secondary results
+
+**Still valid (measure the metric or planning, not the models):**
+- Chaos floor (DS-0009): exact re-simulation scores accuracy_1 0.70, falling to 0.43 at 0.5 mm of
+  state error.
+- Perturbed simulators score `slateN_tough` 0.92-0.93 at 0-0.5 mm, with the noise shared by the
+  pool.
+
+**Pre-fix, needs a re-check on clean data:**
+- kNN disagreement predicted error; top-1 distance did not.
+- Retrieval ranking plateaued with more data beyond 25k (bank data affected by both bugs).
+- The NFD-with-reference model was a wash, but it was trained on pre-cleanup data.
+
+**Also found:** `train_nfd.py` let `--override output.log_dir` apply after the resume check
+(ISS-011), so a "new seed" could silently resume an old one. Use `--no-resume`.
 
 ### Ranked next steps
 
-1. **Settle the NFD-with-reference question from the 60-epoch result.** (Result: a wash at 1
-   step. Before dropping it, the remaining cheap checks are multi-step DS-0013 on the 60-epoch
-   pair and a second seed.)
-   - Continue (k = 3, pool-shaped bank) only if reference minus the no-reference twin is
-     ≥ +0.03 slateN_tough at 1 step or terminal, with the paired CI excluding 0.
-   - Otherwise drop it. The reference is then a capacity or regularisation effect, not
-     information.
-2. **Test the common-mode hypothesis** (cheap; it explains what ranking needs).
-   - The claim: the simulators rank well despite sharp mm-scale error *because* their error is
-     shared across all candidates from one state. Retrieval picks a different donor per
-     candidate, so its errors are independent and do not cancel.
-   - Test A (Genesis, ~30 min): re-run the perturbed simulator with **per-candidate**
-     perturbation instead of per-pool, at 0.5 / 1 mm.
-   - Test B (no Genesis): **shared-donor retrieval**. Retrieve one donor *state* for the query,
-     then take every candidate's delta from that donor state's own sibling actions. This needs a
-     pool-shaped bank, about 200 states × 64 = 12.8k rows, ~1-1.5 h of collection.
-   - If test A drops the simulator's slateN sharply, the model requirement becomes "errors
-     consistent across actions", which favours shared-state models and branching data.
-3. **Aim models at the simulator headroom with an object-level, physically consistent learner.**
-   - Why: an 0.86-0.92 ranking ceiling at 0.5-1 mm, retrieval's own information being real but
-     action-sensitive at the ~2 mm scale, and delta-copy's plateau.
-   - What: a per-cube push-frame learner (small GNN / set model over window cubes, conserving
-     cubes, trained on the 98k reservoir), scored through the same harness.
-   - Retrieval then becomes a data-coverage and confidence tool, not the predictor.
-4. **Compositional per-group retrieval (section 6).** It is the only retrieval variant that
-   addresses both whole-window key specificity (the data plateau) and action sensitivity
-   (blade-shift invariance densifies action coverage). Cost: ~2-3 h of code, no Genesis.
-   Worth it only if item 2 does not point elsewhere.
-5. **Check the linear64 horizon trend properly.**
-   - Report regret_dv per step.
-   - Evaluate an NFD+linear average and the multi-step-finetuned NFD recipe (MODEL-0003's
-     objective) on narrow data against DS-0013.
-   - If the trend survives, long-horizon planning should favour low-variance models, and
-     rollout-trained objectives are the cheap lever.
-6. **Power the metric study.** Score the perturbed-simulator zoo and the retrieval and control
-   variants on every candidate metric (n ≈ 18 models) before any metric claim.
-7. **Targeted acquisition (section 7) and a learned reranker: lowest priority.**
-   - The reranker's ceiling is the oracle top-50, which gives slateN ≈ 0.53 (8 pools), about the
-     current level.
-   - Random-data scaling already plateaued, and same-state LOO shows about 2 mm of action
-     sensitivity that local state-matching data cannot remove.
+1. **Closed-loop MPC with retrieval.** Offline `slateN` has failed to predict control before
+   (EXP-0054).
+   - Planner: a sampling planner (CEM or pure sampling; retrieval is not differentiable) over
+     20 mm perpendicular pushes.
+   - Setup: 8-goal set; compare with the NFD (single seed and ensemble) under the same planner.
+   - Metrics: in-goal mass and completion pushes.
+   - Needed: a batched retrieval call fast enough for hundreds of candidates per decision.
+2. **Controls for information vs representation** on clean data:
+   - sharpened NFD (cube-feasible NFD outputs);
+   - random-donor and neighbour-rank curve;
+   - kinematic sweep;
+   - retrieval with k-NN occupancy averaging.
+
+   If a sharpened NFD closes the gap, the lesson is "predict feasible cubes", not "retrieve".
+3. **Re-run on clean data:**
+   - the confidence readout (kNN disagreement vs top-1 distance, at row and within-pool level);
+   - data scaling / "which 50K" subsets (6k-50k, including branching vs chains). The collector
+     now makes clean data cheaply.
+4. **Retrieval vs the NFD ensemble.** Try a retrieval ensemble (several k / gate settings, or
+   retrieval+NFD averaged dv), and more test pools (≥ 64) to resolve differences of about ±0.03.
+5. **Occupancy-only retrieval** for real-robot use. Recover cube centres from occupancy peaks
+   (or perception), drop yaw, and measure the cost against the pose-based key.
+6. **Beyond the narrow domain, with a bank of at most 50K.**
+   - Variable push length: put length in the key and scale displacements.
+   - n50 / multi-layer piles: needs z in the key and a revisited interaction set.
+   - The question is which 50K transitions cover the broad domain. Compositional per-group
+     retrieval (section 6) is the natural next step for coverage.
+7. **Metric study (EXP-0060) re-run on clean models** with the perturbed-simulator zoo scored on
+   every candidate metric.
 
 ---
-
 
 ## 0. The main question
 
@@ -245,75 +182,66 @@ the push direction. The push direction is continuous. TRAINING_PHYSICS.
 20 cube poses `[x, y, z, qw, qx, qy, qz]`. The occupancy the baselines see is a 64 px image of
 the cube centres over the 128 mm tray (2 mm/px, 5 mm footprint); it carries no yaw.
 
-### Data
+### Data (current: clean by construction, ISS-010 sampler fix)
 
 | role | data |
 |---|---|
-| bank | DS-0008 (6,144 chain rows, 16 scatter + 16 clump starts per chunk) + DS-0010 (5,777 rows at 18-22 mm) = 11,921 |
-| validation | held-out DS-0008 chains (`model/retrieval/val_split.py`) |
-| test (never used for tuning) | DS-0009: 32 same-state pools × 64 pushes, plus 128 chains × 8 pushes |
+| train / bank | DS-0015: 11,659 clean rows. The curated bank with stored interaction sets is built by `code/build_bank_v2.py` |
+| validation | DS-0017: 32 pools × 64 pushes |
+| 1-step test | DS-0016: 32 pools × 64 pushes, plus 112 whole clean chains for rollouts |
+| 3-push test | DS-0018: 32 pools, 2,042 three-push sequences |
 
-### Motion statistics per push (DS-0008)
+The old sets (DS-0008/9/11/12/13) had 44-56% illegal touchdowns. They are archived and flagged;
+do not use them for new claims.
 
+### Motion statistics per push
+
+Measured on DS-0008 (legacy data). It should be re-measured on DS-0015.
 - Cubes moved by more than 1 mm: median 3, mean 6. Clump pushes move many.
-- Pushes that move nothing: 9-12%.
 - Every mover starts within along [-2, 41] mm and |lat| ≤ 48 mm of the push start, in the push
   frame.
-- Moved cubes travel a median of 11.6 mm and rotate a median of 17 deg.
+- Moved cubes travel a median of 11.6 mm.
 
-### Baselines to beat (EXP-0053, DS-0009)
+### Current retrieval model (`model/retrieval/`, EXP-0059 primary config)
 
-Columns: accuracy_1 / rollout_4 / slateN on the 13-goal set.
+1. **Push frame.** Origin at the push start, x along the push. Each transition stores cube poses
+   in this frame.
+2. **Interaction set.** The query key is not all cubes in a window: it is the cubes in the swept
+   corridor plus a chain closure (τ = 12 mm, 60 deg), computed without truth. This recovers 96%
+   of truly moved cubes at 90% precision. Bank rows store theirs precomputed.
+3. **Distance.** Capped Chamfer between the query's and the donors' interaction sets.
+4. **Transfer.** Hungarian pairing gated at 6 mm. Each paired query cube takes its donor cube's
+   push-frame displacement. Everything else stays put.
+5. **Output.** k = 5 neighbours, per-cube median displacement. The output is clean cube poses,
+   rendered to occupancy; rollouts carry poses forward.
 
-| model | accuracy_1 | rollout_4 | slateN (13-goal) |
-|---|---|---|---|
-| nfd_3ch_narrow_l20 | 0.506 | 0.348 | 0.774 |
-| nfd_3ch_narrow_l20_wide | 0.486 | 0.336 | 0.803 |
-| nfd_residual_worldframe_noaug_ep43 (broad) | 0.466 | 0.335 | 0.721 |
+### Measurement facts (still valid)
 
-R0 (EXP-0059) re-scored all of them on the 8-goal set as well. Use R0's 8-goal numbers as the
-reference row.
-
-### What R0 found
-
-**Chaos floor.** R0 re-simulated the DS-0009 rows in Genesis from perturbed start states and
-scored each outcome against the recorded one:
+**Chaos floor.** Measured on DS-0009 rows, so on legacy data, but it measures the metric rather
+than the models.
 
 | state perturbation | accuracy_1 | blur2 |
 |---|---|---|
-| 0 mm | 0.703 | 0.899 |
-| 0.5 mm | 0.428 | 0.775 |
-| 1 mm | 0.303 | 0.739 |
-| 2 mm | 0.111 | 0.599 |
+| exact re-simulation | 0.70 | 0.90 |
+| 0.5 mm | 0.43 | 0.78 |
+| 1 mm | 0.30 | 0.74 |
+| 2 mm | 0.11 | 0.60 |
 
-A near-perfect simulator whose state is off by 0.5 mm scores below the narrow NFD on
-`accuracy`. So `accuracy` rewards hedged (blurry) predictions over sharp, physically correct
-ones. This is why the headline is `slateN`, and why section 4 validates a replacement image
-metric.
+- `accuracy` penalises sharp predictions. Lead with `slateN`.
+- Perturbed simulators with the noise shared across the pool reach `slateN_tough` 0.92-0.93 at
+  0-0.5 mm.
 
-**Naive 1-NN retrieval.**
-- accuracy_1 = 0.17-0.30, depending on the implementation. The coder is reconciling the two
-  versions.
-- slateN = 0.41 on the 13-goal set.
-- Moved-cube error is about 5.5 mm, against about 10.4 mm for persistence.
-- Rollout collapses: 0.195, then 0.091, 0.036, 0.009 over 4 steps.
-- The first failure to fix is compounding error. The second is ranking.
+## 2. The overnight plan (executed 2026-09-28; kept for its rules and specs)
 
-### R1 so far (EXP-0059, 11 configs tuned on validation; DS-0009 numbers)
+Dataset names in this plan map to registered IDs as follows:
+- DS-A → DS-0017;
+- DS-B → DS-0018;
+- the test set → DS-0016;
+- the train bank → DS-0015;
+- DS-C (the reservoir, DS-0012) is legacy data with illegal touchdowns and needs re-collecting.
 
-| variant | acc1 | rollout4 | slateN (13-goal) |
-|---|---|---|---|
-| best clean variant (k5 per-cube median) | 0.227 | 0.075 | 0.513 |
-| hedged k5 occupancy mean | 0.393 | 0.008 | 0.451 |
-
-- Baseline slateN on the tough (8-goal) set: wide NFD 0.827, narrow NFD 0.778.
-- Moved-cube error for 1-NN is about 5.8 mm.
-- Small gains: capping and corridor weight. No effect: yaw. Slightly negative: walls.
-- The clean output does not resolve overlaps yet.
-- Conclusion: with a 12k bank, retrieval is far behind the NFD on every headline metric. R1.5
-  decides where to go next.
-
-## 2. Tonight's plan
+Where this plan says DS-0009, read DS-0016. The v0 below is superseded by the "Current
+retrieval model" in section 1.
 
 ### 2.0 Rules that hold throughout
 
@@ -794,22 +722,21 @@ instead of `draw_valid`.
 These came from an LLM dialogue, stated with more confidence than evidence. The status column
 says where each is tested. Anything not listed was cut as rhetoric.
 
-| claim | status (2026-09-28) |
+| claim | status (clean data, 2026-09-28) |
 |---|---|
-| k > 1 gives less noisy predictions and a free uncertainty estimate | **supported**: k5 median is the best clean variant; kNN disagreement predicts error (ρ +0.22 / +0.45) |
-| NN distance predicts failure | **refuted** for top-1 distance (−0.23; least-confident decile 0.75× error) |
+| Retrieval can rank action sets as well as learned models | **supported vs single models** (beats 2/3 NFD seeds at 1 step, all 3 plus linear at 3 pushes); **not resolved vs a 3-seed NFD ensemble** |
+| Retrieval's advantage grows with horizon (it compounds less) | **supported** (per-seed delta +0.08 mean at 1 step, +0.15 at 3 pushes; its step-wise slateN is flat, the NFD's dips) |
+| Only a few cubes matter per push; a geometric interaction set captures them | **supported** (96% recall / 90% precision; fixing the transfer to this set was the decisive change) |
+| k > 1 gives better predictions | **supported** (k5 median 0.792 vs k1 0.757 at 1 step; 0.821 vs 0.787 at 3 pushes; paired k5−k1 at 3 pushes +0.034 [−0.007, +0.077], not resolved) |
+| Transport (displacement) deltas beat image deltas | **supported, pre-fix** (under the oracle donor: displacement 1.18 mm vs paste 4.74 mm) |
+| `accuracy` is a poor target for sharp models / disagrees with slateN | **supported** (chaos floor; clean data: the NFD leads accuracy, 0.557 vs 0.485, retrieval leads slateN) |
+| Retrieval's lead is information, not feasibility or representation | **open** (sharpened-NFD control not run on clean data) |
+| NN distance predicts failure; kNN disagreement does | pre-fix: disagreement yes, top-1 distance no. **Re-check** |
+| More data keeps improving retrieval ranking | pre-fix: plateau beyond 25k. **Re-check** |
+| Branching datasets beat trajectories; dataset design beats the index | untested |
 | Push-frame canonicalisation beats world-frame retrieval | untested |
-| The relevant state is not the moved set; stationary cubes matter | untested (G4) |
-| Transport (displacement) deltas beat image deltas | **supported**: displacement 1.18 mm vs paste 4.74 mm under the oracle donor; the hedged image mean ranks worse and collapses in rollout |
-| Dataset design matters more than the index | untested (structure not varied); random scaling plateaus by 25k |
-| Branching (same-state) datasets beat trajectories | untested; now motivated by next-step item 2 |
-| More data keeps improving retrieval | **refuted for ranking** (98k − 25k = −0.018 [−0.067, +0.030]); supported for mm and accuracy |
-| Retrieved transitions carry real information (not noise) | **supported**: monotone rank curve 0.516 → 0.302 |
-| Rollouts drift out of the bank's support (compounding) | **supported** (1-NN rollout 0.195 → 0.009); terminal slateN 0.546 vs 0.591 at 1 step |
-| `accuracy` is a poor target for sharp models | **supported** (chaos floor; blur lifts NFD accuracy 0.51 → 0.70 at unchanged slateN) |
-| Retrieval can beat learned models at ranking | **refuted at ≤ 98k** (0.59 vs 0.78-0.83 at 1 step; 0.55 vs 0.71-0.78 at 3 pushes) |
-| Contact-mode hard gating is needed | untested (deferred) |
-| A local linear correction around the neighbour helps | untested; the learned version (NFD with reference) is inconclusive at 20 epochs |
+| Contact-mode hard gating is needed | not needed in the narrow domain (the interaction set suffices); untested beyond it |
+| A learned correction on top of a retrieved reference helps (NFD with reference) | inconclusive (pre-cleanup data) |
 
 ## 11. Later / out of scope tonight (condensed from the original doc)
 
@@ -825,9 +752,12 @@ says where each is tested. Anything not listed was cut as rhetoric.
   references, is archived verbatim in
   `docs/experimental_design/archive/retrieval_based_modeling_original_dialogue.md`.
 
-## 12. Open questions for the user (new; the first round was answered 2026-09-28)
+## 12. Open questions for the user
 
-1. The DS-C collection size (150-250k) is only a reservoir; the final bank is ≤ 50k. OK to use
-   ~5 h of Genesis time for it, or should the reservoir itself stay smaller (e.g. 100k)?
-2. The metric study (section 4) will likely recommend a replacement image metric. Should it be
-   promoted to a METRICS.md standard tonight if it passes, or only proposed?
+1. **Closed-loop test (next step 1).** Is a sampling planner (CEM / pure sampling over 20 mm
+   pushes) acceptable, since retrieval is not differentiable? Should the NFD comparison use that
+   same planner, or its usual GD planner?
+2. **Real-robot relevance.** Is pose-based retrieval acceptable as the headline, with
+   occupancy-only retrieval (next step 5) as a follow-up? Or should occupancy-only come first?
+3. **Beyond the narrow domain.** Which extension matters most: variable push length, n50, or
+   multi-layer piles?

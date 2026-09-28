@@ -1,7 +1,7 @@
 ---
 id: DS-0009
 title: Narrow-domain CLEAN TEST -- same-state pools + chains, n20 single layer, exact 20 mm perpendicular, training physics
-status: active
+status: superseded  # 2026-09-28, ISS-010 illegal touchdowns; replaced by DS-0016
 date: 2026-09-25
 path: Genesis/data/narrow_l20_n20/test_pools (pools_0.pt), Genesis/data/narrow_l20_n20/test_chains
 producer: Genesis/chain_collection.py (--mode pools seed 102; --mode chains seed 101)

@@ -53,6 +53,15 @@ supersedes: []
 invalidated_by: null
 ---
 
+> **Caveat (2026-09-28, ISS-010):** DS-0008 (train) and DS-0009 (test) were ~45% illegal: the
+> pile-aware stop clamp placed the tool ON a cube at touchdown in 44-56% of the narrow-domain
+> transitions, and a further ~8-12% moved nothing (`experiments/OPEN_ISSUES.md` ISS-010). DS-0010
+> (extra training rows) had ~0% exact overlaps but ~33% within a 1 mm margin. Every number in this record was trained and scored on that data. The
+> clean rerun of the narrow NFD and linear models is EXP-0059's "Clean-data v2 rung" (DS-0015
+> train, DS-0016 test; narrow NFD `slateN_tough` 0.700-0.731 over 3 seeds, linear64 0.626). The
+> narrow-vs-broad comparison claimed here (C-056) has not been re-tested on clean data.
+
+
 ## Why this test discriminates
 Same architecture, same recipe and the same clean test set; only the training distribution
 differs (narrow 20 mm perpendicular single-layer vs broad randlen). The accuracy seed floor

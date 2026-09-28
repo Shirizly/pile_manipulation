@@ -1,0 +1,49 @@
+{
+  "run_id": "exp0049_sim_shard0-2026-09-25T01:45:55-61353",
+  "event": "start",
+  "ts": "2026-09-25T01:45:55",
+  "tag": "exp0049_sim_shard0",
+  "exp": "EXP-0049",
+  "cmd": [
+    "/home/alon/anaconda3/envs/pme/bin/python",
+    "-u",
+    "experiments/EXP-0049-sampler-study/code/sampler_study.py",
+    "--shard",
+    "0/2"
+  ],
+  "out": null,
+  "log": "runs/exp0049_sim_shard0.log",
+  "commit": "3bae8cd7",
+  "dirty": true,
+  "status": "killed",
+  "returncode": -15,
+  "seconds": 2353.9,
+  "provenance": {
+    "commit": "3bae8cd7",
+    "commit_full": "3bae8cd70fa83088426ddefb2ab93ff783e429d3",
+    "dirty": true,
+    "dirty_files": [
+      ".claude/skills/data-collection/SKILL.md",
+      ".claude/skills/experiment-log/SKILL.md",
+      ".claude/skills/project-overview/SKILL.md",
+      ".claude/skills/subagent-experimenter/SKILL.md",
+      "Baselines/NFD/train_nfd.py",
+      "Baselines/common/eval_report.py",
+      "Baselines/common/goals.py",
+      "Genesis/binned_slate_collection.py",
+      "datasets/DS-0001-slates-binned-n20-scatter/DATASET.md",
+      "docs/ARCHITECTURE.md",
+      "docs/CODEMAP.md",
+      "experiments/COMMANDS.jsonl",
+      "experiments/EXP-0022-warped-nfd-push-frame/LOG.md",
+      "experiments/EXP-0022-warped-nfd-push-frame/runs/RUN-0022-residual-worldframe-noaug/stderr.log",
+      "experiments/EXP-0022-warped-nfd-push-frame/runs/RUN-0022-residual-worldframe-noaug/stdout.log",
+      "experiments/EXP-0023-model-as-gradient-source/EXPERIMENT.md",
+      "experiments/EXP-0024-genesis-repeat-noise-floor/EXPERIMENT.md",
+      "experiments/INVARIANTS.md",
+      "experiments/METRICS.md",
+      "experiments/REGISTER.md"
+    ],
+    "branch": "baselines/overnight"
+  }
+}

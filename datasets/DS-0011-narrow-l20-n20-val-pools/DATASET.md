@@ -1,7 +1,7 @@
 ---
 id: DS-0011
 title: Narrow-domain VALIDATION pools ("DS-A") -- n20 single layer, exact 20 mm perpendicular, training physics
-status: active
+status: superseded  # 2026-09-28, ISS-010 illegal touchdowns; replaced by DS-0017
 date: 2026-09-28
 path: Genesis/data/narrow_l20_n20/val_pools (pools_0.pt)
 producer: Genesis/chain_collection.py --mode pools --seed 201 (new seed, disjoint from DS-0008/9/10's 1/101/102)

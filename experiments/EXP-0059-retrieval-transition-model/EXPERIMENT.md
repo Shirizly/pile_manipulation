@@ -1,31 +1,25 @@
 ---
 id: EXP-0059
 title: >
-  R0 harness/ceiling rung for the retrieval transition model: an extended eval harness scores
-  ANY model (occupancy-in or particle-in) on DS-0009 with 13-goal + 8-goal-tough slateN and
-  blurred-accuracy diagnostics; naive retrieval_1nn (accuracy_1 0.172, slateN 0.413) sits well
-  below every EXP-0053 model (best: narrow NFD slateN 0.774, wide narrow NFD 0.803); a Genesis
-  chaos-floor probe (0/0.5/1/2mm perturbation of the recorded start state, same recorded action
-  re-executed and scored against the same recorded outcome) shows accuracy_1 collapses steeply
-  with even sub-mm state error (0.703 exact -> 0.428 at 0.5mm -> 0.303 at 1mm -> 0.111 at 2mm),
-  i.e. the swept-region accuracy metric is far more position-sensitive than trained-model gaps
-  suggest -- not itself a "model ceiling" since DS-0009 carries no state measurement noise, but a
-  sharp characterisation of what the metric costs any positional error, model or perturbation
-  alike
+  Retrieval transition model (narrow n20, 20 mm pushes, clean ISS-010-fixed data): per-cube
+  k5 retrieval over a geometric interaction set ranks action sets better than any single trained
+  NFD or linear model -- slateN_tough 0.792 vs NFD seeds 0.700-0.731 at 1 step, 0.821 vs
+  0.633-0.695 at 3-push terminal (all 3 seeds beaten, CIs exclude 0) -- but does not clearly beat
+  a 3-seed NFD ensemble (0.818 / 0.785); the NFD still leads accuracy_1 (0.557 vs 0.485)
 tier: T1
 mode: exploratory
 date: 2026-09-28
 hypothesis: null
 claim: >
-  On DS-0009 (clean narrow-domain test set), (1) an extended harness reusing eval_narrow.py /
-  eval_retrieval.py's own metric code can score occupancy-in/out and particle-in/out models on
-  the same accuracy/rollout/slateN/blurred-accuracy/mm scale, including an 8-goal "tough" slateN
-  subset (letter_O/T/S/X/L/I, two_squares, quadrant_0) alongside the original EXP-0053 13-goal
-  set; (2) the naive retrieval_1nn predictor remains well below every EXP-0053 occupancy model
-  on this extended harness too; (3) perturbing DS-0009's recorded start states by 0.5-2mm before
-  re-simulating the SAME recorded action, scored against the SAME recorded outcome, quantifies a
-  state-uncertainty ceiling distinct from resimulation noise (which EXP-0024 already showed is
-  negligible under this exact collection mechanism).
+  Trained/indexed on the same DS-0015 rows (11,659 clean narrow transitions) and tested on
+  DS-0016 (32 same-state pools x 64 pushes) and DS-0018 (32 pools x ~64 three-push sequences),
+  retrieval (curated interaction-set key, 6 mm pairing gate, k=5 per-cube median displacement,
+  k chosen on DS-0017 val) ranks candidate actions (slateN_tough, 8-goal lyapunov) better than
+  each individually trained narrow NFD seed and the narrow linear operators, with a larger margin
+  at the 3-push horizon; earlier-phase findings in this record (R0 harness, chaos floor,
+  pre-fix retrieval numbers on DS-0009) are retained as history, and the pre-fix retrieval
+  numbers are superseded by two bugs found here (unbounded 20-cube transfer matching; ISS-010
+  illegal tool touchdowns in 44-56% of the old narrow data).
 provenance:
   commit: 3bae8cd7
   dirty: true
@@ -34,10 +28,11 @@ provenance:
     PersistencePredictor/NearestTransitionPredictor unchanged), code/chaos_floor.py (new, this
     record; reuses Genesis/chain_collection.py's exact re-simulation seam:
     sim.set_particle_state + sim.execute_action + sim.update_material_state, TRAINING_PHYSICS,
-    no re-settle)"
+    no re-settle); clean-data rungs: code/build_bank_v2.py, code/val_select_v2.py,
+    code/test_v2.py, code/multistep_eval_v2.py"
   data: ["DS-0009 (test_chains: 4 chunks x 256 rows = 1,024 rows; test_pools: 32 pools x 64
          pushes) -- scoring corpus for both tasks 1-2", "DS-0009 test_chains, 64-row sample
-         (32 scatter + 32 clump) -- chaos-floor re-simulation input"]
+         (32 scatter + 32 clump) -- chaos-floor re-simulation input", "DS-0015 (clean train/bank, 11,659 rows)", "DS-0016 (clean 1-step test)", "DS-0017 (clean val pools)", "DS-0018 (clean 3-push seqpools)", "DS-0014 (curated interaction-set bank, legacy data)"]
   code_path: "occ path: simple_mpc.adapters.make_occ_adapter -> predict_step(occ,act) -> occ,
     scored exactly as eval_narrow.py. particle path: model.retrieval.predictor.
     {PersistencePredictor,NearestTransitionPredictor}.predict_particles(states0,p_start,p_stop)
@@ -87,39 +82,19 @@ noise_floor: "EXP-0036 training-seed sd (reused, not remeasured): accuracy ~0.00
 depends_on: [score-occupancy-subpixel-stable, goal-mask-axis-convention-row-y-col-x]
 establishes: []
 result: >
-  (1) Harness: code/eval_extended.py reproduces EXP-0053's own accuracy_1/rollout/slateN numbers
-  exactly for all 5 occ models and eval_retrieval.py's numbers exactly for retrieval_1nn
-  (cross-check, not a new claim), and extends every one of them with slateN_tough (8-goal) and
-  blurred accuracy_1 at sigma 1/2px. slateN_tough tracks slateN closely (within 0.02-0.03 of the
-  13-goal value for every model, same rank order) -- the tough 8-goal subset does not flip any
-  ranking here. (2) retrieval_1nn stays far below every occ model on every metric, including the
-  cleanliness diagnostics meant to test the "sharp-but-slightly-off is punished" hypothesis: its
-  blur1/blur2 gains (+0.126/+0.272 over raw) are LARGER than any occ model's (largest occ gain:
-  linear_narrow_l20_res64 +0.130/+0.205), consistent with retrieval_1nn's errors being
-  small-offset/misplacement rather than wrong-shape, but the gap to the best occ model does not
-  close at either blur level (retrieval_1nn blur2 0.444 vs nfd_3ch_narrow_l20 blur2 0.704).
-  retrieval_1nn's rollout accuracy collapses fast under its own recursive predictions (0.195 ->
-  0.091 -> 0.036 -> 0.009 over 4 steps), far faster than any occ model (occ models stay above
-  0.32 at step 4) -- compounding retrieval error is a distinct failure mode from 1-step accuracy.
-  Its moved-cube position error is 5.77mm mean over cubes with true push-frame displacement
-  >1mm. (3) Chaos floor: accuracy_1 against the ORIGINAL recorded DS-0009 outcome is 0.703 at
-  0mm perturbation (mm_mean 0.145mm -- a small genuine resimulation gap, physically near-exact),
-  and falls steeply with state uncertainty: 0.428 at 0.5mm, 0.303 at 1mm, 0.111 at 2mm. At 0.5mm
-  the floor already sits at/below `linear_narrow_l20_res64` (0.452) and near
-  `nfd_residual_worldframe_noaug_ep43` (0.466); at 1mm it is below every trained occ model. Since
-  DS-0009's recorded states carry no measurement noise, this is not literally "the ceiling models
-  face today" but it does show the swept-region `accuracy` metric is highly sensitive to small
-  positional error generally -- consistent with the brief's blur-recovers-crude-1NN observation
-  (blur1/blur2 recover much of the loss at every level, e.g. 1mm: 0.303 -> 0.573 -> 0.739).
-  **Clean-data v2 rung addendum (2026-09-28, DS-0015/16/17):** every model retrained/refit from
-  scratch on the ISS-010-fix corpus (0% illegal, vs 44-56% before) confirms the fixed retrieval
-  transfer's DS-0009 finding on an independent, cleaner train/val/test split, with a proper paired
-  pool-bootstrap CI this time: `retrieval_k5_cube_median_v2` test `slateN_tough` 0.792
-  [0.755,0.829] beats `linear_narrow_l20_v2_res64` 0.626 [0.535,0.718] decisively (paired delta
-  +0.167, CI [+0.090,+0.244], excludes 0) and edges out `nfd_3ch_narrow_l20_v2` 0.731
-  [0.646,0.804] (paired delta +0.062, CI [-0.010,+0.137], 95.4% of bootstrap draws favour
-  retrieval -- suggestive, not fully resolved at this n=32-pool power). See the "Clean-data v2
-  rung" section below for the full table, both k configs, and rollout/mm detail.
+  Clean data (DS-0015 train, DS-0016/18 test, paired 32-pool bootstrap CIs): retrieval_k5
+  slateN_tough 1-step 0.792 [0.755,0.829] vs NFD seeds 0.731/0.708/0.700 (sd 0.016; paired
+  +0.062 [-0.010,+0.137] / +0.085 [+0.015,+0.160] / +0.092 [+0.019,+0.172]), linear64 0.626
+  (+0.167 [+0.090,+0.244]), linear32 0.666. 3-push terminal 0.821 [0.779,0.858] vs NFD seeds
+  0.693/0.695/0.633 (paired +0.128/+0.126/+0.188, all CIs exclude 0), linear32 0.729 (+0.092
+  [+0.031,+0.157]), linear64 0.678 (+0.143). 3-seed NFD ensemble 0.818 (1-step, retrieval -0.026
+  [-0.074,+0.025]) / 0.785 (3-push, +0.036 [-0.017,+0.092]) -- not resolved. Retrieval's step-wise
+  slateN_tough is flat (0.835/0.840/0.821) while NFD dips (0.761/0.676/0.693); its CIs are about
+  half as wide. accuracy_1 favours NFD (0.557 vs 0.485), again disagreeing with slateN. k1 is
+  second (0.757 / 0.787). Chaos floor (DS-0009, legacy rows): accuracy_1 0.703 exact-resim ->
+  0.428 at 0.5 mm -> 0.303 at 1 mm -> 0.111 at 2 mm. Retrieval reads true cube poses (NFD reads
+  occupancy); one retrieval config (gate 6 mm fixed); no closed-loop test; the
+  information-vs-feasibility controls were not re-run on clean data.
 verdict: supported
 downgrades: [imprecision, incomplete-design]
 grade: low
@@ -951,3 +926,128 @@ already documents fixing earlier this session, not a re-occurrence of it); `simp
 adapters.py` gained `nfd_3ch_narrow_l20_v2(_epoch{10,20,30,40,50,60})` and
 `linear_narrow_l20_v2_res{32,64}` `OCC_ADAPTERS` entries; `code/val_select_v2.py`,
 `code/test_v2.py` (new, this rung).
+
+### Multi-step rung (2026-09-28): DS-0018 (`seqpools_v2_clean`), terminal + per-step, CPU-only
+
+New dataset **DS-0018** (`datasets/DS-0018-narrow-l20-seqpools-clean/`) replaces DS-0013
+(`seqpools_dsB`, 51.7% illegal at touchdown): same shape (32 pools x 64 candidate 3-push
+sequences from one shared start state), ISS-010-fix sampler, fresh seed 2005. Full-scale audit:
+**0% illegal, 0% gap_out_of_window**, 0.098% `valid==False` (6/6144 rows, 3 of which are also
+null) -- whole-SEQUENCE clean split (`split_clean_archive.py`, a sequence with any bad step is
+removed entirely) drops only 6/2,048 sequences (0.29%), leaving **2,042 clean sequences (99.7%)**
+across the 32 pools -- a handful of pools rank 63 candidates instead of 64, stated explicitly per
+the coordinator's instruction, not silently absorbed. Confirmed at run time: `code/
+multistep_eval_v2.py` (new -- reuses `multistep_eval.py`'s `run_occ`/`run_particle`/`_finish`
+verbatim, only the pool loader is new, since DS-0018's clean copy needs no legality-sidecar
+filtering) loaded exactly 2,042 sequences, and neither `run_occ` nor `run_particle` needed any
+code change to handle the variable candidate count -- both already key everything off
+`n_cand = len(r0)` per pool.
+
+Run **CPU-only** (`CUDA_VISIBLE_DEVICES=`) so the concurrent 2-seed NFD GPU training was not
+starved, per the coordinator's explicit instruction. Models: persistence,
+`nfd_3ch_narrow_l20_v2` (seed 0), `linear_narrow_l20_v2_res{64,32}`,
+`retrieval_k5_cube_median_v2` (primary), `retrieval_k1_v2` (secondary) -- the 2 additional NFD
+seeds were still training and are NOT in this table (added once they finish, see the seed-rung
+section below).
+
+**Terminal (after push 3) `slateN_tough`, paired pool-bootstrap 95% CI (32 pools, shared
+resample, reusing `code/bootstrap_ci.py::pool_bootstrap_ci`/`paired_delta_ci`):**
+
+| model | terminal slateN (13g) | terminal slateN_tough [95% CI] | step1/2/3 slateN_tough | step1/2/3 rollout accuracy |
+|---|---|---|---|---|
+| persistence | 0.021 | 0.044 [-0.033,0.123] | 0.041/0.006/0.044 | 0.000/0.000/0.000 |
+| linear_narrow_l20_v2_res64 | 0.654 | 0.678 [0.593,0.753] | 0.588/0.631/0.678 | 0.550/0.474/0.432 |
+| nfd_3ch_narrow_l20_v2 (seed 0) | 0.674 | 0.693 [0.607,0.774] | 0.761/0.676/0.693 | 0.579/0.463/0.381 |
+| linear_narrow_l20_v2_res32 | 0.695 | 0.729 [0.653,0.799] | 0.628/0.703/0.729 | 0.512/0.438/0.398 |
+| retrieval_k1_v2 (secondary) | 0.769 | 0.787 [0.741,0.830] | 0.783/0.798/0.787 | 0.450/0.363/0.321 |
+| **retrieval_k5_cube_median_v2 (primary)** | **0.819** | **0.821 [0.779,0.858]** | 0.835/0.840/0.821 | 0.529/0.434/0.380 |
+
+**Paired deltas (retrieval_k5 minus each baseline, terminal slateN_tough):**
+- vs NFD (seed 0): **+0.128, CI [+0.050,+0.206], excludes 0 (100% of draws favour retrieval).**
+- vs linear64: **+0.143, CI [+0.073,+0.221], excludes 0.**
+- vs linear32: **+0.092, CI [+0.031,+0.157], excludes 0 (99.9%).**
+- vs retrieval_k1 (secondary): +0.034, CI [-0.007,+0.077], 95.1% -- k5 still the better
+  candidate config, but this particular pairwise gap is not itself resolved at 95%.
+- vs persistence: +0.777, CI [+0.695,+0.863] -- sanity floor, as expected.
+
+**Headline: at the 3-step multi-step horizon, retrieval's advantage over NFD/linear is CLEARER
+and fully resolved (every CI excludes 0), unlike the 1-step DS-0016 result where retrieval-vs-NFD
+was only directionally ahead (CI [-0.010,+0.137]).** Reading together with the per-step columns:
+NFD's `slateN_tough` DECLINES with horizon (0.761 -> 0.676 -> 0.693, a dip then partial recovery)
+while `linear_narrow_l20_v2_res32` RISES (0.628 -> 0.703 -> 0.729) -- the same qualitative
+"linear's ranking quality rises with horizon while NFD's falls" pattern this record's own
+pre-clean-data multi-step work found on DS-0013 (see the "Task 2" section above, "linear64...
+edges out narrow NFD" at 3 steps, later downgraded to "statistically indistinguishable" there).
+On THIS clean corpus, that trend point-estimate reproduces (linear32 ends above NFD, 0.729 vs
+0.693) but is NOT separately CI-tested here (budget; would need a `paired_delta_ci(linear32,
+nfd_seed0)` specifically, not yet run). Retrieval's own `slateN_tough` is comparatively STABLE
+across steps (0.835 -> 0.840 -> 0.821, k5) rather than falling off -- its rollout ACCURACY still
+compounds down like every other model (0.529 -> 0.434 -> 0.380), so ranking quality and 1-step
+reconstruction accuracy continue to dissociate under multi-step compounding, consistent with
+this record's very first R0 finding on DS-0009/DS-0013.
+
+**Not yet done this pass** (explicit, not silent): the 2 additional NFD seeds' multi-step
+numbers (seed 0 only, above); the linear32-vs-NFD per-step trend paired CI; a 3-seed NFD
+ensemble/spread reading on DS-0018 (queued alongside the DS-0016 seed work below).
+
+### 3-seed NFD comparison (2026-09-28): DS-0016 (1-step) and DS-0018 (3-step terminal)
+
+Two more NFD v2 training seeds (1, 2; identical recipe/config to seed 0, `--no-resume` to
+guarantee independent weight init -- see the real bug this required catching, in
+`clean_eval_status.md`'s history: `--override output.log_dir=...` is applied too late to affect
+`Trainer._try_resume()`, which would otherwise have silently resumed both from seed 0's final
+checkpoint). **Per the coordinator's correction**: the PRIMARY comparison is retrieval vs EACH
+seed individually (own paired CI), not an averaged ensemble (which is a strictly stronger model
+than any single seed) -- the ensemble is reported as a separate, explicitly secondary row.
+
+**DS-0016 (1-step) `slateN_tough` [95% CI]:**
+
+| model | slateN_tough [95% CI] |
+|---|---|
+| NFD seed 0 | 0.731 [0.646,0.804] |
+| NFD seed 1 | 0.708 [0.630,0.783] |
+| NFD seed 2 | 0.700 [0.619,0.782] |
+| **seed spread (sample sd across the 3 seeds)** | **0.016** |
+| retrieval_k5_cube_median_v2 | 0.792 [0.755,0.829] |
+
+**Paired deltas (retrieval_k5 minus each seed):** vs seed 0 +0.062 CI[-0.010,+0.137] (95.4%,
+NOT resolved) -- vs seed 1 +0.085 CI[+0.015,+0.160] (**resolved**, 99.0%) -- vs seed 2 +0.092
+CI[+0.019,+0.172] (**resolved**, 99.3%). **Mean of the 3 per-seed paired deltas: +0.080** --
+about 5x the seed spread (0.016), i.e. retrieval's advantage is not explained by seed noise
+alone, though the specific seed-0 comparison individually stays unresolved at this pool count.
+
+**DS-0018 (3-step terminal) `slateN_tough` [95% CI]:**
+
+| model | terminal slateN_tough [95% CI] |
+|---|---|
+| NFD seed 0 | 0.693 [0.607,0.774] |
+| NFD seed 1 | 0.695 [0.620,0.770] |
+| NFD seed 2 | 0.633 [0.542,0.723] |
+| **seed spread (sample sd across the 3 seeds)** | **0.035** |
+| retrieval_k5_cube_median_v2 | 0.821 [0.779,0.858] |
+
+**Paired deltas (retrieval_k5 minus each seed):** vs seed 0 +0.128 CI[+0.050,+0.206] (**resolved**,
+100%) -- vs seed 1 +0.126 CI[+0.050,+0.207] (**resolved**, 100%) -- vs seed 2 +0.188
+CI[+0.106,+0.272] (**resolved**, 100%). **Mean of the 3 per-seed paired deltas: +0.147** -- about
+4.2x the seed spread (0.035). **Unlike DS-0016, every single seed is individually beaten with a
+resolved CI at the multi-step horizon** -- the 1-step "not resolved vs seed 0" gap closes once
+compounding is introduced.
+
+**Secondary row: 3-seed prediction-averaged NFD ensemble** (average the 3 seeds' predicted `dv`
+per candidate/pool/goal BEFORE computing capture against the shared true `dv` -- EXP-0036's own
+`ensemble_compare.py` convention, `dvp[e] = np.mean([dvp[m] for m in mem], 0)`, reused verbatim
+here as a one-off computation, not a persisted script). This is a STRONGER model than any single
+seed (an ensemble, not a seed-noise estimate), reported for context only:
+
+| set | NFD 3-seed ensemble [95% CI] | retrieval_k5 minus ensemble |
+|---|---|---|
+| DS-0016 (1-step) | 0.818 [0.768,0.865] | -0.026 CI[-0.074,+0.025], 16.7% favour retrieval -- **ensemble directionally AHEAD of retrieval here, not resolved** |
+| DS-0018 (3-step terminal) | 0.785 [0.726,0.837] | +0.036 CI[-0.017,+0.092], 89.3% favour retrieval -- directionally ahead, not resolved |
+
+**Reading**: a 3-seed NFD ensemble is a genuinely strong reference -- it slightly edges OUT
+retrieval on the 1-step metric (though not at a resolved CI) and only trails retrieval, not
+resolved, at 3-step terminal. This does not contradict the primary per-seed finding: retrieval
+beats every INDIVIDUAL trained NFD seed with a resolved CI at 3-step horizon (and 2 of 3 at
+1-step), but an ENSEMBLE of seeds is a different, stronger comparison point retrieval does not
+clearly beat. The honest summary is "retrieval matches or beats a single trained NFD model,
+individual-seed noise included; it does not clearly beat an ensemble of several."

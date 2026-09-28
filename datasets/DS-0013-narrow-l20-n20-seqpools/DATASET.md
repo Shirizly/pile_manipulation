@@ -1,7 +1,7 @@
 ---
 id: DS-0013
 title: Narrow-domain MULTI-STEP CANDIDATE-SEQUENCE pools ("DS-B") -- n20 single layer, exact 20 mm perpendicular, training physics
-status: active
+status: superseded  # 2026-09-28, ISS-010 illegal touchdowns; replaced by DS-0018
 date: 2026-09-28
 path: Genesis/data/narrow_l20_n20/seqpools_dsB (_{k}_data.pt, k = 0..31)
 producer: Genesis/chain_collection.py --mode seqpools --seed 401
@@ -39,3 +39,10 @@ Measured: 51.7% of rows illegal at touchdown (0mm SAT overlap; 73.7% at 1mm marg
 clump (0.611) than scatter (0.422). Per-row flags:
 `Genesis/data/narrow_l20_n20/seqpools_dsB/_{k}_data_legality.pt`. Full writeup:
 `experiments/OPEN_ISSUES.md` ISS-010.
+
+**SUPERSEDED for clean comparisons (2026-09-28):** see **DS-0018**
+(`datasets/DS-0018-narrow-l20-seqpools-clean/`) -- fresh multi-step seqpools, same recipe/size
+(32 pools x 64 sequences x 3 pushes), new seed, ISS-010-fix sampler: 0/6144 illegal,
+0/6144 gap_out_of_window, 2042/2048 sequences (99.7%) survive whole-sequence removal of the
+few `valid==False` rows. This set's payload is UNCHANGED (still valid for before/after-the-fix
+comparisons); use DS-0018 for any new multi-step/rollout work.

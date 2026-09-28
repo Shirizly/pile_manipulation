@@ -1033,6 +1033,13 @@ for _res in (32, 64):
     _ck = f"Baselines/LinearForesight/runs/operator_narrow_l20_v2_res{_res}.pt"
     if _os.path.exists(_ck):
         OCC_ADAPTERS[f"linear_narrow_l20_v2_res{_res}"] = _switched(_ck, res=_res)
+# Two more training seeds of the v2 NFD (coordinator, 2026-09-28), same recipe/config as
+# nfd_3ch_narrow_l20_v2 (seed 0 == the original unseeded run), for a 3-seed training-noise floor
+# on the clean corpus -- mirrors the nfd_3ch_randlen_seed{1,2,3} pattern above.
+for _seed in (1, 2):
+    _ck = f"Baselines/NFD/runs/nfd_3ch_narrow_l20_v2_seed{_seed}/unet_best.pth"
+    if _os.path.exists(_ck):
+        OCC_ADAPTERS[f"nfd_3ch_narrow_l20_v2_seed{_seed}"] = _nfd(_ck)
 
 # EXP-0059 section 8: NFD with a retrieved reference + controls, registered
 # once each is trained.

@@ -1,7 +1,7 @@
 ---
 id: DS-0012
 title: Narrow-domain CANDIDATE-POOL RESERVOIR ("DS-C") -- n20 single layer, chain-shaped, exact 20 mm perpendicular, training physics
-status: active
+status: defective  # 2026-09-28, ISS-010 illegal touchdowns; no clean replacement yet
 date: 2026-09-28
 final_count: "84 chunks x 1,024 rows/chunk = 86,016 chain transitions (all `valid`); stopped
   deliberately at 05:31 (2026-09-28) to free the GPU for the coder's NFD-with-reference
