@@ -1,0 +1,50 @@
+{
+ "nfd_3ch_narrow_l20_blur0.0_control": {
+  "slateN": 0.7740077153721359,
+  "slateN_tough": 0.7775164902122924
+ },
+ "nfd_3ch_narrow_l20_blur1.0_control": {
+  "slateN": 0.7782704808476131,
+  "slateN_tough": 0.7837098067539046
+ },
+ "nfd_3ch_narrow_l20_blur2.0_control": {
+  "slateN": 0.768241149919609,
+  "slateN_tough": 0.773467544655432
+ },
+ "sim_0mm_blur0.0": {
+  "slateN": 0.9286456724915367,
+  "slateN_tough": 0.9324570493772626
+ },
+ "sim_0mm_blur1.0": {
+  "slateN": 0.9249424504546019,
+  "slateN_tough": 0.9301744141848758
+ },
+ "sim_0mm_blur2.0": {
+  "slateN": 0.913984286491401,
+  "slateN_tough": 0.9229291037772782
+ },
+ "sim_0.5mm_blur0.0": {
+  "slateN": 0.9107606115106207,
+  "slateN_tough": 0.9226679651765153
+ },
+ "sim_0.5mm_blur1.0": {
+  "slateN": 0.9098927102481517,
+  "slateN_tough": 0.9216442966135219
+ },
+ "sim_0.5mm_blur2.0": {
+  "slateN": 0.9056247086622394,
+  "slateN_tough": 0.9239124373998493
+ },
+ "sim_1mm_blur0.0": {
+  "slateN": 0.8614756778025856,
+  "slateN_tough": 0.8628506027162075
+ },
+ "sim_1mm_blur1.0": {
+  "slateN": 0.8592774353097551,
+  "slateN_tough": 0.8616795295383781
+ },
+ "sim_1mm_blur2.0": {
+  "slateN": 0.852352160655965,
+  "slateN_tough": 0.8550435144570656
+ }
+}

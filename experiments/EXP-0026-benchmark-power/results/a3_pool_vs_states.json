@@ -1,0 +1,307 @@
+{
+  "cache": "experiments/temp/binned-pools/dv_cache_corner.pt",
+  "n_slates": 20,
+  "reps": 200,
+  "per_K": {
+    "25": {
+      "mean_capture": {
+        "nfd": 0.6523089213728408,
+        "visual-switched": 0.7752154372182799,
+        "descriptor": -0.0307333789748434
+      },
+      "mean_regret": {
+        "nfd": 0.014284223791211843,
+        "visual-switched": 0.009090082287788391,
+        "descriptor": 0.0440231775008142
+      },
+      "pairs": {
+        "capture:nfd-visual-switched": {
+          "mean": -0.12290651584543927,
+          "s2_slate_mean": 0.010192292513379858,
+          "s2_pool": 0.1574498786691067,
+          "sd_one_pool_per_state": 0.41864312522903907
+        },
+        "regret:nfd-visual-switched": {
+          "mean": -0.0051941415034234524,
+          "s2_slate_mean": 1.8852327103912518e-05,
+          "s2_pool": 0.00029506509353301413,
+          "sd_one_pool_per_state": 0.017695633598906666
+        },
+        "capture:nfd-descriptor": {
+          "mean": 0.6830423003476842,
+          "s2_slate_mean": 0.03123371390200076,
+          "s2_pool": 0.3200109708303336,
+          "sd_one_pool_per_state": 0.5873309776667816
+        },
+        "regret:nfd-descriptor": {
+          "mean": 0.029738953709602355,
+          "s2_slate_mean": 9.116855977411841e-05,
+          "s2_pool": 0.000665455958920135,
+          "sd_one_pool_per_state": 0.025161299740332658
+        },
+        "capture:visual-switched-descriptor": {
+          "mean": 0.8059488161931234,
+          "s2_slate_mean": 0.025497077042676702,
+          "s2_pool": 0.28396488469071113,
+          "sd_one_pool_per_state": 0.4295237537946545
+        },
+        "regret:visual-switched-descriptor": {
+          "mean": 0.03493309521302581,
+          "s2_slate_mean": 8.562031704390684e-05,
+          "s2_pool": 0.0006156792706123958,
+          "sd_one_pool_per_state": 0.02117249041016658
+        }
+      }
+    },
+    "50": {
+      "mean_capture": {
+        "nfd": 0.6131397057239572,
+        "visual-switched": 0.7622230122110716,
+        "descriptor": -0.0175484652869283
+      },
+      "mean_regret": {
+        "nfd": 0.018255976859480143,
+        "visual-switched": 0.0110463472828269,
+        "descriptor": 0.04943803469091654
+      },
+      "pairs": {
+        "capture:nfd-visual-switched": {
+          "mean": -0.14908330648711463,
+          "s2_slate_mean": 0.014780361257745187,
+          "s2_pool": 0.13933144310569673,
+          "sd_one_pool_per_state": 0.39718713833899477
+        },
+        "regret:nfd-visual-switched": {
+          "mean": -0.007209629576653242,
+          "s2_slate_mean": 3.409279304667945e-05,
+          "s2_pool": 0.00032435121887073047,
+          "sd_one_pool_per_state": 0.019203505885920968
+        },
+        "capture:nfd-descriptor": {
+          "mean": 0.6306881710108853,
+          "s2_slate_mean": 0.03549118245278305,
+          "s2_pool": 0.26418091117668674,
+          "sd_one_pool_per_state": 0.5110095117243891
+        },
+        "regret:nfd-descriptor": {
+          "mean": 0.031182057831436395,
+          "s2_slate_mean": 0.00014321728823277742,
+          "s2_pool": 0.0006715442247918983,
+          "sd_one_pool_per_state": 0.02807560086979243
+        },
+        "capture:visual-switched-descriptor": {
+          "mean": 0.779771477498,
+          "s2_slate_mean": 0.026839340514915964,
+          "s2_pool": 0.2299840606981613,
+          "sd_one_pool_per_state": 0.5597320117387105
+        },
+        "regret:visual-switched-descriptor": {
+          "mean": 0.03839168740808964,
+          "s2_slate_mean": 0.00012520705784418122,
+          "s2_pool": 0.0006365593566386821,
+          "sd_one_pool_per_state": 0.02950823359190416
+        }
+      }
+    },
+    "100": {
+      "mean_capture": {
+        "nfd": 0.5894287385027804,
+        "visual-switched": 0.7457562277890133,
+        "descriptor": -0.02822855434805914
+      },
+      "mean_regret": {
+        "nfd": 0.021526196654886007,
+        "visual-switched": 0.013095222529023886,
+        "descriptor": 0.05501613376289606
+      },
+      "pairs": {
+        "capture:nfd-visual-switched": {
+          "mean": -0.15632748928623283,
+          "s2_slate_mean": 0.030366306938650084,
+          "s2_pool": 0.1150561254605879,
+          "sd_one_pool_per_state": 0.356013009431096
+        },
+        "regret:nfd-visual-switched": {
+          "mean": -0.008430974125862122,
+          "s2_slate_mean": 7.456554062809789e-05,
+          "s2_pool": 0.00032743050163392936,
+          "sd_one_pool_per_state": 0.022342523554473127
+        },
+        "capture:nfd-descriptor": {
+          "mean": 0.6176572928508397,
+          "s2_slate_mean": 0.04477603206456313,
+          "s2_pool": 0.2176086154706983,
+          "sd_one_pool_per_state": 0.49520110959453173
+        },
+        "regret:nfd-descriptor": {
+          "mean": 0.03348993710801006,
+          "s2_slate_mean": 0.0002124084704128814,
+          "s2_pool": 0.0006605579010241263,
+          "sd_one_pool_per_state": 0.03439352472454972
+        },
+        "capture:visual-switched-descriptor": {
+          "mean": 0.7739847821370724,
+          "s2_slate_mean": 0.02970721877452398,
+          "s2_pool": 0.19101991255660086,
+          "sd_one_pool_per_state": 0.381831825935648
+        },
+        "regret:visual-switched-descriptor": {
+          "mean": 0.04192091123387218,
+          "s2_slate_mean": 0.00018172029838603367,
+          "s2_pool": 0.000614141829189704,
+          "sd_one_pool_per_state": 0.02593329710207573
+        }
+      }
+    },
+    "250": {
+      "mean_capture": {
+        "nfd": 0.5596370840907832,
+        "visual-switched": 0.7263913902840745,
+        "descriptor": -0.021092603388436278
+      },
+      "mean_regret": {
+        "nfd": 0.02547487172484398,
+        "visual-switched": 0.01521433475613594,
+        "descriptor": 0.0595392877869308
+      },
+      "pairs": {
+        "capture:nfd-visual-switched": {
+          "mean": -0.1667543061932913,
+          "s2_slate_mean": 0.05029918438568671,
+          "s2_pool": 0.0786534496553652,
+          "sd_one_pool_per_state": 0.33187785230946837
+        },
+        "regret:nfd-visual-switched": {
+          "mean": -0.010260536968708038,
+          "s2_slate_mean": 0.00013303613854034332,
+          "s2_pool": 0.00026487515069937526,
+          "sd_one_pool_per_state": 0.019860172027127254
+        },
+        "capture:nfd-descriptor": {
+          "mean": 0.5807296874792196,
+          "s2_slate_mean": 0.07216302124755007,
+          "s2_pool": 0.17352019289667292,
+          "sd_one_pool_per_state": 0.5185060426721568
+        },
+        "regret:nfd-descriptor": {
+          "mean": 0.03406441606208682,
+          "s2_slate_mean": 0.00033043408180826904,
+          "s2_pool": 0.0006010190160820577,
+          "sd_one_pool_per_state": 0.033898942106883656
+        },
+        "capture:visual-switched-descriptor": {
+          "mean": 0.747483993672511,
+          "s2_slate_mean": 0.0373087597641447,
+          "s2_pool": 0.16059157484015446,
+          "sd_one_pool_per_state": 0.41006711461647277
+        },
+        "regret:visual-switched-descriptor": {
+          "mean": 0.04432495303079486,
+          "s2_slate_mean": 0.00029496840337594755,
+          "s2_pool": 0.0005989841366258996,
+          "sd_one_pool_per_state": 0.03435683503036067
+        }
+      }
+    },
+    "500": {
+      "mean_capture": {
+        "nfd": 0.5433870404447575,
+        "visual-switched": 0.7266030072056515,
+        "descriptor": -0.023473209423533765
+      },
+      "mean_regret": {
+        "nfd": 0.027932193759828805,
+        "visual-switched": 0.01569960869476199,
+        "descriptor": 0.06246516625210643
+      },
+      "pairs": {
+        "capture:nfd-visual-switched": {
+          "mean": -0.18321596676089386,
+          "s2_slate_mean": 0.05986928645487971,
+          "s2_pool": 0.04558491815617399,
+          "sd_one_pool_per_state": 0.3089409369960302
+        },
+        "regret:nfd-visual-switched": {
+          "mean": -0.012232585065066814,
+          "s2_slate_mean": 0.0002092209531376683,
+          "s2_pool": 0.00016199984607337924,
+          "sd_one_pool_per_state": 0.01756574572296869
+        },
+        "capture:nfd-descriptor": {
+          "mean": 0.5668602498682913,
+          "s2_slate_mean": 0.07942018310090855,
+          "s2_pool": 0.13695675781842565,
+          "sd_one_pool_per_state": 0.3864193350329296
+        },
+        "regret:nfd-descriptor": {
+          "mean": 0.034532972492277623,
+          "s2_slate_mean": 0.0003611349078985876,
+          "s2_pool": 0.0005314040990865872,
+          "sd_one_pool_per_state": 0.025612766188375585
+        },
+        "capture:visual-switched-descriptor": {
+          "mean": 0.7500762166291852,
+          "s2_slate_mean": 0.04883967316858877,
+          "s2_pool": 0.13196532943695066,
+          "sd_one_pool_per_state": 0.327040428448861
+        },
+        "regret:visual-switched-descriptor": {
+          "mean": 0.046765557557344434,
+          "s2_slate_mean": 0.0003919439702616382,
+          "s2_pool": 0.0005276061651102533,
+          "sd_one_pool_per_state": 0.022575107510926035
+        }
+      }
+    },
+    "1000": {
+      "mean_capture": {
+        "nfd": 0.5162536836331905,
+        "visual-switched": 0.7399394292747591,
+        "descriptor": 0.010925241617415404
+      },
+      "mean_regret": {
+        "nfd": 0.030835729092359543,
+        "visual-switched": 0.015494193136692046,
+        "descriptor": 0.06258653029799462
+      },
+      "pairs": {
+        "capture:nfd-visual-switched": {
+          "mean": -0.22368574564156857,
+          "s2_slate_mean": 0.08531145505435324,
+          "s2_pool": 0.0,
+          "sd_one_pool_per_state": 0.29208124735140606
+        },
+        "regret:nfd-visual-switched": {
+          "mean": -0.015341535955667496,
+          "s2_slate_mean": 0.0003505212921106609,
+          "s2_pool": 0.0,
+          "sd_one_pool_per_state": 0.01872221386777378
+        },
+        "capture:nfd-descriptor": {
+          "mean": 0.5053284420157751,
+          "s2_slate_mean": 0.235097235515503,
+          "s2_pool": 0.0,
+          "sd_one_pool_per_state": 0.48486826614607703
+        },
+        "regret:nfd-descriptor": {
+          "mean": 0.031750801205635074,
+          "s2_slate_mean": 0.0011768177553845875,
+          "s2_pool": 0.0,
+          "sd_one_pool_per_state": 0.03430477744257478
+        },
+        "capture:visual-switched-descriptor": {
+          "mean": 0.7290141876573437,
+          "s2_slate_mean": 0.21393565815978485,
+          "s2_pool": 0.0,
+          "sd_one_pool_per_state": 0.4625317915125239
+        },
+        "regret:visual-switched-descriptor": {
+          "mean": 0.047092337161302567,
+          "s2_slate_mean": 0.0010983332391445882,
+          "s2_pool": 0.0,
+          "sd_one_pool_per_state": 0.033141111012526245
+        }
+      }
+    }
+  }
+}

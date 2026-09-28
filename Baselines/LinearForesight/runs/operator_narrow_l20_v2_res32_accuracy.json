@@ -1,0 +1,56 @@
+{
+  "provenance": {
+    "commit": "3bae8cd7",
+    "commit_full": "3bae8cd70fa83088426ddefb2ab93ff783e429d3",
+    "dirty": true,
+    "dirty_files": [
+      ".claude/skills/data-collection/SKILL.md",
+      ".claude/skills/experiment-log/SKILL.md",
+      ".claude/skills/project-overview/SKILL.md",
+      ".claude/skills/subagent-experimenter/SKILL.md",
+      "Baselines/NFD/nfd_lib.py",
+      "Baselines/NFD/predictor.py",
+      "Baselines/NFD/train_nfd.py",
+      "Baselines/common/cube_overlap.py",
+      "Baselines/common/eval_report.py",
+      "Baselines/common/goals.py",
+      "Genesis/action_sampling.py",
+      "Genesis/binned_slate_collection.py",
+      "Genesis/sandbox_manipulation_clean.py",
+      "Genesis/training/dataset.py",
+      "datasets/DS-0001-slates-binned-n20-scatter/DATASET.md",
+      "docs/ARCHITECTURE.md",
+      "docs/CODEMAP.md",
+      "docs/human_demo_design.md",
+      "experiments/COMMANDS.jsonl",
+      "experiments/EXP-0022-warped-nfd-push-frame/LOG.md"
+    ],
+    "branch": "baselines/overnight"
+  },
+  "train_cfg": "configs/dataset/genesis_narrow_l20_train_v2.yaml",
+  "test_cfg": "configs/dataset/genesis_narrow_l20_test_chains_v2.yaml",
+  "n_bins": 1,
+  "res": 32,
+  "constraint": "ridge",
+  "counts_per_bin": [
+    11659
+  ],
+  "bin_edges_mm": [
+    0.0,
+    20.000003278255463
+  ],
+  "accuracy": {
+    "persistence": 0.0,
+    "mean-delta": 0.1615617275238037,
+    "linear-single": 0.33157914876937866,
+    "linear-switched": 0.33157914876937866
+  },
+  "per_bin_accuracy": {
+    "0": {
+      "persistence": 0.0,
+      "mean-delta": 0.1615617275238037,
+      "linear-single": 0.33157914876937866,
+      "linear-switched": 0.33157914876937866
+    }
+  }
+}

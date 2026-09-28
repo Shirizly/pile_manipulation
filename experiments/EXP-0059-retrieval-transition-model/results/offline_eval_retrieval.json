@@ -1,0 +1,58 @@
+{
+ "persistence": {
+  "accuracy_1": 0.0,
+  "accuracy_1_scatter": 0.0,
+  "accuracy_1_clump": 0.0,
+  "rollout_accuracy_1": 0.0,
+  "rollout_accuracy_2": 0.0,
+  "rollout_accuracy_3": 0.0,
+  "rollout_accuracy_4": 0.0,
+  "slateN_per_goal": {
+   "letter_O": 0.07609310769475996,
+   "letter_T": 0.03701365742381313,
+   "letter_F": 0.0706784067224362,
+   "letter_S": 0.1406600609770976,
+   "letter_X": -0.0457892045378685,
+   "letter_M": 0.15273817340494134,
+   "letter_W": 0.09899711643811315,
+   "letter_J": 0.09816293884068727,
+   "letter_L": 0.03093021192762535,
+   "letter_I": 0.04047221795190126,
+   "quadrant_0": 0.09039339629816823,
+   "quadrant_1": -0.05885907979973126,
+   "two_squares": 0.03271569911157712
+  },
+  "slateN": 0.058785130957963144,
+  "n_test_rows": 1024,
+  "n_pools": 32,
+  "wall_s": 23.80298900604248
+ },
+ "retrieval_1nn": {
+  "accuracy_1": 0.17248690128326416,
+  "accuracy_1_scatter": -0.002781987190246582,
+  "accuracy_1_clump": 0.21863234043121338,
+  "rollout_accuracy_1": 0.19481593370437622,
+  "rollout_accuracy_2": 0.09137016534805298,
+  "rollout_accuracy_3": 0.03551727533340454,
+  "rollout_accuracy_4": 0.008746922016143799,
+  "slateN_per_goal": {
+   "letter_O": 0.27500224742107093,
+   "letter_T": 0.5422133787651546,
+   "letter_F": 0.3562847020220943,
+   "letter_S": 0.2742209280222596,
+   "letter_X": 0.4954935278656194,
+   "letter_M": 0.28436533178319223,
+   "letter_W": 0.14241513318847865,
+   "letter_J": 0.5220116392738419,
+   "letter_L": 0.42844952215091325,
+   "letter_I": 0.48220188206323655,
+   "quadrant_0": 0.592666185752023,
+   "quadrant_1": 0.5680596802849323,
+   "two_squares": 0.40038363850908354
+  },
+  "slateN": 0.4125975228539923,
+  "n_test_rows": 1024,
+  "n_pools": 32,
+  "wall_s": 92.72652387619019
+ }
+}

@@ -1,0 +1,37 @@
+{
+ "train": {
+  "cube_geom_friction": 0.699999988079071,
+  "floor_geom_friction": 0.5,
+  "cube_mass": 5.6250000000000005e-05,
+  "max_cube_diff_vs_train_mm": 0.0,
+  "mean_cube_diff_vs_train_mm": 0.0
+ },
+ "train2": {
+  "cube_geom_friction": 0.699999988079071,
+  "floor_geom_friction": 0.5,
+  "cube_mass": 5.6250000000000005e-05,
+  "max_cube_diff_vs_train_mm": 3.4653565883636475,
+  "mean_cube_diff_vs_train_mm": 0.08726228773593903
+ },
+ "binned": {
+  "cube_geom_friction": 0.30000001192092896,
+  "floor_geom_friction": 0.3,
+  "cube_mass": 0.00012500000000000003,
+  "max_cube_diff_vs_train_mm": 2.2184431552886963,
+  "mean_cube_diff_vs_train_mm": 0.0975370779633522
+ },
+ "low_friction": {
+  "cube_geom_friction": 0.019999999552965164,
+  "floor_geom_friction": 0.02,
+  "cube_mass": 5.625000000000001e-05,
+  "max_cube_diff_vs_train_mm": 78.66566467285156,
+  "mean_cube_diff_vs_train_mm": 2.852818727493286
+ },
+ "heavy": {
+  "cube_geom_friction": 0.699999988079071,
+  "floor_geom_friction": 0.5,
+  "cube_mass": 0.0005000000000000001,
+  "max_cube_diff_vs_train_mm": 2.6908931732177734,
+  "mean_cube_diff_vs_train_mm": 0.07539502531290054
+ }
+}

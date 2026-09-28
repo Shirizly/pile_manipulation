@@ -1,0 +1,1 @@
+{"crowd_floor":{"lr":0.005,"n_restarts":32,"value":"crowd_floor","crowd_lam":0.1},"crowd_floor_l03":{"lr":0.005,"n_restarts":32,"value":"crowd_floor","crowd_lam":0.3}}

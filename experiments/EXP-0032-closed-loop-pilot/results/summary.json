@@ -1,0 +1,83 @@
+{
+ "linear_switched_hard|rank": {
+  "n": 8,
+  "improve_mean": 0.075499776750803,
+  "improve_sd": 0.025294429037888415,
+  "pred_true_r": 0.646078057109236,
+  "optimism": -0.018727992894127965,
+  "evals_per_step": 64.0,
+  "wall_s": 32.41832110285759
+ },
+ "linear_switched_hard|gd": {
+  "n": 8,
+  "improve_mean": 0.11766131594777107,
+  "improve_sd": 0.0269551748137465,
+  "pred_true_r": 0.7681375449060484,
+  "optimism": -0.03083071275614202,
+  "evals_per_step": 414.875,
+  "wall_s": 44.74824661016464
+ },
+ "linear_switched_hard|cem": {
+  "n": 8,
+  "improve_mean": 0.2753874248690664,
+  "improve_sd": 0.03867152391105364,
+  "pred_true_r": 0.9391469125057179,
+  "optimism": -0.01524282122195153,
+  "evals_per_step": 14856.0,
+  "wall_s": 57.48917877674103
+ },
+ "nfd_3ch_finetuned|rank": {
+  "n": 8,
+  "improve_mean": 0.05154302343726158,
+  "improve_sd": 0.02756565955704533,
+  "pred_true_r": 0.28765414816528667,
+  "optimism": -0.04065470118075609,
+  "evals_per_step": 64.0,
+  "wall_s": 40.18953916430473
+ },
+ "nfd_3ch_finetuned|gd": {
+  "n": 8,
+  "improve_mean": 0.13652748614549637,
+  "improve_sd": 0.05118144596569991,
+  "pred_true_r": 0.6725633712188697,
+  "optimism": -0.04366580868372694,
+  "evals_per_step": 825.125,
+  "wall_s": 54.8879132270813
+ },
+ "nfd_3ch_finetuned|cem": {
+  "n": 8,
+  "improve_mean": 0.16244164016097784,
+  "improve_sd": 0.049677846609649745,
+  "pred_true_r": 0.43150717622125057,
+  "optimism": -0.04331251030089334,
+  "evals_per_step": 15182.0,
+  "wall_s": 59.61255428195
+ },
+ "nfd_warped_randlen_flipaug|rank": {
+  "n": 8,
+  "improve_mean": 0.07745520770549774,
+  "improve_sd": 0.03585306261229443,
+  "pred_true_r": 0.7289842695870375,
+  "optimism": -0.006405762163922191,
+  "evals_per_step": 64.0,
+  "wall_s": 39.78050199151039
+ },
+ "nfd_warped_randlen_flipaug|gd": {
+  "n": 8,
+  "improve_mean": 0.15614084154367447,
+  "improve_sd": 0.039410413513667364,
+  "pred_true_r": 0.8840026427452132,
+  "optimism": -0.011137821129523218,
+  "evals_per_step": 406.0,
+  "wall_s": 60.30837443470955
+ },
+ "nfd_warped_randlen_flipaug|cem": {
+  "n": 8,
+  "improve_mean": 0.2623085656668991,
+  "improve_sd": 0.043823822334470804,
+  "pred_true_r": 0.8914056838846822,
+  "optimism": -0.01714720191375818,
+  "evals_per_step": 6987.0,
+  "wall_s": 71.09559288620949
+ }
+}

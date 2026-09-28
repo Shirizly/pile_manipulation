@@ -1,0 +1,643 @@
+{
+ "n_states": 800,
+ "models": [
+  "nfd_3ch_randlen",
+  "nfd_warped_randlen",
+  "nfd_warped_randlen_flipaug",
+  "nfd_warped_randlen_flipaug_epoch30",
+  "nfd_residual_warped_flipaug_randlen",
+  "nfd_residual_worldframe_noaug_ep43",
+  "nfd_3ch_finetuned",
+  "linear_switched_hard",
+  "ensemble_nfd"
+ ],
+ "pool_size": 4,
+ "per_vf": {
+  "lyapunov": {
+   "A1": {
+    "pairs": {
+     "nfd_3ch_randlen|nfd_warped_randlen": {
+      "r_primary": 0.06012129983415602,
+      "r_mean": 0.0054464174649634725,
+      "mean_adv": -0.023753242266551393
+     },
+     "nfd_3ch_randlen|nfd_warped_randlen_flipaug": {
+      "r_primary": 0.04756727083080676,
+      "r_mean": 0.003753938996833431,
+      "mean_adv": -0.02234945148167043
+     },
+     "nfd_3ch_randlen|nfd_warped_randlen_flipaug_epoch30": {
+      "r_primary": 0.015177163004223351,
+      "r_mean": 0.005547222050021483,
+      "mean_adv": -0.018429007021396337
+     },
+     "nfd_3ch_randlen|nfd_residual_warped_flipaug_randlen": {
+      "r_primary": 0.04510524499775414,
+      "r_mean": 0.033734761791920635,
+      "mean_adv": -0.0682175333653498
+     },
+     "nfd_3ch_randlen|nfd_residual_worldframe_noaug_ep43": {
+      "r_primary": 0.03971205444237869,
+      "r_mean": 0.028294201375856223,
+      "mean_adv": 0.0023647786148620407
+     },
+     "nfd_3ch_randlen|nfd_3ch_finetuned": {
+      "r_primary": -0.0017723727009135068,
+      "r_mean": -0.006722158702908727,
+      "mean_adv": 0.23564218972230705
+     },
+     "nfd_3ch_randlen|linear_switched_hard": {
+      "r_primary": -0.02287179121943736,
+      "r_mean": -0.015386360261237318,
+      "mean_adv": -0.006008697730321311
+     },
+     "nfd_warped_randlen|nfd_warped_randlen_flipaug": {
+      "r_primary": -0.000492008006583179,
+      "r_mean": 0.004730000089113553,
+      "mean_adv": 0.0014037907848809613
+     },
+     "nfd_warped_randlen|nfd_warped_randlen_flipaug_epoch30": {
+      "r_primary": -0.009009541957590881,
+      "r_mean": 0.010495895401005189,
+      "mean_adv": 0.005324235245155056
+     },
+     "nfd_warped_randlen|nfd_residual_warped_flipaug_randlen": {
+      "r_primary": 0.023686238302986592,
+      "r_mean": 0.057887202707091176,
+      "mean_adv": -0.04446429109879841
+     },
+     "nfd_warped_randlen|nfd_residual_worldframe_noaug_ep43": {
+      "r_primary": -0.006790077396767064,
+      "r_mean": 0.01561621047748769,
+      "mean_adv": 0.026118020881413434
+     },
+     "nfd_warped_randlen|nfd_3ch_finetuned": {
+      "r_primary": -0.014059290278492774,
+      "r_mean": 0.007899331342676147,
+      "mean_adv": 0.25939543198885845
+     },
+     "nfd_warped_randlen|linear_switched_hard": {
+      "r_primary": -0.02159158529876916,
+      "r_mean": -0.0036944756452743266,
+      "mean_adv": 0.01774454453623008
+     },
+     "nfd_warped_randlen_flipaug|nfd_warped_randlen_flipaug_epoch30": {
+      "r_primary": 0.013809031032754913,
+      "r_mean": -0.013690668471213559,
+      "mean_adv": 0.003920444460274095
+     },
+     "nfd_warped_randlen_flipaug|nfd_residual_warped_flipaug_randlen": {
+      "r_primary": 0.007513305760109908,
+      "r_mean": 0.010427890833981093,
+      "mean_adv": -0.04586808188367937
+     },
+     "nfd_warped_randlen_flipaug|nfd_residual_worldframe_noaug_ep43": {
+      "r_primary": 0.04669870544608013,
+      "r_mean": 0.0414740792327756,
+      "mean_adv": 0.024714230096532477
+     },
+     "nfd_warped_randlen_flipaug|nfd_3ch_finetuned": {
+      "r_primary": 0.01209454124431075,
+      "r_mean": 0.010524685411749925,
+      "mean_adv": 0.25799164120397755
+     },
+     "nfd_warped_randlen_flipaug|linear_switched_hard": {
+      "r_primary": 0.00906137093755914,
+      "r_mean": 0.026510880300025484,
+      "mean_adv": 0.01634075375134912
+     },
+     "nfd_warped_randlen_flipaug_epoch30|nfd_residual_warped_flipaug_randlen": {
+      "r_primary": -0.018519970355925057,
+      "r_mean": 0.035447537729014225,
+      "mean_adv": -0.04978852634395347
+     },
+     "nfd_warped_randlen_flipaug_epoch30|nfd_residual_worldframe_noaug_ep43": {
+      "r_primary": 0.02249880751276776,
+      "r_mean": 0.040247075262855765,
+      "mean_adv": 0.020793785636258375
+     },
+     "nfd_warped_randlen_flipaug_epoch30|nfd_3ch_finetuned": {
+      "r_primary": -0.00035037457277944104,
+      "r_mean": 0.00625560302095884,
+      "mean_adv": 0.25407119674370343
+     },
+     "nfd_warped_randlen_flipaug_epoch30|linear_switched_hard": {
+      "r_primary": -0.018396636904479208,
+      "r_mean": 0.0029388495616571747,
+      "mean_adv": 0.012420309291075026
+     },
+     "nfd_residual_warped_flipaug_randlen|nfd_residual_worldframe_noaug_ep43": {
+      "r_primary": 0.032106254041082506,
+      "r_mean": 0.05424207480170464,
+      "mean_adv": 0.07058231198021184
+     },
+     "nfd_residual_warped_flipaug_randlen|nfd_3ch_finetuned": {
+      "r_primary": 0.006962235672336909,
+      "r_mean": 0.009920907146428204,
+      "mean_adv": 0.3038597230876569
+     },
+     "nfd_residual_warped_flipaug_randlen|linear_switched_hard": {
+      "r_primary": 0.0048594201494852295,
+      "r_mean": 0.06462736811757948,
+      "mean_adv": 0.06220883563502849
+     },
+     "nfd_residual_worldframe_noaug_ep43|nfd_3ch_finetuned": {
+      "r_primary": 0.005543148876072537,
+      "r_mean": 0.01415953613175121,
+      "mean_adv": 0.23327741110744504
+     },
+     "nfd_residual_worldframe_noaug_ep43|linear_switched_hard": {
+      "r_primary": -0.03438466414202639,
+      "r_mean": 0.009963244065135365,
+      "mean_adv": -0.008373476345183352
+     },
+     "nfd_3ch_finetuned|linear_switched_hard": {
+      "r_primary": 0.012874395194572666,
+      "r_mean": 0.001264303958868175,
+      "mean_adv": -0.24165088745262842
+     }
+    },
+    "median_r_nfd": 0.010495895401005189,
+    "median_r_all": 0.01019556744955823
+   },
+   "n_undefined_state_pool_cells": 0,
+   "A2": {
+    "gain": -0.047219918648564285,
+    "state_boot_ci_primary": [
+     -0.057429098771441194,
+     -0.037506909468768335
+    ],
+    "resplit_range": [
+     -0.057299959711766914,
+     -0.03563757552392548
+    ]
+   },
+   "A3": {
+    "ensemble_minus_best": 0.01443117210808957,
+    "state_boot_ci_primary": [
+     0.006209032006351997,
+     0.019907611031516084
+    ],
+    "model_means": {
+     "nfd_3ch_randlen": 0.8298904311777098,
+     "nfd_warped_randlen": 0.8528492507032028,
+     "nfd_warped_randlen_flipaug": 0.852146813801942,
+     "nfd_warped_randlen_flipaug_epoch30": 0.8477832784255214,
+     "nfd_residual_warped_flipaug_randlen": 0.897486132583478,
+     "nfd_residual_worldframe_noaug_ep43": 0.8268986956270455,
+     "nfd_3ch_finetuned": 0.5943728585746941,
+     "linear_switched_hard": 0.8353913949158474,
+     "ensemble_nfd": 0.9119992612278487
+    }
+   },
+   "A4": {
+    "pairs_tested": [],
+    "descriptor_tests": [],
+    "linear_selector": {},
+    "n_holm_05": 0
+   }
+  },
+  "mass_in_region": {
+   "A1": {
+    "pairs": {
+     "nfd_3ch_randlen|nfd_warped_randlen": {
+      "r_primary": -0.015519119005233662,
+      "r_mean": 0.026395620769069695,
+      "mean_adv": 0.032088286633317004
+     },
+     "nfd_3ch_randlen|nfd_warped_randlen_flipaug": {
+      "r_primary": -0.0025938363433211605,
+      "r_mean": -0.0042795137161268084,
+      "mean_adv": 0.01675955693267129
+     },
+     "nfd_3ch_randlen|nfd_warped_randlen_flipaug_epoch30": {
+      "r_primary": -0.01667435006675872,
+      "r_mean": 0.027902782868901403,
+      "mean_adv": -0.006546704496729857
+     },
+     "nfd_3ch_randlen|nfd_residual_warped_flipaug_randlen": {
+      "r_primary": -0.019355397672814842,
+      "r_mean": 0.007711203010363666,
+      "mean_adv": -0.01585101033966067
+     },
+     "nfd_3ch_randlen|nfd_residual_worldframe_noaug_ep43": {
+      "r_primary": -0.03482417735266688,
+      "r_mean": 0.005834760246077441,
+      "mean_adv": -0.015242364692281888
+     },
+     "nfd_3ch_randlen|nfd_3ch_finetuned": {
+      "r_primary": 0.22947781176250648,
+      "r_mean": 0.20184047677438385,
+      "mean_adv": 0.145492442503858
+     },
+     "nfd_3ch_randlen|linear_switched_hard": {
+      "r_primary": -0.017231841570046084,
+      "r_mean": 0.025672902964910524,
+      "mean_adv": 0.017114581390819353
+     },
+     "nfd_warped_randlen|nfd_warped_randlen_flipaug": {
+      "r_primary": -0.030713806884419752,
+      "r_mean": -0.0018908573563118604,
+      "mean_adv": -0.015328729700645713
+     },
+     "nfd_warped_randlen|nfd_warped_randlen_flipaug_epoch30": {
+      "r_primary": 0.003571103774729698,
+      "r_mean": 0.01465733650791679,
+      "mean_adv": -0.038634991130046856
+     },
+     "nfd_warped_randlen|nfd_residual_warped_flipaug_randlen": {
+      "r_primary": -0.035356309170798385,
+      "r_mean": -0.0007002947557263649,
+      "mean_adv": -0.04793929697297767
+     },
+     "nfd_warped_randlen|nfd_residual_worldframe_noaug_ep43": {
+      "r_primary": -0.010452429116634448,
+      "r_mean": -0.004165392471217646,
+      "mean_adv": -0.04733065132559889
+     },
+     "nfd_warped_randlen|nfd_3ch_finetuned": {
+      "r_primary": 0.24030686065098236,
+      "r_mean": 0.19949477708877347,
+      "mean_adv": 0.113404155870541
+     },
+     "nfd_warped_randlen|linear_switched_hard": {
+      "r_primary": 0.029835600087999598,
+      "r_mean": 0.0019393219600102644,
+      "mean_adv": -0.014973705242497653
+     },
+     "nfd_warped_randlen_flipaug|nfd_warped_randlen_flipaug_epoch30": {
+      "r_primary": 0.051238318130565334,
+      "r_mean": -0.0027464358199302086,
+      "mean_adv": -0.02330626142940115
+     },
+     "nfd_warped_randlen_flipaug|nfd_residual_warped_flipaug_randlen": {
+      "r_primary": 0.018075105996631004,
+      "r_mean": -0.0038632968568324266,
+      "mean_adv": -0.032610567272331956
+     },
+     "nfd_warped_randlen_flipaug|nfd_residual_worldframe_noaug_ep43": {
+      "r_primary": 0.04125383245587349,
+      "r_mean": 0.015991329940413444,
+      "mean_adv": -0.032001921624953175
+     },
+     "nfd_warped_randlen_flipaug|nfd_3ch_finetuned": {
+      "r_primary": 0.23990379620528124,
+      "r_mean": 0.22865573543919396,
+      "mean_adv": 0.1287328855711867
+     },
+     "nfd_warped_randlen_flipaug|linear_switched_hard": {
+      "r_primary": 0.025117112829012526,
+      "r_mean": 0.015785073401024037,
+      "mean_adv": 0.0003550244581480636
+     },
+     "nfd_warped_randlen_flipaug_epoch30|nfd_residual_warped_flipaug_randlen": {
+      "r_primary": 0.015956969594817804,
+      "r_mean": 0.0169798086184408,
+      "mean_adv": -0.009304305842930809
+     },
+     "nfd_warped_randlen_flipaug_epoch30|nfd_residual_worldframe_noaug_ep43": {
+      "r_primary": 0.03126681226820192,
+      "r_mean": 0.008123165927747523,
+      "mean_adv": -0.00869566019555203
+     },
+     "nfd_warped_randlen_flipaug_epoch30|nfd_3ch_finetuned": {
+      "r_primary": 0.2577254664838926,
+      "r_mean": 0.22708741262762225,
+      "mean_adv": 0.15203914700058782
+     },
+     "nfd_warped_randlen_flipaug_epoch30|linear_switched_hard": {
+      "r_primary": 0.03520593090591497,
+      "r_mean": 0.00767038011379659,
+      "mean_adv": 0.023661285887549212
+     },
+     "nfd_residual_warped_flipaug_randlen|nfd_residual_worldframe_noaug_ep43": {
+      "r_primary": -0.0066237067848040005,
+      "r_mean": -0.011054121078239167,
+      "mean_adv": 0.0006086456473787782
+     },
+     "nfd_residual_warped_flipaug_randlen|nfd_3ch_finetuned": {
+      "r_primary": 0.22204492473708,
+      "r_mean": 0.1844387558321975,
+      "mean_adv": 0.1613434528435187
+     },
+     "nfd_residual_warped_flipaug_randlen|linear_switched_hard": {
+      "r_primary": 0.054035838551565386,
+      "r_mean": 0.03978251963844121,
+      "mean_adv": 0.03296559173048002
+     },
+     "nfd_residual_worldframe_noaug_ep43|nfd_3ch_finetuned": {
+      "r_primary": 0.2513905946162028,
+      "r_mean": 0.212373816526493,
+      "mean_adv": 0.16073480719613994
+     },
+     "nfd_residual_worldframe_noaug_ep43|linear_switched_hard": {
+      "r_primary": 0.010339496856514979,
+      "r_mean": 0.019765480836371526,
+      "mean_adv": 0.03235694608310124
+     },
+     "nfd_3ch_finetuned|linear_switched_hard": {
+      "r_primary": 0.28153160755854323,
+      "r_mean": 0.25113182159873154,
+      "mean_adv": -0.12837786111303864
+     }
+    },
+    "median_r_nfd": 0.01465733650791679,
+    "median_r_all": 0.015888201670718742
+   },
+   "n_undefined_state_pool_cells": 0,
+   "A2": {
+    "gain": -0.017161604814558053,
+    "state_boot_ci_primary": [
+     -0.032154673873561565,
+     -0.012839652013133742
+    ],
+    "resplit_range": [
+     -0.025457766893429604,
+     -0.009392693857849023
+    ]
+   },
+   "A3": {
+    "ensemble_minus_best": 0.04597291555986056,
+    "state_boot_ci_primary": [
+     0.03933761993655211,
+     0.05593843120318433
+    ],
+    "model_means": {
+     "nfd_3ch_randlen": 0.7901092408160696,
+     "nfd_warped_randlen": 0.757767305191954,
+     "nfd_warped_randlen_flipaug": 0.7730386336351082,
+     "nfd_warped_randlen_flipaug_epoch30": 0.796388833501425,
+     "nfd_residual_warped_flipaug_randlen": 0.8053196216807326,
+     "nfd_residual_worldframe_noaug_ep43": 0.8049048664016201,
+     "nfd_3ch_finetuned": 0.644542109516747,
+     "linear_switched_hard": 0.7722522547830726,
+     "ensemble_nfd": 0.849980121681605
+    }
+   },
+   "A4": {
+    "pairs_tested": [
+     "nfd_3ch_randlen|nfd_3ch_finetuned",
+     "nfd_warped_randlen_flipaug|nfd_3ch_finetuned",
+     "nfd_warped_randlen_flipaug_epoch30|nfd_3ch_finetuned",
+     "nfd_residual_worldframe_noaug_ep43|nfd_3ch_finetuned",
+     "nfd_3ch_finetuned|linear_switched_hard"
+    ],
+    "descriptor_tests": [
+     {
+      "pair": "nfd_3ch_randlen|nfd_3ch_finetuned",
+      "descriptor": "radius_of_gyration",
+      "rho": -0.035300117656433844,
+      "p": 0.311,
+      "p_holm": 1.0
+     },
+     {
+      "pair": "nfd_3ch_randlen|nfd_3ch_finetuned",
+      "descriptor": "mean_nn_dist",
+      "rho": 0.032004214069084484,
+      "p": 0.3895,
+      "p_holm": 1.0
+     },
+     {
+      "pair": "nfd_3ch_randlen|nfd_3ch_finetuned",
+      "descriptor": "mean_wall_dist",
+      "rho": 0.02660106500166407,
+      "p": 0.455,
+      "p_holm": 1.0
+     },
+     {
+      "pair": "nfd_3ch_randlen|nfd_3ch_finetuned",
+      "descriptor": "frac_with_neighbour_12mm",
+      "rho": -0.013989437800491297,
+      "p": 0.6775,
+      "p_holm": 1.0
+     },
+     {
+      "pair": "nfd_3ch_randlen|nfd_3ch_finetuned",
+      "descriptor": "centroid_offset",
+      "rho": 0.054387202167503396,
+      "p": 0.117,
+      "p_holm": 1.0
+     },
+     {
+      "pair": "nfd_3ch_randlen|nfd_3ch_finetuned",
+      "descriptor": "hull_area",
+      "rho": 0.005186820604407195,
+      "p": 0.89,
+      "p_holm": 1.0
+     },
+     {
+      "pair": "nfd_warped_randlen_flipaug|nfd_3ch_finetuned",
+      "descriptor": "radius_of_gyration",
+      "rho": -0.03123593161864316,
+      "p": 0.3645,
+      "p_holm": 1.0
+     },
+     {
+      "pair": "nfd_warped_randlen_flipaug|nfd_3ch_finetuned",
+      "descriptor": "mean_nn_dist",
+      "rho": 0.015592454050709458,
+      "p": 0.6605,
+      "p_holm": 1.0
+     },
+     {
+      "pair": "nfd_warped_randlen_flipaug|nfd_3ch_finetuned",
+      "descriptor": "mean_wall_dist",
+      "rho": 0.011851307580168096,
+      "p": 0.726,
+      "p_holm": 1.0
+     },
+     {
+      "pair": "nfd_warped_randlen_flipaug|nfd_3ch_finetuned",
+      "descriptor": "frac_with_neighbour_12mm",
+      "rho": -0.007218689844307938,
+      "p": 0.8415,
+      "p_holm": 1.0
+     },
+     {
+      "pair": "nfd_warped_randlen_flipaug|nfd_3ch_finetuned",
+      "descriptor": "centroid_offset",
+      "rho": 0.0645749133983022,
+      "p": 0.067,
+      "p_holm": 1.0
+     },
+     {
+      "pair": "nfd_warped_randlen_flipaug|nfd_3ch_finetuned",
+      "descriptor": "hull_area",
+      "rho": 0.003472974176522151,
+      "p": 0.9145,
+      "p_holm": 1.0
+     },
+     {
+      "pair": "nfd_warped_randlen_flipaug_epoch30|nfd_3ch_finetuned",
+      "descriptor": "radius_of_gyration",
+      "rho": -0.028621474408553765,
+      "p": 0.411,
+      "p_holm": 1.0
+     },
+     {
+      "pair": "nfd_warped_randlen_flipaug_epoch30|nfd_3ch_finetuned",
+      "descriptor": "mean_nn_dist",
+      "rho": 0.015719462061659473,
+      "p": 0.679,
+      "p_holm": 1.0
+     },
+     {
+      "pair": "nfd_warped_randlen_flipaug_epoch30|nfd_3ch_finetuned",
+      "descriptor": "mean_wall_dist",
+      "rho": 0.017898215465961667,
+      "p": 0.6025,
+      "p_holm": 1.0
+     },
+     {
+      "pair": "nfd_warped_randlen_flipaug_epoch30|nfd_3ch_finetuned",
+      "descriptor": "frac_with_neighbour_12mm",
+      "rho": -0.0033504244077488888,
+      "p": 0.9205,
+      "p_holm": 1.0
+     },
+     {
+      "pair": "nfd_warped_randlen_flipaug_epoch30|nfd_3ch_finetuned",
+      "descriptor": "centroid_offset",
+      "rho": 0.05410981892159207,
+      "p": 0.128,
+      "p_holm": 1.0
+     },
+     {
+      "pair": "nfd_warped_randlen_flipaug_epoch30|nfd_3ch_finetuned",
+      "descriptor": "hull_area",
+      "rho": 0.0003461021032845364,
+      "p": 0.9925,
+      "p_holm": 1.0
+     },
+     {
+      "pair": "nfd_residual_worldframe_noaug_ep43|nfd_3ch_finetuned",
+      "descriptor": "radius_of_gyration",
+      "rho": -0.030650696329213016,
+      "p": 0.389,
+      "p_holm": 1.0
+     },
+     {
+      "pair": "nfd_residual_worldframe_noaug_ep43|nfd_3ch_finetuned",
+      "descriptor": "mean_nn_dist",
+      "rho": 0.028596982182784662,
+      "p": 0.409,
+      "p_holm": 1.0
+     },
+     {
+      "pair": "nfd_residual_worldframe_noaug_ep43|nfd_3ch_finetuned",
+      "descriptor": "mean_wall_dist",
+      "rho": 0.031279455124148633,
+      "p": 0.367,
+      "p_holm": 1.0
+     },
+     {
+      "pair": "nfd_residual_worldframe_noaug_ep43|nfd_3ch_finetuned",
+      "descriptor": "frac_with_neighbour_12mm",
+      "rho": 0.005805881364118116,
+      "p": 0.869,
+      "p_holm": 1.0
+     },
+     {
+      "pair": "nfd_residual_worldframe_noaug_ep43|nfd_3ch_finetuned",
+      "descriptor": "centroid_offset",
+      "rho": 0.04480680438563186,
+      "p": 0.2025,
+      "p_holm": 1.0
+     },
+     {
+      "pair": "nfd_residual_worldframe_noaug_ep43|nfd_3ch_finetuned",
+      "descriptor": "hull_area",
+      "rho": 0.02002964848382576,
+      "p": 0.5635,
+      "p_holm": 1.0
+     },
+     {
+      "pair": "nfd_3ch_finetuned|linear_switched_hard",
+      "descriptor": "radius_of_gyration",
+      "rho": 0.05534368803701257,
+      "p": 0.11,
+      "p_holm": 1.0
+     },
+     {
+      "pair": "nfd_3ch_finetuned|linear_switched_hard",
+      "descriptor": "mean_nn_dist",
+      "rho": -0.015242039440686628,
+      "p": 0.6545,
+      "p_holm": 1.0
+     },
+     {
+      "pair": "nfd_3ch_finetuned|linear_switched_hard",
+      "descriptor": "mean_wall_dist",
+      "rho": -0.05960481969503077,
+      "p": 0.095,
+      "p_holm": 1.0
+     },
+     {
+      "pair": "nfd_3ch_finetuned|linear_switched_hard",
+      "descriptor": "frac_with_neighbour_12mm",
+      "rho": -0.0030144973610422986,
+      "p": 0.948,
+      "p_holm": 1.0
+     },
+     {
+      "pair": "nfd_3ch_finetuned|linear_switched_hard",
+      "descriptor": "centroid_offset",
+      "rho": -0.05007870324797383,
+      "p": 0.164,
+      "p_holm": 1.0
+     },
+     {
+      "pair": "nfd_3ch_finetuned|linear_switched_hard",
+      "descriptor": "hull_area",
+      "rho": 0.0067730730829266925,
+      "p": 0.851,
+      "p_holm": 1.0
+     }
+    ],
+    "linear_selector": {
+     "nfd_3ch_randlen|nfd_3ch_finetuned": {
+      "gain": 0.0,
+      "ci": [
+       0.0,
+       0.0
+      ],
+      "frac_choose_i": 1.0
+     },
+     "nfd_warped_randlen_flipaug|nfd_3ch_finetuned": {
+      "gain": 0.0,
+      "ci": [
+       0.0,
+       0.0
+      ],
+      "frac_choose_i": 1.0
+     },
+     "nfd_warped_randlen_flipaug_epoch30|nfd_3ch_finetuned": {
+      "gain": 0.0,
+      "ci": [
+       0.0,
+       0.0
+      ],
+      "frac_choose_i": 1.0
+     },
+     "nfd_residual_worldframe_noaug_ep43|nfd_3ch_finetuned": {
+      "gain": 0.0,
+      "ci": [
+       0.0,
+       0.0
+      ],
+      "frac_choose_i": 1.0
+     },
+     "nfd_3ch_finetuned|linear_switched_hard": {
+      "gain": 0.0,
+      "ci": [
+       0.0,
+       0.0
+      ],
+      "frac_choose_i": 0.0
+     }
+    },
+    "n_holm_05": 0
+   }
+  }
+ }
+}

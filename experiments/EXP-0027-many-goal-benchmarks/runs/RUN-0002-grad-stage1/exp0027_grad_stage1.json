@@ -1,0 +1,45 @@
+{
+  "run_id": "exp0027_grad_stage1-2026-09-23T23:59:28-2418411",
+  "event": "start",
+  "ts": "2026-09-23T23:59:28",
+  "tag": "exp0027_grad_stage1",
+  "exp": "EXP-0027",
+  "cmd": [
+    "/home/alon/anaconda3/envs/pme/bin/python",
+    "-u",
+    "experiments/EXP-0027-many-goal-benchmarks/code/stage1_grad_many.py",
+    "--out",
+    "experiments/EXP-0027-many-goal-benchmarks/artifacts/RUN-0002-grad-stage1/stage1.pt"
+  ],
+  "out": "experiments/EXP-0027-many-goal-benchmarks/artifacts/RUN-0002-grad-stage1",
+  "log": "experiments/EXP-0027-many-goal-benchmarks/runs/RUN-0002-grad-stage1/exp0027_grad_stage1.log",
+  "commit": "3bae8cd7",
+  "dirty": true,
+  "status": "ok",
+  "returncode": 0,
+  "seconds": 266.8,
+  "provenance": {
+    "commit": "3bae8cd7",
+    "commit_full": "3bae8cd70fa83088426ddefb2ab93ff783e429d3",
+    "dirty": true,
+    "dirty_files": [
+      "Baselines/common/eval_report.py",
+      "Baselines/common/goals.py",
+      "docs/ARCHITECTURE.md",
+      "docs/CODEMAP.md",
+      "experiments/COMMANDS.jsonl",
+      "experiments/EXP-0022-warped-nfd-push-frame/LOG.md",
+      "experiments/EXP-0022-warped-nfd-push-frame/runs/RUN-0022-residual-worldframe-noaug/stderr.log",
+      "experiments/EXP-0022-warped-nfd-push-frame/runs/RUN-0022-residual-worldframe-noaug/stdout.log",
+      "experiments/INVARIANTS.md",
+      "experiments/METRICS.md",
+      "experiments/REGISTER.md",
+      "experiments/TODO.md",
+      "simple_mpc/adapters.py",
+      "weights/MODEL-0001-stage2-visual-switched/tests.md",
+      "weights/MODEL-0002-descriptor-only-D-all-local/tests.md",
+      "weights/MODEL-0003-nfd-multistep-finetuned/tests.md"
+    ],
+    "branch": "baselines/overnight"
+  }
+}

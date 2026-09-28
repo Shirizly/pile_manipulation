@@ -1,0 +1,38 @@
+{
+ "32": {
+  "ok": true,
+  "pushes_per_s": 3.2853018682258015,
+  "t_sim": 29.2210590839386,
+  "peak_mb": 11.705856,
+  "reserved_mb": 25.165824,
+  "n_batches": 3,
+  "nvidia_smi_peak_mib": "not polled (test run before polling added)"
+ },
+ "64": {
+  "ok": true,
+  "pushes_per_s": 4.811034180045553,
+  "t_sim": 39.90825939178467,
+  "peak_mb": 24.375296,
+  "reserved_mb": 46.137344,
+  "n_batches": 3,
+  "nvidia_smi_peak_mib": 1915
+ },
+ "128": {
+  "ok": true,
+  "pushes_per_s": 5.988755432755847,
+  "t_sim": 64.12016725540161,
+  "peak_mb": 48.666112,
+  "reserved_mb": 69.206016,
+  "n_batches": 3,
+  "nvidia_smi_peak_mib": 3537
+ },
+ "256": {
+  "ok": true,
+  "pushes_per_s": 7.0560345342538175,
+  "t_sim": 108.84300470352173,
+  "peak_mb": 93.057536,
+  "reserved_mb": 742.391808,
+  "n_batches": 3,
+  "nvidia_smi_peak_mib": 7413
+ }
+}

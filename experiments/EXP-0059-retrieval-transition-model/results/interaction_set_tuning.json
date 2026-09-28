@@ -1,0 +1,264 @@
+{
+ "tau_1mm_ang60": {
+  "all_rows": {
+   "recall": 0.8383832630899495,
+   "precision": 0.9731593909076885,
+   "n_moved": 52674,
+   "n_geometric": 45379,
+   "n_tp": 44161
+  },
+  "legal_only": {
+   "recall": 0.823011180705965,
+   "precision": 0.9811919882755251,
+   "n_moved": 34166,
+   "n_geometric": 28658,
+   "n_tp": 28119
+  }
+ },
+ "tau_1mm_ang90": {
+  "all_rows": {
+   "recall": 0.8589057219880776,
+   "precision": 0.9640520786720365,
+   "n_moved": 52674,
+   "n_geometric": 46929,
+   "n_tp": 45242
+  },
+  "legal_only": {
+   "recall": 0.8430310835333372,
+   "precision": 0.9744569997970093,
+   "n_moved": 34166,
+   "n_geometric": 29558,
+   "n_tp": 28803
+  }
+ },
+ "tau_2mm_ang60": {
+  "all_rows": {
+   "recall": 0.8854463302578122,
+   "precision": 0.9686597852499532,
+   "n_moved": 52674,
+   "n_geometric": 48149,
+   "n_tp": 46640
+  },
+  "legal_only": {
+   "recall": 0.8749926827840543,
+   "precision": 0.9771523828201608,
+   "n_moved": 34166,
+   "n_geometric": 30594,
+   "n_tp": 29895
+  }
+ },
+ "tau_2mm_ang90": {
+  "all_rows": {
+   "recall": 0.9072787333409272,
+   "precision": 0.9533403818149175,
+   "n_moved": 52674,
+   "n_geometric": 50129,
+   "n_tp": 47790
+  },
+  "legal_only": {
+   "recall": 0.8960369958438213,
+   "precision": 0.9649194692217985,
+   "n_moved": 34166,
+   "n_geometric": 31727,
+   "n_tp": 30614
+  }
+ },
+ "tau_3mm_ang60": {
+  "all_rows": {
+   "recall": 0.9059118350609409,
+   "precision": 0.9617655950821324,
+   "n_moved": 52674,
+   "n_geometric": 49615,
+   "n_tp": 47718
+  },
+  "legal_only": {
+   "recall": 0.8978223965345665,
+   "precision": 0.9713118647287926,
+   "n_moved": 34166,
+   "n_geometric": 31581,
+   "n_tp": 30675
+  }
+ },
+ "tau_3mm_ang90": {
+  "all_rows": {
+   "recall": 0.9233777575274329,
+   "precision": 0.9433098659839801,
+   "n_moved": 52674,
+   "n_geometric": 51561,
+   "n_tp": 48638
+  },
+  "legal_only": {
+   "recall": 0.9145349177544928,
+   "precision": 0.9566468679199069,
+   "n_moved": 34166,
+   "n_geometric": 32662,
+   "n_tp": 31246
+  }
+ },
+ "tau_5mm_ang60": {
+  "all_rows": {
+   "recall": 0.9259976458974067,
+   "precision": 0.9493188010899183,
+   "n_moved": 52674,
+   "n_geometric": 51380,
+   "n_tp": 48776
+  },
+  "legal_only": {
+   "recall": 0.9216765205174735,
+   "precision": 0.9583954712846577,
+   "n_moved": 34166,
+   "n_geometric": 32857,
+   "n_tp": 31490
+  }
+ },
+ "tau_5mm_ang90": {
+  "all_rows": {
+   "recall": 0.9397425674906026,
+   "precision": 0.9260125339070246,
+   "n_moved": 52674,
+   "n_geometric": 53455,
+   "n_tp": 49500
+  },
+  "legal_only": {
+   "recall": 0.9341157876251244,
+   "precision": 0.938704079531751,
+   "n_moved": 34166,
+   "n_geometric": 33999,
+   "n_tp": 31915
+  }
+ },
+ "tau_8mm_ang60": {
+  "all_rows": {
+   "recall": 0.9468048752705319,
+   "precision": 0.9260421502181785,
+   "n_moved": 52674,
+   "n_geometric": 53855,
+   "n_tp": 49872
+  },
+  "legal_only": {
+   "recall": 0.9452964935901188,
+   "precision": 0.9323076034870966,
+   "n_moved": 34166,
+   "n_geometric": 34642,
+   "n_tp": 32297
+  }
+ },
+ "tau_8mm_ang90": {
+  "all_rows": {
+   "recall": 0.9554049436154459,
+   "precision": 0.8968350144349004,
+   "n_moved": 52674,
+   "n_geometric": 56114,
+   "n_tp": 50325
+  },
+  "legal_only": {
+   "recall": 0.9531990868114499,
+   "precision": 0.9055947945053111,
+   "n_moved": 34166,
+   "n_geometric": 35962,
+   "n_tp": 32567
+  }
+ },
+ "tau_12mm_ang60": {
+  "all_rows": {
+   "recall": 0.9596765007404032,
+   "precision": 0.8978047740835464,
+   "n_moved": 52674,
+   "n_geometric": 56304,
+   "n_tp": 50550
+  },
+  "legal_only": {
+   "recall": 0.960018732072821,
+   "precision": 0.8993940058679974,
+   "n_moved": 34166,
+   "n_geometric": 36469,
+   "n_tp": 32800
+  }
+ },
+ "tau_12mm_ang90": {
+  "all_rows": {
+   "recall": 0.9656566807153434,
+   "precision": 0.8646098929117797,
+   "n_moved": 52674,
+   "n_geometric": 58830,
+   "n_tp": 50865
+  },
+  "legal_only": {
+   "recall": 0.9654920096001873,
+   "precision": 0.8675766661406554,
+   "n_moved": 34166,
+   "n_geometric": 38022,
+   "n_tp": 32987
+  }
+ },
+ "tau_16mm_ang60": {
+  "all_rows": {
+   "recall": 0.9669476402019972,
+   "precision": 0.870247919763528,
+   "n_moved": 52674,
+   "n_geometric": 58527,
+   "n_tp": 50933
+  },
+  "legal_only": {
+   "recall": 0.9686530468887198,
+   "precision": 0.8667015843917769,
+   "n_moved": 34166,
+   "n_geometric": 38185,
+   "n_tp": 33095
+  }
+ },
+ "tau_16mm_ang90": {
+  "all_rows": {
+   "recall": 0.9716178759919505,
+   "precision": 0.8342543237648132,
+   "n_moved": 52674,
+   "n_geometric": 61347,
+   "n_tp": 51179
+  },
+  "legal_only": {
+   "recall": 0.9727799566820816,
+   "precision": 0.8312117043891459,
+   "n_moved": 34166,
+   "n_geometric": 39985,
+   "n_tp": 33236
+  }
+ },
+ "tau_20mm_ang60": {
+  "all_rows": {
+   "recall": 0.9671185024869955,
+   "precision": 0.8694361004915346,
+   "n_moved": 52674,
+   "n_geometric": 58592,
+   "n_tp": 50942
+  },
+  "legal_only": {
+   "recall": 0.9689164666627641,
+   "precision": 0.8654640522875817,
+   "n_moved": 34166,
+   "n_geometric": 38250,
+   "n_tp": 33104
+  }
+ },
+ "tau_20mm_ang90": {
+  "all_rows": {
+   "recall": 0.9717697535786156,
+   "precision": 0.8333523273041044,
+   "n_moved": 52674,
+   "n_geometric": 61423,
+   "n_tp": 51187
+  },
+  "legal_only": {
+   "recall": 0.9730141075923433,
+   "precision": 0.8298345023838646,
+   "n_moved": 34166,
+   "n_geometric": 40061,
+   "n_tp": 33244
+  }
+ },
+ "chosen_default": {
+  "tau_mm": 12.0,
+  "angle_max_deg": 60.0,
+  "m_v_mm": 1.0,
+  "note": "smallest tau (at angle_max_deg=60) reaching ~95% recall on legal-only training rows; see interaction.py::DEFAULT_TAU"
+ }
+}

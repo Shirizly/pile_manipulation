@@ -1,0 +1,39 @@
+{
+  "run_id": "a1_exp0023_paired-2026-09-23T22:24:57-2310137",
+  "event": "start",
+  "ts": "2026-09-23T22:24:57",
+  "tag": "a1_exp0023_paired",
+  "exp": "EXP-0026",
+  "cmd": [
+    "/home/alon/anaconda3/envs/pme/bin/python",
+    "-u",
+    "experiments/EXP-0026-benchmark-power/code/a1_exp0023_paired.py",
+    "--out",
+    "experiments/EXP-0026-benchmark-power/results/a1_exp0023_paired.json"
+  ],
+  "out": null,
+  "log": "experiments/EXP-0026-benchmark-power/runs/RUN-0002-a1-exp0023-paired/a1_exp0023_paired.log",
+  "commit": "3bae8cd7",
+  "dirty": true,
+  "status": "ok",
+  "returncode": 0,
+  "seconds": 2.0,
+  "provenance": {
+    "commit": "3bae8cd7",
+    "commit_full": "3bae8cd70fa83088426ddefb2ab93ff783e429d3",
+    "dirty": true,
+    "dirty_files": [
+      "Baselines/common/eval_report.py",
+      "Baselines/common/goals.py",
+      "experiments/COMMANDS.jsonl",
+      "experiments/EXP-0022-warped-nfd-push-frame/LOG.md",
+      "experiments/EXP-0022-warped-nfd-push-frame/runs/RUN-0022-residual-worldframe-noaug/stderr.log",
+      "experiments/EXP-0022-warped-nfd-push-frame/runs/RUN-0022-residual-worldframe-noaug/stdout.log",
+      "simple_mpc/adapters.py",
+      "weights/MODEL-0001-stage2-visual-switched/tests.md",
+      "weights/MODEL-0002-descriptor-only-D-all-local/tests.md",
+      "weights/MODEL-0003-nfd-multistep-finetuned/tests.md"
+    ],
+    "branch": "baselines/overnight"
+  }
+}

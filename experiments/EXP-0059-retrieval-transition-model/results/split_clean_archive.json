@@ -1,0 +1,48 @@
+{
+ "DS-0008_train": {
+  "total": 6144,
+  "removed": 3343,
+  "clean": 2801,
+  "clean_dir": "/home/alon/Code/pile_manipulation/Genesis/data/narrow_l20_n20/train_clean",
+  "archive_dir": "/home/alon/Code/pile_manipulation/Genesis/data/narrow_l20_n20/train/archive_removed"
+ },
+ "DS-0009_test_pools": {
+  "total": 2048,
+  "removed": 1279,
+  "clean": 769,
+  "clean_dir": "/home/alon/Code/pile_manipulation/Genesis/data/narrow_l20_n20/test_pools_clean",
+  "archive_dir": "/home/alon/Code/pile_manipulation/Genesis/data/narrow_l20_n20/test_pools/archive_removed"
+ },
+ "DS-0009_test_chains": {
+  "total": 1024,
+  "removed": 1016,
+  "clean": 8,
+  "sequences_total": 128,
+  "sequences_removed": 127,
+  "clean_dir": "/home/alon/Code/pile_manipulation/Genesis/data/narrow_l20_n20/test_chains_clean",
+  "archive_dir": "/home/alon/Code/pile_manipulation/Genesis/data/narrow_l20_n20/test_chains/archive_removed"
+ },
+ "DS-0011_val_pools": {
+  "total": 2048,
+  "removed": 1136,
+  "clean": 912,
+  "clean_dir": "/home/alon/Code/pile_manipulation/Genesis/data/narrow_l20_n20/val_pools_clean",
+  "archive_dir": "/home/alon/Code/pile_manipulation/Genesis/data/narrow_l20_n20/val_pools/archive_removed"
+ },
+ "DS-0015_train_v2": {
+  "total": 12032,
+  "removed": 373,
+  "clean": 11659,
+  "clean_dir": "/home/alon/Code/pile_manipulation/Genesis/data/narrow_l20_n20/train_v2_clean",
+  "archive_dir": "/home/alon/Code/pile_manipulation/Genesis/data/narrow_l20_n20/train_v2/archive_removed"
+ },
+ "DS-0016_test_chains_v2": {
+  "total": 1024,
+  "removed": 128,
+  "clean": 896,
+  "sequences_total": 128,
+  "sequences_removed": 16,
+  "clean_dir": "/home/alon/Code/pile_manipulation/Genesis/data/narrow_l20_n20/test_chains_v2_clean",
+  "archive_dir": "/home/alon/Code/pile_manipulation/Genesis/data/narrow_l20_n20/test_chains_v2/archive_removed"
+ }
+}

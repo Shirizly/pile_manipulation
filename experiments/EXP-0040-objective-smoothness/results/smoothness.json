@@ -1,0 +1,51 @@
+{
+ "nfd_3ch_randlen": {
+  "roughness": 0.018613571301102638,
+  "local_minima": 2.705208333333333,
+  "gain_capture": 0.37295102088440524,
+  "grad_capture": 1.1453198694313567,
+  "rank_capture": 0.7723688485469513
+ },
+ "nfd_warped_randlen": {
+  "roughness": 0.09350425750017166,
+  "local_minima": 7.559375,
+  "gain_capture": 0.2561814449358887,
+  "grad_capture": 1.0776921088186404,
+  "rank_capture": 0.8215106638827516
+ },
+ "nfd_warped_randlen_flipaug": {
+  "roughness": 0.10143531113862991,
+  "local_minima": 8.120833333333334,
+  "gain_capture": 0.3570594352592404,
+  "grad_capture": 1.1516376032183566,
+  "rank_capture": 0.7945781679591164
+ },
+ "nfd_residual_warped_flipaug_randlen": {
+  "roughness": 0.09162367135286331,
+  "local_minima": 7.865625,
+  "gain_capture": 0.4370999105274677,
+  "grad_capture": 1.2714297083516917,
+  "rank_capture": 0.8343297978242237
+ },
+ "nfd_residual_worldframe_noaug_ep43": {
+  "roughness": 0.023555653169751167,
+  "local_minima": 3.21875,
+  "gain_capture": 0.5163251677217582,
+  "grad_capture": 1.3010633962849776,
+  "rank_capture": 0.7847382285632193
+ },
+ "linear_switched_soft": {
+  "roughness": 0.057362284511327744,
+  "local_minima": 4.816666666666666,
+  "gain_capture": 0.30033346471221495,
+  "grad_capture": 1.1194670371556033,
+  "rank_capture": 0.8191335724433884
+ },
+ "ensemble_nfd": {
+  "roughness": 0.059368982911109924,
+  "local_minima": 6.821875,
+  "gain_capture": 0.4989479392146071,
+  "grad_capture": 1.3744455821812154,
+  "rank_capture": 0.8754976429666081
+ }
+}

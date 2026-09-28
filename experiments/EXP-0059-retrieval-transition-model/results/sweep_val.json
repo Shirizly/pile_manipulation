@@ -1,0 +1,398 @@
+{
+ "v0_baseline": {
+  "accuracy_1": 0.18267381191253662,
+  "accuracy_1_scatter": -0.03123295307159424,
+  "accuracy_1_clump": 0.2420191764831543,
+  "rollout_accuracy_1": 0.2494543194770813,
+  "rollout_accuracy_2": 0.10807621479034424,
+  "rollout_accuracy_3": 0.049527764320373535,
+  "rollout_accuracy_4": 0.01720327138900757,
+  "slateN_per_goal": {},
+  "slateN": null,
+  "n_test_rows": 1232,
+  "n_pools": 0,
+  "wall_s": 77.50293827056885,
+  "config": {
+   "k": 1,
+   "aggregation": "nn1",
+   "transfer_yaw": true,
+   "distance": {
+    "window_u": [
+     -0.005,
+     0.045
+    ],
+    "window_v": [
+     -0.05,
+     0.05
+    ],
+    "cap": null,
+    "mismatch_penalty": null,
+    "corridor_v_halfwidth": 0.025,
+    "corridor_u_pad": 0.005,
+    "corridor_weight": 1.0,
+    "wall_weight": 0.0,
+    "reduction": "mean"
+   }
+  }
+ },
+ "capped": {
+  "accuracy_1": 0.18506121635437012,
+  "accuracy_1_scatter": -0.02225804328918457,
+  "accuracy_1_clump": 0.24232321977615356,
+  "rollout_accuracy_1": 0.25560396909713745,
+  "rollout_accuracy_2": 0.11383354663848877,
+  "rollout_accuracy_3": 0.05606400966644287,
+  "rollout_accuracy_4": 0.016324996948242188,
+  "slateN_per_goal": {},
+  "slateN": null,
+  "n_test_rows": 1232,
+  "n_pools": 0,
+  "wall_s": 63.42129731178284,
+  "config": {
+   "k": 1,
+   "aggregation": "nn1",
+   "transfer_yaw": true,
+   "distance": {
+    "window_u": [
+     -0.005,
+     0.045
+    ],
+    "window_v": [
+     -0.05,
+     0.05
+    ],
+    "cap": 0.02,
+    "mismatch_penalty": 0.04,
+    "corridor_v_halfwidth": 0.025,
+    "corridor_u_pad": 0.005,
+    "corridor_weight": 1.0,
+    "wall_weight": 0.0,
+    "reduction": "mean"
+   }
+  }
+ },
+ "capped_corridor": {
+  "accuracy_1": 0.19550246000289917,
+  "accuracy_1_scatter": 0.02503424882888794,
+  "accuracy_1_clump": 0.24138379096984863,
+  "rollout_accuracy_1": 0.26414352655410767,
+  "rollout_accuracy_2": 0.12692642211914062,
+  "rollout_accuracy_3": 0.06139117479324341,
+  "rollout_accuracy_4": 0.012163817882537842,
+  "slateN_per_goal": {},
+  "slateN": null,
+  "n_test_rows": 1232,
+  "n_pools": 0,
+  "wall_s": 68.27137041091919,
+  "config": {
+   "k": 1,
+   "aggregation": "nn1",
+   "transfer_yaw": true,
+   "distance": {
+    "window_u": [
+     -0.005,
+     0.045
+    ],
+    "window_v": [
+     -0.05,
+     0.05
+    ],
+    "cap": 0.02,
+    "mismatch_penalty": 0.04,
+    "corridor_v_halfwidth": 0.025,
+    "corridor_u_pad": 0.005,
+    "corridor_weight": 3.0,
+    "wall_weight": 0.0,
+    "reduction": "mean"
+   }
+  }
+ },
+ "capped_corridor_sum": {
+  "accuracy_1": 0.1845000982284546,
+  "accuracy_1_scatter": 0.07044130563735962,
+  "accuracy_1_clump": 0.21388155221939087,
+  "rollout_accuracy_1": 0.2376052737236023,
+  "rollout_accuracy_2": 0.1256159543991089,
+  "rollout_accuracy_3": 0.07988989353179932,
+  "rollout_accuracy_4": 0.05720621347427368,
+  "slateN_per_goal": {},
+  "slateN": null,
+  "n_test_rows": 1232,
+  "n_pools": 0,
+  "wall_s": 68.5991702079773,
+  "config": {
+   "k": 1,
+   "aggregation": "nn1",
+   "transfer_yaw": true,
+   "distance": {
+    "window_u": [
+     -0.005,
+     0.045
+    ],
+    "window_v": [
+     -0.05,
+     0.05
+    ],
+    "cap": 0.02,
+    "mismatch_penalty": 0.04,
+    "corridor_v_halfwidth": 0.025,
+    "corridor_u_pad": 0.005,
+    "corridor_weight": 3.0,
+    "wall_weight": 0.0,
+    "reduction": "sum"
+   }
+  }
+ },
+ "capped_corridor_wall": {
+  "accuracy_1": 0.19470256567001343,
+  "accuracy_1_scatter": 0.023581266403198242,
+  "accuracy_1_clump": 0.24077653884887695,
+  "rollout_accuracy_1": 0.2622719407081604,
+  "rollout_accuracy_2": 0.12800705432891846,
+  "rollout_accuracy_3": 0.06199103593826294,
+  "rollout_accuracy_4": 0.006106734275817871,
+  "slateN_per_goal": {},
+  "slateN": null,
+  "n_test_rows": 1232,
+  "n_pools": 0,
+  "wall_s": 100.63462805747986,
+  "config": {
+   "k": 1,
+   "aggregation": "nn1",
+   "transfer_yaw": true,
+   "distance": {
+    "window_u": [
+     -0.005,
+     0.045
+    ],
+    "window_v": [
+     -0.05,
+     0.05
+    ],
+    "cap": 0.02,
+    "mismatch_penalty": 0.04,
+    "corridor_v_halfwidth": 0.025,
+    "corridor_u_pad": 0.005,
+    "corridor_weight": 3.0,
+    "wall_weight": 0.02,
+    "reduction": "mean"
+   }
+  }
+ },
+ "capped_corridor_tight_window": {
+  "accuracy_1": 0.22331947088241577,
+  "accuracy_1_scatter": 0.13256895542144775,
+  "accuracy_1_clump": 0.24637073278427124,
+  "rollout_accuracy_1": 0.2789726257324219,
+  "rollout_accuracy_2": 0.1491953730583191,
+  "rollout_accuracy_3": 0.09593403339385986,
+  "rollout_accuracy_4": 0.06567102670669556,
+  "slateN_per_goal": {},
+  "slateN": null,
+  "n_test_rows": 1232,
+  "n_pools": 0,
+  "wall_s": 170.33630514144897,
+  "config": {
+   "k": 1,
+   "aggregation": "nn1",
+   "transfer_yaw": true,
+   "distance": {
+    "window_u": [
+     0.0,
+     0.025
+    ],
+    "window_v": [
+     -0.025,
+     0.025
+    ],
+    "cap": 0.02,
+    "mismatch_penalty": 0.04,
+    "corridor_v_halfwidth": 0.025,
+    "corridor_u_pad": 0.005,
+    "corridor_weight": 3.0,
+    "wall_weight": 0.0,
+    "reduction": "mean"
+   }
+  }
+ },
+ "k5_cube_median": {
+  "accuracy_1": 0.23410522937774658,
+  "accuracy_1_scatter": 0.08301323652267456,
+  "accuracy_1_clump": 0.27441132068634033,
+  "rollout_accuracy_1": 0.2937875986099243,
+  "rollout_accuracy_2": 0.15802788734436035,
+  "rollout_accuracy_3": 0.0951986312866211,
+  "rollout_accuracy_4": 0.06733614206314087,
+  "slateN_per_goal": {},
+  "slateN": null,
+  "n_test_rows": 1232,
+  "n_pools": 0,
+  "wall_s": 250.41360902786255,
+  "config": {
+   "k": 5,
+   "aggregation": "cube_median",
+   "transfer_yaw": true,
+   "distance": {
+    "window_u": [
+     -0.005,
+     0.045
+    ],
+    "window_v": [
+     -0.05,
+     0.05
+    ],
+    "cap": 0.02,
+    "mismatch_penalty": 0.04,
+    "corridor_v_halfwidth": 0.025,
+    "corridor_u_pad": 0.005,
+    "corridor_weight": 3.0,
+    "wall_weight": 0.0,
+    "reduction": "mean"
+   }
+  }
+ },
+ "k5_cube_weighted_mean": {
+  "accuracy_1": 0.07970744371414185,
+  "accuracy_1_scatter": -0.21095776557922363,
+  "accuracy_1_clump": 0.16305458545684814,
+  "rollout_accuracy_1": 0.1605563759803772,
+  "rollout_accuracy_2": 0.03719496726989746,
+  "rollout_accuracy_3": -0.006324648857116699,
+  "rollout_accuracy_4": -0.04016900062561035,
+  "slateN_per_goal": {},
+  "slateN": null,
+  "n_test_rows": 1232,
+  "n_pools": 0,
+  "wall_s": 336.30778431892395,
+  "config": {
+   "k": 5,
+   "aggregation": "cube_weighted_mean",
+   "transfer_yaw": true,
+   "distance": {
+    "window_u": [
+     -0.005,
+     0.045
+    ],
+    "window_v": [
+     -0.05,
+     0.05
+    ],
+    "cap": 0.02,
+    "mismatch_penalty": 0.04,
+    "corridor_v_halfwidth": 0.025,
+    "corridor_u_pad": 0.005,
+    "corridor_weight": 3.0,
+    "wall_weight": 0.0,
+    "reduction": "mean"
+   }
+  }
+ },
+ "k5_occ_mean": {
+  "accuracy_1": 0.4005921483039856,
+  "accuracy_1_scatter": 0.2791208028793335,
+  "accuracy_1_clump": 0.43310266733169556,
+  "rollout_accuracy_1": 0.26414352655410767,
+  "rollout_accuracy_2": 0.12692642211914062,
+  "rollout_accuracy_3": 0.06139117479324341,
+  "rollout_accuracy_4": 0.012163817882537842,
+  "slateN_per_goal": {},
+  "slateN": null,
+  "n_test_rows": 1232,
+  "n_pools": 0,
+  "wall_s": 173.96724653244019,
+  "config": {
+   "k": 5,
+   "aggregation": "occ_mean",
+   "transfer_yaw": true,
+   "distance": {
+    "window_u": [
+     -0.005,
+     0.045
+    ],
+    "window_v": [
+     -0.05,
+     0.05
+    ],
+    "cap": 0.02,
+    "mismatch_penalty": 0.04,
+    "corridor_v_halfwidth": 0.025,
+    "corridor_u_pad": 0.005,
+    "corridor_weight": 3.0,
+    "wall_weight": 0.0,
+    "reduction": "mean"
+   }
+  }
+ },
+ "k5_occ_weighted_mean": {
+  "accuracy_1": 0.40114277601242065,
+  "accuracy_1_scatter": 0.28023064136505127,
+  "accuracy_1_clump": 0.4334889054298401,
+  "rollout_accuracy_1": 0.26414352655410767,
+  "rollout_accuracy_2": 0.12692642211914062,
+  "rollout_accuracy_3": 0.06139117479324341,
+  "rollout_accuracy_4": 0.012163817882537842,
+  "slateN_per_goal": {},
+  "slateN": null,
+  "n_test_rows": 1232,
+  "n_pools": 0,
+  "wall_s": 155.23201251029968,
+  "config": {
+   "k": 5,
+   "aggregation": "occ_weighted_mean",
+   "transfer_yaw": true,
+   "distance": {
+    "window_u": [
+     -0.005,
+     0.045
+    ],
+    "window_v": [
+     -0.05,
+     0.05
+    ],
+    "cap": 0.02,
+    "mismatch_penalty": 0.04,
+    "corridor_v_halfwidth": 0.025,
+    "corridor_u_pad": 0.005,
+    "corridor_weight": 3.0,
+    "wall_weight": 0.0,
+    "reduction": "mean"
+   }
+  }
+ },
+ "capped_corridor_no_yaw": {
+  "accuracy_1": 0.19550246000289917,
+  "accuracy_1_scatter": 0.02503424882888794,
+  "accuracy_1_clump": 0.24138379096984863,
+  "rollout_accuracy_1": 0.26414352655410767,
+  "rollout_accuracy_2": 0.12692642211914062,
+  "rollout_accuracy_3": 0.06139117479324341,
+  "rollout_accuracy_4": 0.012163817882537842,
+  "slateN_per_goal": {},
+  "slateN": null,
+  "n_test_rows": 1232,
+  "n_pools": 0,
+  "wall_s": 128.63166975975037,
+  "config": {
+   "k": 1,
+   "aggregation": "nn1",
+   "transfer_yaw": false,
+   "distance": {
+    "window_u": [
+     -0.005,
+     0.045
+    ],
+    "window_v": [
+     -0.05,
+     0.05
+    ],
+    "cap": 0.02,
+    "mismatch_penalty": 0.04,
+    "corridor_v_halfwidth": 0.025,
+    "corridor_u_pad": 0.005,
+    "corridor_weight": 3.0,
+    "wall_weight": 0.0,
+    "reduction": "mean"
+   }
+  }
+ }
+}

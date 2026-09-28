@@ -1,0 +1,155 @@
+{
+ "k5_occ_weighted_mean": {
+  "accuracy_1": 0.3925849199295044,
+  "accuracy_1_scatter": 0.28095507621765137,
+  "accuracy_1_clump": 0.421481192111969,
+  "rollout_accuracy_1": 0.21594029664993286,
+  "rollout_accuracy_2": 0.125005841255188,
+  "rollout_accuracy_3": 0.05033743381500244,
+  "rollout_accuracy_4": 0.00801938772201538,
+  "slateN_per_goal": {
+   "letter_O": 0.26480534823349444,
+   "letter_T": 0.5314196911640465,
+   "letter_F": 0.4782114321133122,
+   "letter_S": 0.20932983516831882,
+   "letter_X": 0.458246057794895,
+   "letter_M": 0.3385747743304819,
+   "letter_W": 0.2829930589068681,
+   "letter_J": 0.5434997215052135,
+   "letter_L": 0.5113297168718418,
+   "letter_I": 0.6136799956439063,
+   "quadrant_0": 0.6044746189727448,
+   "quadrant_1": 0.5874109840369783,
+   "two_squares": 0.4333718077687081
+  },
+  "slateN": 0.45056515711621614,
+  "n_test_rows": 1024,
+  "n_pools": 32,
+  "wall_s": 250.34348464012146,
+  "val_accuracy_1": 0.40114277601242065,
+  "config": {
+   "k": 5,
+   "aggregation": "occ_weighted_mean",
+   "transfer_yaw": true,
+   "distance": {
+    "window_u": [
+     -0.005,
+     0.045
+    ],
+    "window_v": [
+     -0.05,
+     0.05
+    ],
+    "cap": 0.02,
+    "mismatch_penalty": 0.04,
+    "corridor_v_halfwidth": 0.025,
+    "corridor_u_pad": 0.005,
+    "corridor_weight": 3.0,
+    "wall_weight": 0.0,
+    "reduction": "mean"
+   }
+  }
+ },
+ "k5_occ_mean": {
+  "accuracy_1": 0.3921360969543457,
+  "accuracy_1_scatter": 0.28028762340545654,
+  "accuracy_1_clump": 0.4210928678512573,
+  "rollout_accuracy_1": 0.21594029664993286,
+  "rollout_accuracy_2": 0.125005841255188,
+  "rollout_accuracy_3": 0.05033743381500244,
+  "rollout_accuracy_4": 0.00801938772201538,
+  "slateN_per_goal": {
+   "letter_O": 0.26480534823349444,
+   "letter_T": 0.5314196911640465,
+   "letter_F": 0.4782114321133122,
+   "letter_S": 0.20932983516831882,
+   "letter_X": 0.458246057794895,
+   "letter_M": 0.3385747743304819,
+   "letter_W": 0.2829930589068681,
+   "letter_J": 0.5434997215052135,
+   "letter_L": 0.5113297168718418,
+   "letter_I": 0.6136799956439063,
+   "quadrant_0": 0.6044746189727448,
+   "quadrant_1": 0.5874109840369783,
+   "two_squares": 0.4333718077687081
+  },
+  "slateN": 0.45056515711621614,
+  "n_test_rows": 1024,
+  "n_pools": 32,
+  "wall_s": 225.51773166656494,
+  "val_accuracy_1": 0.4005921483039856,
+  "config": {
+   "k": 5,
+   "aggregation": "occ_mean",
+   "transfer_yaw": true,
+   "distance": {
+    "window_u": [
+     -0.005,
+     0.045
+    ],
+    "window_v": [
+     -0.05,
+     0.05
+    ],
+    "cap": 0.02,
+    "mismatch_penalty": 0.04,
+    "corridor_v_halfwidth": 0.025,
+    "corridor_u_pad": 0.005,
+    "corridor_weight": 3.0,
+    "wall_weight": 0.0,
+    "reduction": "mean"
+   }
+  }
+ },
+ "k5_cube_median": {
+  "accuracy_1": 0.2270573377609253,
+  "accuracy_1_scatter": 0.10913288593292236,
+  "accuracy_1_clump": 0.257011353969574,
+  "rollout_accuracy_1": 0.2537011504173279,
+  "rollout_accuracy_2": 0.16874027252197266,
+  "rollout_accuracy_3": 0.09618812799453735,
+  "rollout_accuracy_4": 0.07450598478317261,
+  "slateN_per_goal": {
+   "letter_O": 0.3500190577469766,
+   "letter_T": 0.6452289171866141,
+   "letter_F": 0.4720821790469927,
+   "letter_S": 0.37987519847229123,
+   "letter_X": 0.5766715099016437,
+   "letter_M": 0.30294575123116374,
+   "letter_W": 0.28071378730237484,
+   "letter_J": 0.6564629334025085,
+   "letter_L": 0.6182269221026218,
+   "letter_I": 0.6218319276813418,
+   "quadrant_0": 0.6817791849607602,
+   "quadrant_1": 0.5838555233785883,
+   "two_squares": 0.4934734366252087
+  },
+  "slateN": 0.5125512560799297,
+  "n_test_rows": 1024,
+  "n_pools": 32,
+  "wall_s": 212.17927956581116,
+  "val_accuracy_1": 0.23410522937774658,
+  "config": {
+   "k": 5,
+   "aggregation": "cube_median",
+   "transfer_yaw": true,
+   "distance": {
+    "window_u": [
+     -0.005,
+     0.045
+    ],
+    "window_v": [
+     -0.05,
+     0.05
+    ],
+    "cap": 0.02,
+    "mismatch_penalty": 0.04,
+    "corridor_v_halfwidth": 0.025,
+    "corridor_u_pad": 0.005,
+    "corridor_weight": 3.0,
+    "wall_weight": 0.0,
+    "reduction": "mean"
+   }
+  }
+ }
+}
