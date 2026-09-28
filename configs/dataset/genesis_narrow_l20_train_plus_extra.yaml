@@ -1,0 +1,12 @@
+# Narrow domain (overnight 2026-09-25): n20, single layer, 20 mm perpendicular pushes,
+# training physics. DS-0008 (new, exact 20 mm, scatter + single-layer clumps, chains) +
+# DS-0010 (existing overnight_randlen-train / Sean rows, 18-22 mm, TRAINING ONLY).
+type: genesis
+paths:
+  - narrow_l20_n20/train
+  - narrow_l20_n20/extra_18_22
+val_pct: 0
+test_pct: 0
+resolution_scale: 0.5
+min_push_length_m: 0.0001
+include_physics: false

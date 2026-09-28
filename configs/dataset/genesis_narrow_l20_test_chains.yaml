@@ -1,0 +1,9 @@
+# Narrow domain CLEAN TEST (DS-0009 chains): exact 20 mm perpendicular, never used for training.
+type: genesis
+paths:
+  - narrow_l20_n20/test_chains
+val_pct: 0
+test_pct: 0
+resolution_scale: 0.5
+min_push_length_m: 0.0001
+include_physics: false

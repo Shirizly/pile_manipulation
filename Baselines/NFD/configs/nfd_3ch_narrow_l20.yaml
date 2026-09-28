@@ -1,0 +1,95 @@
+# Overnight 2026-09-25 narrow domain (n20 single layer, 20 mm perpendicular, training physics):
+# DS-0008 + DS-0010 extra (18-22 mm existing rows, training only). Derived from nfd_train_3ch_randlen.yaml;
+# only features / paths / epochs / log_dir differ.
+# NFD (non-FiLM, 3-channel faithful action encoding) trained on the NEW
+# overnight_randlen corpus (EXP-0030) -- broad spawn modes (mixed/piled/
+# scattered), randomised push length (commanded 0.02-0.07m core range, 10%
+# tail into 0.01-0.08m; REALISED length spans ~0.5-80mm because early contact
+# cuts some pushes short), N in {20,50}. Occupancy rasterisation is
+# resolution/particle-count agnostic (n_particles is read per-file from each
+# _N_config.yaml, Genesis/training/dataset.py:294/349), so unlike the GNN
+# (fixed N=20 graph, see the sibling GNN config note) this training set
+# includes BOTH n20 and n50 groups.
+#
+# NEW config, not an edit of nfd_train_3ch.yaml (which stays the in-
+# distribution L20mm+L40mm reference this run is compared against).
+# Architecture/recipe otherwise IDENTICAL to nfd_train_3ch.yaml: same model
+# block, same loss, same in_channels=3 faithful action encoding.
+#
+# Paths are this repo's own 90/10 file-level split
+# (scripts/probes/prepare_randlen_split.py, seed=0, per-group stratified,
+# symlink dirs -- mirrors prepare_slate_multistep_split.py's convention).
+# val_pct/test_pct=5/5 here carve an ADDITIONAL small monitoring slice out of
+# the TRAIN files only (PileSweepData's own file-granularity hash split, same
+# gotcha as nfd_train_3ch.yaml -- Trainer.from_config crashes on an empty
+# split); the real held-out generalisation check is scored separately against
+# Genesis/data/overnight_randlen_test/ (disjoint files, recorded in
+# split_manifest.json) and against the register's n20_L20mm/L40mm eval slates.
+model:
+  type: nfd-unet3ch
+  in_channels: 3
+  out_channels: 1
+  features: [4, 8, 16]
+  kernel_size: 3
+  final_kernel_size: 1
+  activation: relu
+  residual: true
+  bottleneck_type: "None"
+  bottleneck_kwargs: {}
+  uses_physics: false
+
+dataset:
+  type: nfd-genesis-3ch
+  paths:
+    - narrow_l20_n20/train
+    - narrow_l20_n20/extra_18_22
+  val_pct: 5
+  test_pct: 5
+  resolution_scale: 0.5
+  include_physics: false
+  # Guard against literal zero-length pushes only (divide-by-zero in
+  # canonicalisation); the corpus's real short tail (measured min ~0.47mm,
+  # early-contact cutoffs) is intentionally part of this training distribution
+  # and is NOT filtered -- unlike the L20L40 configs' 0.0198m guard, which
+  # exists there to reject a DIFFERENT cell's nominal length, not to shape
+  # this one's.
+  min_push_length_m: 0.0001
+  transforms:
+    - type: ensure_representation
+      representation: eulerian
+    - type: eulerian_aliases
+
+training:
+  # 30, not 100 (nfd_train_3ch.yaml's epoch count) -- measured 1 epoch on an
+  # idle GPU at 207s (89,081 train transitions, batch=32, ~2784 steps/epoch);
+  # 100 epochs would be ~5.75h, out of this experiment's ~5h total budget.
+  # 30 epochs (~1.7h) gives ~83,500 gradient steps, close to the in-
+  # distribution run's 100 x ~684 steps/epoch = 68,400 -- roughly matched by
+  # total updates rather than by epoch count, since this corpus is ~4.3x
+  # larger. See EXP-0030 for the measured epoch time and the projection.
+  epochs: 60
+  batch_size: 32
+  lr: 0.0001
+  lr_scheduler:
+    type: StepLR
+    step_size: 60
+    gamma: 0.75
+  augmentation: true
+  patience: 100
+  mixed_precision: true
+  grad_clip_norm: 1.0
+  save_every_n_epochs: 10
+  num_workers: 4
+  loss:
+    type: eulerian_combined
+    mse: 1.0
+    mass: 0.0
+    dice: 0.0
+    bce: 0.0
+    sharpness: 0.0
+    tv: 0.0
+    add: 0.0
+    remove: 0.0
+
+output:
+  log_dir: Baselines/NFD/runs/nfd_3ch_narrow_l20
