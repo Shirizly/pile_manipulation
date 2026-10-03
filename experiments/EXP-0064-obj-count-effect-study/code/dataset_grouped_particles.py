@@ -87,6 +87,35 @@ def action_z_sign(config: dict) -> float:
     return float(config.get('train', {}).get('action_z_sign', 1.0))
 
 
+# EXP-0064 issues.md I-3: `train.action_encoding` = 'tube' (default, as run: build_action_delta's Gaussian
+# tube x full push vector) or 'orig' (the source baseline ParticleDataset's encoding, dataset_gnn_dyn.py
+# l.150-215: distance-to-push-end along the push x push direction x hard length gate x soft width gate,
+# pusher half-width 0.8/24, decay 0.01 -- same normalised units as here, since both divide by 24).
+ORIG_PUSHER_W = 0.8 / GLOBAL_SCALE
+
+
+def orig_action_delta(s_cur: torch.Tensor, p_start: torch.Tensor, p_stop: torch.Tensor) -> torch.Tensor:
+    """(n, 3) nodes (push plane in cols 0, 1), (3,) start/stop -> (n, 3) per-node action displacement."""
+    d = (p_stop - p_start)[:2]
+    L = d.norm().clamp_min(1e-9)
+    d = d / L
+    o = torch.stack([-d[1], d[0]])
+    diff = s_cur[:, :2] - p_start[None, :2]
+    proj, proj_o = diff @ d, diff @ o
+    lmask = ((proj < L) & (proj > 0)).float()
+    wmask = torch.exp(-torch.maximum((-ORIG_PUSHER_W - proj_o).clamp_min(0), (proj_o - ORIG_PUSHER_W).clamp_min(0)) / 0.01)
+    to_end = (p_stop[None, :2] - s_cur[:, :2]) @ d
+    out = torch.zeros_like(s_cur)
+    out[:, :2] = (to_end * lmask * wmask)[:, None] * d[None]
+    return out
+
+
+def encode_action(kind: str, s_cur, p_start, p_stop):
+    if kind == 'orig':
+        return orig_action_delta(s_cur, p_start, p_stop)
+    return build_action_delta(s_cur, p_start, p_stop, sigma_m=PLATE_HALF_WIDTH)
+
+
 def _fps_indices(points: np.ndarray, k: int) -> np.ndarray:
     """Farthest-point sampling, returning the chosen INDICES into `points`
     (not copies of the points themselves), so the same indices can be reused
@@ -144,6 +173,8 @@ class GroupedParticleDataset(Dataset):
         self.window_len = self.n_his + self.n_roll
         self.node_budget = int(config['train']['particle'].get('node_budget', 30))
         self.z_sign = action_z_sign(config)
+        self.encoding = str(config['train'].get('action_encoding', 'tube'))
+        self.drop_escaped = bool(config['train'].get('drop_escaped', False))  # issues.md I-2
 
         records = _load_merged_manifest(data_root)
         state_init = {r['state_idx']: r for r in records if r['type'] == 'state_init'}
@@ -176,6 +207,17 @@ class GroupedParticleDataset(Dataset):
             n_train = int(round(len(states) * ratio))
             self.states.extend(states[:n_train] if phase == 'train' else states[n_train:])
         self.states.sort()
+        self.n_dropped_escaped = 0
+        if self.drop_escaped:  # drop states whose window frames contain any |x| or |z| > 10 (DS-0019 escape_abs)
+            keep = []
+            for st in self.states:
+                d = os.path.join(data_root, str(st))
+                esc = any(np.abs(np.load(_frame_path(d, f)).reshape(-1, 4)[:, [0, 2]]).max() > 10.0
+                          for f in range(self.window_len))
+                if not esc:
+                    keep.append(st)
+            self.n_dropped_escaped = len(self.states) - len(keep)
+            self.states = keep
 
         self.state_init = state_init
         self.actions = actions
@@ -221,9 +263,7 @@ class GroupedParticleDataset(Dataset):
                 p_start = np.array([a[0], a[1], 0.0], dtype=np.float32)
                 p_stop = np.array([a[2], a[3], 0.0], dtype=np.float32)
                 s_cur_t = torch.from_numpy(pos_remap.astype(np.float32))
-                delta = build_action_delta(
-                    s_cur_t, torch.from_numpy(p_start), torch.from_numpy(p_stop),
-                    sigma_m=PLATE_HALF_WIDTH)
+                delta = encode_action(self.encoding, s_cur_t, torch.from_numpy(p_start), torch.from_numpy(p_stop))
                 states_delta[i - start] = delta.numpy()
 
             img = cv2.imread(_color_path(state_dir, i))

@@ -47,7 +47,7 @@ import yaml
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from dataset_grouped_particles import (GLOBAL_SCALE, PARTICLE_DEN_CONST,  # noqa: E402
                                        PLATE_HALF_WIDTH, _fps_indices,
-                                       _load_merged_manifest)
+                                       _load_merged_manifest, encode_action)
 from Baselines.GNN.model.gnn_dyn import PropNetDiffDenModel  # noqa: E402
 from Baselines.common import goals as G  # noqa: E402
 from control_utility_test import lyapunov  # noqa: E402
@@ -124,8 +124,10 @@ def main():
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     gnns = {}
     for spec in args.models.split(','):
-        name, sign, ckpt = spec.split(':')
-        gnns[name] = (float(sign), load_gnn(args.config, ckpt, device))
+        parts = spec.split(':')  # name:z_sign:ckpt[:encoding tube|orig]
+        name, sign, ckpt = parts[:3]
+        enc = parts[3] if len(parts) > 3 else 'tube'
+        gnns[name] = (float(sign), enc, load_gnn(args.config, ckpt, device))
     model_names = list(gnns) + ['persistence', 'field']
 
     recs = _load_merged_manifest(TEST_ROOT)
@@ -178,18 +180,18 @@ def main():
             dd = ((p0[:, None, [0, 2]] / GLOBAL_SCALE - s0[None, :, :2]) ** 2).sum(-1)
             nn = dd.argmin(1)
 
-            def deltas(sign):
+            def deltas(sign, enc='tube'):
                 sd = torch.zeros((B, n, 3))
                 for bi in range(B):
                     a = A[bi] / GLOBAL_SCALE
                     ps = torch.tensor([a[0], sign * a[1], 0.0])
                     pe = torch.tensor([a[2], sign * a[3], 0.0])
-                    sd[bi] = build_action_delta(torch.from_numpy(s0), ps, pe, sigma_m=PLATE_HALF_WIDTH)
+                    sd[bi] = encode_action(enc, torch.from_numpy(s0), ps, pe)
                 return sd
 
             preds = {}
-            for name, (sign, m) in gnns.items():
-                sd = deltas(sign).to(device)
+            for name, (sign, enc, m) in gnns.items():
+                sd = deltas(sign, enc).to(device)
                 with torch.no_grad():
                     pr = m.predict_one_step(torch.ones((B, n), device=device),
                                             torch.from_numpy(np.tile(s0[None], (B, 1, 1))).to(device),
@@ -197,6 +199,7 @@ def main():
                 preds[name] = pr.cpu().numpy()
             preds['persistence'] = np.tile(s0[None], (B, 1, 1))
             preds['field'] = s0[None] + deltas(-1.0).numpy()
+            preds['field_orig'] = s0[None] + deltas(-1.0, 'orig').numpy()
             for name, pr in preds.items():
                 err = pr - true_nodes
                 out[f'r{rep}_{name}_sqerr'] = (err ** 2).sum((1, 2))                     # (B,)

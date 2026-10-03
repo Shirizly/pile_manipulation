@@ -52,6 +52,9 @@ def main():
     ap.add_argument("--n-cand", type=int, default=64)
     ap.add_argument("--bank-per-env", type=int, default=16384)
     ap.add_argument("--record-states", action="store_true", help="store particle xyz after every push")
+    ap.add_argument("--legalize", action="store_true",
+                    help="slide touchdown-illegal planned pushes back until the blade clears every cube "
+                         "(Genesis.action_sampling.legalize_pushes; ISS-013, user rule 2026-10-03). Off = as before")
     a = ap.parse_args()
     res_p = (Path(a.results_dir) if a.results_dir else HERE / "results") / f"{a.tag}.json"; res_p.parent.mkdir(parents=True, exist_ok=True)
     cells = json.loads(a.cells)
@@ -148,9 +151,19 @@ def main():
             tmp = Path(str(res_p) + ".tmp"); tmp.write_text(json.dumps(done)); os.replace(tmp, res_p)
             print(f"chunk {c0 // K}: step {t + 1}/{a.steps} ({time.time() - t0:.0f}s; cumulative "
                   + ", ".join(f"{k} {v:.0f}" for k, v in timing.items()) + ")", flush=True)
+        def legalize(acts):
+            from Genesis.action_sampling import legalize_pushes
+            from model.retrieval.frame import yaw_from_quat
+            from simple_mpc.adapters import OCC_BOUNDS
+            from simple_mpc.learned_mpc import XY_MARGIN
+            st = sim._particle_state.detach().cpu().float()
+            half = 0.02  # Genesis/configs/basic.yaml plate.size[0] / 2 (40 mm blade); 5 mm cubes below
+            return legalize_pushes(acts, st[:, :, :2], yaw_from_quat(st[:, :, 3:7]), 0.0025, half, 0.001,
+                                   box=(OCC_BOUNDS["x_min"] + XY_MARGIN, OCC_BOUNDS["x_max"] - XY_MARGIN))
         recs = run_episodes_batched(eps, p0, execute_batch, sample, a.steps, n_cand=a.n_cand,
                                     bank_per_env=a.bank_per_env, on_step=ckpt,
-                                    record_states=a.record_states)
+                                    record_states=a.record_states,
+                                    legalize=legalize if a.legalize else None)
         for e in live:
             e["complete"] = True
         ckpt(a.steps - 1, recs)

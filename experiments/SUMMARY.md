@@ -39,7 +39,7 @@ are allowed for now (less likely to cause an acute failure); FleX data and tests
 | X8 | GNN node sampling seeded by batch row (broken tag). | GNN rows of 0001, 0002, 0026-0028, 0033 | open |
 | X9 | FleX corpora store actions as (x, −z). Now `holds` (pytest); EXP-0064's own adapter violated it. | 0064 as run (MODEL-0011) | fixed in 0064 (RUN-0005 retrain) |
 | X10 | Collector "valid" flags miss escaped particles (FleX). | DS-0019 (2.3 %), DS-0020, DS-0021 (3.5-14.6 % rising with pile size), DS-0022 | filtered in 0061/0062 loaders and 0064 re-score; DS-0021 training not filtered |
-| X11 | ISS-011: `train_nfd.py --override output.log_dir` silently resumed the ORIGINAL log_dir's checkpoint; which NFD trainings before 2026-09-28 used the override is unaudited. | possibly 0053, 0036 (separate configs, probably safe), other NFD arms | open |
+| X11 | ISS-011: `train_nfd.py --override output.log_dir` silently resumed the ORIGINAL log_dir's checkpoint; which NFD trainings before 2026-09-28 used the override is unaudited. | none found (2026-10-04 audit of saved logs + ledger) | closed — fix in `train_nfd.py` |
 | X12 | **Closed-loop planners EXECUTE illegal touchdowns** (EXP-0065 RUN-0003, C-067): lower bounds 16-53 % of pushes, model-dependent (0054: the winning worldframe NFD 0.69 vs 0.46-0.51; 0051: NFD ~2x linear); even the perfect-model CEM (0057) does it. Closed-loop model comparisons partly compare how much each model's objective rewards illegal pushes. Decided 2026-10-03: not allowed in Genesis (see top of §0). | 0050-0057 measured; 0039-0045, 0056 (no states recorded) presumed | **open, high** |
 
 ---
@@ -163,7 +163,9 @@ are expected to be useful once mature (retrieval, §7, is the active member of t
 lyapunov task) and EXP-0054 (one domain shift). The "accuracy beats slateN" lean rests on NFD-only
 pairs (accuracy was never computed for the linear model), on seed-sized gaps, with slateN scored on
 54 %-illegal pools over a different state population, and with the decisive model selected for its
-accuracy. Both metrics inverted in EXP-0054. Offline, accuracy and slateN disagree whenever model
+accuracy. **Re-scored on legal-only candidates (EXP-0065 RUN-0005), slateN's agreement with those pairs goes
+from 1/5 to 4/5 (by tiny margins), and optimism also agrees 4/5; the lean toward accuracy does not survive.**
+Both metrics inverted in EXP-0054. Offline, accuracy and slateN disagree whenever model
 structure differs (0006, 0025, 0053, 0059, 0063). slateN is noisier across seeds (0036) but robust to
 state perturbation (0059). And closed-loop scores themselves are contaminated by executed illegal
 pushes (X12). **No offline metric has yet been validated against closed loop on a task with headroom,

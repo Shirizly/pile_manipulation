@@ -280,7 +280,8 @@ def run_episodes_batched(episodes: list, particles0: torch.Tensor,
                          sample_candidates_batch: Callable[[int], torch.Tensor],
                          n_steps: int, n_cand: int = 64, bank_per_env: int = 16384,
                          on_step: Callable[[int, list], None] | None = None,
-                         record_states: bool = False) -> list:
+                         record_states: bool = False,
+                         legalize: Callable[[torch.Tensor], tuple] | None = None) -> list:
     """K closed-loop episodes run side by side, one per simulator env (K = len(episodes)).
 
     `episodes[k]` = dict(adapter, dist (H, W), planner, budget_s, plan_kw={} optional,
@@ -298,6 +299,9 @@ def run_episodes_batched(episodes: list, particles0: torch.Tensor,
     `on_step(t, records)` is called after every step (checkpoint hook).
     `record_states=True` adds `states` (list of (n, 3) xyz lists, start + after every
     push) to each record, for success-type value functions and videos.
+    `legalize(actions (K, 4)) -> (actions, shift_m (K,), ok (K,))`, if given, is applied to the
+    planned pushes right before execution (e.g. `Genesis.action_sampling.legalize_pushes` with the
+    current cube poses) and records `legal_shift_m` / `legal_ok` per step (ISS-013).
     """
     K = len(episodes)
     parts = particles0.float()
@@ -328,7 +332,14 @@ def run_episodes_batched(episodes: list, particles0: torch.Tensor,
             r["actions"].append(out["action"].tolist()); r["pred_dv"].append(out["pred_dv"])
             r["n_evals"].append(out["n_evals"]); r["n_iters"].append(out["n_iters"])
             r["plan_time_s"].append(out["time_s"])
-        parts = execute_batch(torch.stack(acts)).float()
+        acts = torch.stack(acts)
+        if legalize is not None:
+            acts, shift, ok = legalize(acts)
+            for k in range(K):
+                recs[k].setdefault("legal_shift_m", []).append(float(shift[k]))
+                recs[k].setdefault("legal_ok", []).append(bool(ok[k]))
+                recs[k]["actions"][-1] = acts[k].tolist()
+        parts = execute_batch(acts).float()
         for k, ep in enumerate(episodes):
             v = float(lyap(occ_for_scoring(parts[k:k + 1]), ep["dist"].float())[0])
             recs[k]["true_dv"].append(v - recs[k]["values"][-1]); recs[k]["values"].append(v)

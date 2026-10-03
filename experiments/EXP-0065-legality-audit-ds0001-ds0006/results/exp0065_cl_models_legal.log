@@ -1,0 +1,9 @@
+pred linear_switched_soft 18s
+lyapunov|all160|all 3ch_seed1=0.787/opt+0.0170 residual_worldfram=0.761/opt+0.0132 linear_switched_so=0.758/opt+0.0111 3ch=0.745/opt-0.0009
+lyapunov|all160|legal residual_worldfram=0.826/opt+0.0072 linear_switched_so=0.826/opt+0.0072 3ch_seed1=0.823/opt+0.0104 3ch=0.800/opt-0.0063
+lyapunov|cl_starts_40_47|all 3ch_seed1=0.814/opt+0.0181 residual_worldfram=0.804/opt+0.0096 3ch=0.762/opt-0.0040 linear_switched_so=0.724/opt+0.0136
+lyapunov|cl_starts_40_47|legal 3ch_seed1=0.879/opt+0.0117 linear_switched_so=0.800/opt+0.0070 3ch=0.782/opt-0.0070 residual_worldfram=0.779/opt+0.0085
+mass_in_region|all160|all residual_worldfram=0.770/opt+2.8293 3ch_seed1=0.766/opt+5.2290 3ch=0.716/opt+2.2733 linear_switched_so=0.696/opt+1.4574
+mass_in_region|all160|legal 3ch_seed1=0.792/opt+3.8721 residual_worldfram=0.791/opt+2.1499 3ch=0.762/opt+1.0172 linear_switched_so=0.757/opt+0.6301
+mass_in_region|cl_starts_40_47|all 3ch_seed1=0.810/opt+5.8500 residual_worldfram=0.765/opt+3.3596 3ch=0.690/opt+2.6124 linear_switched_so=0.630/opt+2.6719
+mass_in_region|cl_starts_40_47|legal 3ch_seed1=0.842/opt+4.3948 residual_worldfram=0.768/opt+2.4895 linear_switched_so=0.734/opt+0.8546 3ch=0.727/opt+1.0698

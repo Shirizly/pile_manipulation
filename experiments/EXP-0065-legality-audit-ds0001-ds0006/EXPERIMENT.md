@@ -17,7 +17,7 @@ claim: >
 provenance:
   commit: d72bb304
   dirty: true
-  script: "code/audit_ds0001_ds0006.py (RUN-0001), code/rescore_ds0006_legal.py (RUN-0002, reads EXP-0030 artifacts/RUN-0001), code/audit_closed_loop_actions.py (RUN-0003, reads recorded episodes of EXP-0050..0057), code/onpolicy_optimism.py (RUN-0004)"
+  script: "code/audit_ds0001_ds0006.py (RUN-0001), code/rescore_ds0006_legal.py (RUN-0002, reads EXP-0030 artifacts/RUN-0001), code/audit_closed_loop_actions.py (RUN-0003, reads recorded episodes of EXP-0050..0057), code/onpolicy_optimism.py (RUN-0004), code/closed_loop_models_legal_rescore.py (RUN-0005)"
   data: [DS-0001, DS-0006]
   code_path: "EXP-0059 code/audit_tool_placement.py::_row_illegal (exact SAT, Baselines/common/cube_overlap.overlaps_rect_pairs, blade 40x2 mm vs 5 mm cubes, pre-push states, p_starts, angles); 0 mm and 1 mm margin"
   seed: "none (deterministic census)"
@@ -47,6 +47,13 @@ result: >
   simulator and over-predicted.
   Control corpus DS-0007 (Sean, results/audit_ds0007.json): 0.000-0.002 illegal in every shard except
   scattered_n50 0.010 and scattered_n100 0.093 -- the non-pile-aware Sean collection is essentially legal.
+  RUN-0005 (results/closed_loop_models_legal_rescore.json): EXP-0039/0044's four closed-loop models on DS-0006,
+  lyapunov slateN all-candidates -> legal-only (160 states): nfd_3ch 0.745 -> 0.800, seed1 0.787 -> 0.823,
+  linear_switched_soft 0.758 -> 0.826, worldframe 0.761 -> 0.826. Agreement with EXP-0044's 5 Holm-resolved
+  tuned closed-loop pairs: slateN 1/5 -> 4/5 (margins ~0.003, inside noise); on the 8 closed-loop start
+  states only (40-47, legal) 0/5; optimism at the pick (less optimistic = better) 4/5; accuracy (EXP-0044) 3/4.
+  The 'slateN disagrees with closed loop' evidence was largely an illegal-push effect; nothing here
+  separates the metrics with power (and the closed-loop reference itself executed illegal pushes, RUN-0003).
 verdict: supported
 downgrades: [indirectness]   # overlap at touchdown is the geometric proxy ISS-010 used; the physical consequence per row (ejection vs harmless nudge) is not measured
 grade: moderate

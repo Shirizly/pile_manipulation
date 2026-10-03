@@ -785,3 +785,68 @@ def pile_aware_action_batch(particles_xy: torch.Tensor, particles_yaw: torch.Ten
     n_illegal = int((best_score == 2).sum())
     gap_out_of_window = best_score == 1
     return starts_xy, stops_xy, angles, ok, n_illegal, n_redraws, gap_out_of_window
+
+
+def legalize_pushes(acts: torch.Tensor, cube_xy: torch.Tensor, cube_yaw: torch.Tensor, cube_half,
+                    blade_half_length: float, blade_half_width: float,
+                    box: tuple[float, float] | None = None,
+                    step: float = 0.0005, max_back: float = 0.04, max_side: float = 0.015):
+    """Make planned pushes touchdown-legal (ISS-010 / ISS-013, user rule 2026-10-03: in Genesis a
+    push whose blade lands on a cube is not part of the task).
+
+    acts (K, 4) [sx, sy, ex, ey]; cube_xy (K, n, 2); cube_yaw (K, n); cube_half scalar or (2,).
+    The blade is a (2*blade_half_length x 2*blade_half_width) rectangle centred on the start, long
+    axis perpendicular to the push. An illegal push is translated (start and end together, length and
+    heading kept) by the SMALLEST offset that makes it legal (exact SAT,
+    `Baselines/common/cube_overlap.overlaps_rect_pairs`), searching backwards along the push
+    (0..max_back, `step` grid) and sideways along the blade (|lateral| <= max_side, 4*step grid);
+    if `box` (lo, hi) is given the shifted start AND end must stay inside it. Returns
+    (acts', shift_m (K,), ok (K,)): shift 0 = already legal; ok False = no legal offset found (push
+    returned unchanged).
+    """
+    from Baselines.common.cube_overlap import overlaps_rect_pairs
+    import numpy as np
+    acts = acts.detach().float().cpu().clone()
+    K, n = cube_xy.shape[:2]
+    cxy = cube_xy.detach().float().cpu().numpy(); cyaw = cube_yaw.detach().float().cpu().numpy()
+    half_c = np.broadcast_to(np.asarray(cube_half, dtype=np.float64).reshape(-1), (2,)).copy()
+    half_b = np.array([blade_half_length, blade_half_width])
+    backs = np.arange(0.0, max_back + 1e-12, step)
+    pos = np.arange(4 * step, max_side + 1e-12, 4 * step)
+    sides = np.concatenate([[0.0], pos, -pos])                            # includes 0 exactly
+    B, S = np.meshgrid(backs, sides, indexing="ij")
+    B, S = B.ravel(), S.ravel()
+    order = np.argsort(np.hypot(B, S), kind="stable")
+    B, S = B[order], S[order]
+    shift = torch.zeros(K); ok = torch.ones(K, dtype=torch.bool)
+    for k in range(K):
+        s, e = acts[k, :2].numpy().astype(np.float64), acts[k, 2:].numpy().astype(np.float64)
+        d = e - s
+        L = float(np.linalg.norm(d))
+        if L < 1e-9:
+            continue
+        u = d / L; v = np.array([-u[1], u[0]])
+        yaw = math.atan2(u[1], u[0]) + math.pi / 2
+        P = s[None] - B[:, None] * u[None] + S[:, None] * v[None]          # candidate starts (M, 2)
+        keep = np.ones(len(P), dtype=bool)
+        if box is not None:
+            for Q in (P, P + d[None]):
+                keep &= (Q >= box[0]).all(1) & (Q <= box[1]).all(1)
+        idx = np.flatnonzero(keep)
+        found = False
+        for c0 in range(0, len(idx), 256):                                # nearest offsets first
+            ci = idx[c0:c0 + 256]
+            m = len(ci)
+            hit = overlaps_rect_pairs(np.repeat(P[ci], n, 0), np.full(m * n, yaw), half_b,
+                                      np.tile(cxy[k], (m, 1)), np.tile(cyaw[k], m), half_c).reshape(m, n).any(1)
+            free = np.flatnonzero(~hit)
+            if len(free):
+                j = ci[free[0]]
+                if j != 0 or B[j] > 0 or S[j] != 0:
+                    acts[k, :2] = torch.as_tensor(P[j], dtype=acts.dtype)
+                    acts[k, 2:] = torch.as_tensor(P[j] + d, dtype=acts.dtype)
+                shift[k] = float(np.hypot(B[j], S[j]))
+                found = True
+                break
+        ok[k] = found
+    return acts, shift, ok

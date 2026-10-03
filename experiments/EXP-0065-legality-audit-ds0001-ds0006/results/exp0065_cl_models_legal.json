@@ -1,0 +1,40 @@
+{
+  "run_id": "exp0065_cl_models_legal-2026-10-04T00:05:44-1697230",
+  "event": "start",
+  "ts": "2026-10-04T00:05:44",
+  "tag": "exp0065_cl_models_legal",
+  "exp": "EXP-0065",
+  "cmd": [
+    "python",
+    "-u",
+    "experiments/EXP-0065-legality-audit-ds0001-ds0006/code/closed_loop_models_legal_rescore.py"
+  ],
+  "out": null,
+  "log": "experiments/EXP-0065-legality-audit-ds0001-ds0006/results/exp0065_cl_models_legal.log",
+  "commit": "3373e65b",
+  "dirty": true,
+  "status": "ok",
+  "returncode": 0,
+  "seconds": 30.8,
+  "provenance": {
+    "commit": "3373e65b",
+    "commit_full": "3373e65ba4bcc0e4d7dc5eada22994e194370202",
+    "dirty": true,
+    "dirty_files": [
+      "FlexData/build_cache.py",
+      "FlexData/image_mask.py",
+      "Genesis/action_sampling.py",
+      "datasets/DS-0021-flex-carrots-countgroups-train/config.yaml",
+      "datasets/DS-0022-flex-carrots-countgroups-test-slates/config.yaml",
+      "docs/CODEMAP.md",
+      "experiments/EXP-0043-batched-closed-loop/code/batched_closed_loop.py",
+      "experiments/EXP-0064-obj-count-effect-study/code/dataset_grouped_particles.py",
+      "experiments/EXP-0064-obj-count-effect-study/code/eval_extended.py",
+      "experiments/OPEN_ISSUES.md",
+      "experiments/TEMP_LOG.md",
+      "runs/COMMANDS.jsonl",
+      "simple_mpc/learned_mpc.py"
+    ],
+    "branch": "baselines/overnight"
+  }
+}

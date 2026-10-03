@@ -430,6 +430,11 @@ apply overrides before resume resolution in `Baselines/NFD/train_nfd.py` / `trai
 **Possible exposure:** any earlier run that used `--override output.log_dir` without
 `--no-resume` while the config's own log_dir held checkpoints — not audited.
 
+**Audit 2026-10-04:** the code fix is in place (`Baselines/NFD/train_nfd.py` applies overrides before the
+resume lookup). No `train_nfd` start in `COMMANDS.jsonl` used `--override output.log_dir`; every
+'Resumed' line in saved run logs (EXP-0061 seeds 0-2) resumes the run's OWN `last_state.pt`. No exposure
+found -- limited to runs whose logs were kept. **Status: closed (fixed, audited).**
+
 ## ISS-012 — slateN capture explodes on near-tie (pool, goal) cells; DS-0017 val has three
 
 Found 2026-10-03 (EXP-0063). Capture = (mean(vt) - vt[pick]) / (mean(vt) - min(vt)) is
@@ -467,9 +472,9 @@ planners EXECUTE illegal touchdowns in 16-53 % of pushes (EXP-0051 0.17, EXP-005
 EXP-0055 0.16-0.24), including the perfect-model simulator CEM (EXP-0057, 0.23-0.24) -- the simulator
 lets the blade land on cubes and the optimisers exploit it. The rate is MODEL-dependent (EXP-0054:
 worldframe NFD 0.69, the closed-loop winner, vs 0.46-0.51; EXP-0051: NFD ~2x linear), so closed-loop
-model comparisons partly compare how much each model's objective rewards illegal pushes. Fix owed:
-a legality constraint/projection in the planners' action space (and in `execute_action`), then re-run
-the headline closed-loop cells.
+model comparisons partly compare how much each model's objective rewards illegal pushes. Fix: `Genesis/action_sampling.py::legalize_pushes`
+(2026-10-03; EXP-0043 driver `--legalize`) projects planned pushes to legal touchdowns before execution;
+still owed: re-run the headline closed-loop cells with it (queued after the EXP-0064 overnight GPU queue).
 
 **Exposure (the rest is unmeasured):**
 1. Offline ranking on DS-0006 / DS-0001 pools: roughly half of every pool is illegal pushes whose

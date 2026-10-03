@@ -1,0 +1,30 @@
+# Training config for train/train_gnn_dyn_grouped.py. Structurally mirrors
+# config/train/gnn_dyn.yaml (the baseline); only the `train` section is read
+# (see dataset/dataset_grouped_particles.py -- no camera/depth-image step,
+# so this config carries no `dataset` section at all).
+
+train:
+  data_root: "datasets/DS-0021-flex-carrots-countgroups-train/data"
+  random_seed: 43  # ONLY change vs RUN-0005: training seed
+  n_epoch: 100  # as-run was stopped by hand after epoch 100 (RUN-0003); matched here
+  lr: 0.001
+  adam_beta1: 0.9
+  batch_size: 16
+  num_workers: 4
+  train_valid_ratio: 0.9  # applied WITHIN each object-count group, see dataset docstring
+  log_per_iter: 20
+  ckp_per_iter: 200
+  n_history: 1
+  n_rollout: 5
+  particle:
+    nf_effect: 64
+    node_budget: 30  # fixed node cap; min(30, state's target object count) if lower
+    resume:
+      active: False
+      epoch: 0
+      iter: 0
+      folder: 'None'
+    adj_thresh: 0.08
+    add_delta: False
+  action_z_sign: -1.0  # THE ONLY CHANGE vs RUN-0003: corrected FleX action frame (z = -a1)
+# template: EXP-0064 code/configs/gnn_dyn_grouped.yaml (= source repo config/train/gnn_dyn_grouped.yaml, dyn-res-pile-manip @ 5c9eca9 + uncommitted)
