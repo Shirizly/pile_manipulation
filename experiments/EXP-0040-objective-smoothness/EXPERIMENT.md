@@ -33,3 +33,9 @@ verdict: refuted
 downgrades: [imprecision, indirectness]
 grade: low
 ---
+
+## Later evidence (2026-10-03 audit)
+
+Added by the cross-experiment audit (summary: `experiments/SUMMARY.md`). Numbers above are unchanged.
+
+- EXP-0065 / ISS-013: 54 % of DS-0006's candidate pushes put the blade on a cube at touchdown (pre-fix pile-aware sampler); this record's pool numbers were not re-scored on legal-only candidates.

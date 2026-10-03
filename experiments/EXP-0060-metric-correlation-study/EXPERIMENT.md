@@ -201,3 +201,9 @@ sibling files, which the zoo does not produce.
 ## Unrelated findings
 
 None.
+
+## Later evidence (2026-10-03 audit)
+
+Added by the cross-experiment audit (summary: `experiments/SUMMARY.md`). Numbers above are unchanged.
+
+- **Stale inputs:** the correlated table is on DS-0009 (pre-ISS-010, ~46-56 % illegal touchdowns) and uses retrieval_1nn BEFORE EXP-0059's `_transfer_one` matching fix (0.172 / 0.413 here vs 0.337 / 0.759 after). Not re-run on the clean v2 population; the target (slateN_tough) is itself offline.

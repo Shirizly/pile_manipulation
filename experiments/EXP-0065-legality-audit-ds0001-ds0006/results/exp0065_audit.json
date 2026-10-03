@@ -1,0 +1,47 @@
+{
+  "run_id": "exp0065_audit-2026-10-03T21:30:36-1511114",
+  "event": "start",
+  "ts": "2026-10-03T21:30:36",
+  "tag": "exp0065_audit",
+  "exp": "EXP-0065",
+  "cmd": [
+    "python",
+    "-u",
+    "experiments/EXP-0065-legality-audit-ds0001-ds0006/code/audit_ds0001_ds0006.py"
+  ],
+  "out": null,
+  "log": "experiments/EXP-0065-legality-audit-ds0001-ds0006/results/exp0065_audit.log",
+  "commit": "d72bb304",
+  "dirty": true,
+  "status": "ok",
+  "returncode": 0,
+  "seconds": 5.4,
+  "provenance": {
+    "commit": "d72bb304",
+    "commit_full": "d72bb3046e266e0d1d952142e798b724e1c9ed7f",
+    "dirty": true,
+    "dirty_files": [
+      ".gitignore",
+      "Baselines/LinearForesight/fit_switched.py",
+      "Baselines/LinearForesight/predictor.py",
+      "Baselines/NFD/predictor.py",
+      "Baselines/NFD/train_nfd.py",
+      "Baselines/common/eval_report.py",
+      "docs/ARCHITECTURE.md",
+      "docs/CODEMAP.md",
+      "docs/INTERFACES.md",
+      "experiments/COMMANDS.jsonl",
+      "experiments/EXP-0001-cross-corpus-gnn-nfd-report/EXPERIMENT.md",
+      "experiments/EXP-0059-retrieval-transition-model/LOG.md",
+      "experiments/EXP-0059-retrieval-transition-model/code/eval_extended.py",
+      "experiments/EXP-0059-retrieval-transition-model/code/multistep_eval.py",
+      "experiments/EXP-0059-retrieval-transition-model/code/retrieval_debug.py",
+      "experiments/EXP-0059-retrieval-transition-model/figures/retrieval_debug/README.md",
+      "experiments/INVARIANTS.md",
+      "experiments/OPEN_ISSUES.md",
+      "experiments/REGISTER.md",
+      "experiments/TEMP_LOG.md"
+    ],
+    "branch": "baselines/overnight"
+  }
+}

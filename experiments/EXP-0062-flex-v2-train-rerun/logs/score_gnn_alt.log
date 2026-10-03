@@ -1,0 +1,6 @@
+FlexPileData(DS-0019, split=all, exclude_flagged=True): 17186 rows; flagged nan=0 escaped=397 out_of_grid=47 null=159 -> kept 16583
+[FlexGNNPredictor] experiments/EXP-0062-flex-v2-train-rerun/artifacts/RUN-0003-gnn/alt_particle_target_best.pth: particle_num=30 depth=plane plane_y=0.24 carry_k=1 device=cpu
+gnn_v2_n30_alt_target acc 0.2459 fallback 0/100 {'lyapunov': 0.8945, 'mass_in_region': 0.8126, 'signed_mass': 0.8328} 55s
+FlexPileData(DS-0020, split=val, exclude_flagged=True): 1900 rows; flagged nan=0 escaped=208 out_of_grid=10 null=17 -> kept 1665
+[FlexGNNPredictor] experiments/EXP-0062-flex-v2-train-rerun/artifacts/RUN-0003-gnn/alt_particle_target_best.pth: particle_num=30 depth=plane plane_y=0.24 carry_k=1 device=cpu
+val gnn_v2_n30_alt_target acc 0.1926 fallback 0 134s

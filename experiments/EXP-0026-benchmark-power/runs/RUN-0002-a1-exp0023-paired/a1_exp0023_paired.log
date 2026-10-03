@@ -1,0 +1,46 @@
+known-number check: residual_sd 0.02091 == EXP-0023's 0.01826 rescaled to df=(M-1)(S-1) (0.02091)
+
+== gradient_gain ==  (higher = better)
+  means: nfd_3ch_randlen=+0.0207  nfd_3ch_finetuned=+0.0076  nfd_warped_randlen=+0.0312  nfd_residual_warped=+0.0021  linear_switched_soft=+0.0207  linear_switched_hard=+0.0123
+  sd: model-means 0.0105  state-means 0.0163  residual 0.0209  ANOVA p=0.0428  Friedman p=0.329 W=0.12
+  pairs resolved: CI 6/15, Holm<0.05 0/15; median sd_diff 0.0302
+  required states: delta=0.005: 290 (Bonf 526)  delta=0.01: 74 (Bonf 135)  delta=0.02: 20 (Bonf 37)
+        nfd_3ch_finetuned - nfd_warped_randlen     -0.0236 [-0.0440,-0.0049] p=0.047 holm=0.703 wins 2-8
+       nfd_warped_randlen - nfd_residual_warped    +0.0291 [+0.0063,+0.0533] p=0.055 holm=0.766 wins 6-4
+          nfd_3ch_randlen - nfd_3ch_finetuned      +0.0131 [+0.0022,+0.0243] p=0.064 holm=0.838 wins 7-3
+          nfd_3ch_randlen - nfd_residual_warped    +0.0186 [+0.0025,+0.0360] p=0.088 holm=1.000 wins 6-4
+  P(first): nfd_3ch_randlen=0.12  nfd_3ch_finetuned=0.00  nfd_warped_randlen=0.76  nfd_residual_warped=0.00  linear_switched_soft=0.09  linear_switched_hard=0.03
+
+== pool_escape ==  (higher = better)
+  means: nfd_3ch_randlen=+0.0102  nfd_3ch_finetuned=-0.0108  nfd_warped_randlen=+0.0197  nfd_residual_warped=-0.0338  linear_switched_soft=+0.0153  linear_switched_hard=+0.0046
+  sd: model-means 0.0200  state-means 0.0190  residual 0.0230  ANOVA p=2.96e-05  Friedman p=0.00429 W=0.34
+  pairs resolved: CI 9/15, Holm<0.05 0/15; median sd_diff 0.0328
+  required states: delta=0.005: 340 (Bonf 619)  delta=0.01: 87 (Bonf 158)  delta=0.02: 24 (Bonf 43)
+        nfd_3ch_finetuned - nfd_residual_warped    +0.0230 [+0.0131,+0.0337] p=0.004 holm=0.059 wins 9-1
+      nfd_residual_warped - linear_switched_soft   -0.0492 [-0.0722,-0.0275] p=0.004 holm=0.059 wins 1-9
+      nfd_residual_warped - linear_switched_hard   -0.0385 [-0.0533,-0.0248] p=0.004 holm=0.059 wins 0-9
+          nfd_3ch_randlen - nfd_residual_warped    +0.0441 [+0.0236,+0.0653] p=0.008 holm=0.094 wins 8-2
+  P(first): nfd_3ch_randlen=0.10  nfd_3ch_finetuned=0.00  nfd_warped_randlen=0.60  nfd_residual_warped=0.00  linear_switched_soft=0.27  linear_switched_hard=0.02
+
+== neg_dv_grad ==  (higher = better)
+  means: nfd_3ch_randlen=+0.0549  nfd_3ch_finetuned=+0.0338  nfd_warped_randlen=+0.0644  nfd_residual_warped=+0.0108  linear_switched_soft=+0.0600  linear_switched_hard=+0.0493
+  sd: model-means 0.0200  state-means 0.0221  residual 0.0230  ANOVA p=2.96e-05  Friedman p=0.00429 W=0.34
+  pairs resolved: CI 9/15, Holm<0.05 0/15; median sd_diff 0.0328
+  required states: delta=0.005: 340 (Bonf 619)  delta=0.01: 87 (Bonf 158)  delta=0.02: 24 (Bonf 43)
+        nfd_3ch_finetuned - nfd_residual_warped    +0.0230 [+0.0131,+0.0337] p=0.004 holm=0.059 wins 9-1
+      nfd_residual_warped - linear_switched_soft   -0.0492 [-0.0722,-0.0275] p=0.004 holm=0.059 wins 1-9
+      nfd_residual_warped - linear_switched_hard   -0.0385 [-0.0533,-0.0248] p=0.004 holm=0.059 wins 0-9
+          nfd_3ch_randlen - nfd_residual_warped    +0.0441 [+0.0236,+0.0653] p=0.008 holm=0.094 wins 8-2
+  P(first): nfd_3ch_randlen=0.10  nfd_3ch_finetuned=0.00  nfd_warped_randlen=0.60  nfd_residual_warped=0.00  linear_switched_soft=0.27  linear_switched_hard=0.02
+
+== neg_dv_rank ==  (higher = better)
+  means: nfd_3ch_randlen=+0.0342  nfd_3ch_finetuned=+0.0262  nfd_warped_randlen=+0.0332  nfd_residual_warped=+0.0087  linear_switched_soft=+0.0393  linear_switched_hard=+0.0370
+  sd: model-means 0.0112  state-means 0.0103  residual 0.0111  ANOVA p=1.36e-06  Friedman p=0.00138 W=0.40
+  pairs resolved: CI 7/15, Holm<0.05 0/15; median sd_diff 0.0151
+  required states: delta=0.005: 74 (Bonf 134)  delta=0.01: 20 (Bonf 37)  delta=0.02: 7 (Bonf 13)
+      nfd_residual_warped - linear_switched_soft   -0.0305 [-0.0419,-0.0196] p=0.004 holm=0.059 wins 0-9
+      nfd_residual_warped - linear_switched_hard   -0.0283 [-0.0416,-0.0145] p=0.004 holm=0.059 wins 1-9
+        nfd_3ch_finetuned - linear_switched_soft   -0.0130 [-0.0186,-0.0070] p=0.006 holm=0.076 wins 1-9
+       nfd_warped_randlen - nfd_residual_warped    +0.0245 [+0.0123,+0.0375] p=0.008 holm=0.094 wins 8-2
+  P(first): nfd_3ch_randlen=0.02  nfd_3ch_finetuned=0.00  nfd_warped_randlen=0.01  nfd_residual_warped=0.00  linear_switched_soft=0.74  linear_switched_hard=0.23
+wrote experiments/EXP-0026-benchmark-power/results/a1_exp0023_paired.json

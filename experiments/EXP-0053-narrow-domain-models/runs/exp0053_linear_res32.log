@@ -1,0 +1,25 @@
+=== switched-linear foresight: 1 push-length bins @ 32x32, constraint=ridge ===
+loaded 11921 train transitions from 220 files, grid 64x64, 57.9s
+push length range: min 18.00 mm, max 22.00 mm -> 1 equal-width bins over [0, 22.00] mm
+
+fitting per-bin operators (ridge, ridge=1.0):
+  bin 0 [0.0,22.0) mm: 11921 rows, fit ridge in 0.0s
+
+wrote Baselines/LinearForesight/runs/operator_narrow_l20_res32.pt
+
+loading held-out test split (configs/dataset/genesis_narrow_l20_test_chains.yaml) ...
+loaded 1024 test transitions from 4 files
+
+=== held-out one-step error, swept region only (1024 transitions) ===
+model                      rms   l1/mass   accuracy
+---------------------------------------------------
+linear-single          0.19943 18962.5430     0.2820
+linear-switched        0.19943 18962.5430     0.2820
+mean-delta             0.25440 35504.2031     0.0841
+persistence            0.27777    0.8660     0.0000
+
+=== per-bin accuracy on held-out test (0 = persistence) ===
+        bin (mm)     persistence     mean-delta  linear-single linear-switche
+      [0.0,22.0)          0.0000         0.0841         0.2820         0.2820
+
+wrote Baselines/LinearForesight/runs/operator_narrow_l20_res32_accuracy.json

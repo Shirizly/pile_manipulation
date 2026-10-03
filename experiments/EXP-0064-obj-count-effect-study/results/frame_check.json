@@ -1,0 +1,22 @@
+{
+ "DS-0021": {
+  "n_rows_sampled": 300,
+  "cos_disp_push_literal": 0.004129323199601416,
+  "cos_disp_push_negz": 0.9916202560490819,
+  "inpath_moved_literal": 0.5032250927872941,
+  "inpath_moved_negz": 0.9923282304253739,
+  "n_inpath_rows_literal": 226,
+  "n_inpath_rows_negz": 264
+ },
+ "DS-0022": {
+  "n_rows_sampled": 300,
+  "cos_disp_push_literal": -0.05694845378277995,
+  "cos_disp_push_negz": 0.9839960823937888,
+  "inpath_moved_literal": 0.8210477867016358,
+  "inpath_moved_negz": 0.9969138443950645,
+  "n_inpath_rows_literal": 211,
+  "n_inpath_rows_negz": 274
+ },
+ "gnn_input_cos_node_disp_vs_s_delta_sign+1": 0.05333031529250244,
+ "gnn_input_cos_node_disp_vs_s_delta_sign-1": 0.6808286170164745
+}

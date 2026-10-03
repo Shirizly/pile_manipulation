@@ -1,0 +1,19 @@
+[DS-0006] pred nfd_3ch_randlen_seed1 (15s)
+[DS-0006] pred nfd_3ch_randlen_seed2 (16s)
+[DS-0006] pred nfd_3ch_randlen_seed3 (16s)
+[DS-0006 / lyapunov] seeds [0.7455 0.7872 0.7805 0.758 ] sd 0.0194; pairs CI!=0 4/6; ens 0.8380 (-mean single +0.0702 [0.0629 0.0779]; -best +0.0508 [0.0366 0.0647])
+[DS-0006 / mass_in_region] seeds [0.7157 0.7664 0.7702 0.7559] sd 0.0250; pairs CI!=0 4/6; ens 0.8265 (-mean single +0.0744 [0.0688 0.0797]; -best +0.0563 [0.0469 0.0661])
+[DS-0006] cpu vs cached seed0 max |diff| 1.82e-02
+[DS-0007_scattered_n20] pred nfd_3ch_randlen_seed1 (8s)
+[DS-0007_scattered_n20] pred nfd_3ch_randlen_seed2 (8s)
+[DS-0007_scattered_n20] pred nfd_3ch_randlen_seed3 (8s)
+[DS-0007_scattered_n20 / lyapunov] seeds [0.7602 0.8379 0.7582 0.7851] sd 0.0371; pairs CI!=0 5/6; ens 0.8551 (-mean single +0.0698 [0.0648 0.0749]; -best +0.0172 [0.0086 0.0259])
+[DS-0007_scattered_n20 / mass_in_region] seeds [0.7798 0.7817 0.7873 0.7992] sd 0.0087; pairs CI!=0 3/6; ens 0.8445 (-mean single +0.0575 [0.0536 0.0614]; -best +0.0453 [0.039  0.0517])
+[DS-0007_scattered_n20] cpu vs cached seed0 max |diff| 2.48e-05
+[DS-0007_scattered_n50] pred nfd_3ch_randlen_seed1 (9s)
+[DS-0007_scattered_n50] pred nfd_3ch_randlen_seed2 (9s)
+[DS-0007_scattered_n50] pred nfd_3ch_randlen_seed3 (11s)
+[DS-0007_scattered_n50 / lyapunov] seeds [0.8597 0.8938 0.8462 0.8508] sd 0.0215; pairs CI!=0 4/6; ens 0.9213 (-mean single +0.0587 [0.0551 0.0624]; -best +0.0276 [0.0215 0.0336])
+[DS-0007_scattered_n50 / mass_in_region] seeds [0.818  0.8133 0.8353 0.8287] sd 0.0100; pairs CI!=0 4/6; ens 0.8805 (-mean single +0.0567 [0.0536 0.0599]; -best +0.0453 [0.0402 0.0505])
+[DS-0007_scattered_n50] cpu vs cached seed0 max |diff| 2.29e-05
+wrote /home/alon/Code/pile_manipulation/experiments/EXP-0036-seed-noise-floor/results/slaten_seeds.json

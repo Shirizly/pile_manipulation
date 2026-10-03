@@ -1,0 +1,28 @@
+[ckpt override] lf_flex_switched -> weights/MODEL-0009-linear-foresight-flex-mask-v2/checkpoint.pt
+[ckpt override] lf_flex_single -> weights/MODEL-0009-linear-foresight-flex-mask-v2/checkpoint.pt
+FlexPileData(DS-0019, split=all, exclude_flagged=True): 17186 rows; flagged nan=0 escaped=397 out_of_grid=47 null=159 -> kept 16583
+[flex_ds0019_mask] loaded 16583 transitions (7.4s)
+[flex_ds0019_mask / persistence] accuracy=0.0000 (reference floor; slateN row below is DEGENERATE, see docstring)
+    goal=random_quadrant  lyapunov=+0.1839  mass_in_region=-0.0306  signed_mass=+0.0040
+    goal=ring_O           lyapunov=-0.1174  mass_in_region=-0.0934  signed_mass=+0.0609
+    goal=T                lyapunov=+0.3029  mass_in_region=+0.1582  signed_mass=+0.2148
+    averaged         lyapunov=+0.1231  mass_in_region=+0.0114  signed_mass=+0.0932
+[flex_ds0019_mask / random] accuracy=n/a (ranking-only floor)
+    goal=random_quadrant  lyapunov=+0.0085  mass_in_region=+0.0014  signed_mass=+0.0111
+    goal=ring_O           lyapunov=+0.0063  mass_in_region=+0.0091  signed_mass=+0.0013
+    goal=T                lyapunov=+0.0026  mass_in_region=-0.0043  signed_mass=-0.0037
+    averaged         lyapunov=+0.0058  mass_in_region=+0.0021  signed_mass=+0.0029
+[SwitchedLinearForesightPredictor] loaded weights/MODEL-0009-linear-foresight-flex-mask-v2/checkpoint.pt (6 bins, res=64, constraint=ridge, counts=[1722, 3973, 4530, 3435, 1323, 110])
+[flex_ds0019_mask / lf_flex_switched] accuracy=0.4694  device=cuda  (4.4s)
+    goal=random_quadrant  lyapunov=+0.9246  mass_in_region=+0.8673  signed_mass=+0.8911
+    goal=ring_O           lyapunov=+0.9263  mass_in_region=+0.8747  signed_mass=+0.8757
+    goal=T                lyapunov=+0.9553  mass_in_region=+0.9115  signed_mass=+0.9252
+    averaged         lyapunov=+0.9354  mass_in_region=+0.8845  signed_mass=+0.8973
+[SingleLinearForesightPredictor] loaded weights/MODEL-0009-linear-foresight-flex-mask-v2/checkpoint.pt (res=64, fit on datasets/DS-0020-training-data-flex-N864/config.yaml split=train occ_source=image_mask (DS-0020 v2))
+[flex_ds0019_mask / lf_flex_single] accuracy=0.3052  device=cuda  (3.5s)
+    goal=random_quadrant  lyapunov=+0.6883  mass_in_region=+0.6842  signed_mass=+0.7328
+    goal=ring_O           lyapunov=+0.5070  mass_in_region=+0.5427  signed_mass=+0.5134
+    goal=T                lyapunov=+0.8314  mass_in_region=+0.8230  signed_mass=+0.7757
+    averaged         lyapunov=+0.6756  mass_in_region=+0.6833  signed_mass=+0.6740
+
+wrote experiments/EXP-0062-flex-v2-train-rerun/results/ds0019_eval_report_lf_v2.json

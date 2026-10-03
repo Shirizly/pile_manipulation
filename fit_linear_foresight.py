@@ -258,6 +258,21 @@ def predict_heuristic(name, occ, start_px, end_px, cfg=None, batch=256):
     return torch.cat(outs, dim=0)
 
 
+GENESIS_PLATE_PX_FRAC = 0.04 / 0.128
+"""Genesis plate long side over the tray width (40 mm on a 128 mm box)."""
+
+
+def plate_width_px(raw, W: int) -> float:
+    """Plate long side in pixels for a dataset instance `raw`.
+
+    A dataset that is not in Genesis metres (e.g. ``FlexData.dataset.
+    FlexPileData``, FleX units) exposes ``raw.plate_width_px``; every Genesis
+    ``PileSweepData`` lacks it and gets the historical ``0.04 / 0.128 * W``
+    unchanged, so existing numbers are byte-identical."""
+    v = getattr(raw, "plate_width_px", None)
+    return float(v) if v is not None else GENESIS_PLATE_PX_FRAC * W
+
+
 def swept_region_mask(start_px, end_px, grid_res, half_width_px, pad_px):
     """Pixels the push can plausibly affect: the swept rectangle plus a pad.
 

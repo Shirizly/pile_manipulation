@@ -37,7 +37,7 @@ import numpy as np
 import torch
 
 from control_utility_test import lyapunov
-from fit_linear_foresight import actions_to_pixels, metrics, swept_region_mask
+from fit_linear_foresight import actions_to_pixels, metrics, plate_width_px, swept_region_mask
 
 from Baselines.common.data import load_cell
 from Baselines.common.eval_baseline import _predictor_batch
@@ -48,6 +48,8 @@ from Baselines.common.goals import (
 from Baselines.common.randlen_data import load_randlen_cell
 from Baselines.GNN.perception import resample_occupancy_through_nodes
 from transforms.functional import to_push_frame
+
+GNN_FLEX_N = 200   # EXP-0061: particle_num chosen on DS-0020 val (RUNS_gnn_lf.md)
 
 MODELS = {
     "gnn_l20l40": dict(
@@ -268,6 +270,54 @@ MODELS = {
         ckpt="Baselines/NFD/runs/nfd_residual_warped_L20mm_pilot_2/unet_best.pth",
         is_gnn=False,
     ),
+    # EXP-0061 (FleX, score on corpus `flex_ds0019_mask`). The ORIGINAL
+    # dyn-res-pile-manip GNN checkpoint through its own camera pipeline
+    # (Baselines/GNN/flex_predictor.py): nodes from the pre-push COLOUR image,
+    # no depth (DS-0019 has none) -> every foreground pixel on the constant
+    # plane y = 0.24 (DS-0020 median surface height; cost vs true depth measured
+    # in experiments/EXP-0061-*/RUNS_gnn_lf.md). is_gnn=False on purpose: the
+    # is_gnn branch resamples truth through Baselines/GNN/perception.py, which
+    # is Genesis geometry; here prediction and truth are both the binary image
+    # mask (EXP-0061 user decision). Node sampling is seeded per STATE, so the
+    # chunked/cuda path gives identical predictions.
+    "gnn_flex_drp": dict(
+        module="Baselines.GNN.flex_predictor", factory="build_predictor",
+        ckpt_env="GNN_FLEX_CKPT",
+        ckpt="Baselines/GNN/data/gnn_dyn_model/2023-01-28-10-42-05-114323/net_epoch_0_iter_1000.pth",
+        kwargs=dict(particle_num=GNN_FLEX_N, depth_mode="plane", plane_y=0.24, carry_k=1),
+        is_gnn=False,
+    ),
+    # EXP-0062 RUN-0003: the same architecture TRAINED FROM SCRATCH on DS-0020 v2
+    # (Baselines/GNN/flex_train.py), constant 30 nodes train AND test, same
+    # colour-image perception / plane / renderer as gnn_flex_drp.
+    # gnn_flex_drp_n30 = the ORIGINAL checkpoint at N = 30 (node count held fixed
+    # in the old-vs-new comparison).
+    "gnn_flex_v2_n30": dict(
+        module="Baselines.GNN.flex_predictor", factory="build_predictor",
+        ckpt_env="GNN_FLEX_CKPT",
+        ckpt="weights/MODEL-0010-gnn-flex-mask-v2-n30/checkpoint.pth",
+        kwargs=dict(particle_num=30, depth_mode="plane", plane_y=0.24, carry_k=1),
+        is_gnn=False,
+    ),
+    "gnn_flex_drp_n30": dict(
+        module="Baselines.GNN.flex_predictor", factory="build_predictor",
+        ckpt_env="GNN_FLEX_CKPT",
+        ckpt="Baselines/GNN/data/gnn_dyn_model/2023-01-28-10-42-05-114323/net_epoch_0_iter_1000.pth",
+        kwargs=dict(particle_num=30, depth_mode="plane", plane_y=0.24, carry_k=1),
+        is_gnn=False,
+    ),
+    # EXP-0061: switched / single linear visual foresight fit on DS-0020 train
+    # image masks, lambda selected on DS-0020 val (weights/MODEL-0004-*).
+    "lf_flex_switched": dict(
+        module="Baselines.LinearForesight.predictor", factory="build_predictor",
+        ckpt_env="LINEARFORESIGHT_CKPT",
+        ckpt="weights/MODEL-0004-linear-foresight-flex-mask/checkpoint.pt", is_gnn=False,
+    ),
+    "lf_flex_single": dict(
+        module="Baselines.LinearForesight.predictor", factory="build_predictor_single",
+        ckpt_env="LINEARFORESIGHT_CKPT",
+        ckpt="weights/MODEL-0004-linear-foresight-flex-mask/checkpoint.pt", is_gnn=False,
+    ),
 }
 
 CORPORA = {
@@ -306,6 +356,23 @@ CORPORA = {
         kind="randlen",
         cfg="configs/dataset/genesis_overnight_randlen_test_n20_mixed.yaml",
     ),
+    # EXP-0061: FleX carrot piles, NATIVE FleX units (FlexData/dataset.py).
+    # 100 explicit same-state slates (datasets/DS-0019-*/splits.json), every
+    # row a step-0 candidate. Only models trained on the FleX grid
+    # (configs/dataset/flex_ds0020_train_ds0019_test.yaml) are meaningful here.
+    "flex_ds0019": dict(
+        kind="flex",
+        cfg="datasets/DS-0019-slates-flex-pile-varN/config.yaml",
+    ),
+    # Same 100 slates with the EXP-0061 user decision applied: model input occ0
+    # and the accuracy truth occ1 are the BINARY top-down IMAGE MASKS
+    # (FlexData/image_mask.py, cache/image_masks.npz) instead of the particle
+    # raster. slateN truth is still the particle soft splat (truth_for_scoring).
+    "flex_ds0019_mask": dict(
+        kind="flex",
+        cfg="datasets/DS-0019-slates-flex-pile-varN/config.yaml",
+        occ_source="image_mask",
+    ),
 }
 
 VALUE_FNS = ("lyapunov", "mass_in_region", "signed_mass")
@@ -320,6 +387,10 @@ def _load_predictor(spec: dict):
 
 
 def _load_cell(corpus_spec: dict, tag: str):
+    if corpus_spec["kind"] == "flex":
+        from FlexData.dataset import load_flex_cell
+        return load_flex_cell(corpus_spec["cfg"], "all", tag=tag,
+                              occ_source=corpus_spec.get("occ_source"))
     if corpus_spec["kind"] == "slate":
         # train_cfg is unused here (only needed to fit the linear/mean-delta
         # reference operators, out of scope for this report) but load_cell
@@ -363,7 +434,7 @@ def _predict(predictor, cell, device: str = "cpu", chunk: int = 1024,
 def _accuracy(model_spec: dict, predictor, cell, device: str = "cpu") -> float:
     H, W = cell.occ0.shape[-2:]
     s_px, e_px = actions_to_pixels(cell.actions, cell.workspace_min, cell.workspace_max, (H, W))
-    plate_px = 0.04 / 0.128 * W
+    plate_px = plate_width_px(cell.raw, W)
     region = swept_region_mask(s_px, e_px, (H, W), 0.5 * plate_px + 2.0, 0.5 * plate_px)
 
     # GNN predictors are ALWAYS run the historical way (one unchunked call, CPU
@@ -432,7 +503,7 @@ def _accuracy_canonical(model_spec: dict, predictor, cell, pred_world: torch.Ten
     """
     H, W = cell.occ0.shape[-2:]
     s_px, e_px = actions_to_pixels(cell.actions, cell.workspace_min, cell.workspace_max, (H, W))
-    plate_px = 0.04 / 0.128 * W
+    plate_px = plate_width_px(cell.raw, W)
     canon_res = H
     scale = 1.0
 
@@ -540,6 +611,9 @@ def truth_for_scoring(cell, rows: torch.Tensor) -> torch.Tensor:
     pixel count depends on sub-pixel position; it adds noise of ~12% of the
     between-action spread to every true dv (EXP-0027 RUN-0005). See
     experiments/METRICS.md, "Ground-truth scoring"."""
+    if hasattr(cell.raw, "particles_after"):   # FleX (FlexData.dataset): own frame, offset 0
+        from FlexData.dataset import truth_for_scoring_flex
+        return truth_for_scoring_flex(cell, rows)
     from Baselines.common.data import _resolve_sample
     from transforms.functional import splat_particles_mass
     raw = cell.raw
@@ -721,7 +795,7 @@ def main():
             H, W = cell.occ0.shape[-2:]
             s_px, e_px = actions_to_pixels(cell.actions, cell.workspace_min,
                                             cell.workspace_max, (H, W))
-            plate_px = 0.04 / 0.128 * W
+            plate_px = plate_width_px(cell.raw, W)
             region = swept_region_mask(s_px, e_px, (H, W), 0.5 * plate_px + 2.0, 0.5 * plate_px)
             acc_persist = metrics(cell.occ0.to(torch.float32), cell.occ1.to(torch.float32),
                                    cell.occ0.to(torch.float32), region=region)["accuracy"]

@@ -1,0 +1,52 @@
+{
+  "dataset": {
+    "folder": "data/true_action_slates_objbiased",
+    "init_pos": "spread",
+    "global_scale": 24,
+    "obj": "carrots",
+    "particle_r": 0.125,
+    "cam_idx": 0,
+    "wkspc_w": 5.0,
+    "headless": true,
+    "cont_motion": false,
+    "robot_type": "franka",
+    "franka_urdf": "env/assets/franka_panda_plate/panda_plate.urdf",
+    "action_margin": 1.6
+  },
+  "slates": {
+    "n_states": 100,
+    "n_actions": 200,
+    "seed": 0,
+    "init_pos_mix": [
+      "rand_blob",
+      "rand_spread"
+    ],
+    "action_sampler": "obj_biased",
+    "bins": {
+      "edges_abs": [
+        0.9617,
+        2.4042,
+        3.8467,
+        5.2892,
+        6.7317,
+        8.1742,
+        9.6167
+      ]
+    }
+  },
+  "parallel": {
+    "n_envs": 4,
+    "tile_pitch_scale": 2,
+    "tile_seed": 12345,
+    "nan_check_every": 1
+  },
+  "parallel_resolved": {
+    "n_envs": 4,
+    "grid": [
+      2,
+      2
+    ],
+    "tile_pitch": 48.0,
+    "tile_seed": 12345
+  }
+}

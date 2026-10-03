@@ -59,8 +59,16 @@ class SwitchedLinearForesightPredictor:
         s_px, e_px = actions_to_pixels(batch.actions, batch.workspace_min,
                                         batch.workspace_max, (H, W))
         lengths_m = push_length_m(batch.actions)
-        return predict_switched(self.bin_edges, self.operators, batch.occ0,
+        return predict_switched(self.bin_edges, self._ops_on(batch.occ0.device), batch.occ0,
                                  s_px, e_px, lengths_m, self.res, (H, W), self.crop)
+
+    def _ops_on(self, device):
+        """Operators cached on `device` (EXP-0062 RUN-0002: leaving them on the CPU made
+        predict_switched's per-bin `A.to(occ.device)` copy 6 x 64 MB to the GPU on EVERY
+        call -- 78 % of the CUDA call time. Same values, so predictions are unchanged)."""
+        if getattr(self, "_dev_ops", (None,))[0] != device:
+            self._dev_ops = (device, [A.to(device) for A in self.operators])
+        return self._dev_ops[1]
 
 
 class SingleLinearForesightPredictor:
@@ -84,7 +92,12 @@ class SingleLinearForesightPredictor:
         H, W = batch.H, batch.W
         s_px, e_px = actions_to_pixels(batch.actions, batch.workspace_min,
                                         batch.workspace_max, (H, W))
-        return predict_world(self.operator, batch.occ0, s_px, e_px,
+        # .to(device): eval_report --device cuda moves occ0 (predict_switched
+        # already moves its operators; this class did not -> device error, 2026-10-01)
+        dev = batch.occ0.device
+        if getattr(self, "_dev_op", (None,))[0] != dev:      # cached per device (see _ops_on above)
+            self._dev_op = (dev, self.operator.to(dev))
+        return predict_world(self._dev_op[1], batch.occ0, s_px, e_px,
                               self.res, (H, W), self.crop)
 
 

@@ -1,0 +1,8 @@
+FlexPileData(DS-0020, split=val, exclude_flagged=True): 2000 rows; flagged nan=0 escaped=0 out_of_grid=0 null=9 -> kept 1991
+[FlexGNNPredictor] Baselines/GNN/data/gnn_dyn_model/2023-01-28-10-42-05-114323/net_epoch_0_iter_1000.pth: particle_num=50 depth=plane plane_y=0.24 carry_k=1 device=cuda
+[n50_plane0.24] model 0.0968  oracle-node-carry bound 0.2803  (300 rows)
+[FlexGNNPredictor] Baselines/GNN/data/gnn_dyn_model/2023-01-28-10-42-05-114323/net_epoch_0_iter_1000.pth: particle_num=100 depth=plane plane_y=0.24 carry_k=1 device=cuda
+[n100_plane0.24] model 0.2092  oracle-node-carry bound 0.3766  (300 rows)
+wrote /home/alon/Code/pile_manipulation/experiments/EXP-0061-flex-cross-corpus-rerun/figures/gnn_check/pred_vs_true_n100_plane0.24.png
+[FlexGNNPredictor] Baselines/GNN/data/gnn_dyn_model/2023-01-28-10-42-05-114323/net_epoch_0_iter_1000.pth: particle_num=200 depth=plane plane_y=0.24 carry_k=1 device=cuda
+[n200_plane0.24] model 0.2491  oracle-node-carry bound 0.4575  (300 rows)

@@ -1,0 +1,33 @@
+
+=== lyapunov ===
+A1 median r (NFD pairs) +0.01, all +0.02
+   nfd_residual_warped_flipaug_randlen|linear_switched_hard       r +0.05 (primary +0.05) adv +0.083
+   nfd_3ch_randlen|nfd_3ch_finetuned                              r +0.04 (primary +0.02) adv +0.079
+   nfd_warped_randlen_flipaug|nfd_3ch_finetuned                   r +0.04 (primary -0.00) adv +0.128
+   nfd_residual_worldframe_noaug_ep43|linear_switched_hard        r +0.04 (primary +0.04) adv -0.023
+   nfd_3ch_finetuned|linear_switched_hard                         r +0.03 (primary +0.05) adv -0.108
+   nfd_residual_warped_flipaug_randlen|nfd_3ch_finetuned          r +0.03 (primary +0.03) adv +0.190
+   nfd_3ch_randlen|linear_switched_hard                           r +0.03 (primary +0.04) adv -0.029
+   nfd_warped_randlen_flipaug|nfd_residual_worldframe_noaug_ep43  r +0.02 (primary +0.02) adv +0.044
+undefined (state, pool) cells: 2 of 160200
+A2 switch-within-NFD gain -0.0519 state-boot [-0.06401539284191227, -0.0372560849851545]
+A3 ensemble - best single +0.0363 state-boot [0.025897399814675807, 0.045521300827235434]
+   model means: nfd_3ch_randlen=0.733 nfd_warped_randlen=0.816 nfd_warped_randlen_flipaug=0.782 nfd_warped_randlen_flipaug_epoch30=0.805 nfd_residual_warped_flipaug_randlen=0.844 nfd_residual_worldframe_noaug_ep43=0.739 nfd_3ch_finetuned=0.654 linear_switched_hard=0.761 ensemble_nfd=0.879
+A4 pairs tested 0; Holm<.05 descriptor links 0
+
+=== mass_in_region ===
+A1 median r (NFD pairs) +0.02, all +0.02
+   nfd_3ch_finetuned|linear_switched_hard                         r +0.20 (primary +0.22) adv -0.062
+   nfd_warped_randlen_flipaug|nfd_3ch_finetuned                   r +0.18 (primary +0.21) adv +0.073
+   nfd_warped_randlen|nfd_3ch_finetuned                           r +0.18 (primary +0.18) adv +0.073
+   nfd_warped_randlen_flipaug_epoch30|nfd_3ch_finetuned           r +0.17 (primary +0.20) adv +0.099
+   nfd_residual_worldframe_noaug_ep43|nfd_3ch_finetuned           r +0.17 (primary +0.23) adv +0.110
+   nfd_3ch_randlen|nfd_3ch_finetuned                              r +0.15 (primary +0.21) adv +0.096
+   nfd_residual_warped_flipaug_randlen|nfd_3ch_finetuned          r +0.14 (primary +0.16) adv +0.098
+   nfd_residual_warped_flipaug_randlen|linear_switched_hard       r +0.05 (primary +0.02) adv +0.037
+undefined (state, pool) cells: 2 of 160200
+A2 switch-within-NFD gain -0.0184 state-boot [-0.04091745407915015, -0.017547270081087012]
+A3 ensemble - best single +0.0575 state-boot [0.036824611426494555, 0.05742209389462743]
+   model means: nfd_3ch_randlen=0.734 nfd_warped_randlen=0.711 nfd_warped_randlen_flipaug=0.710 nfd_warped_randlen_flipaug_epoch30=0.737 nfd_residual_warped_flipaug_randlen=0.736 nfd_residual_worldframe_noaug_ep43=0.748 nfd_3ch_finetuned=0.637 linear_switched_hard=0.699 ensemble_nfd=0.804
+A4 pairs tested 0; Holm<.05 descriptor links 0
+wrote experiments/EXP-0035-state-superiority-ds0007/results/analysis_n20.json

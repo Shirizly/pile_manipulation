@@ -144,3 +144,10 @@ lyapunov only; 10 n20 scatter states.
 
 ## Unrelated findings
 none
+
+## Later evidence (2026-10-03 audit)
+
+Added by the cross-experiment audit (summary: `experiments/SUMMARY.md`). Numbers above are unchanged.
+
+- EXP-0065 / ISS-013: 54 % of DS-0006's candidate pushes put the blade on a cube at touchdown (pre-fix pile-aware sampler); this record's pool numbers were not re-scored on legal-only candidates.
+- ISS-013: planner candidates / initialisations in this record came from the pre-fix pile-aware sampler (ISS-010 class, ~half illegal touchdowns in audited banks); executed pushes have not been audited for touchdown legality.

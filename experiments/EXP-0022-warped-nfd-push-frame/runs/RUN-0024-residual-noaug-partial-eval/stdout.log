@@ -1,0 +1,95 @@
+[L20mm] loaded 7680 transitions (37.7s)
+[L20mm / persistence] accuracy=0.0000 (reference floor; slateN row below is DEGENERATE, see docstring)
+    goal=random_quadrant  lyapunov=+0.1206  mass_in_region=+0.0120  signed_mass=+0.0290
+    goal=ring_O           lyapunov=-0.0220  mass_in_region=-0.0366  signed_mass=-0.0031
+    goal=T                lyapunov=+0.1010  mass_in_region=-0.0287  signed_mass=+0.0031
+    averaged         lyapunov=+0.0665  mass_in_region=-0.0178  signed_mass=+0.0097
+[L20mm / random] accuracy=n/a (ranking-only floor)
+    goal=random_quadrant  lyapunov=-0.0295  mass_in_region=-0.0006  signed_mass=-0.0426
+    goal=ring_O           lyapunov=-0.0141  mass_in_region=+0.0017  signed_mass=+0.0050
+    goal=T                lyapunov=+0.0198  mass_in_region=-0.0171  signed_mass=+0.0025
+    averaged         lyapunov=-0.0079  mass_in_region=-0.0054  signed_mass=-0.0117
+[L20mm / nfd_randlen] accuracy=0.4071  device=cpu  (12.1s)
+    goal=random_quadrant  lyapunov=+0.9199  mass_in_region=+0.9179  signed_mass=+0.9208
+    goal=ring_O           lyapunov=+0.8542  mass_in_region=+0.7583  signed_mass=+0.5280
+    goal=T                lyapunov=+0.7841  mass_in_region=+0.7844  signed_mass=+0.8093
+    averaged         lyapunov=+0.8527  mass_in_region=+0.8202  signed_mass=+0.7527
+[L20mm / nfd_residual_warped_flipaug_randlen] accuracy=0.3839  device=cpu  (12.6s)
+    goal=random_quadrant  lyapunov=+0.9185  mass_in_region=+0.8493  signed_mass=+0.8986
+    goal=ring_O           lyapunov=+0.8454  mass_in_region=+0.7796  signed_mass=+0.6784
+    goal=T                lyapunov=+0.7739  mass_in_region=+0.6849  signed_mass=+0.6537
+    averaged         lyapunov=+0.8459  mass_in_region=+0.7712  signed_mass=+0.7436
+[L20mm / nfd_residual_worldframe_noaug_ep30] accuracy=0.4260  device=cpu  (11.1s)
+    goal=random_quadrant  lyapunov=+0.9281  mass_in_region=+0.9134  signed_mass=+0.9571
+    goal=ring_O           lyapunov=+0.9241  mass_in_region=+0.7511  signed_mass=+0.5972
+    goal=T                lyapunov=+0.8004  mass_in_region=+0.6998  signed_mass=+0.6735
+    averaged         lyapunov=+0.8842  mass_in_region=+0.7881  signed_mass=+0.7426
+[L20mm / nfd_residual_worldframe_noaug_ep43] accuracy=0.4322  device=cpu  (10.5s)
+    goal=random_quadrant  lyapunov=+0.8991  mass_in_region=+0.9154  signed_mass=+0.9723
+    goal=ring_O           lyapunov=+0.9229  mass_in_region=+0.7886  signed_mass=+0.3539
+    goal=T                lyapunov=+0.8187  mass_in_region=+0.7418  signed_mass=+0.6914
+    averaged         lyapunov=+0.8802  mass_in_region=+0.8153  signed_mass=+0.6725
+[L40mm] loaded 7680 transitions (32.6s)
+[L40mm / persistence] accuracy=0.0000 (reference floor; slateN row below is DEGENERATE, see docstring)
+    goal=random_quadrant  lyapunov=-0.0647  mass_in_region=-0.0618  signed_mass=-0.0685
+    goal=ring_O           lyapunov=+0.0489  mass_in_region=+0.0815  signed_mass=+0.0911
+    goal=T                lyapunov=-0.1462  mass_in_region=-0.0438  signed_mass=-0.0373
+    averaged         lyapunov=-0.0540  mass_in_region=-0.0081  signed_mass=-0.0049
+[L40mm / random] accuracy=n/a (ranking-only floor)
+    goal=random_quadrant  lyapunov=+0.0079  mass_in_region=+0.0346  signed_mass=+0.0152
+    goal=ring_O           lyapunov=+0.0664  mass_in_region=+0.0100  signed_mass=-0.0123
+    goal=T                lyapunov=-0.0365  mass_in_region=+0.0042  signed_mass=-0.0142
+    averaged         lyapunov=+0.0126  mass_in_region=+0.0163  signed_mass=-0.0038
+[L40mm / nfd_randlen] accuracy=0.5088  device=cpu  (10.2s)
+    goal=random_quadrant  lyapunov=+0.9856  mass_in_region=+0.8735  signed_mass=+0.9250
+    goal=ring_O           lyapunov=+0.8941  mass_in_region=+0.6893  signed_mass=+0.7566
+    goal=T                lyapunov=+0.9168  mass_in_region=+0.7868  signed_mass=+0.8417
+    averaged         lyapunov=+0.9322  mass_in_region=+0.7832  signed_mass=+0.8411
+[L40mm / nfd_residual_warped_flipaug_randlen] accuracy=0.4690  device=cpu  (12.1s)
+    goal=random_quadrant  lyapunov=+0.9869  mass_in_region=+0.8806  signed_mass=+0.9610
+    goal=ring_O           lyapunov=+0.8343  mass_in_region=+0.7520  signed_mass=+0.7781
+    goal=T                lyapunov=+0.9412  mass_in_region=+0.8211  signed_mass=+0.8641
+    averaged         lyapunov=+0.9208  mass_in_region=+0.8179  signed_mass=+0.8677
+[L40mm / nfd_residual_worldframe_noaug_ep30] accuracy=0.5256  device=cpu  (10.8s)
+    goal=random_quadrant  lyapunov=+0.9790  mass_in_region=+0.9273  signed_mass=+0.9548
+    goal=ring_O           lyapunov=+0.8210  mass_in_region=+0.7620  signed_mass=+0.7277
+    goal=T                lyapunov=+0.9340  mass_in_region=+0.8378  signed_mass=+0.8909
+    averaged         lyapunov=+0.9113  mass_in_region=+0.8424  signed_mass=+0.8578
+[L40mm / nfd_residual_worldframe_noaug_ep43] accuracy=0.5247  device=cpu  (10.7s)
+    goal=random_quadrant  lyapunov=+0.9806  mass_in_region=+0.8898  signed_mass=+0.9531
+    goal=ring_O           lyapunov=+0.8103  mass_in_region=+0.6926  signed_mass=+0.7231
+    goal=T                lyapunov=+0.9223  mass_in_region=+0.8224  signed_mass=+0.8896
+    averaged         lyapunov=+0.9044  mass_in_region=+0.8016  signed_mass=+0.8552
+[randlen_test] loaded 10751 transitions (57.8s)
+[randlen_test / persistence] accuracy=0.0000 (reference floor; slateN row below is DEGENERATE, see docstring)
+    goal=random_quadrant  lyapunov=+0.0092  mass_in_region=+0.0412  signed_mass=+0.0385
+    goal=ring_O           lyapunov=+0.0083  mass_in_region=-0.0247  signed_mass=-0.0179
+    goal=T                lyapunov=-0.0880  mass_in_region=-0.1101  signed_mass=-0.1149
+    averaged         lyapunov=-0.0235  mass_in_region=-0.0312  signed_mass=-0.0314
+[randlen_test / random] accuracy=n/a (ranking-only floor)
+    goal=random_quadrant  lyapunov=-0.0354  mass_in_region=+0.0178  signed_mass=-0.0153
+    goal=ring_O           lyapunov=-0.0374  mass_in_region=+0.0043  signed_mass=+0.0072
+    goal=T                lyapunov=-0.0465  mass_in_region=+0.0060  signed_mass=+0.0010
+    averaged         lyapunov=-0.0398  mass_in_region=+0.0093  signed_mass=-0.0023
+[randlen_test / nfd_randlen] accuracy=0.4564  device=cpu  (14.7s)
+    goal=random_quadrant  lyapunov=+0.9488  mass_in_region=+0.8363  signed_mass=+0.9106
+    goal=ring_O           lyapunov=+0.9203  mass_in_region=+0.8961  signed_mass=+0.8526
+    goal=T                lyapunov=+0.9560  mass_in_region=+0.9334  signed_mass=+0.8334
+    averaged         lyapunov=+0.9417  mass_in_region=+0.8886  signed_mass=+0.8655
+[randlen_test / nfd_residual_warped_flipaug_randlen] accuracy=0.4622  device=cpu  (18.1s)
+    goal=random_quadrant  lyapunov=+0.9406  mass_in_region=+0.8889  signed_mass=+0.9269
+    goal=ring_O           lyapunov=+0.9164  mass_in_region=+0.8510  signed_mass=+0.8845
+    goal=T                lyapunov=+0.9567  mass_in_region=+0.8885  signed_mass=+0.7471
+    averaged         lyapunov=+0.9379  mass_in_region=+0.8761  signed_mass=+0.8528
+[randlen_test / nfd_residual_worldframe_noaug_ep30] accuracy=0.4715  device=cpu  (15.1s)
+    goal=random_quadrant  lyapunov=+0.9240  mass_in_region=+0.9009  signed_mass=+0.9002
+    goal=ring_O           lyapunov=+0.9244  mass_in_region=+0.8414  signed_mass=+0.8569
+    goal=T                lyapunov=+0.9272  mass_in_region=+0.8911  signed_mass=+0.9145
+    averaged         lyapunov=+0.9252  mass_in_region=+0.8778  signed_mass=+0.8906
+[randlen_test / nfd_residual_worldframe_noaug_ep43] accuracy=0.4844  device=cpu  (14.3s)
+    goal=random_quadrant  lyapunov=+0.9592  mass_in_region=+0.9025  signed_mass=+0.9240
+    goal=ring_O           lyapunov=+0.9511  mass_in_region=+0.8554  signed_mass=+0.8402
+    goal=T                lyapunov=+0.9485  mass_in_region=+0.8830  signed_mass=+0.8695
+    averaged         lyapunov=+0.9529  mass_in_region=+0.8803  signed_mass=+0.8779
+
+wrote /tmp/claude-1000/-home-alon-Code-pile-manipulation/0200a1cb-398e-4e01-9553-2dce13cb540b/scratchpad/noaug_eval.json

@@ -1,0 +1,20 @@
+nfd_randlen {'slateN': 0.8939057543332591, 'acc_s0.0': 0.4564076066017151, 'acc_s1.0': 0.5714587569236755, 'acc_s2.0': 0.6566916108131409}
+nfd_warped_randlen {'slateN': 0.9152388252255502, 'acc_s0.0': 0.40003013610839844, 'acc_s1.0': 0.5663816928863525, 'acc_s2.0': 0.6635841727256775}
+nfd_warped_randlen_flipaug {'slateN': 0.9261982496453454, 'acc_s0.0': 0.408561646938324, 'acc_s1.0': 0.5792547464370728, 'acc_s2.0': 0.6766997575759888}
+nfd_warped_randlen_flipaug_epoch30 {'slateN': 0.9151911423752873, 'acc_s0.0': 0.3878846764564514, 'acc_s1.0': 0.5448763370513916, 'acc_s2.0': 0.6399770379066467}
+nfd_residual_warped_flipaug_randlen {'slateN': 0.9301104169579972, 'acc_s0.0': 0.4622275233268738, 'acc_s1.0': 0.5874376893043518, 'acc_s2.0': 0.6790168285369873}
+nfd_residual_worldframe_noaug_ep43 {'slateN': 0.9023357919429673, 'acc_s0.0': 0.48441702127456665, 'acc_s1.0': 0.6104370355606079, 'acc_s2.0': 0.6956897377967834}
+[SwitchedLinearForesightPredictor] loaded Baselines/LinearForesight/runs/operators_res32.pt (6 bins, res=32, constraint=ridge, counts=[7420, 18330, 24925, 22275, 18680, 6666])
+linear_switched_res32 {'slateN': 0.8527759740473325, 'acc_s0.0': 0.2478352189064026, 'acc_s1.0': 0.4086403250694275, 'acc_s2.0': 0.5158002972602844}
+[SwitchedLinearForesightPredictor] loaded Baselines/LinearForesight/runs/operators_res64.pt (6 bins, res=64, constraint=ridge, counts=[141, 384, 496, 422, 396, 161])
+linear_switched_res64 {'slateN': 0.7021407377736328, 'acc_s0.0': 0.20813661813735962, 'acc_s1.0': 0.30443090200424194, 'acc_s2.0': 0.36276841163635254}
+[SingleLinearForesightPredictor] loaded Baselines/LinearForesight/runs/operators_res32.pt (res=32, fit on configs/dataset/genesis_overnight_randlen_train_all.yaml)
+linear_single_res32 {'slateN': 0.5995556328191605, 'acc_s0.0': 0.14729034900665283, 'acc_s1.0': 0.22274047136306763, 'acc_s2.0': 0.27280133962631226}
+[SingleLinearForesightPredictor] loaded Baselines/LinearForesight/runs/operators_res64.pt (res=64, fit on configs/dataset/genesis_overnight_randlen_train_all.yaml)
+linear_single_res64 {'slateN': 0.4784780781021113, 'acc_s0.0': 0.05264103412628174, 'acc_s1.0': 0.05059164762496948, 'acc_s2.0': 0.046459734439849854}
+all non-GNN  sigma 0.0: Kendall tau accuracy vs slateN +0.69 (p 0.00, n=10)
+all non-GNN  sigma 1.0: Kendall tau accuracy vs slateN +0.73 (p 0.00, n=10)
+all non-GNN  sigma 2.0: Kendall tau accuracy vs slateN +0.78 (p 0.00, n=10)
+NFD family   sigma 0.0: Kendall tau accuracy vs slateN +0.07 (p 1.00, n=6)
+NFD family   sigma 1.0: Kendall tau accuracy vs slateN +0.20 (p 0.72, n=6)
+NFD family   sigma 2.0: Kendall tau accuracy vs slateN +0.33 (p 0.47, n=6)

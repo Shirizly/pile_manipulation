@@ -1,0 +1,12 @@
+FlexPileData(DS-0020, split=val, exclude_flagged=True): 2000 rows; flagged nan=0 escaped=0 out_of_grid=0 null=9 -> kept 1991
+[ds0020_val] 1991 rows (3s)
+nfd_s0 val acc 0.6095 1s
+nfd_s1 val acc 0.6117 0s
+nfd_s2 val acc 0.6098 0s
+[SwitchedLinearForesightPredictor] loaded weights/MODEL-0004-linear-foresight-flex-mask/checkpoint.pt (6 bins, res=64, constraint=ridge, counts=[2124, 4867, 5325, 3961, 1424, 136])
+lf_flex_switched val acc 0.4824 0s
+[SingleLinearForesightPredictor] loaded weights/MODEL-0004-linear-foresight-flex-mask/checkpoint.pt (res=64, fit on datasets/DS-0020-training-data-flex-N864/config.yaml split=train occ_source=image_mask)
+lf_flex_single val acc 0.3543 0s
+[FlexGNNPredictor] Baselines/GNN/data/gnn_dyn_model/2023-01-28-10-42-05-114323/net_epoch_0_iter_1000.pth: particle_num=200 depth=plane plane_y=0.24 carry_k=1 device=cuda
+gnn_flex_drp_samp0 val acc 0.2517 347s
+done

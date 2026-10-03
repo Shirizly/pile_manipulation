@@ -48,6 +48,9 @@ def main(argv=None) -> None:
     ap.add_argument("config", type=Path, help="Path to a Baselines/NFD/configs/*.yaml training config.")
     ap.add_argument("--no-resume", action="store_true",
                      help="Start from scratch even if a checkpoint already exists in log_dir.")
+    ap.add_argument("--resume", action="store_true",
+                     help="Require and continue from <log_dir>/last_state.pt (training.save_full_state): "
+                          "same epoch counter, batch position, LR schedule, optimizer and RNG state.")
     ap.add_argument("--override", nargs="*", default=[], metavar="KEY=VALUE",
                      help="e.g. --override training.epochs=2")
     ap.add_argument("--seed", type=int, default=None,
@@ -68,8 +71,18 @@ def main(argv=None) -> None:
     print(f"Config: {args.config}")
     print(f"Device: {DEVICE}")
 
-    trainer = Trainer.from_config(args.config, resume=not args.no_resume)
+    # Overrides must land BEFORE the resume lookup (it reads output.log_dir and
+    # training.save_full_state), so build without resuming, override, then
+    # resume. Dataset/model overrides still cannot take effect (already built).
+    trainer = Trainer.from_config(args.config, resume=False)
     _apply_overrides(trainer.cfg, args.override or [])
+    if args.resume or not args.no_resume:
+        trainer._resume_full = True
+        trainer._try_resume()
+    if args.resume:
+        st = Path(trainer.cfg.get("output", {}).get("log_dir", "")) / "last_state.pt"
+        if not st.exists():
+            raise SystemExit(f"--resume: no full state at {st}")
     trainer.run()
 
 

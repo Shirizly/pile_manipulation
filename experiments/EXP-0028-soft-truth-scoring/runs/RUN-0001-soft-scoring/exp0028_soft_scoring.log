@@ -1,0 +1,340 @@
+[L20mm] loaded 7680 transitions (32.1s)
+[L20mm / persistence] accuracy=0.0000 (reference floor; slateN row below is DEGENERATE, see docstring)
+    goal=random_quadrant  lyapunov=+0.1151  mass_in_region=+0.0282  signed_mass=+0.0282
+    goal=ring_O           lyapunov=-0.0562  mass_in_region=-0.0332  signed_mass=-0.0332
+    goal=T                lyapunov=+0.0997  mass_in_region=+0.0576  signed_mass=+0.0576
+    averaged         lyapunov=+0.0529  mass_in_region=+0.0175  signed_mass=+0.0175
+[L20mm / random] accuracy=n/a (ranking-only floor)
+    goal=random_quadrant  lyapunov=-0.0197  mass_in_region=-0.0087  signed_mass=-0.0398
+    goal=ring_O           lyapunov=-0.0026  mass_in_region=+0.0003  signed_mass=+0.0053
+    goal=T                lyapunov=+0.0186  mass_in_region=-0.0114  signed_mass=-0.0034
+    averaged         lyapunov=-0.0012  mass_in_region=-0.0066  signed_mass=-0.0126
+[L20mm / nfd_randlen] accuracy=0.4071  device=cpu  (9.7s)
+    goal=random_quadrant  lyapunov=+0.9524  mass_in_region=+0.9442  signed_mass=+0.9595
+    goal=ring_O           lyapunov=+0.8454  mass_in_region=+0.7322  signed_mass=+0.5475
+    goal=T                lyapunov=+0.7759  mass_in_region=+0.7000  signed_mass=+0.7356
+    averaged         lyapunov=+0.8579  mass_in_region=+0.7922  signed_mass=+0.7475
+[L20mm / nfd_warped_randlen] accuracy=0.3476  device=cpu  (12.4s)
+    goal=random_quadrant  lyapunov=+0.9556  mass_in_region=+0.8842  signed_mass=+0.9060
+    goal=ring_O           lyapunov=+0.7280  mass_in_region=+0.7676  signed_mass=+0.8020
+    goal=T                lyapunov=+0.7620  mass_in_region=+0.7272  signed_mass=+0.7530
+    averaged         lyapunov=+0.8152  mass_in_region=+0.7930  signed_mass=+0.8204
+[L20mm / nfd_warped_randlen_flipaug] accuracy=0.3496  device=cpu  (11.8s)
+    goal=random_quadrant  lyapunov=+0.9496  mass_in_region=+0.9004  signed_mass=+0.9449
+    goal=ring_O           lyapunov=+0.8545  mass_in_region=+0.6712  signed_mass=+0.6468
+    goal=T                lyapunov=+0.8092  mass_in_region=+0.8078  signed_mass=+0.7766
+    averaged         lyapunov=+0.8711  mass_in_region=+0.7931  signed_mass=+0.7894
+[L20mm / nfd_warped_randlen_flipaug_epoch30] accuracy=0.3501  device=cpu  (11.9s)
+    goal=random_quadrant  lyapunov=+0.9293  mass_in_region=+0.8840  signed_mass=+0.9356
+    goal=ring_O           lyapunov=+0.8210  mass_in_region=+0.7687  signed_mass=+0.7757
+    goal=T                lyapunov=+0.8349  mass_in_region=+0.8396  signed_mass=+0.8069
+    averaged         lyapunov=+0.8617  mass_in_region=+0.8308  signed_mass=+0.8394
+[L20mm / nfd_residual_warped_flipaug_randlen] accuracy=0.3839  device=cpu  (12.2s)
+    goal=random_quadrant  lyapunov=+0.9429  mass_in_region=+0.8883  signed_mass=+0.9211
+    goal=ring_O           lyapunov=+0.8357  mass_in_region=+0.7805  signed_mass=+0.6763
+    goal=T                lyapunov=+0.7915  mass_in_region=+0.6825  signed_mass=+0.7032
+    averaged         lyapunov=+0.8567  mass_in_region=+0.7837  signed_mass=+0.7669
+[L20mm / nfd_residual_worldframe_noaug_ep43] accuracy=0.4322  device=cpu  (9.9s)
+    goal=random_quadrant  lyapunov=+0.9182  mass_in_region=+0.9303  signed_mass=+0.9589
+    goal=ring_O           lyapunov=+0.9270  mass_in_region=+0.7667  signed_mass=+0.4798
+    goal=T                lyapunov=+0.8370  mass_in_region=+0.7595  signed_mass=+0.7956
+    averaged         lyapunov=+0.8941  mass_in_region=+0.8188  signed_mass=+0.7448
+[SwitchedLinearForesightPredictor] loaded Baselines/LinearForesight/runs/operators_res32.pt (6 bins, res=32, constraint=ridge, counts=[7420, 18330, 24925, 22275, 18680, 6666])
+[L20mm / linear_switched_res32] accuracy=0.2617  device=cpu  (1.7s)
+    goal=random_quadrant  lyapunov=+0.9486  mass_in_region=+0.8989  signed_mass=+0.9658
+    goal=ring_O           lyapunov=+0.8740  mass_in_region=+0.7576  signed_mass=+0.4998
+    goal=T                lyapunov=+0.8581  mass_in_region=+0.8508  signed_mass=+0.8194
+    averaged         lyapunov=+0.8936  mass_in_region=+0.8358  signed_mass=+0.7616
+[SwitchedLinearForesightPredictor] loaded Baselines/LinearForesight/runs/operators_res64.pt (6 bins, res=64, constraint=ridge, counts=[141, 384, 496, 422, 396, 161])
+[L20mm / linear_switched_res64] accuracy=0.2418  device=cpu  (3.5s)
+    goal=random_quadrant  lyapunov=+0.9373  mass_in_region=+0.8471  signed_mass=+0.9093
+    goal=ring_O           lyapunov=+0.8992  mass_in_region=+0.6854  signed_mass=+0.5204
+    goal=T                lyapunov=+0.8062  mass_in_region=+0.6216  signed_mass=+0.7432
+    averaged         lyapunov=+0.8809  mass_in_region=+0.7180  signed_mass=+0.7243
+[SingleLinearForesightPredictor] loaded Baselines/LinearForesight/runs/operators_res32.pt (res=32, fit on configs/dataset/genesis_overnight_randlen_train_all.yaml)
+[L20mm / linear_single_res32] accuracy=0.0437  device=cpu  (1.6s)
+    goal=random_quadrant  lyapunov=+0.8306  mass_in_region=+0.7693  signed_mass=+0.7763
+    goal=ring_O           lyapunov=+0.7877  mass_in_region=+0.3704  signed_mass=+0.3302
+    goal=T                lyapunov=+0.3289  mass_in_region=+0.1107  signed_mass=+0.1543
+    averaged         lyapunov=+0.6490  mass_in_region=+0.4168  signed_mass=+0.4203
+[SingleLinearForesightPredictor] loaded Baselines/LinearForesight/runs/operators_res64.pt (res=64, fit on configs/dataset/genesis_overnight_randlen_train_all.yaml)
+[L20mm / linear_single_res64] accuracy=0.0280  device=cpu  (3.3s)
+    goal=random_quadrant  lyapunov=+0.7712  mass_in_region=+0.8045  signed_mass=+0.8242
+    goal=ring_O           lyapunov=+0.5545  mass_in_region=+0.1812  signed_mass=+0.1499
+    goal=T                lyapunov=-0.0044  mass_in_region=-0.0603  signed_mass=-0.0265
+    averaged         lyapunov=+0.4404  mass_in_region=+0.3085  signed_mass=+0.3158
+[GNNPredictor] loaded Baselines/GNN/runs/ckpt_best.pth (epoch=300, val_mse=4.0153605207630484e-06, n_particles=20)
+[L20mm / gnn_l20l40] accuracy=0.2782  device=cpu  (17.4s)
+    goal=random_quadrant  lyapunov=+0.9562  mass_in_region=+0.8723  signed_mass=+0.9162
+    goal=ring_O           lyapunov=+0.9502  mass_in_region=+0.8186  signed_mass=+0.4884
+    goal=T                lyapunov=+0.9007  mass_in_region=+0.7309  signed_mass=+0.7459
+    averaged         lyapunov=+0.9357  mass_in_region=+0.8073  signed_mass=+0.7168
+[GNNPredictor] loaded Baselines/GNN/runs/randlen_train_all_n30/ckpt_best.pth (epoch=101, val_mse=5.661420293748055e-06, n_particles=30)
+[L20mm / gnn_randlen_n30] accuracy=0.2416  device=cpu  (31.7s)
+    goal=random_quadrant  lyapunov=+0.9277  mass_in_region=+0.7660  signed_mass=+0.8163
+    goal=ring_O           lyapunov=+0.8828  mass_in_region=+0.5566  signed_mass=+0.2834
+    goal=T                lyapunov=+0.5884  mass_in_region=+0.5394  signed_mass=+0.4976
+    averaged         lyapunov=+0.7996  mass_in_region=+0.6207  signed_mass=+0.5324
+[L40mm] loaded 7680 transitions (32.9s)
+[L40mm / persistence] accuracy=0.0000 (reference floor; slateN row below is DEGENERATE, see docstring)
+    goal=random_quadrant  lyapunov=-0.0747  mass_in_region=-0.0545  signed_mass=-0.0545
+    goal=ring_O           lyapunov=+0.0710  mass_in_region=+0.0845  signed_mass=+0.0845
+    goal=T                lyapunov=-0.1439  mass_in_region=-0.0332  signed_mass=-0.0332
+    averaged         lyapunov=-0.0492  mass_in_region=-0.0011  signed_mass=-0.0011
+[L40mm / random] accuracy=n/a (ranking-only floor)
+    goal=random_quadrant  lyapunov=+0.0021  mass_in_region=+0.0323  signed_mass=+0.0130
+    goal=ring_O           lyapunov=+0.0679  mass_in_region=+0.0078  signed_mass=-0.0129
+    goal=T                lyapunov=-0.0394  mass_in_region=-0.0018  signed_mass=-0.0128
+    averaged         lyapunov=+0.0102  mass_in_region=+0.0128  signed_mass=-0.0042
+[L40mm / nfd_randlen] accuracy=0.5088  device=cpu  (10.2s)
+    goal=random_quadrant  lyapunov=+0.9917  mass_in_region=+0.9391  signed_mass=+0.9574
+    goal=ring_O           lyapunov=+0.9061  mass_in_region=+0.7538  signed_mass=+0.7602
+    goal=T                lyapunov=+0.9235  mass_in_region=+0.8033  signed_mass=+0.8492
+    averaged         lyapunov=+0.9404  mass_in_region=+0.8321  signed_mass=+0.8556
+[L40mm / nfd_warped_randlen] accuracy=0.4589  device=cpu  (12.7s)
+    goal=random_quadrant  lyapunov=+0.9867  mass_in_region=+0.9747  signed_mass=+0.9834
+    goal=ring_O           lyapunov=+0.8416  mass_in_region=+0.7880  signed_mass=+0.7349
+    goal=T                lyapunov=+0.9074  mass_in_region=+0.8462  signed_mass=+0.8591
+    averaged         lyapunov=+0.9119  mass_in_region=+0.8696  signed_mass=+0.8591
+[L40mm / nfd_warped_randlen_flipaug] accuracy=0.4431  device=cpu  (15.0s)
+    goal=random_quadrant  lyapunov=+0.9902  mass_in_region=+0.9697  signed_mass=+0.9792
+    goal=ring_O           lyapunov=+0.8831  mass_in_region=+0.7275  signed_mass=+0.7774
+    goal=T                lyapunov=+0.8966  mass_in_region=+0.7937  signed_mass=+0.8612
+    averaged         lyapunov=+0.9233  mass_in_region=+0.8303  signed_mass=+0.8726
+[L40mm / nfd_warped_randlen_flipaug_epoch30] accuracy=0.4617  device=cpu  (15.6s)
+    goal=random_quadrant  lyapunov=+0.9897  mass_in_region=+0.9631  signed_mass=+0.9697
+    goal=ring_O           lyapunov=+0.8611  mass_in_region=+0.7909  signed_mass=+0.7964
+    goal=T                lyapunov=+0.9136  mass_in_region=+0.8649  signed_mass=+0.8910
+    averaged         lyapunov=+0.9215  mass_in_region=+0.8730  signed_mass=+0.8857
+[L40mm / nfd_residual_warped_flipaug_randlen] accuracy=0.4690  device=cpu  (14.1s)
+    goal=random_quadrant  lyapunov=+0.9905  mass_in_region=+0.9380  signed_mass=+0.9817
+    goal=ring_O           lyapunov=+0.8660  mass_in_region=+0.7692  signed_mass=+0.8004
+    goal=T                lyapunov=+0.9420  mass_in_region=+0.8550  signed_mass=+0.8881
+    averaged         lyapunov=+0.9329  mass_in_region=+0.8541  signed_mass=+0.8901
+[L40mm / nfd_residual_worldframe_noaug_ep43] accuracy=0.5247  device=cpu  (13.9s)
+    goal=random_quadrant  lyapunov=+0.9869  mass_in_region=+0.9357  signed_mass=+0.9722
+    goal=ring_O           lyapunov=+0.8369  mass_in_region=+0.7442  signed_mass=+0.7487
+    goal=T                lyapunov=+0.9258  mass_in_region=+0.8648  signed_mass=+0.9098
+    averaged         lyapunov=+0.9165  mass_in_region=+0.8482  signed_mass=+0.8769
+[SwitchedLinearForesightPredictor] loaded Baselines/LinearForesight/runs/operators_res32.pt (6 bins, res=32, constraint=ridge, counts=[7420, 18330, 24925, 22275, 18680, 6666])
+[L40mm / linear_switched_res32] accuracy=0.4373  device=cpu  (2.8s)
+    goal=random_quadrant  lyapunov=+0.9918  mass_in_region=+0.9752  signed_mass=+0.9842
+    goal=ring_O           lyapunov=+0.9067  mass_in_region=+0.7574  signed_mass=+0.7915
+    goal=T                lyapunov=+0.9533  mass_in_region=+0.9262  signed_mass=+0.9316
+    averaged         lyapunov=+0.9506  mass_in_region=+0.8863  signed_mass=+0.9024
+[SwitchedLinearForesightPredictor] loaded Baselines/LinearForesight/runs/operators_res64.pt (6 bins, res=64, constraint=ridge, counts=[141, 384, 496, 422, 396, 161])
+[L40mm / linear_switched_res64] accuracy=0.3708  device=cpu  (4.4s)
+    goal=random_quadrant  lyapunov=+0.9830  mass_in_region=+0.9595  signed_mass=+0.9696
+    goal=ring_O           lyapunov=+0.8447  mass_in_region=+0.8019  signed_mass=+0.7742
+    goal=T                lyapunov=+0.9498  mass_in_region=+0.9138  signed_mass=+0.9411
+    averaged         lyapunov=+0.9258  mass_in_region=+0.8917  signed_mass=+0.8950
+[SingleLinearForesightPredictor] loaded Baselines/LinearForesight/runs/operators_res32.pt (res=32, fit on configs/dataset/genesis_overnight_randlen_train_all.yaml)
+[L40mm / linear_single_res32] accuracy=0.3660  device=cpu  (2.2s)
+    goal=random_quadrant  lyapunov=+0.9863  mass_in_region=+0.9687  signed_mass=+0.9687
+    goal=ring_O           lyapunov=+0.8927  mass_in_region=+0.7123  signed_mass=+0.7285
+    goal=T                lyapunov=+0.8932  mass_in_region=+0.7776  signed_mass=+0.7796
+    averaged         lyapunov=+0.9241  mass_in_region=+0.8195  signed_mass=+0.8256
+[SingleLinearForesightPredictor] loaded Baselines/LinearForesight/runs/operators_res64.pt (res=64, fit on configs/dataset/genesis_overnight_randlen_train_all.yaml)
+[L40mm / linear_single_res64] accuracy=0.2987  device=cpu  (4.0s)
+    goal=random_quadrant  lyapunov=+0.9711  mass_in_region=+0.9154  signed_mass=+0.9737
+    goal=ring_O           lyapunov=+0.8230  mass_in_region=+0.5277  signed_mass=+0.5722
+    goal=T                lyapunov=+0.8885  mass_in_region=+0.6304  signed_mass=+0.7070
+    averaged         lyapunov=+0.8942  mass_in_region=+0.6912  signed_mass=+0.7510
+[GNNPredictor] loaded Baselines/GNN/runs/ckpt_best.pth (epoch=300, val_mse=4.0153605207630484e-06, n_particles=20)
+[L40mm / gnn_l20l40] accuracy=0.3128  device=cpu  (21.1s)
+    goal=random_quadrant  lyapunov=+0.9826  mass_in_region=+0.9017  signed_mass=+0.9609
+    goal=ring_O           lyapunov=+0.9349  mass_in_region=+0.7977  signed_mass=+0.8147
+    goal=T                lyapunov=+0.9362  mass_in_region=+0.8295  signed_mass=+0.8950
+    averaged         lyapunov=+0.9512  mass_in_region=+0.8430  signed_mass=+0.8902
+[GNNPredictor] loaded Baselines/GNN/runs/randlen_train_all_n30/ckpt_best.pth (epoch=101, val_mse=5.661420293748055e-06, n_particles=30)
+[L40mm / gnn_randlen_n30] accuracy=0.3250  device=cpu  (29.0s)
+    goal=random_quadrant  lyapunov=+0.9597  mass_in_region=+0.8226  signed_mass=+0.8672
+    goal=ring_O           lyapunov=+0.7220  mass_in_region=+0.7531  signed_mass=+0.6680
+    goal=T                lyapunov=+0.8304  mass_in_region=+0.6393  signed_mass=+0.7323
+    averaged         lyapunov=+0.8373  mass_in_region=+0.7383  signed_mass=+0.7558
+[randlen_test] loaded 10751 transitions (61.9s)
+[randlen_test / persistence] accuracy=0.0000 (reference floor; slateN row below is DEGENERATE, see docstring)
+    goal=random_quadrant  lyapunov=+0.0208  mass_in_region=+0.0396  signed_mass=+0.0396
+    goal=ring_O           lyapunov=+0.0394  mass_in_region=+0.0076  signed_mass=+0.0076
+    goal=T                lyapunov=-0.0854  mass_in_region=-0.0944  signed_mass=-0.0944
+    averaged         lyapunov=-0.0084  mass_in_region=-0.0157  signed_mass=-0.0157
+[randlen_test / random] accuracy=n/a (ranking-only floor)
+    goal=random_quadrant  lyapunov=-0.0351  mass_in_region=+0.0183  signed_mass=-0.0141
+    goal=ring_O           lyapunov=-0.0406  mass_in_region=+0.0061  signed_mass=+0.0108
+    goal=T                lyapunov=-0.0498  mass_in_region=+0.0025  signed_mass=+0.0043
+    averaged         lyapunov=-0.0418  mass_in_region=+0.0090  signed_mass=+0.0003
+[randlen_test / nfd_randlen] accuracy=0.4564  device=cpu  (20.0s)
+    goal=random_quadrant  lyapunov=+0.9412  mass_in_region=+0.8586  signed_mass=+0.9109
+    goal=ring_O           lyapunov=+0.9099  mass_in_region=+0.8795  signed_mass=+0.8150
+    goal=T                lyapunov=+0.9499  mass_in_region=+0.9510  signed_mass=+0.8292
+    averaged         lyapunov=+0.9337  mass_in_region=+0.8964  signed_mass=+0.8517
+[randlen_test / nfd_warped_randlen] accuracy=0.4000  device=cpu  (23.6s)
+    goal=random_quadrant  lyapunov=+0.9518  mass_in_region=+0.9369  signed_mass=+0.9281
+    goal=ring_O           lyapunov=+0.9112  mass_in_region=+0.8814  signed_mass=+0.8368
+    goal=T                lyapunov=+0.9085  mass_in_region=+0.9080  signed_mass=+0.7188
+    averaged         lyapunov=+0.9238  mass_in_region=+0.9088  signed_mass=+0.8279
+[randlen_test / nfd_warped_randlen_flipaug] accuracy=0.4086  device=cpu  (22.1s)
+    goal=random_quadrant  lyapunov=+0.9348  mass_in_region=+0.9589  signed_mass=+0.8961
+    goal=ring_O           lyapunov=+0.9224  mass_in_region=+0.8199  signed_mass=+0.8479
+    goal=T                lyapunov=+0.9566  mass_in_region=+0.8309  signed_mass=+0.7018
+    averaged         lyapunov=+0.9379  mass_in_region=+0.8699  signed_mass=+0.8153
+[randlen_test / nfd_warped_randlen_flipaug_epoch30] accuracy=0.3879  device=cpu  (22.2s)
+    goal=random_quadrant  lyapunov=+0.9599  mass_in_region=+0.9180  signed_mass=+0.9325
+    goal=ring_O           lyapunov=+0.9215  mass_in_region=+0.8588  signed_mass=+0.7912
+    goal=T                lyapunov=+0.9493  mass_in_region=+0.8837  signed_mass=+0.6554
+    averaged         lyapunov=+0.9436  mass_in_region=+0.8868  signed_mass=+0.7930
+[randlen_test / nfd_residual_warped_flipaug_randlen] accuracy=0.4622  device=cpu  (20.0s)
+    goal=random_quadrant  lyapunov=+0.9437  mass_in_region=+0.8979  signed_mass=+0.9268
+    goal=ring_O           lyapunov=+0.9098  mass_in_region=+0.8412  signed_mass=+0.8793
+    goal=T                lyapunov=+0.9729  mass_in_region=+0.8990  signed_mass=+0.7258
+    averaged         lyapunov=+0.9421  mass_in_region=+0.8794  signed_mass=+0.8440
+[randlen_test / nfd_residual_worldframe_noaug_ep43] accuracy=0.4844  device=cpu  (18.6s)
+    goal=random_quadrant  lyapunov=+0.9519  mass_in_region=+0.9251  signed_mass=+0.9284
+    goal=ring_O           lyapunov=+0.9156  mass_in_region=+0.8440  signed_mass=+0.8379
+    goal=T                lyapunov=+0.9623  mass_in_region=+0.8954  signed_mass=+0.8607
+    averaged         lyapunov=+0.9433  mass_in_region=+0.8882  signed_mass=+0.8757
+[SwitchedLinearForesightPredictor] loaded Baselines/LinearForesight/runs/operators_res32.pt (6 bins, res=32, constraint=ridge, counts=[7420, 18330, 24925, 22275, 18680, 6666])
+[randlen_test / linear_switched_res32] accuracy=0.2478  device=cpu  (2.9s)
+    goal=random_quadrant  lyapunov=+0.9173  mass_in_region=+0.9004  signed_mass=+0.8931
+    goal=ring_O           lyapunov=+0.7960  mass_in_region=+0.7231  signed_mass=+0.8192
+    goal=T                lyapunov=+0.8932  mass_in_region=+0.8203  signed_mass=+0.6207
+    averaged         lyapunov=+0.8688  mass_in_region=+0.8146  signed_mass=+0.7777
+[SwitchedLinearForesightPredictor] loaded Baselines/LinearForesight/runs/operators_res64.pt (6 bins, res=64, constraint=ridge, counts=[141, 384, 496, 422, 396, 161])
+[randlen_test / linear_switched_res64] accuracy=0.2081  device=cpu  (5.3s)
+    goal=random_quadrant  lyapunov=+0.7652  mass_in_region=+0.8746  signed_mass=+0.8746
+    goal=ring_O           lyapunov=+0.6173  mass_in_region=+0.5637  signed_mass=+0.6713
+    goal=T                lyapunov=+0.8333  mass_in_region=+0.8258  signed_mass=+0.6485
+    averaged         lyapunov=+0.7386  mass_in_region=+0.7547  signed_mass=+0.7315
+[SingleLinearForesightPredictor] loaded Baselines/LinearForesight/runs/operators_res32.pt (res=32, fit on configs/dataset/genesis_overnight_randlen_train_all.yaml)
+[randlen_test / linear_single_res32] accuracy=0.1473  device=cpu  (2.6s)
+    goal=random_quadrant  lyapunov=+0.5977  mass_in_region=+0.7092  signed_mass=+0.6803
+    goal=ring_O           lyapunov=+0.5599  mass_in_region=+0.3647  signed_mass=+0.2036
+    goal=T                lyapunov=+0.6752  mass_in_region=+0.6012  signed_mass=+0.3650
+    averaged         lyapunov=+0.6109  mass_in_region=+0.5583  signed_mass=+0.4163
+[SingleLinearForesightPredictor] loaded Baselines/LinearForesight/runs/operators_res64.pt (res=64, fit on configs/dataset/genesis_overnight_randlen_train_all.yaml)
+[randlen_test / linear_single_res64] accuracy=0.0526  device=cpu  (5.6s)
+    goal=random_quadrant  lyapunov=+0.5033  mass_in_region=+0.5847  signed_mass=+0.6198
+    goal=ring_O           lyapunov=+0.4214  mass_in_region=+0.2280  signed_mass=+0.1840
+    goal=T                lyapunov=+0.4876  mass_in_region=+0.3381  signed_mass=+0.1165
+    averaged         lyapunov=+0.4708  mass_in_region=+0.3836  signed_mass=+0.3068
+[GNNPredictor] loaded Baselines/GNN/runs/ckpt_best.pth (epoch=300, val_mse=4.0153605207630484e-06, n_particles=20)
+[randlen_test / gnn_l20l40] accuracy=0.0712  device=cpu  (32.2s)
+    goal=random_quadrant  lyapunov=+0.4827  mass_in_region=+0.6144  signed_mass=+0.4552
+    goal=ring_O           lyapunov=+0.3737  mass_in_region=+0.4338  signed_mass=+0.3763
+    goal=T                lyapunov=+0.4685  mass_in_region=+0.2709  signed_mass=+0.3487
+    averaged         lyapunov=+0.4416  mass_in_region=+0.4397  signed_mass=+0.3934
+[GNNPredictor] loaded Baselines/GNN/runs/randlen_train_all_n30/ckpt_best.pth (epoch=101, val_mse=5.661420293748055e-06, n_particles=30)
+[randlen_test / gnn_randlen_n30] accuracy=0.1484  device=cpu  (51.6s)
+    goal=random_quadrant  lyapunov=+0.8363  mass_in_region=+0.8154  signed_mass=+0.8197
+    goal=ring_O           lyapunov=+0.6381  mass_in_region=+0.4779  signed_mass=+0.4839
+    goal=T                lyapunov=+0.6577  mass_in_region=+0.4195  signed_mass=+0.4459
+    averaged         lyapunov=+0.7107  mass_in_region=+0.5709  signed_mass=+0.5831
+
+wrote experiments/EXP-0028-soft-truth-scoring/artifacts/RUN-0001-soft-default/report.json
+[L20mm] loaded 7680 transitions (44.7s)
+[L20mm / persistence] accuracy=0.0000 (reference floor; slateN row below is DEGENERATE, see docstring)
+    averaged         lyapunov=+0.0436  mass_in_region=+0.0131  signed_mass=+0.0131  (30 goals)
+[L20mm / random] accuracy=n/a (ranking-only floor)
+    averaged         lyapunov=+0.0025  mass_in_region=-0.0017  signed_mass=+0.0042  (30 goals)
+[L20mm / nfd_randlen] accuracy=0.4071  device=cpu  (16.3s)
+    averaged         lyapunov=+0.8189  mass_in_region=+0.7290  signed_mass=+0.7562  (30 goals)
+[L20mm / nfd_warped_randlen] accuracy=0.3476  device=cpu  (23.4s)
+    averaged         lyapunov=+0.8073  mass_in_region=+0.7308  signed_mass=+0.7471  (30 goals)
+[L20mm / nfd_warped_randlen_flipaug] accuracy=0.3496  device=cpu  (25.8s)
+    averaged         lyapunov=+0.8232  mass_in_region=+0.7431  signed_mass=+0.7494  (30 goals)
+[L20mm / nfd_warped_randlen_flipaug_epoch30] accuracy=0.3501  device=cpu  (22.4s)
+    averaged         lyapunov=+0.8146  mass_in_region=+0.7150  signed_mass=+0.7398  (30 goals)
+[L20mm / nfd_residual_warped_flipaug_randlen] accuracy=0.3839  device=cpu  (25.2s)
+    averaged         lyapunov=+0.8312  mass_in_region=+0.7298  signed_mass=+0.7598  (30 goals)
+[L20mm / nfd_residual_worldframe_noaug_ep43] accuracy=0.4322  device=cpu  (21.4s)
+    averaged         lyapunov=+0.8594  mass_in_region=+0.7691  signed_mass=+0.7787  (30 goals)
+[SwitchedLinearForesightPredictor] loaded Baselines/LinearForesight/runs/operators_res32.pt (6 bins, res=32, constraint=ridge, counts=[7420, 18330, 24925, 22275, 18680, 6666])
+[L20mm / linear_switched_res32] accuracy=0.2617  device=cpu  (8.4s)
+    averaged         lyapunov=+0.8370  mass_in_region=+0.7379  signed_mass=+0.7562  (30 goals)
+[SwitchedLinearForesightPredictor] loaded Baselines/LinearForesight/runs/operators_res64.pt (6 bins, res=64, constraint=ridge, counts=[141, 384, 496, 422, 396, 161])
+[L20mm / linear_switched_res64] accuracy=0.2418  device=cpu  (5.9s)
+    averaged         lyapunov=+0.7999  mass_in_region=+0.6809  signed_mass=+0.6997  (30 goals)
+[SingleLinearForesightPredictor] loaded Baselines/LinearForesight/runs/operators_res32.pt (res=32, fit on configs/dataset/genesis_overnight_randlen_train_all.yaml)
+[L20mm / linear_single_res32] accuracy=0.0437  device=cpu  (7.5s)
+    averaged         lyapunov=+0.4951  mass_in_region=+0.3726  signed_mass=+0.3695  (30 goals)
+[SingleLinearForesightPredictor] loaded Baselines/LinearForesight/runs/operators_res64.pt (res=64, fit on configs/dataset/genesis_overnight_randlen_train_all.yaml)
+[L20mm / linear_single_res64] accuracy=0.0280  device=cpu  (6.9s)
+    averaged         lyapunov=+0.3948  mass_in_region=+0.2970  signed_mass=+0.3136  (30 goals)
+[GNNPredictor] loaded Baselines/GNN/runs/ckpt_best.pth (epoch=300, val_mse=4.0153605207630484e-06, n_particles=20)
+[L20mm / gnn_l20l40] accuracy=0.2782  device=cpu  (29.8s)
+    averaged         lyapunov=+0.8648  mass_in_region=+0.7565  signed_mass=+0.7638  (30 goals)
+[GNNPredictor] loaded Baselines/GNN/runs/randlen_train_all_n30/ckpt_best.pth (epoch=101, val_mse=5.661420293748055e-06, n_particles=30)
+[L20mm / gnn_randlen_n30] accuracy=0.2416  device=cpu  (35.1s)
+    averaged         lyapunov=+0.7068  mass_in_region=+0.5586  signed_mass=+0.5958  (30 goals)
+[L40mm] loaded 7680 transitions (43.6s)
+[L40mm / persistence] accuracy=0.0000 (reference floor; slateN row below is DEGENERATE, see docstring)
+    averaged         lyapunov=-0.0173  mass_in_region=+0.0293  signed_mass=+0.0293  (30 goals)
+[L40mm / random] accuracy=n/a (ranking-only floor)
+    averaged         lyapunov=+0.0100  mass_in_region=+0.0034  signed_mass=+0.0049  (30 goals)
+[L40mm / nfd_randlen] accuracy=0.5088  device=cpu  (16.2s)
+    averaged         lyapunov=+0.8796  mass_in_region=+0.7721  signed_mass=+0.7869  (30 goals)
+[L40mm / nfd_warped_randlen] accuracy=0.4589  device=cpu  (18.0s)
+    averaged         lyapunov=+0.8400  mass_in_region=+0.7344  signed_mass=+0.7480  (30 goals)
+[L40mm / nfd_warped_randlen_flipaug] accuracy=0.4431  device=cpu  (16.5s)
+    averaged         lyapunov=+0.8239  mass_in_region=+0.6992  signed_mass=+0.7117  (30 goals)
+[L40mm / nfd_warped_randlen_flipaug_epoch30] accuracy=0.4617  device=cpu  (16.4s)
+    averaged         lyapunov=+0.8562  mass_in_region=+0.7585  signed_mass=+0.7651  (30 goals)
+[L40mm / nfd_residual_warped_flipaug_randlen] accuracy=0.4690  device=cpu  (14.8s)
+    averaged         lyapunov=+0.8559  mass_in_region=+0.7464  signed_mass=+0.7638  (30 goals)
+[L40mm / nfd_residual_worldframe_noaug_ep43] accuracy=0.5247  device=cpu  (14.8s)
+    averaged         lyapunov=+0.8716  mass_in_region=+0.8217  signed_mass=+0.8245  (30 goals)
+[SwitchedLinearForesightPredictor] loaded Baselines/LinearForesight/runs/operators_res32.pt (6 bins, res=32, constraint=ridge, counts=[7420, 18330, 24925, 22275, 18680, 6666])
+[L40mm / linear_switched_res32] accuracy=0.4373  device=cpu  (2.6s)
+    averaged         lyapunov=+0.8875  mass_in_region=+0.7851  signed_mass=+0.8127  (30 goals)
+[SwitchedLinearForesightPredictor] loaded Baselines/LinearForesight/runs/operators_res64.pt (6 bins, res=64, constraint=ridge, counts=[141, 384, 496, 422, 396, 161])
+[L40mm / linear_switched_res64] accuracy=0.3708  device=cpu  (5.0s)
+    averaged         lyapunov=+0.8491  mass_in_region=+0.7836  signed_mass=+0.7889  (30 goals)
+[SingleLinearForesightPredictor] loaded Baselines/LinearForesight/runs/operators_res32.pt (res=32, fit on configs/dataset/genesis_overnight_randlen_train_all.yaml)
+[L40mm / linear_single_res32] accuracy=0.3660  device=cpu  (2.6s)
+    averaged         lyapunov=+0.7645  mass_in_region=+0.6718  signed_mass=+0.6858  (30 goals)
+[SingleLinearForesightPredictor] loaded Baselines/LinearForesight/runs/operators_res64.pt (res=64, fit on configs/dataset/genesis_overnight_randlen_train_all.yaml)
+[L40mm / linear_single_res64] accuracy=0.2987  device=cpu  (12.7s)
+    averaged         lyapunov=+0.6924  mass_in_region=+0.5589  signed_mass=+0.5793  (30 goals)
+[GNNPredictor] loaded Baselines/GNN/runs/ckpt_best.pth (epoch=300, val_mse=4.0153605207630484e-06, n_particles=20)
+[L40mm / gnn_l20l40] accuracy=0.3128  device=cpu  (30.2s)
+    averaged         lyapunov=+0.9188  mass_in_region=+0.7729  signed_mass=+0.8147  (30 goals)
+[GNNPredictor] loaded Baselines/GNN/runs/randlen_train_all_n30/ckpt_best.pth (epoch=101, val_mse=5.661420293748055e-06, n_particles=30)
+[L40mm / gnn_randlen_n30] accuracy=0.3250  device=cpu  (35.5s)
+    averaged         lyapunov=+0.8067  mass_in_region=+0.6333  signed_mass=+0.7014  (30 goals)
+[randlen_test] loaded 10751 transitions (74.3s)
+[randlen_test / persistence] accuracy=0.0000 (reference floor; slateN row below is DEGENERATE, see docstring)
+    averaged         lyapunov=-0.0408  mass_in_region=-0.0359  signed_mass=-0.0359  (30 goals)
+[randlen_test / random] accuracy=n/a (ranking-only floor)
+    averaged         lyapunov=-0.0180  mass_in_region=-0.0036  signed_mass=+0.0057  (30 goals)
+[randlen_test / nfd_randlen] accuracy=0.4564  device=cpu  (17.0s)
+    averaged         lyapunov=+0.8939  mass_in_region=+0.8721  signed_mass=+0.8277  (30 goals)
+[randlen_test / nfd_warped_randlen] accuracy=0.4000  device=cpu  (20.1s)
+    averaged         lyapunov=+0.9152  mass_in_region=+0.8839  signed_mass=+0.8199  (30 goals)
+[randlen_test / nfd_warped_randlen_flipaug] accuracy=0.4086  device=cpu  (20.1s)
+    averaged         lyapunov=+0.9262  mass_in_region=+0.8862  signed_mass=+0.8263  (30 goals)
+[randlen_test / nfd_warped_randlen_flipaug_epoch30] accuracy=0.3879  device=cpu  (19.7s)
+    averaged         lyapunov=+0.9152  mass_in_region=+0.8689  signed_mass=+0.8177  (30 goals)
+[randlen_test / nfd_residual_warped_flipaug_randlen] accuracy=0.4622  device=cpu  (18.8s)
+    averaged         lyapunov=+0.9301  mass_in_region=+0.8827  signed_mass=+0.8438  (30 goals)
+[randlen_test / nfd_residual_worldframe_noaug_ep43] accuracy=0.4844  device=cpu  (17.9s)
+    averaged         lyapunov=+0.9023  mass_in_region=+0.8881  signed_mass=+0.8779  (30 goals)
+[SwitchedLinearForesightPredictor] loaded Baselines/LinearForesight/runs/operators_res32.pt (6 bins, res=32, constraint=ridge, counts=[7420, 18330, 24925, 22275, 18680, 6666])
+[randlen_test / linear_switched_res32] accuracy=0.2478  device=cpu  (3.0s)
+    averaged         lyapunov=+0.8528  mass_in_region=+0.7602  signed_mass=+0.7166  (30 goals)
+[SwitchedLinearForesightPredictor] loaded Baselines/LinearForesight/runs/operators_res64.pt (6 bins, res=64, constraint=ridge, counts=[141, 384, 496, 422, 396, 161])
+[randlen_test / linear_switched_res64] accuracy=0.2081  device=cpu  (6.7s)
+    averaged         lyapunov=+0.7021  mass_in_region=+0.6909  signed_mass=+0.6905  (30 goals)
+[SingleLinearForesightPredictor] loaded Baselines/LinearForesight/runs/operators_res32.pt (res=32, fit on configs/dataset/genesis_overnight_randlen_train_all.yaml)
+[randlen_test / linear_single_res32] accuracy=0.1473  device=cpu  (3.2s)
+    averaged         lyapunov=+0.5996  mass_in_region=+0.4926  signed_mass=+0.3149  (30 goals)
+[SingleLinearForesightPredictor] loaded Baselines/LinearForesight/runs/operators_res64.pt (res=64, fit on configs/dataset/genesis_overnight_randlen_train_all.yaml)
+[randlen_test / linear_single_res64] accuracy=0.0526  device=cpu  (7.2s)
+    averaged         lyapunov=+0.4785  mass_in_region=+0.3278  signed_mass=+0.2660  (30 goals)
+[GNNPredictor] loaded Baselines/GNN/runs/ckpt_best.pth (epoch=300, val_mse=4.0153605207630484e-06, n_particles=20)
+[randlen_test / gnn_l20l40] accuracy=0.0712  device=cpu  (37.9s)
+    averaged         lyapunov=+0.4903  mass_in_region=+0.3098  signed_mass=+0.3530  (30 goals)
+[GNNPredictor] loaded Baselines/GNN/runs/randlen_train_all_n30/ckpt_best.pth (epoch=101, val_mse=5.661420293748055e-06, n_particles=30)
+[randlen_test / gnn_randlen_n30] accuracy=0.1484  device=cpu  (49.5s)
+    averaged         lyapunov=+0.6899  mass_in_region=+0.5078  signed_mass=+0.5055  (30 goals)
+
+wrote experiments/EXP-0028-soft-truth-scoring/artifacts/RUN-0001-soft-many/report.json

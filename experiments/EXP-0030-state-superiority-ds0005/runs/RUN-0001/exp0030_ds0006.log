@@ -1,0 +1,59 @@
+pred nfd_3ch_randlen (1s)
+pred nfd_warped_randlen (1s)
+pred nfd_warped_randlen_flipaug (1s)
+pred nfd_warped_randlen_flipaug_epoch30 (1s)
+pred nfd_residual_warped_flipaug_randlen (1s)
+pred nfd_residual_worldframe_noaug_ep43 (1s)
+pred nfd_3ch_finetuned (1s)
+pred linear_switched_hard (2s)
+
+=== lyapunov ===
+A1 median r (NFD pairs) +0.16, all +0.12
+   nfd_residual_worldframe_noaug_ep43|nfd_3ch_finetuned           r +0.25 (primary +0.24) adv +0.243
+   nfd_warped_randlen|nfd_3ch_finetuned                           r +0.24 (primary +0.30) adv +0.251
+   nfd_warped_randlen_flipaug_epoch30|nfd_3ch_finetuned           r +0.24 (primary +0.21) adv +0.252
+   nfd_3ch_randlen|nfd_3ch_finetuned                              r +0.21 (primary +0.19) adv +0.226
+   nfd_residual_warped_flipaug_randlen|nfd_3ch_finetuned          r +0.20 (primary +0.23) adv +0.288
+   nfd_warped_randlen_flipaug|nfd_3ch_finetuned                   r +0.17 (primary +0.22) adv +0.241
+   nfd_warped_randlen|nfd_residual_worldframe_noaug_ep43          r +0.17 (primary +0.13) adv +0.009
+   nfd_3ch_randlen|nfd_warped_randlen                             r +0.16 (primary +0.16) adv -0.025
+undefined (state, pool) cells: 0 of 32000
+A2 switch-within-NFD gain -0.0246 state-boot [-0.05358077413491142, -0.018398894331143927]
+A3 ensemble - best single +0.0299 state-boot [0.018480963495414473, 0.04135049739259072]
+   model means: nfd_3ch_randlen=0.760 nfd_warped_randlen=0.785 nfd_warped_randlen_flipaug=0.775 nfd_warped_randlen_flipaug_epoch30=0.785 nfd_residual_warped_flipaug_randlen=0.821 nfd_residual_worldframe_noaug_ep43=0.776 nfd_3ch_finetuned=0.531 linear_switched_hard=0.696 ensemble_nfd=0.850
+A4 pairs tested 5; Holm<.05 descriptor links 0
+   nfd_residual_warped_flipaug_randlen|nfd_3ch_finetuned          hull_area          rho +0.22 p 0.0070 holm 0.210
+   nfd_residual_warped_flipaug_randlen|nfd_3ch_finetuned          radius_of_gyration rho +0.21 p 0.0075 holm 0.217
+   nfd_warped_randlen|nfd_3ch_finetuned                           hull_area          rho +0.20 p 0.0085 holm 0.238
+   nfd_warped_randlen|nfd_3ch_finetuned                           radius_of_gyration rho +0.20 p 0.0110 holm 0.297
+   nfd_warped_randlen_flipaug_epoch30|nfd_3ch_finetuned           radius_of_gyration rho +0.20 p 0.0130 holm 0.338
+   nfd_warped_randlen_flipaug_epoch30|nfd_3ch_finetuned           hull_area          rho +0.20 p 0.0130 holm 0.338
+   linear selector nfd_3ch_randlen|nfd_3ch_finetuned                  gain +0.0000 [0.0, 0.0]
+   linear selector nfd_warped_randlen|nfd_3ch_finetuned               gain +0.0000 [0.0, 0.0]
+   linear selector nfd_warped_randlen_flipaug_epoch30|nfd_3ch_finetuned gain +0.0000 [0.0, 0.0]
+   linear selector nfd_residual_warped_flipaug_randlen|nfd_3ch_finetuned gain +0.0000 [0.0, 0.0]
+   linear selector nfd_residual_worldframe_noaug_ep43|nfd_3ch_finetuned gain +0.0000 [0.0, 0.0]
+
+=== mass_in_region ===
+A1 median r (NFD pairs) +0.13, all +0.12
+   nfd_3ch_randlen|nfd_3ch_finetuned                              r +0.20 (primary +0.20) adv +0.102
+   nfd_residual_warped_flipaug_randlen|nfd_residual_worldframe_noaug_ep43 r +0.20 (primary +0.22) adv -0.006
+   nfd_3ch_randlen|nfd_residual_warped_flipaug_randlen            r +0.17 (primary +0.24) adv -0.043
+   nfd_residual_warped_flipaug_randlen|nfd_3ch_finetuned          r +0.17 (primary +0.19) adv +0.145
+   nfd_warped_randlen_flipaug|nfd_residual_worldframe_noaug_ep43  r +0.16 (primary +0.08) adv -0.054
+   nfd_warped_randlen_flipaug_epoch30|linear_switched_hard        r +0.15 (primary +0.18) adv +0.084
+   nfd_warped_randlen_flipaug_epoch30|nfd_3ch_finetuned           r +0.15 (primary +0.16) adv +0.120
+   nfd_3ch_randlen|nfd_residual_worldframe_noaug_ep43             r +0.15 (primary +0.13) adv -0.049
+undefined (state, pool) cells: 0 of 32000
+A2 switch-within-NFD gain -0.0116 state-boot [-0.024210639190785664, 0.0020462688216414957]
+A3 ensemble - best single +0.0594 state-boot [0.04451148004611181, 0.06773932267989466]
+   model means: nfd_3ch_randlen=0.727 nfd_warped_randlen=0.744 nfd_warped_randlen_flipaug=0.722 nfd_warped_randlen_flipaug_epoch30=0.744 nfd_residual_warped_flipaug_randlen=0.769 nfd_residual_worldframe_noaug_ep43=0.776 nfd_3ch_finetuned=0.623 linear_switched_hard=0.660 ensemble_nfd=0.835
+A4 pairs tested 1; Holm<.05 descriptor links 0
+   nfd_3ch_randlen|nfd_3ch_finetuned                              frac_with_neighbour_12mm rho -0.17 p 0.0370 holm 0.222
+   nfd_3ch_randlen|nfd_3ch_finetuned                              mean_nn_dist       rho +0.15 p 0.0655 holm 0.328
+   nfd_3ch_randlen|nfd_3ch_finetuned                              mean_wall_dist     rho +0.14 p 0.0840 holm 0.336
+   nfd_3ch_randlen|nfd_3ch_finetuned                              radius_of_gyration rho -0.09 p 0.2760 holm 0.828
+   nfd_3ch_randlen|nfd_3ch_finetuned                              hull_area          rho -0.02 p 0.7930 holm 1.000
+   nfd_3ch_randlen|nfd_3ch_finetuned                              centroid_offset    rho +0.02 p 0.8180 holm 1.000
+   linear selector nfd_3ch_randlen|nfd_3ch_finetuned                  gain +0.0000 [0.0, 0.0]
+wrote /home/alon/Code/pile_manipulation/experiments/EXP-0030-state-superiority-ds0005/results/analysis.json

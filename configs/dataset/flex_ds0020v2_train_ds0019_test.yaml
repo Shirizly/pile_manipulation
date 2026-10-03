@@ -1,0 +1,22 @@
+# FleX carrot-pile corpora, DS-0020 **v2** payload (2026-10-02, blob/spread piles in DS-0019's
+# scene; see datasets/DS-0020-*/DATASET.md), native FleX units.
+# train/val: DS-0020 v2 trajectory-level split (datasets/DS-0020-*/splits.json; trajectories
+# 0-99 EXCLUDED -- near-copies of DS-0019's test piles); test: DS-0019 (all 100 same-state
+# slates) -- the Trainer's end-of-run test pass reports the held-out-corpus loss.
+# Model input is VISUAL ONLY: occ_source image_mask (binary top-down colour-image masks,
+# FlexData/image_mask.py); particles are never a model input.
+# The v1 config the EXP-0061 weights (MODEL-0004..0007) used is flex_ds0020_train_ds0019_test.yaml.
+type: flex
+instance: datasets/DS-0020-training-data-flex-N864/config.yaml
+split_instances:
+  test:
+    instance: datasets/DS-0019-slates-flex-pile-varN/config.yaml
+    split: all
+occ_source: image_mask
+channels: 3
+exclude_flagged: true
+include_physics: false
+transforms:
+  - type: ensure_representation
+    representation: eulerian
+  - type: eulerian_aliases

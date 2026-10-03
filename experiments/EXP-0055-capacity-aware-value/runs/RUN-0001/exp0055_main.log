@@ -1,0 +1,412 @@
+[38;5;159m[Genesis] [09:01:48] [INFO] [38;5;121m╭───────────────────────────────────────────────╮[0m[38;5;159m[0m
+[38;5;159m[Genesis] [09:01:48] [INFO] [38;5;121m│┈┉┈┉┈┉┈┉┈┉┈┉┈┉┈┉┈┉┈[0m[38;5;159m [38;5;121m[1m[3mGenesis[0m[38;5;159m [38;5;121m┈┉┈┉┈┉┈┉┈┉┈┉┈┉┈┉┈┉┈│[0m[38;5;159m[0m
+[38;5;159m[Genesis] [09:01:48] [INFO] [38;5;121m╰───────────────────────────────────────────────╯[0m[38;5;159m[0m
+[38;5;159m[Genesis] [09:01:48] [INFO] Running on [38;5;121m[4m[NVIDIA GeForce RTX 4070 Laptop GPU][0m[38;5;159m with backend [38;5;121m[4mgs.cuda[0m[38;5;159m. Device memory: [38;5;121m[4m7.62[0m[38;5;159m GB.[0m
+[38;5;159m[Genesis] [09:01:48] [INFO] 🚀 Genesis initialized. 🔖 version: [38;5;121m[4m1.3.3[0m[38;5;159m, 🎨 theme: [38;5;121m[4mdark[0m[38;5;159m, 🌱 seed: [38;5;121m[4mNone[0m[38;5;159m, 🐛 debug: [38;5;121m[4mFalse[0m[38;5;159m, 📏 precision: [38;5;121m[4m32[0m[38;5;159m, 🔥 performance: [38;5;121m[4mTrue[0m[38;5;159m, 💬 verbose: [38;5;121m[4mINFO[0m[38;5;159m[0m
+[38;5;159m[Genesis] [09:01:51] [INFO] Scene [38;5;121m[3m<8f852b7>[0m[38;5;159m created.[0m
+[38;5;159m[Genesis] [09:01:51] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m0[0m[38;5;159m, uid: [38;5;121m[3m<30d2a4e>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Plane>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [09:01:51] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m1[0m[38;5;159m, uid: [38;5;121m[3m<c148132>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [09:01:51] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m2[0m[38;5;159m, uid: [38;5;121m[3m<7d0036b>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [09:01:51] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m3[0m[38;5;159m, uid: [38;5;121m[3m<26fc382>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [09:01:51] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m4[0m[38;5;159m, uid: [38;5;121m[3m<61c6415>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [09:01:51] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m5[0m[38;5;159m, uid: [38;5;121m[3m<65ef4b7>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [09:01:51] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m6[0m[38;5;159m, uid: [38;5;121m[3m<4cbbcce>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [09:01:51] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m7[0m[38;5;159m, uid: [38;5;121m[3m<9130f7b>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [09:01:51] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m8[0m[38;5;159m, uid: [38;5;121m[3m<655a37f>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [09:01:51] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m9[0m[38;5;159m, uid: [38;5;121m[3m<f3ac2ed>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [09:01:51] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m10[0m[38;5;159m, uid: [38;5;121m[3m<c8c1919>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [09:01:51] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m11[0m[38;5;159m, uid: [38;5;121m[3m<b567932>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [09:01:51] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m12[0m[38;5;159m, uid: [38;5;121m[3m<de5e3d6>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [09:01:51] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m13[0m[38;5;159m, uid: [38;5;121m[3m<1bd2043>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [09:01:51] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m14[0m[38;5;159m, uid: [38;5;121m[3m<b9bb450>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [09:01:51] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m15[0m[38;5;159m, uid: [38;5;121m[3m<e8717bf>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [09:01:51] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m16[0m[38;5;159m, uid: [38;5;121m[3m<cab6662>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [09:01:51] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m17[0m[38;5;159m, uid: [38;5;121m[3m<c7e22f7>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [09:01:51] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m18[0m[38;5;159m, uid: [38;5;121m[3m<ef8f291>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [09:01:51] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m19[0m[38;5;159m, uid: [38;5;121m[3m<f6d9496>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [09:01:51] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m20[0m[38;5;159m, uid: [38;5;121m[3m<be24814>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [09:01:51] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m21[0m[38;5;159m, uid: [38;5;121m[3m<de99929>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [09:01:51] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m22[0m[38;5;159m, uid: [38;5;121m[3m<46b8d43>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [09:01:51] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m23[0m[38;5;159m, uid: [38;5;121m[3m<04d260c>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [09:01:51] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m24[0m[38;5;159m, uid: [38;5;121m[3m<dd9b690>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [09:01:51] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m25[0m[38;5;159m, uid: [38;5;121m[3m<2b57801>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [09:01:51] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m26[0m[38;5;159m, uid: [38;5;121m[3m<a5a4356>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+Generated 20 particles out of 20
+[38;5;159m[Genesis] [09:01:51] [INFO] Building scene [38;5;121m[3m<8f852b7>[0m[38;5;159m...[0m
+[38;5;159m[Genesis] [09:01:55] [INFO] Compiling simulation kernels...[0m
+[38;5;159m[Genesis] [09:02:17] [INFO] Building visualizer...[0m
+libEGL warning: egl: failed to create dri2 screen
+libEGL warning: egl: failed to create dri2 screen
+chunk 0: step 1/20 (46s; cumulative sample_s 0, select_s 0, execute_s 14)
+chunk 0: step 2/20 (90s; cumulative sample_s 0, select_s 0, execute_s 27)
+chunk 0: step 3/20 (135s; cumulative sample_s 0, select_s 0, execute_s 40)
+chunk 0: step 4/20 (180s; cumulative sample_s 0, select_s 0, execute_s 52)
+chunk 0: step 5/20 (225s; cumulative sample_s 0, select_s 0, execute_s 66)
+chunk 0: step 6/20 (270s; cumulative sample_s 0, select_s 0, execute_s 79)
+chunk 0: step 7/20 (316s; cumulative sample_s 0, select_s 0, execute_s 93)
+chunk 0: step 8/20 (361s; cumulative sample_s 0, select_s 0, execute_s 106)
+chunk 0: step 9/20 (406s; cumulative sample_s 0, select_s 0, execute_s 119)
+chunk 0: step 10/20 (452s; cumulative sample_s 0, select_s 0, execute_s 133)
+chunk 0: step 11/20 (498s; cumulative sample_s 0, select_s 0, execute_s 148)
+chunk 0: step 12/20 (544s; cumulative sample_s 0, select_s 0, execute_s 162)
+chunk 0: step 13/20 (588s; cumulative sample_s 0, select_s 0, execute_s 174)
+chunk 0: step 14/20 (633s; cumulative sample_s 0, select_s 0, execute_s 188)
+chunk 0: step 15/20 (677s; cumulative sample_s 0, select_s 0, execute_s 199)
+chunk 0: step 16/20 (721s; cumulative sample_s 0, select_s 0, execute_s 211)
+chunk 0: step 17/20 (765s; cumulative sample_s 0, select_s 0, execute_s 224)
+chunk 0: step 18/20 (808s; cumulative sample_s 0, select_s 0, execute_s 234)
+chunk 0: step 19/20 (852s; cumulative sample_s 0, select_s 0, execute_s 247)
+chunk 0: step 20/20 (897s; cumulative sample_s 0, select_s 0, execute_s 260)
+chunk 0: step 20/20 (897s; cumulative sample_s 0, select_s 0, execute_s 260)
+  nfd_residual_worldframe_noaug_ep43   gd   lyap       letter_O   40: improve +0.332; evals/step 2896
+  nfd_residual_worldframe_noaug_ep43   gd   lyap       letter_O   41: improve +0.266; evals/step 2882
+  nfd_residual_worldframe_noaug_ep43   gd   lyap       letter_O   42: improve +0.281; evals/step 2853
+  nfd_residual_worldframe_noaug_ep43   gd   lyap       letter_O   43: improve +0.295; evals/step 2845
+  nfd_residual_worldframe_noaug_ep43   gd   lyap       letter_T   40: improve +0.395; evals/step 2822
+  nfd_residual_worldframe_noaug_ep43   gd   lyap       letter_T   41: improve +0.277; evals/step 2890
+  nfd_residual_worldframe_noaug_ep43   gd   lyap       letter_T   42: improve +0.338; evals/step 2845
+  nfd_residual_worldframe_noaug_ep43   gd   lyap       letter_T   43: improve +0.360; evals/step 2762
+  nfd_residual_worldframe_noaug_ep43   gd   lyap       letter_S   40: improve +0.341; evals/step 2806
+  nfd_residual_worldframe_noaug_ep43   gd   lyap       letter_S   41: improve +0.267; evals/step 2819
+  nfd_residual_worldframe_noaug_ep43   gd   lyap       letter_S   42: improve +0.310; evals/step 2858
+  nfd_residual_worldframe_noaug_ep43   gd   lyap       letter_S   43: improve +0.315; evals/step 2850
+  nfd_residual_worldframe_noaug_ep43   gd   lyap       letter_X   40: improve +0.354; evals/step 2843
+  nfd_residual_worldframe_noaug_ep43   gd   lyap       letter_X   41: improve +0.321; evals/step 2806
+  nfd_residual_worldframe_noaug_ep43   gd   lyap       letter_X   42: improve +0.324; evals/step 2797
+  nfd_residual_worldframe_noaug_ep43   gd   lyap       letter_X   43: improve +0.391; evals/step 2786
+  nfd_residual_worldframe_noaug_ep43   gd   lyap       letter_L   40: improve +0.279; evals/step 2744
+  nfd_residual_worldframe_noaug_ep43   gd   lyap       letter_L   41: improve +0.273; evals/step 2829
+  nfd_residual_worldframe_noaug_ep43   gd   lyap       letter_L   42: improve +0.305; evals/step 2827
+  nfd_residual_worldframe_noaug_ep43   gd   lyap       letter_L   43: improve +0.323; evals/step 2850
+  nfd_residual_worldframe_noaug_ep43   gd   lyap       letter_I   40: improve +0.457; evals/step 2866
+  nfd_residual_worldframe_noaug_ep43   gd   lyap       letter_I   41: improve +0.405; evals/step 2877
+  nfd_residual_worldframe_noaug_ep43   gd   lyap       letter_I   42: improve +0.443; evals/step 2765
+  nfd_residual_worldframe_noaug_ep43   gd   lyap       letter_I   43: improve +0.470; evals/step 2738
+  nfd_residual_worldframe_noaug_ep43   gd   lyap       two_squares 40: improve +0.387; evals/step 2766
+  nfd_residual_worldframe_noaug_ep43   gd   lyap       two_squares 41: improve +0.390; evals/step 2834
+  nfd_residual_worldframe_noaug_ep43   gd   lyap       two_squares 42: improve +0.426; evals/step 2798
+  nfd_residual_worldframe_noaug_ep43   gd   lyap       two_squares 43: improve +0.400; evals/step 2818
+  nfd_residual_worldframe_noaug_ep43   gd   lyap       quadrant_0 40: improve +0.294; evals/step 2773
+  nfd_residual_worldframe_noaug_ep43   gd   lyap       quadrant_0 41: improve +0.265; evals/step 2827
+  nfd_residual_worldframe_noaug_ep43   gd   lyap       quadrant_0 42: improve +0.348; evals/step 2829
+  nfd_residual_worldframe_noaug_ep43   gd   lyap       quadrant_0 43: improve +0.298; evals/step 2818
+chunk 1: step 1/20 (46s; cumulative sample_s 0, select_s 0, execute_s 272)
+chunk 1: step 2/20 (93s; cumulative sample_s 0, select_s 0, execute_s 286)
+chunk 1: step 3/20 (140s; cumulative sample_s 0, select_s 0, execute_s 300)
+chunk 1: step 4/20 (188s; cumulative sample_s 0, select_s 0, execute_s 315)
+chunk 1: step 5/20 (237s; cumulative sample_s 0, select_s 0, execute_s 330)
+chunk 1: step 6/20 (285s; cumulative sample_s 0, select_s 0, execute_s 345)
+chunk 1: step 7/20 (334s; cumulative sample_s 0, select_s 0, execute_s 361)
+chunk 1: step 8/20 (383s; cumulative sample_s 0, select_s 0, execute_s 376)
+chunk 1: step 9/20 (431s; cumulative sample_s 0, select_s 0, execute_s 391)
+chunk 1: step 10/20 (480s; cumulative sample_s 0, select_s 0, execute_s 406)
+chunk 1: step 11/20 (528s; cumulative sample_s 0, select_s 0, execute_s 421)
+chunk 1: step 12/20 (576s; cumulative sample_s 0, select_s 0, execute_s 436)
+chunk 1: step 13/20 (625s; cumulative sample_s 0, select_s 0, execute_s 451)
+chunk 1: step 14/20 (672s; cumulative sample_s 0, select_s 0, execute_s 465)
+chunk 1: step 15/20 (720s; cumulative sample_s 0, select_s 0, execute_s 480)
+chunk 1: step 16/20 (768s; cumulative sample_s 0, select_s 0, execute_s 495)
+chunk 1: step 17/20 (817s; cumulative sample_s 0, select_s 0, execute_s 510)
+chunk 1: step 18/20 (865s; cumulative sample_s 0, select_s 0, execute_s 524)
+chunk 1: step 19/20 (913s; cumulative sample_s 0, select_s 0, execute_s 539)
+chunk 1: step 20/20 (961s; cumulative sample_s 0, select_s 0, execute_s 555)
+chunk 1: step 20/20 (961s; cumulative sample_s 0, select_s 0, execute_s 555)
+  nfd_residual_worldframe_noaug_ep43   gd   emd_lin    letter_O   40: improve +0.194; evals/step 2987
+  nfd_residual_worldframe_noaug_ep43   gd   emd_lin    letter_O   41: improve +0.169; evals/step 2963
+  nfd_residual_worldframe_noaug_ep43   gd   emd_lin    letter_O   42: improve +0.180; evals/step 2982
+  nfd_residual_worldframe_noaug_ep43   gd   emd_lin    letter_O   43: improve +0.169; evals/step 2938
+  nfd_residual_worldframe_noaug_ep43   gd   emd_lin    letter_T   40: improve +0.308; evals/step 2952
+  nfd_residual_worldframe_noaug_ep43   gd   emd_lin    letter_T   41: improve +0.122; evals/step 2934
+  nfd_residual_worldframe_noaug_ep43   gd   emd_lin    letter_T   42: improve +0.161; evals/step 2965
+  nfd_residual_worldframe_noaug_ep43   gd   emd_lin    letter_T   43: improve +0.252; evals/step 2936
+  nfd_residual_worldframe_noaug_ep43   gd   emd_lin    letter_S   40: improve +0.254; evals/step 2974
+  nfd_residual_worldframe_noaug_ep43   gd   emd_lin    letter_S   41: improve +0.152; evals/step 2970
+  nfd_residual_worldframe_noaug_ep43   gd   emd_lin    letter_S   42: improve +0.200; evals/step 2962
+  nfd_residual_worldframe_noaug_ep43   gd   emd_lin    letter_S   43: improve +0.187; evals/step 2920
+  nfd_residual_worldframe_noaug_ep43   gd   emd_lin    letter_X   40: improve +0.156; evals/step 2960
+  nfd_residual_worldframe_noaug_ep43   gd   emd_lin    letter_X   41: improve +0.153; evals/step 2930
+  nfd_residual_worldframe_noaug_ep43   gd   emd_lin    letter_X   42: improve +0.155; evals/step 2965
+  nfd_residual_worldframe_noaug_ep43   gd   emd_lin    letter_X   43: improve +0.220; evals/step 2922
+  nfd_residual_worldframe_noaug_ep43   gd   emd_lin    letter_L   40: improve +0.115; evals/step 2933
+  nfd_residual_worldframe_noaug_ep43   gd   emd_lin    letter_L   41: improve +0.132; evals/step 2936
+  nfd_residual_worldframe_noaug_ep43   gd   emd_lin    letter_L   42: improve +0.155; evals/step 2976
+  nfd_residual_worldframe_noaug_ep43   gd   emd_lin    letter_L   43: improve +0.174; evals/step 2962
+  nfd_residual_worldframe_noaug_ep43   gd   emd_lin    letter_I   40: improve +0.300; evals/step 2960
+  nfd_residual_worldframe_noaug_ep43   gd   emd_lin    letter_I   41: improve +0.212; evals/step 2954
+  nfd_residual_worldframe_noaug_ep43   gd   emd_lin    letter_I   42: improve +0.288; evals/step 2954
+  nfd_residual_worldframe_noaug_ep43   gd   emd_lin    letter_I   43: improve +0.318; evals/step 2963
+  nfd_residual_worldframe_noaug_ep43   gd   emd_lin    two_squares 40: improve +0.175; evals/step 2976
+  nfd_residual_worldframe_noaug_ep43   gd   emd_lin    two_squares 41: improve +0.143; evals/step 2998
+  nfd_residual_worldframe_noaug_ep43   gd   emd_lin    two_squares 42: improve +0.231; evals/step 2933
+  nfd_residual_worldframe_noaug_ep43   gd   emd_lin    two_squares 43: improve +0.193; evals/step 2909
+  nfd_residual_worldframe_noaug_ep43   gd   emd_lin    quadrant_0 40: improve +0.268; evals/step 2925
+  nfd_residual_worldframe_noaug_ep43   gd   emd_lin    quadrant_0 41: improve +0.040; evals/step 2920
+  nfd_residual_worldframe_noaug_ep43   gd   emd_lin    quadrant_0 42: improve +0.312; evals/step 2941
+  nfd_residual_worldframe_noaug_ep43   gd   emd_lin    quadrant_0 43: improve +0.275; evals/step 2971
+chunk 2: step 1/20 (45s; cumulative sample_s 0, select_s 0, execute_s 568)
+chunk 2: step 2/20 (89s; cumulative sample_s 0, select_s 0, execute_s 580)
+chunk 2: step 3/20 (133s; cumulative sample_s 0, select_s 0, execute_s 592)
+chunk 2: step 4/20 (178s; cumulative sample_s 0, select_s 0, execute_s 605)
+chunk 2: step 5/20 (222s; cumulative sample_s 0, select_s 0, execute_s 617)
+chunk 2: step 6/20 (266s; cumulative sample_s 0, select_s 0, execute_s 629)
+chunk 2: step 7/20 (311s; cumulative sample_s 0, select_s 0, execute_s 642)
+chunk 2: step 8/20 (356s; cumulative sample_s 0, select_s 0, execute_s 655)
+chunk 2: step 9/20 (400s; cumulative sample_s 0, select_s 0, execute_s 668)
+chunk 2: step 10/20 (445s; cumulative sample_s 0, select_s 0, execute_s 680)
+chunk 2: step 11/20 (489s; cumulative sample_s 0, select_s 0, execute_s 692)
+chunk 2: step 12/20 (531s; cumulative sample_s 0, select_s 0, execute_s 703)
+chunk 2: step 13/20 (575s; cumulative sample_s 0, select_s 0, execute_s 714)
+chunk 2: step 14/20 (618s; cumulative sample_s 0, select_s 0, execute_s 725)
+chunk 2: step 15/20 (661s; cumulative sample_s 0, select_s 0, execute_s 737)
+chunk 2: step 16/20 (705s; cumulative sample_s 0, select_s 0, execute_s 749)
+chunk 2: step 17/20 (746s; cumulative sample_s 0, select_s 0, execute_s 758)
+chunk 2: step 18/20 (789s; cumulative sample_s 0, select_s 0, execute_s 769)
+chunk 2: step 19/20 (832s; cumulative sample_s 0, select_s 0, execute_s 780)
+chunk 2: step 20/20 (874s; cumulative sample_s 0, select_s 0, execute_s 791)
+chunk 2: step 20/20 (874s; cumulative sample_s 0, select_s 0, execute_s 791)
+  nfd_residual_worldframe_noaug_ep43   gd   crowd      letter_O   40: improve +0.335; evals/step 2670
+  nfd_residual_worldframe_noaug_ep43   gd   crowd      letter_O   41: improve +0.269; evals/step 2626
+  nfd_residual_worldframe_noaug_ep43   gd   crowd      letter_O   42: improve +0.300; evals/step 2624
+  nfd_residual_worldframe_noaug_ep43   gd   crowd      letter_O   43: improve +0.296; evals/step 2629
+  nfd_residual_worldframe_noaug_ep43   gd   crowd      letter_T   40: improve +0.392; evals/step 2645
+  nfd_residual_worldframe_noaug_ep43   gd   crowd      letter_T   41: improve +0.289; evals/step 2622
+  nfd_residual_worldframe_noaug_ep43   gd   crowd      letter_T   42: improve +0.342; evals/step 2624
+  nfd_residual_worldframe_noaug_ep43   gd   crowd      letter_T   43: improve +0.365; evals/step 2645
+  nfd_residual_worldframe_noaug_ep43   gd   crowd      letter_S   40: improve +0.335; evals/step 2637
+  nfd_residual_worldframe_noaug_ep43   gd   crowd      letter_S   41: improve +0.274; evals/step 2651
+  nfd_residual_worldframe_noaug_ep43   gd   crowd      letter_S   42: improve +0.309; evals/step 2621
+  nfd_residual_worldframe_noaug_ep43   gd   crowd      letter_S   43: improve +0.328; evals/step 2635
+  nfd_residual_worldframe_noaug_ep43   gd   crowd      letter_X   40: improve +0.374; evals/step 2632
+  nfd_residual_worldframe_noaug_ep43   gd   crowd      letter_X   41: improve +0.323; evals/step 2622
+  nfd_residual_worldframe_noaug_ep43   gd   crowd      letter_X   42: improve +0.326; evals/step 2642
+  nfd_residual_worldframe_noaug_ep43   gd   crowd      letter_X   43: improve +0.390; evals/step 2637
+  nfd_residual_worldframe_noaug_ep43   gd   crowd      letter_L   40: improve +0.277; evals/step 2622
+  nfd_residual_worldframe_noaug_ep43   gd   crowd      letter_L   41: improve +0.275; evals/step 2614
+  nfd_residual_worldframe_noaug_ep43   gd   crowd      letter_L   42: improve +0.306; evals/step 2603
+  nfd_residual_worldframe_noaug_ep43   gd   crowd      letter_L   43: improve +0.323; evals/step 2606
+  nfd_residual_worldframe_noaug_ep43   gd   crowd      letter_I   40: improve +0.464; evals/step 2654
+  nfd_residual_worldframe_noaug_ep43   gd   crowd      letter_I   41: improve +0.399; evals/step 2642
+  nfd_residual_worldframe_noaug_ep43   gd   crowd      letter_I   42: improve +0.453; evals/step 2632
+  nfd_residual_worldframe_noaug_ep43   gd   crowd      letter_I   43: improve +0.475; evals/step 2618
+  nfd_residual_worldframe_noaug_ep43   gd   crowd      two_squares 40: improve +0.383; evals/step 2619
+  nfd_residual_worldframe_noaug_ep43   gd   crowd      two_squares 41: improve +0.392; evals/step 2614
+  nfd_residual_worldframe_noaug_ep43   gd   crowd      two_squares 42: improve +0.425; evals/step 2664
+  nfd_residual_worldframe_noaug_ep43   gd   crowd      two_squares 43: improve +0.397; evals/step 2579
+  nfd_residual_worldframe_noaug_ep43   gd   crowd      quadrant_0 40: improve +0.243; evals/step 2616
+  nfd_residual_worldframe_noaug_ep43   gd   crowd      quadrant_0 41: improve +0.221; evals/step 2608
+  nfd_residual_worldframe_noaug_ep43   gd   crowd      quadrant_0 42: improve +0.288; evals/step 2627
+  nfd_residual_worldframe_noaug_ep43   gd   crowd      quadrant_0 43: improve +0.243; evals/step 2640
+chunk 3: step 1/20 (44s; cumulative sample_s 0, select_s 0, execute_s 803)
+chunk 3: step 2/20 (89s; cumulative sample_s 0, select_s 0, execute_s 815)
+chunk 3: step 3/20 (134s; cumulative sample_s 0, select_s 0, execute_s 829)
+chunk 3: step 4/20 (178s; cumulative sample_s 0, select_s 0, execute_s 841)
+chunk 3: step 5/20 (222s; cumulative sample_s 0, select_s 0, execute_s 853)
+chunk 3: step 6/20 (266s; cumulative sample_s 0, select_s 0, execute_s 865)
+chunk 3: step 7/20 (309s; cumulative sample_s 0, select_s 0, execute_s 876)
+chunk 3: step 8/20 (353s; cumulative sample_s 0, select_s 0, execute_s 888)
+chunk 3: step 9/20 (395s; cumulative sample_s 0, select_s 0, execute_s 898)
+chunk 3: step 10/20 (439s; cumulative sample_s 0, select_s 0, execute_s 910)
+chunk 3: step 11/20 (483s; cumulative sample_s 0, select_s 0, execute_s 922)
+chunk 3: step 12/20 (526s; cumulative sample_s 0, select_s 0, execute_s 933)
+chunk 3: step 13/20 (569s; cumulative sample_s 0, select_s 0, execute_s 944)
+chunk 3: step 14/20 (613s; cumulative sample_s 0, select_s 0, execute_s 956)
+chunk 3: step 15/20 (656s; cumulative sample_s 0, select_s 0, execute_s 968)
+chunk 3: step 16/20 (699s; cumulative sample_s 0, select_s 0, execute_s 979)
+chunk 3: step 17/20 (742s; cumulative sample_s 0, select_s 0, execute_s 989)
+chunk 3: step 18/20 (785s; cumulative sample_s 0, select_s 0, execute_s 1000)
+chunk 3: step 19/20 (825s; cumulative sample_s 0, select_s 0, execute_s 1009)
+chunk 3: step 20/20 (868s; cumulative sample_s 0, select_s 0, execute_s 1019)
+chunk 3: step 20/20 (868s; cumulative sample_s 0, select_s 0, execute_s 1019)
+  nfd_residual_worldframe_noaug_ep43   gd   emd        letter_O   40: improve +0.329; evals/step 2778
+  nfd_residual_worldframe_noaug_ep43   gd   emd        letter_O   41: improve +0.263; evals/step 2758
+  nfd_residual_worldframe_noaug_ep43   gd   emd        letter_O   42: improve +0.290; evals/step 2760
+  nfd_residual_worldframe_noaug_ep43   gd   emd        letter_O   43: improve +0.291; evals/step 2779
+  nfd_residual_worldframe_noaug_ep43   gd   emd        letter_T   40: improve +0.379; evals/step 2797
+  nfd_residual_worldframe_noaug_ep43   gd   emd        letter_T   41: improve +0.290; evals/step 2771
+  nfd_residual_worldframe_noaug_ep43   gd   emd        letter_T   42: improve +0.339; evals/step 2794
+  nfd_residual_worldframe_noaug_ep43   gd   emd        letter_T   43: improve +0.360; evals/step 2787
+  nfd_residual_worldframe_noaug_ep43   gd   emd        letter_S   40: improve +0.292; evals/step 2789
+  nfd_residual_worldframe_noaug_ep43   gd   emd        letter_S   41: improve +0.254; evals/step 2760
+  nfd_residual_worldframe_noaug_ep43   gd   emd        letter_S   42: improve +0.286; evals/step 2746
+  nfd_residual_worldframe_noaug_ep43   gd   emd        letter_S   43: improve +0.296; evals/step 2778
+  nfd_residual_worldframe_noaug_ep43   gd   emd        letter_X   40: improve +0.363; evals/step 2774
+  nfd_residual_worldframe_noaug_ep43   gd   emd        letter_X   41: improve +0.302; evals/step 2739
+  nfd_residual_worldframe_noaug_ep43   gd   emd        letter_X   42: improve +0.309; evals/step 2768
+  nfd_residual_worldframe_noaug_ep43   gd   emd        letter_X   43: improve +0.386; evals/step 2739
+  nfd_residual_worldframe_noaug_ep43   gd   emd        letter_L   40: improve +0.278; evals/step 2749
+  nfd_residual_worldframe_noaug_ep43   gd   emd        letter_L   41: improve +0.263; evals/step 2734
+  nfd_residual_worldframe_noaug_ep43   gd   emd        letter_L   42: improve +0.304; evals/step 2755
+  nfd_residual_worldframe_noaug_ep43   gd   emd        letter_L   43: improve +0.322; evals/step 2725
+  nfd_residual_worldframe_noaug_ep43   gd   emd        letter_I   40: improve +0.456; evals/step 2773
+  nfd_residual_worldframe_noaug_ep43   gd   emd        letter_I   41: improve +0.397; evals/step 2798
+  nfd_residual_worldframe_noaug_ep43   gd   emd        letter_I   42: improve +0.447; evals/step 2795
+  nfd_residual_worldframe_noaug_ep43   gd   emd        letter_I   43: improve +0.470; evals/step 2779
+  nfd_residual_worldframe_noaug_ep43   gd   emd        two_squares 40: improve +0.361; evals/step 2800
+  nfd_residual_worldframe_noaug_ep43   gd   emd        two_squares 41: improve +0.389; evals/step 2787
+  nfd_residual_worldframe_noaug_ep43   gd   emd        two_squares 42: improve +0.418; evals/step 2760
+  nfd_residual_worldframe_noaug_ep43   gd   emd        two_squares 43: improve +0.397; evals/step 2776
+  nfd_residual_worldframe_noaug_ep43   gd   emd        quadrant_0 40: improve +0.291; evals/step 2765
+  nfd_residual_worldframe_noaug_ep43   gd   emd        quadrant_0 41: improve +0.265; evals/step 2771
+  nfd_residual_worldframe_noaug_ep43   gd   emd        quadrant_0 42: improve +0.347; evals/step 2798
+  nfd_residual_worldframe_noaug_ep43   gd   emd        quadrant_0 43: improve +0.250; evals/step 2803
+chunk 4: step 1/20 (44s; cumulative sample_s 0, select_s 0, execute_s 1032)
+chunk 4: step 2/20 (89s; cumulative sample_s 0, select_s 0, execute_s 1044)
+chunk 4: step 3/20 (138s; cumulative sample_s 0, select_s 0, execute_s 1061)
+chunk 4: step 4/20 (184s; cumulative sample_s 0, select_s 1, execute_s 1074)
+chunk 4: step 5/20 (229s; cumulative sample_s 0, select_s 1, execute_s 1087)
+chunk 4: step 6/20 (273s; cumulative sample_s 0, select_s 1, execute_s 1100)
+chunk 4: step 7/20 (319s; cumulative sample_s 0, select_s 1, execute_s 1114)
+chunk 4: step 8/20 (365s; cumulative sample_s 0, select_s 1, execute_s 1128)
+chunk 4: step 9/20 (411s; cumulative sample_s 0, select_s 1, execute_s 1142)
+chunk 4: step 10/20 (458s; cumulative sample_s 0, select_s 1, execute_s 1156)
+chunk 4: step 11/20 (504s; cumulative sample_s 0, select_s 2, execute_s 1170)
+chunk 4: step 12/20 (550s; cumulative sample_s 0, select_s 2, execute_s 1184)
+chunk 4: step 13/20 (595s; cumulative sample_s 0, select_s 2, execute_s 1197)
+chunk 4: step 14/20 (641s; cumulative sample_s 0, select_s 2, execute_s 1211)
+chunk 4: step 15/20 (686s; cumulative sample_s 0, select_s 2, execute_s 1224)
+chunk 4: step 16/20 (731s; cumulative sample_s 0, select_s 2, execute_s 1237)
+chunk 4: step 17/20 (778s; cumulative sample_s 0, select_s 2, execute_s 1252)
+chunk 4: step 18/20 (823s; cumulative sample_s 0, select_s 2, execute_s 1265)
+chunk 4: step 19/20 (870s; cumulative sample_s 0, select_s 2, execute_s 1279)
+chunk 4: step 20/20 (914s; cumulative sample_s 0, select_s 2, execute_s 1292)
+chunk 4: step 20/20 (914s; cumulative sample_s 0, select_s 2, execute_s 1292)
+  nfd_residual_worldframe_noaug_ep43   gd   s_misplaced letter_O   40: improve +0.333; evals/step 2371
+  nfd_residual_worldframe_noaug_ep43   gd   s_misplaced letter_O   41: improve +0.265; evals/step 2446
+  nfd_residual_worldframe_noaug_ep43   gd   s_misplaced letter_O   42: improve +0.263; evals/step 2464
+  nfd_residual_worldframe_noaug_ep43   gd   s_misplaced letter_O   43: improve +0.285; evals/step 2541
+  nfd_residual_worldframe_noaug_ep43   gd   s_misplaced letter_T   40: improve +0.391; evals/step 2563
+  nfd_residual_worldframe_noaug_ep43   gd   s_misplaced letter_T   41: improve +0.262; evals/step 2506
+  nfd_residual_worldframe_noaug_ep43   gd   s_misplaced letter_T   42: improve +0.333; evals/step 2597
+  nfd_residual_worldframe_noaug_ep43   gd   s_misplaced letter_T   43: improve +0.364; evals/step 2597
+  nfd_residual_worldframe_noaug_ep43   gd   s_misplaced letter_S   40: improve +0.325; evals/step 2506
+  nfd_residual_worldframe_noaug_ep43   gd   s_misplaced letter_S   41: improve +0.274; evals/step 2509
+  nfd_residual_worldframe_noaug_ep43   gd   s_misplaced letter_S   42: improve +0.314; evals/step 2555
+  nfd_residual_worldframe_noaug_ep43   gd   s_misplaced letter_S   43: improve +0.319; evals/step 2506
+  nfd_residual_worldframe_noaug_ep43   gd   s_misplaced letter_X   40: improve +0.367; evals/step 2574
+  nfd_residual_worldframe_noaug_ep43   gd   s_misplaced letter_X   41: improve +0.327; evals/step 2483
+  nfd_residual_worldframe_noaug_ep43   gd   s_misplaced letter_X   42: improve +0.273; evals/step 2480
+  nfd_residual_worldframe_noaug_ep43   gd   s_misplaced letter_X   43: improve +0.390; evals/step 2576
+  nfd_residual_worldframe_noaug_ep43   gd   s_misplaced letter_L   40: improve +0.282; evals/step 2534
+  nfd_residual_worldframe_noaug_ep43   gd   s_misplaced letter_L   41: improve +0.269; evals/step 2536
+  nfd_residual_worldframe_noaug_ep43   gd   s_misplaced letter_L   42: improve +0.298; evals/step 2563
+  nfd_residual_worldframe_noaug_ep43   gd   s_misplaced letter_L   43: improve +0.319; evals/step 2642
+  nfd_residual_worldframe_noaug_ep43   gd   s_misplaced letter_I   40: improve +0.457; evals/step 2630
+  nfd_residual_worldframe_noaug_ep43   gd   s_misplaced letter_I   41: improve +0.387; evals/step 2611
+  nfd_residual_worldframe_noaug_ep43   gd   s_misplaced letter_I   42: improve +0.450; evals/step 2474
+  nfd_residual_worldframe_noaug_ep43   gd   s_misplaced letter_I   43: improve +0.469; evals/step 2434
+  nfd_residual_worldframe_noaug_ep43   gd   s_misplaced two_squares 40: improve +0.389; evals/step 2438
+  nfd_residual_worldframe_noaug_ep43   gd   s_misplaced two_squares 41: improve +0.387; evals/step 2382
+  nfd_residual_worldframe_noaug_ep43   gd   s_misplaced two_squares 42: improve +0.418; evals/step 2405
+  nfd_residual_worldframe_noaug_ep43   gd   s_misplaced two_squares 43: improve +0.398; evals/step 2395
+  nfd_residual_worldframe_noaug_ep43   gd   s_misplaced quadrant_0 40: improve +0.294; evals/step 2376
+  nfd_residual_worldframe_noaug_ep43   gd   s_misplaced quadrant_0 41: improve +0.266; evals/step 2408
+  nfd_residual_worldframe_noaug_ep43   gd   s_misplaced quadrant_0 42: improve +0.348; evals/step 2411
+  nfd_residual_worldframe_noaug_ep43   gd   s_misplaced quadrant_0 43: improve +0.298; evals/step 2442
+chunk 5: step 1/20 (44s; cumulative sample_s 0, select_s 2, execute_s 1304)
+chunk 5: step 2/20 (89s; cumulative sample_s 0, select_s 3, execute_s 1316)
+chunk 5: step 3/20 (134s; cumulative sample_s 0, select_s 3, execute_s 1329)
+chunk 5: step 4/20 (179s; cumulative sample_s 0, select_s 3, execute_s 1342)
+chunk 5: step 5/20 (224s; cumulative sample_s 0, select_s 3, execute_s 1355)
+chunk 5: step 6/20 (269s; cumulative sample_s 0, select_s 3, execute_s 1368)
+chunk 5: step 7/20 (316s; cumulative sample_s 0, select_s 3, execute_s 1383)
+chunk 5: step 8/20 (362s; cumulative sample_s 0, select_s 3, execute_s 1397)
+chunk 5: step 9/20 (408s; cumulative sample_s 0, select_s 3, execute_s 1411)
+chunk 5: step 10/20 (454s; cumulative sample_s 0, select_s 4, execute_s 1424)
+chunk 5: step 11/20 (500s; cumulative sample_s 0, select_s 4, execute_s 1438)
+chunk 5: step 12/20 (545s; cumulative sample_s 0, select_s 4, execute_s 1451)
+chunk 5: step 13/20 (590s; cumulative sample_s 0, select_s 4, execute_s 1465)
+chunk 5: step 14/20 (636s; cumulative sample_s 0, select_s 4, execute_s 1478)
+chunk 5: step 15/20 (682s; cumulative sample_s 0, select_s 4, execute_s 1492)
+chunk 5: step 16/20 (728s; cumulative sample_s 0, select_s 4, execute_s 1507)
+chunk 5: step 17/20 (775s; cumulative sample_s 0, select_s 4, execute_s 1521)
+chunk 5: step 18/20 (821s; cumulative sample_s 0, select_s 4, execute_s 1535)
+chunk 5: step 19/20 (866s; cumulative sample_s 0, select_s 5, execute_s 1548)
+chunk 5: step 20/20 (912s; cumulative sample_s 0, select_s 5, execute_s 1562)
+chunk 5: step 20/20 (912s; cumulative sample_s 0, select_s 5, execute_s 1562)
+  nfd_residual_worldframe_noaug_ep43   gd   s_deposit  letter_O   40: improve +0.321; evals/step 2496
+  nfd_residual_worldframe_noaug_ep43   gd   s_deposit  letter_O   41: improve +0.252; evals/step 2667
+  nfd_residual_worldframe_noaug_ep43   gd   s_deposit  letter_O   42: improve +0.283; evals/step 2630
+  nfd_residual_worldframe_noaug_ep43   gd   s_deposit  letter_O   43: improve +0.288; evals/step 2638
+  nfd_residual_worldframe_noaug_ep43   gd   s_deposit  letter_T   40: improve +0.390; evals/step 2653
+  nfd_residual_worldframe_noaug_ep43   gd   s_deposit  letter_T   41: improve +0.293; evals/step 2680
+  nfd_residual_worldframe_noaug_ep43   gd   s_deposit  letter_T   42: improve +0.304; evals/step 2661
+  nfd_residual_worldframe_noaug_ep43   gd   s_deposit  letter_T   43: improve +0.330; evals/step 2702
+  nfd_residual_worldframe_noaug_ep43   gd   s_deposit  letter_S   40: improve +0.340; evals/step 2667
+  nfd_residual_worldframe_noaug_ep43   gd   s_deposit  letter_S   41: improve +0.274; evals/step 2650
+  nfd_residual_worldframe_noaug_ep43   gd   s_deposit  letter_S   42: improve +0.321; evals/step 2598
+  nfd_residual_worldframe_noaug_ep43   gd   s_deposit  letter_S   43: improve +0.331; evals/step 2619
+  nfd_residual_worldframe_noaug_ep43   gd   s_deposit  letter_X   40: improve +0.343; evals/step 2595
+  nfd_residual_worldframe_noaug_ep43   gd   s_deposit  letter_X   41: improve +0.322; evals/step 2602
+  nfd_residual_worldframe_noaug_ep43   gd   s_deposit  letter_X   42: improve +0.319; evals/step 2579
+  nfd_residual_worldframe_noaug_ep43   gd   s_deposit  letter_X   43: improve +0.379; evals/step 2616
+  nfd_residual_worldframe_noaug_ep43   gd   s_deposit  letter_L   40: improve +0.290; evals/step 2645
+  nfd_residual_worldframe_noaug_ep43   gd   s_deposit  letter_L   41: improve +0.273; evals/step 2635
+  nfd_residual_worldframe_noaug_ep43   gd   s_deposit  letter_L   42: improve +0.290; evals/step 2629
+  nfd_residual_worldframe_noaug_ep43   gd   s_deposit  letter_L   43: improve +0.316; evals/step 2642
+  nfd_residual_worldframe_noaug_ep43   gd   s_deposit  letter_I   40: improve +0.459; evals/step 2643
+  nfd_residual_worldframe_noaug_ep43   gd   s_deposit  letter_I   41: improve +0.348; evals/step 2640
+  nfd_residual_worldframe_noaug_ep43   gd   s_deposit  letter_I   42: improve +0.450; evals/step 2640
+  nfd_residual_worldframe_noaug_ep43   gd   s_deposit  letter_I   43: improve +0.471; evals/step 2677
+  nfd_residual_worldframe_noaug_ep43   gd   s_deposit  two_squares 40: improve +0.350; evals/step 2590
+  nfd_residual_worldframe_noaug_ep43   gd   s_deposit  two_squares 41: improve +0.386; evals/step 2646
+  nfd_residual_worldframe_noaug_ep43   gd   s_deposit  two_squares 42: improve +0.424; evals/step 2592
+  nfd_residual_worldframe_noaug_ep43   gd   s_deposit  two_squares 43: improve +0.374; evals/step 2635
+  nfd_residual_worldframe_noaug_ep43   gd   s_deposit  quadrant_0 40: improve +0.294; evals/step 2698
+  nfd_residual_worldframe_noaug_ep43   gd   s_deposit  quadrant_0 41: improve +0.266; evals/step 2626
+  nfd_residual_worldframe_noaug_ep43   gd   s_deposit  quadrant_0 42: improve +0.348; evals/step 2680
+  nfd_residual_worldframe_noaug_ep43   gd   s_deposit  quadrant_0 43: improve +0.298; evals/step 2677
+chunk 6: step 1/20 (59s; cumulative sample_s 0, select_s 19, execute_s 1574)
+chunk 6: step 2/20 (116s; cumulative sample_s 0, select_s 31, execute_s 1587)
+chunk 6: step 3/20 (175s; cumulative sample_s 0, select_s 45, execute_s 1600)
+chunk 6: step 4/20 (228s; cumulative sample_s 0, select_s 54, execute_s 1613)
+chunk 6: step 5/20 (281s; cumulative sample_s 0, select_s 61, execute_s 1626)
+chunk 6: step 6/20 (335s; cumulative sample_s 0, select_s 69, execute_s 1640)
+chunk 6: step 7/20 (386s; cumulative sample_s 0, select_s 75, execute_s 1653)
+chunk 6: step 8/20 (437s; cumulative sample_s 0, select_s 81, execute_s 1667)
+chunk 6: step 9/20 (489s; cumulative sample_s 0, select_s 87, execute_s 1681)
+chunk 6: step 10/20 (540s; cumulative sample_s 0, select_s 92, execute_s 1695)
+chunk 6: step 11/20 (592s; cumulative sample_s 0, select_s 98, execute_s 1708)
+chunk 6: step 12/20 (642s; cumulative sample_s 0, select_s 103, execute_s 1722)
+chunk 6: step 13/20 (692s; cumulative sample_s 0, select_s 109, execute_s 1734)
+chunk 6: step 14/20 (742s; cumulative sample_s 1, select_s 114, execute_s 1746)
+chunk 6: step 15/20 (791s; cumulative sample_s 1, select_s 120, execute_s 1758)
+chunk 6: step 16/20 (841s; cumulative sample_s 1, select_s 125, execute_s 1770)
+chunk 6: step 17/20 (890s; cumulative sample_s 1, select_s 130, execute_s 1782)
+chunk 6: step 18/20 (939s; cumulative sample_s 1, select_s 136, execute_s 1794)
+chunk 6: step 19/20 (989s; cumulative sample_s 1, select_s 141, execute_s 1807)
+chunk 6: step 20/20 (1038s; cumulative sample_s 1, select_s 146, execute_s 1819)
+chunk 6: step 20/20 (1038s; cumulative sample_s 1, select_s 146, execute_s 1819)
+  nfd_residual_worldframe_noaug_ep43   gd   s_otmix    letter_O   40: improve +0.330; evals/step 2232
+  nfd_residual_worldframe_noaug_ep43   gd   s_otmix    letter_O   41: improve +0.264; evals/step 2514
+  nfd_residual_worldframe_noaug_ep43   gd   s_otmix    letter_O   42: improve +0.297; evals/step 2507
+  nfd_residual_worldframe_noaug_ep43   gd   s_otmix    letter_O   43: improve +0.295; evals/step 2600
+  nfd_residual_worldframe_noaug_ep43   gd   s_otmix    letter_T   40: improve +0.381; evals/step 2598
+  nfd_residual_worldframe_noaug_ep43   gd   s_otmix    letter_T   41: improve +0.289; evals/step 2576
+  nfd_residual_worldframe_noaug_ep43   gd   s_otmix    letter_T   42: improve +0.334; evals/step 2560
+  nfd_residual_worldframe_noaug_ep43   gd   s_otmix    letter_T   43: improve +0.336; evals/step 2493
+  nfd_residual_worldframe_noaug_ep43   gd   s_otmix    letter_S   40: improve +0.335; evals/step 2515
+  nfd_residual_worldframe_noaug_ep43   gd   s_otmix    letter_S   41: improve +0.267; evals/step 2475
+  nfd_residual_worldframe_noaug_ep43   gd   s_otmix    letter_S   42: improve +0.301; evals/step 2533
+  nfd_residual_worldframe_noaug_ep43   gd   s_otmix    letter_S   43: improve +0.317; evals/step 2635
+  nfd_residual_worldframe_noaug_ep43   gd   s_otmix    letter_X   40: improve +0.366; evals/step 2584
+  nfd_residual_worldframe_noaug_ep43   gd   s_otmix    letter_X   41: improve +0.317; evals/step 2522
+  nfd_residual_worldframe_noaug_ep43   gd   s_otmix    letter_X   42: improve +0.321; evals/step 2341
+  nfd_residual_worldframe_noaug_ep43   gd   s_otmix    letter_X   43: improve +0.384; evals/step 2342
+  nfd_residual_worldframe_noaug_ep43   gd   s_otmix    letter_L   40: improve +0.287; evals/step 2400
+  nfd_residual_worldframe_noaug_ep43   gd   s_otmix    letter_L   41: improve +0.270; evals/step 2464
+  nfd_residual_worldframe_noaug_ep43   gd   s_otmix    letter_L   42: improve +0.244; evals/step 2392
+  nfd_residual_worldframe_noaug_ep43   gd   s_otmix    letter_L   43: improve +0.314; evals/step 2302
+  nfd_residual_worldframe_noaug_ep43   gd   s_otmix    letter_I   40: improve +0.457; evals/step 2397
+  nfd_residual_worldframe_noaug_ep43   gd   s_otmix    letter_I   41: improve +0.400; evals/step 2475
+  nfd_residual_worldframe_noaug_ep43   gd   s_otmix    letter_I   42: improve +0.443; evals/step 2482
+  nfd_residual_worldframe_noaug_ep43   gd   s_otmix    letter_I   43: improve +0.469; evals/step 2434
+  nfd_residual_worldframe_noaug_ep43   gd   s_otmix    two_squares 40: improve +0.388; evals/step 2376
+  nfd_residual_worldframe_noaug_ep43   gd   s_otmix    two_squares 41: improve +0.358; evals/step 2286
+  nfd_residual_worldframe_noaug_ep43   gd   s_otmix    two_squares 42: improve +0.423; evals/step 2382
+  nfd_residual_worldframe_noaug_ep43   gd   s_otmix    two_squares 43: improve +0.400; evals/step 2374
+  nfd_residual_worldframe_noaug_ep43   gd   s_otmix    quadrant_0 40: improve +0.294; evals/step 2370
+  nfd_residual_worldframe_noaug_ep43   gd   s_otmix    quadrant_0 41: improve +0.266; evals/step 2366
+  nfd_residual_worldframe_noaug_ep43   gd   s_otmix    quadrant_0 42: improve +0.348; evals/step 2374
+  nfd_residual_worldframe_noaug_ep43   gd   s_otmix    quadrant_0 43: improve +0.298; evals/step 2309
+[38;5;159m[Genesis] [10:50:08] [INFO] 💤 Exiting Genesis and caching compiled kernels...[0m
+wrote experiments/EXP-0055-capacity-aware-value/results/main.json

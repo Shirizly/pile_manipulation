@@ -1,0 +1,2 @@
+DS-0001 {'n': 20000, 'frac_illegal_0mm': 0.46145, 'frac_illegal_1mm': 0.5913, 'per_slate_frac_min': 0.206, 'per_slate_frac_median': 0.4755, 'per_slate_frac_max': 0.627}
+DS-0006 {'n': 20480, 'frac_illegal_0mm': 0.543310546875, 'frac_illegal_1mm': 0.798046875, 'per_slate_frac_min': 0.3125, 'per_slate_frac_median': 0.546875, 'per_slate_frac_max': 0.7578125}

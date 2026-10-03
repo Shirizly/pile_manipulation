@@ -1,0 +1,23 @@
+# Resolved config for MODEL-0009 (switched-linear visual foresight on FleX image masks, DS-0020 v2, EXP-0062 RUN-0002)
+id: MODEL-0009
+kind: linear-foresight-switched     # + single (unswitched) operator in the same bundle
+payload: checkpoint.pt              # Baselines/LinearForesight/predictor.py bundle format
+fit_script: experiments/EXP-0062-flex-v2-train-rerun/code/fit_lf_v2.py   # final per-bin ops via Baselines/LinearForesight/fit_switched.py::fit_bins
+train_data: {instance: datasets/DS-0020-training-data-flex-N864/config.yaml, version: 2, split: train, occ_source: image_mask, exclude_flagged: true, rows: 15093, trajectories: 1669}
+select_data: {instance: datasets/DS-0020-training-data-flex-N864/config.yaml, version: 2, split: val, occ_source: image_mask, rows: 1665, trajectories: 188}   # whole trajectories held out (splits.json); trajectories 0-99 excluded from both
+units: flex                          # push lengths / bin edges in FleX units
+grid: {half_extent: 7.2, resolution: 64}
+res: 64                              # canonical push-frame resolution (D = 4096)
+crop: 1.0
+constraint: ridge                    # toward identity (fit_linear_foresight.fit_operator)
+n_bins: 6
+bin_scheme: equal                    # EXP-0003: equal width over [0, max train push length 9.4116]; picked on val over the collection's edges_abs (alt_collection_bins/)
+bin_edges: [0.0, 1.5686, 3.1372, 4.7058, 6.2744, 7.8430, 9.4116]
+counts_train: [1722, 3973, 4530, 3435, 1323, 110]
+counts_val: [177, 441, 472, 416, 143, 16]
+min_rows_per_bin: 50                 # else identity (none triggered)
+ridge_switched: 300.0                # selected on val from [1,10,30,100,300,1000,3000,10000] x 2 bin schemes
+ridge_single: 1000.0                 # selected on val, same grid
+pixel_mapping: fit_linear_foresight.actions_to_pixels (same at fit and predict; 0.5 px FleX offset trap, CODEMAP)
+alt_collection_bins: {payload: alt_collection_bins/checkpoint.pt, bin_edges: [0.9617, 2.4042, 3.8467, 5.2892, 6.7317, 8.1742, 9.6167], counts_train: [3712, 4057, 3940, 2630, 692, 62], ridge_switched: 300.0, note: "rows outside the edges go to the end bins (bin_index clamps); NOT selected"}
+commit: d72bb304 (dirty tree)

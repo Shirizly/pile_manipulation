@@ -1,0 +1,2 @@
+/home/alon/anaconda3/envs/pme/bin/python -u experiments/EXP-0061-flex-cross-corpus-rerun/code/final_eval.py ds0019  # commit d72bb304 dirty
+/home/alon/anaconda3/envs/pme/bin/python -u experiments/EXP-0061-flex-cross-corpus-rerun/code/final_eval.py ds0020_val  # commit d72bb304 dirty

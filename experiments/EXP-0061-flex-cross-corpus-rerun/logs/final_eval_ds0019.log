@@ -1,0 +1,16 @@
+FlexPileData(DS-0019, split=all, exclude_flagged=True): 17186 rows; flagged nan=0 escaped=397 out_of_grid=47 null=159 -> kept 16583
+[ds0019] 16583 rows (7s)
+nfd_s0 acc 0.4895 {'lyapunov': 0.9481, 'mass_in_region': 0.8775, 'signed_mass': 0.8963} 4s
+nfd_s1 acc 0.4809 {'lyapunov': 0.9549, 'mass_in_region': 0.8737, 'signed_mass': 0.9016} 3s
+nfd_s2 acc 0.4842 {'lyapunov': 0.9529, 'mass_in_region': 0.878, 'signed_mass': 0.9038} 3s
+[SwitchedLinearForesightPredictor] loaded weights/MODEL-0004-linear-foresight-flex-mask/checkpoint.pt (6 bins, res=64, constraint=ridge, counts=[2124, 4867, 5325, 3961, 1424, 136])
+lf_flex_switched acc 0.3284 {'lyapunov': 0.8426, 'mass_in_region': 0.7105, 'signed_mass': 0.626} 4s
+[SingleLinearForesightPredictor] loaded weights/MODEL-0004-linear-foresight-flex-mask/checkpoint.pt (res=64, fit on datasets/DS-0020-training-data-flex-N864/config.yaml split=train occ_source=image_mask)
+lf_flex_single acc 0.2394 {'lyapunov': 0.6771, 'mass_in_region': 0.5392, 'signed_mass': 0.5164} 3s
+[FlexGNNPredictor] Baselines/GNN/data/gnn_dyn_model/2023-01-28-10-42-05-114323/net_epoch_0_iter_1000.pth: particle_num=200 depth=plane plane_y=0.24 carry_k=1 device=cuda
+gnn_flex_drp_samp0 acc 0.1908 {'lyapunov': 0.7637, 'mass_in_region': 0.6436, 'signed_mass': 0.6362} 17s
+[FlexGNNPredictor] Baselines/GNN/data/gnn_dyn_model/2023-01-28-10-42-05-114323/net_epoch_0_iter_1000.pth: particle_num=200 depth=plane plane_y=0.24 carry_k=1 device=cuda
+gnn_flex_drp_samp1 acc 0.1913 {'lyapunov': 0.7637, 'mass_in_region': 0.6401, 'signed_mass': 0.6524} 17s
+[FlexGNNPredictor] Baselines/GNN/data/gnn_dyn_model/2023-01-28-10-42-05-114323/net_epoch_0_iter_1000.pth: particle_num=200 depth=plane plane_y=0.24 carry_k=1 device=cuda
+gnn_flex_drp_samp2 acc 0.1913 {'lyapunov': 0.7591, 'mass_in_region': 0.6478, 'signed_mass': 0.6361} 17s
+done

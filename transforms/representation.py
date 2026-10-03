@@ -39,6 +39,40 @@ class EulerianOccupancyAliases:
         return batch
 
 
+class OccupancyBlur:
+    """Soft-occupancy representation (EXP-0063): Gaussian-blur the occupancy
+    channels of ``input`` (default channel 0 only -- the plate channels are
+    already soft renders) and, if ``target``, the target, with
+    ``transforms.functional.gaussian_blur_occ``.
+
+    Writes NEW tensors (the raw dataset may hand back its own reused grid
+    buffers) and re-points the ``current_occupancy``/``target_occupancy``
+    aliases, which the wrapper's default transforms set BEFORE config
+    transforms run -- a stale alias would silently train on the hard target
+    (``EulerianCombinedLoss`` reads ``target_occupancy`` first).
+    """
+
+    def __init__(self, sigma: float, input_channels=(0,), target: bool = True):
+        self.sigma = float(sigma)
+        self.input_channels = tuple(int(c) for c in input_channels)
+        self.target = bool(target)
+
+    def __call__(self, batch: dict[str, Any]) -> dict[str, Any]:
+        from transforms.functional import gaussian_blur_occ
+        if "input" in batch:
+            x = batch["input"].clone()
+            for c in self.input_channels:
+                x[..., c, :, :] = gaussian_blur_occ(x[..., c, :, :], self.sigma)
+            batch["input"] = x
+            if "current_occupancy" in batch:
+                batch["current_occupancy"] = x[..., 0, :, :]
+        if self.target and "target" in batch:
+            batch["target"] = gaussian_blur_occ(batch["target"], self.sigma)
+            if "target_occupancy" in batch:
+                batch["target_occupancy"] = batch["target"]
+        return batch
+
+
 class LagrangianAliases:
     """Add generic aliases for particle-based samples."""
 
@@ -107,6 +141,12 @@ def build_transforms(
             tx.append(EnsureRepresentation(cfg["representation"]))
         elif ttype == "eulerian_aliases":
             tx.append(EulerianOccupancyAliases())
+        elif ttype == "occupancy_blur":
+            tx.append(OccupancyBlur(
+                sigma=float(cfg["sigma"]),
+                input_channels=cfg.get("input_channels", (0,)),
+                target=bool(cfg.get("target", True)),
+            ))
         elif ttype == "lagrangian_aliases":
             tx.append(LagrangianAliases())
         elif ttype == "lagrangian_to_eulerian":

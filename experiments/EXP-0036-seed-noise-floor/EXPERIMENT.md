@@ -142,3 +142,9 @@ writes spec['ckpt'] into the variable before building. No command in COMMANDS.js
 that route (Baselines/common/eval_randlen_indist.py documents NFD_CKPT/GNN_CKPT for its own
 loader, which was not checked). Now fixed with `--ckpt MODEL=PATH`
 (the env route still does not work and says so in `--help`).
+
+## Later evidence (2026-10-03 audit)
+
+Added by the cross-experiment audit (summary: `experiments/SUMMARY.md`). Numbers above are unchanged.
+
+- DS-0006 rows: EXP-0065 / ISS-013: 54 % of DS-0006's candidate pushes put the blade on a cube at touchdown (pre-fix pile-aware sampler); this record's pool numbers were not re-scored on legal-only candidates.

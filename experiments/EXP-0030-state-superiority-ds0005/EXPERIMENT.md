@@ -156,3 +156,11 @@ Reading:
 linear_switched_hard is the SLOWEST model per candidate (144 us, 2.5x NFD) in this
 harness; the "linear is fast" reading from the EXP-0032 pilot (linear_switched_soft,
 ~2x the evaluations) does not transfer to the hard variant here -- untested why.
+
+## Later evidence (2026-10-03 audit)
+
+Added by the cross-experiment audit (summary: `experiments/SUMMARY.md`). Numbers above are unchanged.
+
+- EXP-0035 replicates the negative state-dependence result at ~800 states (C-036 narrowed).
+- EXP-0065 / ISS-013: 54 % of DS-0006's candidate pushes put the blade on a cube at touchdown (pre-fix pile-aware sampler); this record's pool numbers were not re-scored on legal-only candidates.
+- EXP-0065 RUN-0002 re-scored THIS record's cached predictions on legal-only candidates: the true best push is illegal in 72 % / 54 % of cells (lyapunov / mass); legal-only minus size-matched slateN is +0.113 for linear_switched_hard vs +0.01..+0.07 for NFDs, Kendall(all, legal) 0.83. The A3 ensemble gain persists (ensemble still first).

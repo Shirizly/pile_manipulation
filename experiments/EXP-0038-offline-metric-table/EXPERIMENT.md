@@ -33,3 +33,11 @@ verdict: supported
 downgrades: [indirectness]
 grade: moderate
 ---
+
+## Later evidence (2026-10-03 audit)
+
+Added by the cross-experiment audit (summary: `experiments/SUMMARY.md`). Numbers above are unchanged.
+
+- EXP-0065 / ISS-013: 54 % of DS-0006's candidate pushes put the blade on a cube at touchdown (pre-fix pile-aware sampler); this record's pool numbers were not re-scored on legal-only candidates.
+- Metric redundancy measured here (Kendall 0.89-1.00) does not imply equal closed-loop validity: EXP-0039 found pool Spearman agreed with 1/6 resolved closed-loop pairs vs slateN 4/6; EXP-0060 found the metrics diverge for structurally different models (retrieval).
+- EXP-0065 RUN-0002 (EXP-0030's cache, same DS-0006 pools): linear_switched_hard's low slateN here (0.659) is largely an illegal-touchdown effect -- on legal-only candidates it scores 0.812 (lyapunov), above nfd_3ch_randlen. Its 'Spearman ~NFD but slateN far below' pattern should be re-read in that light.

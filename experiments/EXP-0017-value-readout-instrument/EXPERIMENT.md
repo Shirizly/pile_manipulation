@@ -262,3 +262,10 @@ Per `register-validator`'s "When a bug is found", the coordinator should conside
 - **A learned-latent drop-in.** Nothing here shows the instrument works on a
   LeJEPA latent; it shows it works on analytic descriptors and that its API
   does not assume them.
+
+## Later evidence (2026-10-03 audit)
+
+Added by the cross-experiment audit (summary: `experiments/SUMMARY.md`). Numbers above are unchanged.
+
+- Asymmetric goal masks (T / random_quadrant / ring_O / stripe / letters) in this record were scored BEFORE the goal-axis fix `28271c09` (2026-09-17) and were never rescored; transpose-invariant goals (corner, center, ...) are unaffected (ISS-003). ISS-003 names this record.
+- EXP-0018 found `ValueReadout`'s RidgeCV selected lambda with row-random LOO CV, so this record's numbers used row-random inner folds on a held-out-slate split, affected to an unmeasured degree (INVARIANTS; ISS-004).

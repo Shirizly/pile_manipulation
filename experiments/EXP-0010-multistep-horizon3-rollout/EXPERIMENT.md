@@ -430,3 +430,9 @@ NOT run here.
   ~3.1GB — no gradient checkpointing or batch-size compromise was needed
   for RUN-0003, unlike some other NFD experiments in this repo that note
   GPU memory pressure.
+
+## Later evidence (2026-10-03 audit)
+
+Added by the cross-experiment audit (summary: `experiments/SUMMARY.md`). Numbers above are unchanged.
+
+- `slates_multistep` (L20mm/L40mm) was simulated with friction 0.3 / density 1000 -- off-training-physics for randlen-trained models (`benchmark-physics-matches-training`, broken); EXP-0048 later found physics sets barely change 20 mm single-push rankings on scatter (C-053), untested for piles/longer pushes.

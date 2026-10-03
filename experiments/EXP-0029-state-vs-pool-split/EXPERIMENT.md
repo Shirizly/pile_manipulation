@@ -138,3 +138,11 @@ integer-degree yaw with pixel-snapped corners: zeroing every cube's yaw changes
 56% of occupied pixels on randlen_test step-0 rows (occupied pixels 219 vs 199
 per image). So models are trained on images whose pixels are dominated by
 quantised orientation artifacts (see TODO).
+
+## Later evidence (2026-10-03 audit)
+
+Added by the cross-experiment audit (summary: `experiments/SUMMARY.md`). Numbers above are unchanged.
+
+- Superseded at scale: EXP-0030 (DS-0006, 160 states) and EXP-0035 (DS-0007, ~800 states) find per-state advantage unreliable and per-state switching significantly WORSE than the best single model (C-036 narrowed 2026-10-03).
+- DS-0001 was simulated with friction 0.3 / density 1000, not the randlen models' training physics (`benchmark-physics-matches-training`, broken).
+- EXP-0065 / ISS-013: 46 % of DS-0001's candidate pushes put the blade on a cube at touchdown (pre-fix pile-aware sampler); this record's pools were not re-scored on legal-only candidates.

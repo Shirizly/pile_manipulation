@@ -1,0 +1,14 @@
+pools for slates [0, 1, 2, 3, 4, 5, 6, 7, 8, 9] reproduce EXP-0023 exactly
+[nfd_3ch_randlen] corner a_rank == EXP-0023 on 10/10 slates; max |a_grad - EXP-0023| 8.59e-03 m
+[nfd_3ch_randlen] done in 42.0s; mean bound-hit box/len 0.044/0.165
+[nfd_3ch_finetuned] corner a_rank == EXP-0023 on 10/10 slates; max |a_grad - EXP-0023| 2.68e-03 m
+[nfd_3ch_finetuned] done in 26.9s; mean bound-hit box/len 0.033/0.249
+[nfd_warped_randlen] corner a_rank == EXP-0023 on 10/10 slates; max |a_grad - EXP-0023| 1.77e-02 m
+[nfd_warped_randlen] done in 41.0s; mean bound-hit box/len 0.009/0.136
+[nfd_residual_warped] corner a_rank == EXP-0023 on 10/10 slates; max |a_grad - EXP-0023| 1.44e-02 m
+[nfd_residual_warped] done in 47.9s; mean bound-hit box/len 0.008/0.044
+[linear_switched_soft] corner a_rank == EXP-0023 on 10/10 slates; max |a_grad - EXP-0023| 1.02e-02 m
+[linear_switched_soft] done in 37.2s; mean bound-hit box/len 0.023/0.229
+[linear_switched_hard] corner a_rank == EXP-0023 on 10/10 slates; max |a_grad - EXP-0023| 4.04e-03 m
+[linear_switched_hard] done in 67.8s; mean bound-hit box/len 0.000/0.064
+wrote experiments/EXP-0027-many-goal-benchmarks/artifacts/RUN-0002-grad-stage1/stage1.pt

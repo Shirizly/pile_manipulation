@@ -1,0 +1,37 @@
+# MODEL-0010 resolved config (EXP-0062 RUN-0003). No project template exists for this trainer;
+# this file + Baselines/GNN/runs/flex_v2_n30_chamfer_carry_s0/config.json are authoritative.
+id: MODEL-0010
+architecture: model/gnn_dyn.py::PropNetDiffDenModel   # byte-identical to dyn-res-pile-manip model/gnn_dyn.py
+model_cfg: {nf_effect: 64, add_delta: false, adj_thresh: 0.08}   # source config/train/gnn_dyn.yaml keys the model reads
+n_params: 38403
+perception:                      # Baselines/GNN/flex_predictor.py::perceive (train AND test)
+  input: colour PNG (fg = any RGB != 255), no depth
+  depth_mode: plane
+  plane_y: 0.24                  # kept from EXP-0061; v2 check results/gnn_plane_check.json
+  voxel: 0.01                    # scaled units (/24)
+  particle_num: 30               # constant, train and test
+  fps_seed: crc32("<dataset_id>/<group>/<step>")
+  recenter_r: min(0.02, 0.5 * r_fps)
+  particle_den: 1 / r_fps^2
+  small_pile_fallback: "<= 30 voxels (0 states in DS-0020 v2 train/val and DS-0019)"
+action_encoding: flex_predictor.s_delta_train (pusher half-width 0.8/24, soft width gate 0.01, hard length gate)
+training:
+  script: Baselines/GNN/flex_train.py train
+  target: chamfer_carry          # FULLY VISUAL: input voxels carried by nearest node's predicted displacement vs next frame's voxel cloud
+  chamfer: symmetric squared, cam-scaled units, + MSE pinning node z to the input plane
+  chamfer_sub: 384               # training-time random subsample per cloud; val loss on full clouds
+  rollout: 5                     # source n_rollout; chained s_cur <- s_pred, s_delta from predicted nodes
+  n_history: 1
+  batch: 4                       # source
+  optimizer: {type: Adam, lr: 1.0e-3, betas: [0.9, 0.999]}   # source
+  lr_scheduler: {type: StepLR, step_size: 1000, gamma: 0.1}  # source; never fires
+  seed: 0
+  stop: {patience: 10, min_rel_delta: 0.005, max_epochs: 300}
+  epochs_run: 23
+  best_epoch: 12
+  best_val_loss: 0.00029811      # persistence on the same val windows: 0.0021649
+  device: cpu                    # the GPU failed ("GPU requires reset") before training
+data:
+  dataset: DS-0020 v2 (datasets/DS-0020-training-data-flex-N864, splits.json; trajectories 0-99 excluded)
+  windows: {train: 8289, val: 911}   # 5 consecutive kept transitions (exclude_flagged=True)
+  node_cache: datasets/DS-0020-training-data-flex-N864/cache/gnn_nodes_n30_plane0.24/

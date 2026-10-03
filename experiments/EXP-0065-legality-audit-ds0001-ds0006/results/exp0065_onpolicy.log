@@ -1,0 +1,19 @@
+EXP-0051 success_states.json
+   nfd_residual_worldframe_noaug_ep43|gd         ILLEGAL n=103 pred -0.0210 true -0.0114 opt +0.0095 | LEGAL n=329 pred -0.0213 true -0.0136 opt +0.0077
+   nfd_residual_worldframe_noaug_ep43|cem        ILLEGAL n=90 pred -0.0316 true -0.0162 opt +0.0155 | LEGAL n=342 pred -0.0202 true -0.0122 opt +0.0081
+   linear_switched_soft|gd                       ILLEGAL n=59 pred -0.0216 true -0.0182 opt +0.0034 | LEGAL n=373 pred -0.0124 true -0.0123 opt +0.0000
+   linear_switched_soft|cem                      ILLEGAL n=48 pred -0.0301 true -0.0212 opt +0.0089 | LEGAL n=384 pred -0.0139 true -0.0121 opt +0.0018
+EXP-0052 objective_states.json
+   nfd_residual_worldframe_noaug_ep43|gd         ILLEGAL n=225 pred -0.2727 true -0.0119 opt +0.2608 | LEGAL n=447 pred -0.2373 true -0.0140 opt +0.2233
+   nfd_residual_worldframe_noaug_ep43|cem        ILLEGAL n=261 pred -0.2258 true -0.0106 opt +0.2152 | LEGAL n=411 pred -0.2464 true -0.0141 opt +0.2323
+EXP-0054 narrow_gd_w3.json
+   nfd_3ch_narrow_l20|gd                         ILLEGAL n=345 pred -0.1578 true -0.0051 opt +0.1528 | LEGAL n=327 pred -0.1495 true -0.0026 opt +0.1469
+   nfd_3ch_narrow_l20_wide|gd                    ILLEGAL n=307 pred -0.1628 true -0.0075 opt +0.1553 | LEGAL n=365 pred -0.1843 true -0.0050 opt +0.1793
+   nfd_3ch_randlen|gd                            ILLEGAL n=312 pred -0.1231 true -0.0112 opt +0.1119 | LEGAL n=360 pred -0.0887 true -0.0059 opt +0.0828
+   nfd_residual_worldframe_noaug_ep43|gd         ILLEGAL n=466 pred -0.2416 true -0.0088 opt +0.2328 | LEGAL n=206 pred -0.2526 true -0.0086 opt +0.2439
+EXP-0055 all.json
+   nfd_residual_worldframe_noaug_ep43|gd         ILLEGAL n=1284 pred -1.6870 true -0.0185 opt +1.6685 | LEGAL n=4476 pred -0.8133 true -0.0154 opt +0.7979
+EXP-0055 floor.json
+   nfd_residual_worldframe_noaug_ep43|gd         ILLEGAL n=203 pred -0.0427 true -0.0279 opt +0.0148 | LEGAL n=1077 pred -0.0233 true -0.0149 opt +0.0085
+EXP-0055 main.json
+   nfd_residual_worldframe_noaug_ep43|gd         ILLEGAL n=1081 pred -1.9958 true -0.0168 opt +1.9791 | LEGAL n=3399 pred -1.0637 true -0.0156 opt +1.0481

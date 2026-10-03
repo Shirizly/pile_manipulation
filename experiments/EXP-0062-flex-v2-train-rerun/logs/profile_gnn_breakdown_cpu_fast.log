@@ -1,0 +1,39 @@
+FlexPileData(DS-0019, split=all, exclude_flagged=True): 17186 rows; flagged nan=0 escaped=397 out_of_grid=47 null=159 -> kept 16583
+[FlexGNNPredictor] weights/MODEL-0010-gnn-flex-mask-v2-n30/checkpoint.pth: particle_num=30 depth=plane plane_y=0.24 carry_k=1 device=cpu
+{
+ "ckpt": "weights/MODEL-0010-gnn-flex-mask-v2-n30/checkpoint.pth",
+ "n": 30,
+ "fast": true,
+ "device": "cpu",
+ "threads": 4,
+ "gpu": null,
+ "passes": 3,
+ "n_slates": 100,
+ "stage_ms_median_over_slates": {
+  "imread": 5.005068611353636,
+  "segment_backproject": 12.101453496143222,
+  "voxel": 30.33022698946297,
+  "fps": 0.7023679791018367,
+  "recenter": 0.8188164792954922,
+  "s_delta": 1.2510160449892282,
+  "graph_build": 3.398323431611061,
+  "gnn_forward": 44.73284259438515,
+  "render": 210.0914129987359
+ },
+ "stage_share": {
+  "imread": 0.016227486968226488,
+  "segment_backproject": 0.03923546191950253,
+  "voxel": 0.09833698624997453,
+  "fps": 0.0022772249718854692,
+  "recenter": 0.002654775544334265,
+  "s_delta": 0.004056057597503047,
+  "graph_build": 0.011018080566406609,
+  "gnn_forward": 0.1450333005636439,
+  "render": 0.6811606256185232
+ },
+ "total_ms_median": 325.31568547710776,
+ "perception_ms": 48.95793355535716,
+ "model_ms": 49.382182070985436,
+ "render_ms": 210.0914129987359,
+ "staged_output_equals_predict_occ": true
+}

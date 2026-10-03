@@ -1,0 +1,13 @@
+/home/alon/anaconda3/envs/pme/lib/python3.10/site-packages/numpy/_core/fromnumeric.py:3860: RuntimeWarning: Mean of empty slice.
+  return _methods._mean(a, axis=axis, dtype=dtype,
+/home/alon/anaconda3/envs/pme/lib/python3.10/site-packages/numpy/_core/_methods.py:145: RuntimeWarning: invalid value encountered in scalar divide
+  ret = ret.dtype.type(ret / rcount)
+nfd_3ch_narrow_l20_v2_soft_s1      [test] slateN_tough 0.820 [0.769,0.865] slateN 0.793 acc1 0.46891647577285767 rollout4 0.37613600492477417 (91s)
+nfd_3ch_narrow_l20_v2_soft_s1      [val] slateN_tough 0.639 [0.285,0.835] slateN 0.686 acc1 None rollout4 None (4s)
+nfd_3ch_narrow_l20_v2_soft_s2      [test] slateN_tough 0.787 [0.726,0.851] slateN 0.763 acc1 0.3963301181793213 rollout4 0.320003867149353 (95s)
+nfd_3ch_narrow_l20_v2_soft_s2      [val] slateN_tough 0.818 [0.765,0.869] slateN 0.800 acc1 None rollout4 None (4s)
+nfd_3ch_narrow_l20_v2_sharp_w03    [test] slateN_tough 0.712 [0.624,0.798] slateN 0.680 acc1 0.5652213096618652 rollout4 0.43050169944763184 (96s)
+nfd_3ch_narrow_l20_v2_sharp_w03    [val] slateN_tough 0.666 [0.582,0.751] slateN 0.665 acc1 None rollout4 None (4s)
+nfd_3ch_narrow_l20_v2_sharp_w07    [test] slateN_tough 0.665 [0.574,0.756] slateN 0.670 acc1 0.5370087623596191 rollout4 0.42021894454956055 (85s)
+nfd_3ch_narrow_l20_v2_sharp_w07    [val] slateN_tough 0.616 [0.526,0.703] slateN 0.629 acc1 None rollout4 None (2s)
+wrote /home/alon/Code/pile_manipulation/experiments/EXP-0063-soft-occupancy-nfd/results/pilot_eval.json

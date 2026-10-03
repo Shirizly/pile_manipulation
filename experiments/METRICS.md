@@ -503,3 +503,12 @@ never confused with an episode that solved exactly on the last push. Reported pe
 (mean over all episodes with unsolved -> 21). Paired differences (same task set, same cell
 comparison) use `delta_completion_pushes` = target cell's k* minus the default cell's k*, per
 (goal, start), bootstrapped 95% CI. Code: `experiments/EXP-0057-*/code/analyse.py`.
+
+## `node_accuracy`, `slateN_point_goal` (added 2026-10-03, EXP-0064 — FleX particle GNN)
+
+For particle/node models scored in particle space (no occupancy image). Units: FleX /24.
+
+| key | formula | notes |
+|---|---|---|
+| `node_accuracy` | `1 − sqrt(Σ‖pred − true‖²) / sqrt(Σ‖s0 − true‖²)`, sums over every (state, candidate, tracked node, xyz) of a group; tracked nodes = the model's own ≤30 FPS-sampled particles | Same form as `accuracy` but over **all tracked nodes, not a swept region**, so static nodes enter both terms; not comparable with image `accuracy`. `node_accuracy_moved` restricts the sums to nodes whose true xz displacement > 0.1 FleX units. |
+| `slateN_point_goal` | slateN (this file's formula, cost sense) with value `V = mean_i ‖p_i − g‖` over xz positions, goal point `g ~ U(±wkspc_w)²` seeded per state (`RandomState(state_idx)` for goal 0; `RandomState(10000 + 100·state_idx + k)` for extra goals) | **nodes** variant: truth and prediction on the tracked nodes (EXP-0064 as run). **full** variant: truth on ALL true after-particles; prediction carries each particle by its nearest tracked node's predicted displacement. Model ties at its best are broken in expectation (mean truth over the tied set), so `persistence` scores 0 exactly. |

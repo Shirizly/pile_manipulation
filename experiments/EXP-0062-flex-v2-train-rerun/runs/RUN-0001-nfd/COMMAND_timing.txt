@@ -1,0 +1,1 @@
+PYTHONPATH=. OMP_NUM_THREADS=4 /home/alon/anaconda3/envs/pme/bin/python -u experiments/EXP-0062-flex-v2-train-rerun/code/time_inference.py --model nfd_randlen --ckpt weights/MODEL-0008-nfd-flex-mask-v2-seed0/checkpoint.pth --name nfd_v2_s0 --out experiments/EXP-0062-flex-v2-train-rerun/results/timing_nfd.json

@@ -126,3 +126,9 @@ closed-loop test that picks from S1 vs S3 candidates with the true simulator; pe
 - `generate_action_samples(pile_aware=True, push_length=0.02)` shortens 15-30 % of pushes to fit the
   tray and ~10-18 % to ~0 mm (a warning is printed, the push is returned anyway) -- on n=20 scatter
   and clump states, where the "pile" spans most of the tray.
+
+## Later evidence (2026-10-03 audit)
+
+Added by the cross-experiment audit (summary: `experiments/SUMMARY.md`). Numbers above are unchanged.
+
+- **Most exposed to ISS-013:** S1 (pile-aware) here is the pre-fix sampler that ISS-010 / EXP-0065 measured at ~45-55 % illegal touchdowns, clumps worse than scatter. S1's clump advantage (+0.030) and its very large clump displacements may partly be illegal-touchdown ejections. C-054 was not re-run with the legal sampler (`pile_aware_action_batch`).

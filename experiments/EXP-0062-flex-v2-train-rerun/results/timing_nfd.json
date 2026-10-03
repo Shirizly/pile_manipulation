@@ -1,0 +1,533 @@
+{
+  "command": "/home/alon/anaconda3/envs/pme/bin/python -u experiments/EXP-0062-flex-v2-train-rerun/code/time_inference.py --model nfd_randlen --ckpt weights/MODEL-0008-nfd-flex-mask-v2-seed0/checkpoint.pth --name nfd_v2_s0 --out experiments/EXP-0062-flex-v2-train-rerun/results/timing_nfd.json",
+  "started": "2026-10-02T15:44:56",
+  "model": "nfd_randlen",
+  "name": "nfd_v2_s0",
+  "ckpt": "weights/MODEL-0008-nfd-flex-mask-v2-seed0/checkpoint.pth",
+  "workers": [
+    {
+      "pid": 2064351,
+      "model": "nfd_randlen",
+      "name": "nfd_v2_s0",
+      "ckpt": "weights/MODEL-0008-nfd-flex-mask-v2-seed0/checkpoint.pth",
+      "kwargs": {},
+      "corpus": "flex_ds0019_mask",
+      "device_requested": "cuda",
+      "gpu": "NVIDIA GeForce RTX 4070 Laptop GPU",
+      "torch": "2.11.0+cu130",
+      "contended": false,
+      "contention": {
+        "cuda_available": true,
+        "free_bytes": 8028946432,
+        "total_bytes": 8186822656,
+        "used_frac": 0.0193,
+        "other_training_processes": []
+      },
+      "device_fed_to_forward": [
+        "cuda:0"
+      ],
+      "n_forward_hook_calls": 800,
+      "n_modules_hooked": 1,
+      "load_s": 8.086553573608398,
+      "warmup_passes": 2,
+      "timed_passes": 3,
+      "n_slates": 100,
+      "n_candidates": 16583,
+      "pool_size": {
+        "n": 100,
+        "median": 167.5,
+        "p10": 142.7,
+        "p90": 186.0,
+        "mean": 165.83,
+        "min": 86.0,
+        "max": 191.0,
+        "total": 16583.0
+      },
+      "per_slate_ms": {
+        "n": 100,
+        "median": 4.833235987462103,
+        "p10": 4.202489019371569,
+        "p90": 5.298264161683619,
+        "mean": 4.789915177971125,
+        "min": 3.0184451024979353,
+        "max": 5.41368592530489,
+        "total": 478.99151779711246
+      },
+      "per_slate_ms_with_h2d": {
+        "n": 100,
+        "median": 5.570614477619529,
+        "p10": 4.878631513565779,
+        "p90": 6.0278222896158695,
+        "mean": 5.490981976035982,
+        "min": 3.59526788815856,
+        "max": 6.116124102845788,
+        "total": 549.0981976035982
+      },
+      "us_per_candidate_slate_batches": 28.88449121371962,
+      "us_per_candidate_slate_batches_with_h2d": 33.112114671868675,
+      "total_all_slates_s": 0.47899151779711246,
+      "total_all_slates_s_with_h2d": 0.5490981976035982,
+      "batch128": {
+        "n_batches": 129,
+        "ms_per_batch": {
+          "n": 129,
+          "median": 3.786996938288212,
+          "p10": 3.7531383335590363,
+          "p90": 3.840535832569003,
+          "mean": 3.792009143115476,
+          "min": 3.7367630284279585,
+          "max": 3.866407088935375,
+          "total": 489.1691794618964
+        },
+        "us_per_candidate": 29.625071430589657
+      },
+      "loop_check": {
+        "16": {
+          "aten_ops": 603,
+          "cuda_kernels": 125
+        },
+        "128": {
+          "aten_ops": 603,
+          "cuda_kernels": 131
+        },
+        "top_ops_b128_us": {
+          "aten::cudnn_convolution": 1494.48,
+          "aten::cudnn_convolution_transpose": 230.5310000000004,
+          "aten::copy_": 158.59299999999985,
+          "aten::cudnn_batch_norm": 125.24899999999889,
+          "aten::cat": 118.30499999999984,
+          "aten::clamp_min": 97.76000000000067,
+          "aten::mul": 64.80199999999968,
+          "aten::add": 40.57600000000002
+        },
+        "top_ops_metric": "self_device_time_total",
+        "ratio_128_over_16": {
+          "aten_ops": 1.0,
+          "cuda_kernels": 1.048
+        },
+        "per_sample_loop_suspected": false
+      },
+      "png_to_mask": {
+        "n_images": 100,
+        "device": "cpu (numpy/cv2; no GPU path exists)",
+        "imread_ms": {
+          "n": 100,
+          "median": 3.248334163799882,
+          "p10": 2.943565440364182,
+          "p90": 3.9597027702257037,
+          "mean": 3.4042955143377185,
+          "min": 2.8249011375010014,
+          "max": 4.352192161604762,
+          "total": 340.42955143377185
+        },
+        "segment_warp_threshold_ms": {
+          "n": 100,
+          "median": 6.992680486291647,
+          "p10": 6.786044593900442,
+          "p90": 7.2372664930298924,
+          "mean": 7.008465467952192,
+          "min": 6.770038977265358,
+          "max": 7.537409896031022,
+          "total": 700.8465467952192
+        },
+        "total_per_image_ms": {
+          "n": 100,
+          "median": 10.2729054633528,
+          "p10": 9.746092185378075,
+          "p90": 11.188971577212214,
+          "mean": 10.41276098228991,
+          "min": 9.613004978746176,
+          "max": 11.889602057635784,
+          "total": 1041.276098228991
+        }
+      }
+    },
+    {
+      "pid": 2064755,
+      "model": "nfd_randlen",
+      "name": "nfd_v2_s0",
+      "ckpt": "weights/MODEL-0008-nfd-flex-mask-v2-seed0/checkpoint.pth",
+      "kwargs": {},
+      "corpus": "flex_ds0019_mask",
+      "device_requested": "cuda",
+      "gpu": "NVIDIA GeForce RTX 4070 Laptop GPU",
+      "torch": "2.11.0+cu130",
+      "contended": false,
+      "contention": {
+        "cuda_available": true,
+        "free_bytes": 8028946432,
+        "total_bytes": 8186822656,
+        "used_frac": 0.0193,
+        "other_training_processes": []
+      },
+      "device_fed_to_forward": [
+        "cuda:0"
+      ],
+      "n_forward_hook_calls": 800,
+      "n_modules_hooked": 1,
+      "load_s": 8.10865068435669,
+      "warmup_passes": 2,
+      "timed_passes": 3,
+      "n_slates": 100,
+      "n_candidates": 16583,
+      "pool_size": {
+        "n": 100,
+        "median": 167.5,
+        "p10": 142.7,
+        "p90": 186.0,
+        "mean": 165.83,
+        "min": 86.0,
+        "max": 191.0,
+        "total": 16583.0
+      },
+      "per_slate_ms": {
+        "n": 100,
+        "median": 4.88388747908175,
+        "p10": 4.251384176313877,
+        "p90": 5.280885100364685,
+        "mean": 4.83385105850175,
+        "min": 3.0811000615358353,
+        "max": 5.443878937512636,
+        "total": 483.385105850175
+      },
+      "per_slate_ms_with_h2d": {
+        "n": 100,
+        "median": 5.550079513341188,
+        "p10": 4.909921484068036,
+        "p90": 5.935694766230881,
+        "mean": 5.482536470517516,
+        "min": 3.6317319609224796,
+        "max": 6.159577053040266,
+        "total": 548.2536470517516
+      },
+      "us_per_candidate_slate_batches": 29.149436522352712,
+      "us_per_candidate_slate_batches_with_h2d": 33.061185976708174,
+      "total_all_slates_s": 0.483385105850175,
+      "total_all_slates_s_with_h2d": 0.5482536470517516,
+      "batch128": {
+        "n_batches": 129,
+        "ms_per_batch": {
+          "n": 129,
+          "median": 3.805068088695407,
+          "p10": 3.7735629361122847,
+          "p90": 3.865413274616003,
+          "mean": 3.8138735432957493,
+          "min": 3.756060963496566,
+          "max": 3.920491086319089,
+          "total": 491.9896870851517
+        },
+        "us_per_candidate": 29.79588705699804
+      },
+      "loop_check": {
+        "16": {
+          "aten_ops": 603,
+          "cuda_kernels": 125
+        },
+        "128": {
+          "aten_ops": 603,
+          "cuda_kernels": 131
+        },
+        "top_ops_b128_us": {
+          "aten::cudnn_convolution": 1328.4350000000004,
+          "aten::cudnn_convolution_transpose": 205.63400000000001,
+          "aten::copy_": 162.4020000000005,
+          "aten::cat": 120.99399999999969,
+          "aten::cudnn_batch_norm": 112.80099999999993,
+          "aten::clamp_min": 89.44200000000183,
+          "aten::mul": 58.399000000000115,
+          "aten::add": 38.14500000000021
+        },
+        "top_ops_metric": "self_device_time_total",
+        "ratio_128_over_16": {
+          "aten_ops": 1.0,
+          "cuda_kernels": 1.048
+        },
+        "per_sample_loop_suspected": false
+      },
+      "png_to_mask": {
+        "n_images": 100,
+        "device": "cpu (numpy/cv2; no GPU path exists)",
+        "imread_ms": {
+          "n": 100,
+          "median": 3.246675943955779,
+          "p10": 2.920426707714796,
+          "p90": 3.910507680848241,
+          "mean": 3.3657922060228884,
+          "min": 2.8138570487499237,
+          "max": 4.222470801323652,
+          "total": 336.57922060228884
+        },
+        "segment_warp_threshold_ms": {
+          "n": 100,
+          "median": 7.083895965479314,
+          "p10": 6.7742092767730355,
+          "p90": 7.337663020007312,
+          "mean": 7.075686722528189,
+          "min": 6.728244014084339,
+          "max": 7.5220949947834015,
+          "total": 707.5686722528189
+        },
+        "total_per_image_ms": {
+          "n": 100,
+          "median": 10.37570892367512,
+          "p10": 9.800097928382456,
+          "p90": 11.273132008500397,
+          "mean": 10.441478928551078,
+          "min": 9.543054038658738,
+          "max": 11.629323940724134,
+          "total": 1044.1478928551078
+        }
+      }
+    },
+    {
+      "pid": 2065137,
+      "model": "nfd_randlen",
+      "name": "nfd_v2_s0",
+      "ckpt": "weights/MODEL-0008-nfd-flex-mask-v2-seed0/checkpoint.pth",
+      "kwargs": {},
+      "corpus": "flex_ds0019_mask",
+      "device_requested": "cuda",
+      "gpu": "NVIDIA GeForce RTX 4070 Laptop GPU",
+      "torch": "2.11.0+cu130",
+      "contended": false,
+      "contention": {
+        "cuda_available": true,
+        "free_bytes": 8028946432,
+        "total_bytes": 8186822656,
+        "used_frac": 0.0193,
+        "other_training_processes": []
+      },
+      "device_fed_to_forward": [
+        "cuda:0"
+      ],
+      "n_forward_hook_calls": 800,
+      "n_modules_hooked": 1,
+      "load_s": 8.047554016113281,
+      "warmup_passes": 2,
+      "timed_passes": 3,
+      "n_slates": 100,
+      "n_candidates": 16583,
+      "pool_size": {
+        "n": 100,
+        "median": 167.5,
+        "p10": 142.7,
+        "p90": 186.0,
+        "mean": 165.83,
+        "min": 86.0,
+        "max": 191.0,
+        "total": 16583.0
+      },
+      "per_slate_ms": {
+        "n": 100,
+        "median": 4.90066537167877,
+        "p10": 4.312051460146904,
+        "p90": 5.334457173012197,
+        "mean": 4.8550742492079735,
+        "min": 3.0733440071344376,
+        "max": 5.538237979635596,
+        "total": 485.50742492079735
+      },
+      "per_slate_ms_with_h2d": {
+        "n": 100,
+        "median": 5.537582910619676,
+        "p10": 4.8531631007790565,
+        "p90": 5.958732916042209,
+        "mean": 5.479187371674925,
+        "min": 3.6088800989091396,
+        "max": 6.309604039415717,
+        "total": 547.9187371674925
+      },
+      "us_per_candidate_slate_batches": 29.277418134281938,
+      "us_per_candidate_slate_batches_with_h2d": 33.04098999984879,
+      "total_all_slates_s": 0.48550742492079735,
+      "total_all_slates_s_with_h2d": 0.5479187371674925,
+      "batch128": {
+        "n_batches": 129,
+        "ms_per_batch": {
+          "n": 129,
+          "median": 3.8102250546216965,
+          "p10": 3.7740232422947884,
+          "p90": 3.854683367535472,
+          "mean": 3.8124705473495317,
+          "min": 3.7485219072550535,
+          "max": 3.892629873007536,
+          "total": 491.80870060808957
+        },
+        "us_per_candidate": 29.784926151168214
+      },
+      "loop_check": {
+        "16": {
+          "aten_ops": 603,
+          "cuda_kernels": 125
+        },
+        "128": {
+          "aten_ops": 603,
+          "cuda_kernels": 131
+        },
+        "top_ops_b128_us": {
+          "aten::cudnn_convolution": 1601.0029999999992,
+          "aten::cudnn_convolution_transpose": 246.01699999999937,
+          "aten::copy_": 162.3699999999999,
+          "aten::cudnn_batch_norm": 132.57699999999977,
+          "aten::cat": 121.6009999999992,
+          "aten::clamp_min": 102.84899999999925,
+          "aten::mul": 68.76700000000028,
+          "aten::max_pool2d_with_indices": 42.52999999999929
+        },
+        "top_ops_metric": "self_device_time_total",
+        "ratio_128_over_16": {
+          "aten_ops": 1.0,
+          "cuda_kernels": 1.048
+        },
+        "per_sample_loop_suspected": false
+      },
+      "png_to_mask": {
+        "n_images": 100,
+        "device": "cpu (numpy/cv2; no GPU path exists)",
+        "imread_ms": {
+          "n": 100,
+          "median": 3.254851559177041,
+          "p10": 2.9357974184677005,
+          "p90": 3.8863903377205133,
+          "mean": 3.364835970569402,
+          "min": 2.8232941403985023,
+          "max": 4.241059999912977,
+          "total": 336.4835970569402
+        },
+        "segment_warp_threshold_ms": {
+          "n": 100,
+          "median": 7.067975006066263,
+          "p10": 6.93974990863353,
+          "p90": 7.240194943733513,
+          "mean": 7.067893575876951,
+          "min": 6.738854106515646,
+          "max": 7.397908950224519,
+          "total": 706.7893575876951
+        },
+        "total_per_image_ms": {
+          "n": 100,
+          "median": 10.330856428481638,
+          "p10": 9.894211636856198,
+          "p90": 11.132079339586198,
+          "mean": 10.432729546446353,
+          "min": 9.670671075582504,
+          "max": 11.491291923448443,
+          "total": 1043.2729546446353
+        }
+      }
+    }
+  ],
+  "status": "complete",
+  "aggregate": {
+    "n_processes": 3,
+    "per_slate_ms_median": {
+      "values": [
+        4.833235987462103,
+        4.88388747908175,
+        4.90066537167877
+      ],
+      "median": 4.88388747908175,
+      "rel_spread": 0.013806498308053576
+    },
+    "per_slate_ms_p90": {
+      "values": [
+        5.298264161683619,
+        5.280885100364685,
+        5.334457173012197
+      ],
+      "median": 5.298264161683619,
+      "rel_spread": 0.010111249838190112
+    },
+    "per_slate_ms_with_h2d_median": {
+      "values": [
+        5.570614477619529,
+        5.550079513341188,
+        5.537582910619676
+      ],
+      "median": 5.550079513341188,
+      "rel_spread": 0.005951548427450801
+    },
+    "us_per_candidate": {
+      "values": [
+        28.88449121371962,
+        29.149436522352712,
+        29.277418134281938
+      ],
+      "median": 29.149436522352712,
+      "rel_spread": 0.013479743262310004
+    },
+    "us_per_candidate_with_h2d": {
+      "values": [
+        33.112114671868675,
+        33.061185976708174,
+        33.04098999984879
+      ],
+      "median": 33.061185976708174,
+      "rel_spread": 0.0021513043140676254
+    },
+    "total_all_slates_s": {
+      "values": [
+        0.47899151779711246,
+        0.483385105850175,
+        0.48550742492079735
+      ],
+      "median": 0.483385105850175,
+      "rel_spread": 0.013479743262309959
+    },
+    "batch128_ms_per_batch": {
+      "values": [
+        3.786996938288212,
+        3.805068088695407,
+        3.8102250546216965
+      ],
+      "median": 3.805068088695407,
+      "rel_spread": 0.0061045205478697665
+    },
+    "batch128_us_per_candidate": {
+      "values": [
+        29.625071430589657,
+        29.79588705699804,
+        29.784926151168214
+      ],
+      "median": 29.784926151168214,
+      "rel_spread": 0.005734968941720351
+    },
+    "device_fed_to_forward": [
+      "cuda:0"
+    ],
+    "any_contended": false,
+    "per_sample_loop_suspected": false,
+    "loop_check_ratio": [
+      {
+        "aten_ops": 1.0,
+        "cuda_kernels": 1.048
+      },
+      {
+        "aten_ops": 1.0,
+        "cuda_kernels": 1.048
+      },
+      {
+        "aten_ops": 1.0,
+        "cuda_kernels": 1.048
+      }
+    ],
+    "png_to_mask_ms_per_image": {
+      "imread": [
+        3.248334163799882,
+        3.246675943955779,
+        3.254851559177041
+      ],
+      "segment_warp_threshold": [
+        6.992680486291647,
+        7.083895965479314,
+        7.067975006066263
+      ],
+      "total": [
+        10.2729054633528,
+        10.37570892367512,
+        10.330856428481638
+      ]
+    }
+  },
+  "finished": "2026-10-02T15:45:53"
+}

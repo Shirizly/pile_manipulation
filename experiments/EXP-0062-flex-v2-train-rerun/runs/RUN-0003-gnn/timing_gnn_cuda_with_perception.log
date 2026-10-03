@@ -1,0 +1,112 @@
+[time_inference] worker 0: --model gnn_flex_v2_n30 --name gnn_v2_n30_cuda_with_perception --device cuda --png 0 --kwargs {"cache_states": false, "device": "cuda"} --out experiments/EXP-0062-flex-v2-train-rerun/results/timing_gnn_parts/gnn_cuda_with_perception.json.worker0.json --worker
+FlexPileData(DS-0019, split=all, exclude_flagged=True): 17186 rows; flagged nan=0 escaped=397 out_of_grid=47 null=159 -> kept 16583
+[FlexGNNPredictor] weights/MODEL-0010-gnn-flex-mask-v2-n30/checkpoint.pth: particle_num=30 depth=plane plane_y=0.24 carry_k=1 device=cuda
+/home/alon/anaconda3/envs/pme/lib/python3.10/site-packages/torch/profiler/profiler.py:224: UserWarning: Warning: Profiler clears events at the end of each cycle.Only events from the current cycle will be reported.To keep events across cycles, set acc_events=True.
+  _warn_once(
+[time_inference] worker 0: per-slate median 77.228 ms, 498.48 us/cand, b128 798.83 us/cand, fed ['cuda:0'], loop {'aten_ops': 5.492778249787595, 'cuda_kernels': 6.4022277227722775}
+[time_inference] worker 1: --model gnn_flex_v2_n30 --name gnn_v2_n30_cuda_with_perception --device cuda --png 0 --kwargs {"cache_states": false, "device": "cuda"} --out experiments/EXP-0062-flex-v2-train-rerun/results/timing_gnn_parts/gnn_cuda_with_perception.json.worker1.json --worker
+FlexPileData(DS-0019, split=all, exclude_flagged=True): 17186 rows; flagged nan=0 escaped=397 out_of_grid=47 null=159 -> kept 16583
+[FlexGNNPredictor] weights/MODEL-0010-gnn-flex-mask-v2-n30/checkpoint.pth: particle_num=30 depth=plane plane_y=0.24 carry_k=1 device=cuda
+/home/alon/anaconda3/envs/pme/lib/python3.10/site-packages/torch/profiler/profiler.py:224: UserWarning: Warning: Profiler clears events at the end of each cycle.Only events from the current cycle will be reported.To keep events across cycles, set acc_events=True.
+  _warn_once(
+[time_inference] worker 1: per-slate median 76.851 ms, 489.21 us/cand, b128 790.24 us/cand, fed ['cuda:0'], loop {'aten_ops': 5.492778249787595, 'cuda_kernels': 6.4022277227722775}
+[time_inference] worker 2: --model gnn_flex_v2_n30 --name gnn_v2_n30_cuda_with_perception --device cuda --png 0 --kwargs {"cache_states": false, "device": "cuda"} --out experiments/EXP-0062-flex-v2-train-rerun/results/timing_gnn_parts/gnn_cuda_with_perception.json.worker2.json --worker
+FlexPileData(DS-0019, split=all, exclude_flagged=True): 17186 rows; flagged nan=0 escaped=397 out_of_grid=47 null=159 -> kept 16583
+[FlexGNNPredictor] weights/MODEL-0010-gnn-flex-mask-v2-n30/checkpoint.pth: particle_num=30 depth=plane plane_y=0.24 carry_k=1 device=cuda
+/home/alon/anaconda3/envs/pme/lib/python3.10/site-packages/torch/profiler/profiler.py:224: UserWarning: Warning: Profiler clears events at the end of each cycle.Only events from the current cycle will be reported.To keep events across cycles, set acc_events=True.
+  _warn_once(
+[time_inference] worker 2: per-slate median 77.664 ms, 502.52 us/cand, b128 825.11 us/cand, fed ['cuda:0'], loop {'aten_ops': 5.492778249787595, 'cuda_kernels': 6.4022277227722775}
+{
+ "n_processes": 3,
+ "per_slate_ms_median": {
+  "values": [
+   77.22796999996717,
+   76.85113449997516,
+   77.66355549995296
+  ],
+  "median": 77.22796999996717,
+  "rel_spread": 0.010519776707560078
+ },
+ "per_slate_ms_p90": {
+  "values": [
+   107.55493219998016,
+   106.50047320008298,
+   107.77139209992583
+  ],
+  "median": 107.55493219998016,
+  "rel_spread": 0.011816463214162938
+ },
+ "per_slate_ms_with_h2d_median": {
+  "values": [
+   79.36030849998588,
+   77.45514949999688,
+   78.39424049996069
+  ],
+  "median": 78.39424049996069,
+  "rel_spread": 0.024302282767698396
+ },
+ "us_per_candidate": {
+  "values": [
+   498.4785738406665,
+   489.2093179762212,
+   502.51563142981405
+  ],
+  "median": 498.4785738406665,
+  "rel_spread": 0.02669385235772656
+ },
+ "us_per_candidate_with_h2d": {
+  "values": [
+   501.9975551468249,
+   501.3214906228431,
+   499.62279834771124
+  ],
+  "median": 501.3214906228431,
+  "rel_spread": 0.0047369938124201235
+ },
+ "total_all_slates_s": {
+  "values": [
+   8.266270189999773,
+   8.112558119999676,
+   8.333216716000607
+  ],
+  "median": 8.266270189999773,
+  "rel_spread": 0.02669385235772661
+ },
+ "batch128_ms_per_batch": {
+  "values": [
+   106.83945200003109,
+   105.32114200009346,
+   110.06762800002434
+  ],
+  "median": 106.83945200003109,
+  "rel_spread": 0.04442634168443228
+ },
+ "batch128_us_per_candidate": {
+  "values": [
+   798.8321557049613,
+   790.2364851016972,
+   825.1106914970898
+  ],
+  "median": 798.8321557049613,
+  "rel_spread": 0.04365648796976182
+ },
+ "device_fed_to_forward": [
+  "cuda:0"
+ ],
+ "any_contended": false,
+ "per_sample_loop_suspected": true,
+ "loop_check_ratio": [
+  {
+   "aten_ops": 5.492778249787595,
+   "cuda_kernels": 6.4022277227722775
+  },
+  {
+   "aten_ops": 5.492778249787595,
+   "cuda_kernels": 6.4022277227722775
+  },
+  {
+   "aten_ops": 5.492778249787595,
+   "cuda_kernels": 6.4022277227722775
+  }
+ ]
+}

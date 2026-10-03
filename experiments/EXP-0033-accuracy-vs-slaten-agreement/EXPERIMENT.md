@@ -30,3 +30,10 @@ verdict: supported
 downgrades: [imprecision, indirectness]
 grade: low
 ---
+
+## Later evidence (2026-10-03 audit)
+
+Added by the cross-experiment audit (summary: `experiments/SUMMARY.md`). Numbers above are unchanged.
+
+- Later anchored against closed loop: accuracy agreed with 4/4 (EXP-0039) and 3/4 (EXP-0044, tuned) resolved closed-loop pairs vs slateN 4/6 and 1/5, on seed-sized gaps (C-038 note). EXP-0036: accuracy is ~3-10x more seed-stable than slateN, so low within-family agreement is partly slateN noise.
+- GNN rows carry `gnn-node-sampling-consistent-within-state` (broken: node sampling seeded by batch row).

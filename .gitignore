@@ -15,19 +15,21 @@ nca_epoch_*.pth
 *.jpeg
 *.avi
 *.pdf
+Genesis/data/narrow*/
 Genesis/data/dry_run/
 Genesis/data/overnight*/
 Genesis/data/granularity/
 Genesis/data/cube_spectrum/
 Genesis/data/dinowm_test*/
 Genesis/data/linear_foresight/
-Genesis/data/slates
+Genesis/data/slates/
 Genesis/data/slates_multistep/*eval/
 Genesis/data/slates_multistep/*train/
-Genesis/data/Sean
+Genesis/data/Sean/
 # Run artifacts (outputs are reproducible from configs)
 outputs/
 mpc_transitions/
+
 
 # Below-T0 scratch for quick, uncited probes -- see experiment-log skill's
 # "Quick, uncited work" section. experiments/TEMP_LOG.md is a tracked
@@ -38,11 +40,18 @@ mpc_transitions/
 # config.yaml stay tracked; the tensor payload is large and regenerable from
 # the recorded provenance + command.
 datasets/*/data/
+datasets/*/old_data/*
+# ...except the archived small records of a superseded payload (DS-0020 v1, 2026-10-02)
+!datasets/*/old_data/_ported_v1/
+datasets/*/old_data/_ported_v1/cache/
+# FlexData compact caches (FlexData/build_cache.py), regenerable from data/
+datasets/*/cache/
 
 # Reusable trained-instance payloads (weights/MODEL-####-slug/) -- the
 # MODEL.md/tests.md/config.yaml stay tracked; the checkpoint itself is
 # large and regenerable from the recorded provenance + command.
 weights/*/checkpoint.*
+weights/*/*/checkpoint.*
 Baselines/*/weights/*/checkpoint.*
 
 # Rendered inspection videos. Regenerate with
@@ -74,3 +83,6 @@ unet.pth
 experiments/*/runs/*/*.pt
 experiments/*/runs/*/*.pth
 experiments/*/artifacts/
+
+# Per-epoch checkpoints kept beside a promoted instance (e.g. MODEL-0011/epochs/), regenerable from its training command
+weights/*/epochs/*.pth

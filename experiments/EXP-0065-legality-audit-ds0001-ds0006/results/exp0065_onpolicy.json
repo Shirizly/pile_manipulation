@@ -1,0 +1,47 @@
+{
+  "run_id": "exp0065_onpolicy-2026-10-03T21:47:45-1533999",
+  "event": "start",
+  "ts": "2026-10-03T21:47:45",
+  "tag": "exp0065_onpolicy",
+  "exp": "EXP-0065",
+  "cmd": [
+    "python",
+    "-u",
+    "experiments/EXP-0065-legality-audit-ds0001-ds0006/code/onpolicy_optimism.py"
+  ],
+  "out": null,
+  "log": "experiments/EXP-0065-legality-audit-ds0001-ds0006/results/exp0065_onpolicy.log",
+  "commit": "d72bb304",
+  "dirty": true,
+  "status": "ok",
+  "returncode": 0,
+  "seconds": 5.0,
+  "provenance": {
+    "commit": "d72bb304",
+    "commit_full": "d72bb3046e266e0d1d952142e798b724e1c9ed7f",
+    "dirty": true,
+    "dirty_files": [
+      ".gitignore",
+      "Baselines/LinearForesight/fit_switched.py",
+      "Baselines/LinearForesight/predictor.py",
+      "Baselines/NFD/predictor.py",
+      "Baselines/NFD/train_nfd.py",
+      "Baselines/common/eval_report.py",
+      "docs/ARCHITECTURE.md",
+      "docs/CODEMAP.md",
+      "docs/INTERFACES.md",
+      "experiments/COMMANDS.jsonl",
+      "experiments/EXP-0001-cross-corpus-gnn-nfd-report/EXPERIMENT.md",
+      "experiments/EXP-0002-randlen-spawnmode-stratified-report/EXPERIMENT.md",
+      "experiments/EXP-0003-switched-linear-foresight-randlen/EXPERIMENT.md",
+      "experiments/EXP-0006-slaten-control-validation/EXPERIMENT.md",
+      "experiments/EXP-0008-slaten-broad-widened-goals/EXPERIMENT.md",
+      "experiments/EXP-0010-multistep-horizon3-rollout/EXPERIMENT.md",
+      "experiments/EXP-0011-descriptor-model-comparisons/EXPERIMENT.md",
+      "experiments/EXP-0012-slates-binned-corpus-difficulty/EXPERIMENT.md",
+      "experiments/EXP-0013-res32-vs-64-visual-operator/EXPERIMENT.md",
+      "experiments/EXP-0014-binned-pool-model-ranking/EXPERIMENT.md"
+    ],
+    "branch": "baselines/overnight"
+  }
+}

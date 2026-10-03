@@ -1,0 +1,1 @@
+PYTHONPATH=. OMP_NUM_THREADS=4 /home/alon/anaconda3/envs/pme/bin/python -u experiments/EXP-0062-flex-v2-train-rerun/code/eval_lf_v2.py score

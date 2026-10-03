@@ -1,0 +1,6 @@
+# written by scripts/run_probe.py before the run started
+# run_id exp0063_train_soft_s2-2026-10-03T13:38:36-950096
+# exp     EXP-0063
+# commit  d72bb304 dirty=True
+# log     experiments/EXP-0063-soft-occupancy-nfd/runs/RUN-0001-train-arms/exp0063_train_soft_s2.log
+/home/alon/anaconda3/envs/pme/bin/python -u Baselines/NFD/train_nfd.py Baselines/NFD/configs/nfd_3ch_narrow_l20_v2_soft_s2.yaml --no-resume --seed 0

@@ -1,0 +1,8 @@
+[nfd_3ch_randlen] 90s; mean pred dv rank -0.0559 -> grad -0.0835
+[nfd_warped_randlen] 165s; mean pred dv rank -0.0781 -> grad -0.1092
+[nfd_warped_randlen_flipaug] 165s; mean pred dv rank -0.0684 -> grad -0.0966
+[nfd_residual_warped_flipaug_randlen] 154s; mean pred dv rank -0.0714 -> grad -0.1051
+[nfd_residual_worldframe_noaug_ep43] 94s; mean pred dv rank -0.0713 -> grad -0.1077
+[linear_switched_soft] 80s; mean pred dv rank -0.0705 -> grad -0.1002
+[ensemble_nfd] 569s; mean pred dv rank -0.0645 -> grad -0.0922
+wrote /home/alon/Code/pile_manipulation/experiments/EXP-0037-gradient-benchmark-ds0006/artifacts/RUN-0001/stage1.pt

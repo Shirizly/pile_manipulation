@@ -1,0 +1,9 @@
+{
+ "experiments/EXP-0062-flex-v2-train-rerun/artifacts/RUN-0003-gnn/pilot25min_particle_best.pth": {
+  "val_accuracy": 0.1939781904220581,
+  "n_rows": 1665,
+  "device": "cpu",
+  "seconds": 111.50563931465149,
+  "mtime": "Fri Oct  2 17:22:22 2026"
+ }
+}

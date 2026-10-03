@@ -1,0 +1,21 @@
+# Resolved config for MODEL-0004 (switched-linear visual foresight on FleX image masks, EXP-0061)
+# DATA = DS-0020 **v1** (the OLD payload, archived 2026-10-02 to datasets/DS-0020-*/old_data/_ported_v1/); instance paths repointed there. Not the current DS-0020 v2.
+id: MODEL-0004
+kind: linear-foresight-switched     # + single (unswitched) operator in the same bundle
+payload: checkpoint.pt              # Baselines/LinearForesight/predictor.py bundle format
+fit_script: experiments/EXP-0061-flex-cross-corpus-rerun/code/fit_lf_flex.py
+train_data: {instance: datasets/DS-0020-training-data-flex-N864/old_data/_ported_v1/config.yaml, split: train, occ_source: image_mask, exclude_flagged: true, rows: 17837}
+select_data: {instance: datasets/DS-0020-training-data-flex-N864/old_data/_ported_v1/config.yaml, split: val, occ_source: image_mask, rows: 1991}   # trajectory-level split (splits.json)
+units: flex                          # push lengths / bin edges in FleX units
+grid: {half_extent: 7.2, resolution: 64}
+res: 64                              # canonical push-frame resolution (D = 4096)
+crop: 1.0
+constraint: ridge                    # toward identity (fit_linear_foresight.fit_operator)
+n_bins: 6                            # EXP-0003 scheme: equal width over [0, max train push length]
+bin_edges: [0.0, 2.2017, 4.4033, 6.6050, 8.8067, 11.0083, 13.2100]
+counts_train: [2124, 4867, 5325, 3961, 1424, 136]
+min_rows_per_bin: 50                 # else identity (none triggered)
+ridge_switched: 300.0                # selected on val from [0.1,1,3,10,30,100,300,1000,3000]
+ridge_single: 1000.0                 # selected on val, same grid
+pixel_mapping: fit_linear_foresight.actions_to_pixels (same at fit and predict)
+commit: d72bb304 (dirty tree)

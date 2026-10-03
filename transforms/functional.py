@@ -163,6 +163,32 @@ def splat_particles_mass(uv: torch.Tensor, resolution: Tuple[int, int],
     return mass * torch.einsum("bnh,bnw->bhw", gu, gv)
 
 
+def gaussian_blur_occ(x: torch.Tensor, sigma: float) -> torch.Tensor:
+    """(..., H, W) -> same shape: separable Gaussian blur of an occupancy
+    grid, kernel radius ceil(3*sigma), reflect padding (material against a
+    wall stays at the wall rather than fading into zero padding). sigma <= 0
+    returns `x` unchanged.
+
+    The soft-occupancy NFD variant (EXP-0063) trains AND evaluates through
+    this one function: the `occupancy_blur` dataset transform blurs the input
+    occupancy and target with it, and `NFDPredictor.input_blur_sigma` /
+    `OccupancyGradientAdapter.encode_state` blur a raster-built model input
+    with it. Same maths as EXP-0059 `eval_extended.py`'s own copy."""
+    if sigma <= 0:
+        return x
+    shape = x.shape
+    x4 = x.float().reshape(-1, 1, shape[-2], shape[-1])
+    r = max(1, int(math.ceil(3 * sigma)))
+    t = torch.arange(-r, r + 1, dtype=torch.float32, device=x.device)
+    k = torch.exp(-(t ** 2) / (2 * sigma ** 2))
+    k = (k / k.sum())[None, None]
+    x4 = torch.nn.functional.pad(x4, (r, r, 0, 0), mode="reflect")
+    x4 = torch.nn.functional.conv2d(x4, k.unsqueeze(2))           # along W
+    x4 = torch.nn.functional.pad(x4, (0, 0, r, r), mode="reflect")
+    x4 = torch.nn.functional.conv2d(x4, k.unsqueeze(3))           # along H
+    return x4.reshape(shape)
+
+
 def footprint_radius_voxels(
     particle_size_m: float,
     global_scale: float,

@@ -244,3 +244,12 @@ step and was not attempted here (~20-30 min at existing harness cost).
   note that `Baselines/common/data.py` warns `particles_to_occupancy` is not
   a drop-in replacement for the official `_draw_particle_grid` rasteriser --
   since fixed in a later CODEMAP update (see EXP-0012).
+
+## Later evidence (2026-10-03 audit)
+
+Added by the cross-experiment audit (summary: `experiments/SUMMARY.md`). Numbers above are unchanged.
+
+- Asymmetric goal masks (T / random_quadrant / ring_O / stripe / letters) in this record were scored BEFORE the goal-axis fix `28271c09` (2026-09-17) and were never rescored; transpose-invariant goals (corner, center, ...) are unaffected (ISS-003). ISS-003 names this record (C-016 exposed).
+- DS-0001 was simulated with friction 0.3 / density 1000, not the randlen models' training physics (`benchmark-physics-matches-training`, broken).
+- EXP-0065 / ISS-013: 46 % of DS-0001's candidate pushes put the blade on a cube at touchdown (pre-fix pile-aware sampler); this record's pools were not re-scored on legal-only candidates.
+- C-017: MODEL-0002 was fit on a split containing 17 of the 21 overnight_randlen_test files (found in EXP-0021 setup); clean refit 0.4319 vs 0.435.

@@ -1,0 +1,106 @@
+# DATA NOTE (2026-10-02): this recipe's dataset block points at DS-0020 **v1** (archived,
+# datasets/DS-0020-*/old_data/_ported_v1/config.yaml) -- what MODEL-0005..0007 were trained on.
+# For the current DS-0020 v2 payload use configs/dataset/flex_ds0020v2_train_ds0019_test.yaml
+# (v2 row counts differ from item 3 below: train 15,093 / val 1,665 kept rows).
+# NFD (non-FiLM, 3-channel faithful action encoding) on the FleX carrot-pile
+# corpora -- EXP-0061, the FleX rerun of EXP-0001's `nfd_randlen`
+# (Baselines/NFD/configs/nfd_train_3ch_randlen.yaml). Architecture, loss,
+# optimiser, batch size, LR, augmentation, AMP and grad clipping are IDENTICAL
+# to that config. Every deviation is forced by the data and listed here:
+#
+#  1. dataset: `type: flex` (FlexData.dataset.FlexPileData, native FleX units)
+#     instead of `nfd-genesis-3ch` over overnight_randlen. Same 3-channel
+#     input layout [occ0, plate(p_start), plate(p_stop)] at 64x64 (the size
+#     resolution_scale 0.5 gives on Genesis's 128 base; the FleX instance grid
+#     is +-7.2 units at 64 px, 0.225 units/px), plate 2.4 x 0.225 units,
+#     sigma 0.75 px (= max(0.5, 1.5*0.5), the Genesis value), from the
+#     instance config.yaml.
+#  2. occ_source: image_mask (EXP-0061 user decision): input occ0 AND target
+#     occ1 are BINARY top-down image masks (colour render segmented + warped to
+#     the grid, occupied iff area fraction > 0; FlexData/image_mask.py,
+#     cache/image_masks.npz), not the particle raster.
+#  3. split: train/val = DS-0020 splits.json (by trajectory, 1800/200;
+#     17,837 / 1,991 rows after the loader's nan/escaped/null filter) instead of
+#     PileSweepData's 5/5 file-hash carve. The Trainer's test pass = DS-0019
+#     (all 100 slates) via split_instances.
+#  4. min_push_length_m: dropped (a Genesis-metres knob with no FleX analogue;
+#     null pushes < 0.1 units max displacement are dropped by the loader flags).
+#  5. epochs 80 (was 30). Matching randlen by sample presentations would be
+#     150 (30 x 89,081 = 2.67M rows vs 150 x 17,837 = 2.68M; same batch size ->
+#     same number of gradient steps) and the runs were LAUNCHED at 150, but 3
+#     seeds concurrently on the shared GPU (another agent's job on it too, GPU
+#     at its 45 W cap) measured ~145-175 s/epoch (50 s alone) -> 6-7 h, over
+#     the 6 h task budget. Cut (kill + --resume, 2026-10-01) to 100 at epoch 3,
+#     then to 80 at epoch 7 (1.43M rows, 53 % of randlen's presentations) -- the
+#     same kind of budget-forced cut randlen itself made (100 -> 30). LR is
+#     constant (StepLR never fires) and there is no early stopping, so the cut
+#     only moves the stopping point. Check the val curve before citing.
+#  6. lr_scheduler.step_size 150 (> epochs; randlen's step_size 30 = its epoch
+#     count, so its StepLR never fired inside the run -> constant LR 1e-4;
+#     step_size >= epochs keeps that).  patience 150 (randlen: 100 > its 30
+#     epochs): keeps "no early stopping".
+#  7. save_full_state: true (+ full_state_every_min 10, shuffle_seed = seed):
+#     resumable checkpoint (training/trainer.py), user request 2026-10-01; the
+#     train order then comes from _EpochPermSampler instead of DataLoader's
+#     global-RNG shuffle. unet_best.pth + unet_last.pth every epoch.
+#  8. output.log_dir per seed (set by --override output.log_dir=... in the
+#     launch command; default below is seed 0).
+model:
+  type: nfd-unet3ch
+  in_channels: 3
+  out_channels: 1
+  features: [4, 8, 16]
+  kernel_size: 3
+  final_kernel_size: 1
+  activation: relu
+  residual: true
+  bottleneck_type: "None"
+  bottleneck_kwargs: {}
+  uses_physics: false
+
+dataset:
+  type: flex
+  instance: datasets/DS-0020-training-data-flex-N864/old_data/_ported_v1/config.yaml
+  split_instances:
+    test:
+      instance: datasets/DS-0019-slates-flex-pile-varN/config.yaml
+      split: all
+  occ_source: image_mask
+  channels: 3
+  exclude_flagged: true
+  include_physics: false
+  transforms:
+    - type: ensure_representation
+      representation: eulerian
+    - type: eulerian_aliases
+
+training:
+  epochs: 80
+  batch_size: 32
+  lr: 0.0001
+  lr_scheduler:
+    type: StepLR
+    step_size: 150
+    gamma: 0.75
+  augmentation: true
+  patience: 150
+  mixed_precision: true
+  grad_clip_norm: 1.0
+  save_every_n_epochs: 10
+  num_workers: 4
+  save_full_state: true
+  full_state_every_min: 10
+  shuffle_seed: 0
+  loss:
+    type: eulerian_combined
+    mse: 1.0
+    mass: 0.0
+    dice: 0.0
+    bce: 0.0
+    sharpness: 0.0
+    tv: 0.0
+    add: 0.0
+    remove: 0.0
+
+output:
+  log_dir: Baselines/NFD/runs/nfd_3ch_flex_mask_seed0

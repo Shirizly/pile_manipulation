@@ -1,0 +1,7 @@
+device: cpu (CPU-only expected -- set CUDA_VISIBLE_DEVICES= before launching to keep the concurrent NFD-seed GPU trainings unstarved)
+loaded 32 pools, 2042 sequences total (99.7% of the nominal 64/pool)
+persistence                          terminal slateN 0.021 slateN_tough 0.044 step_slateN_tough {1: 0.04138249737775368, 2: 0.005802084383503825, 3: 0.04418886469329664} step_rollout {1: 0.0, 2: 0.0, 3: 0.0} (253.8s)
+nfd_3ch_narrow_l20_v2                terminal slateN 0.674 slateN_tough 0.693 step_slateN_tough {1: 0.7608636446174373, 2: 0.6757664756351005, 3: 0.6929048358397267} step_rollout {1: 0.5786864757537842, 2: 0.46323132514953613, 3: 0.3812418580055237} (237.7s)
+nfd_3ch_narrow_l20_v2_seed1          terminal slateN 0.680 slateN_tough 0.695 step_slateN_tough {1: 0.7313493502963411, 2: 0.6840479947859421, 3: 0.6953936748686829} step_rollout {1: 0.5951257944107056, 2: 0.5081171989440918, 3: 0.4559825658798218} (239.3s)
+nfd_3ch_narrow_l20_v2_seed2          terminal slateN 0.636 slateN_tough 0.633 step_slateN_tough {1: 0.778765459494025, 2: 0.7003246399258387, 3: 0.6330471541241423} step_rollout {1: 0.602440595626831, 2: 0.5185009241104126, 3: 0.47284162044525146} (232.0s)
+wrote experiments/EXP-0063-soft-occupancy-nfd/results/multistep.json

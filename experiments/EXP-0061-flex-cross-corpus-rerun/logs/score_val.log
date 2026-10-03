@@ -1,0 +1,8 @@
+FlexPileData(DS-0020, split=val, exclude_flagged=True): 2000 rows; flagged nan=0 escaped=0 out_of_grid=0 null=9 -> kept 1991
+nfd_3ch_flex_mask_seed0/unet_best {'ckpt': 'Baselines/NFD/runs/nfd_3ch_flex_mask_seed0/unet_best.pth', 'accuracy': 0.6095459461212158, 'rms_swept': 0.21999701857566833, 'soft_iou_swept': 0.7932246327400208, 'accuracy_whole_grid': 0.5723837614059448}
+nfd_3ch_flex_mask_seed0/unet_last {'ckpt': 'Baselines/NFD/runs/nfd_3ch_flex_mask_seed0/unet_last.pth', 'accuracy': 0.6095459461212158, 'rms_swept': 0.21999701857566833, 'soft_iou_swept': 0.7932246327400208, 'accuracy_whole_grid': 0.5723837614059448}
+nfd_3ch_flex_mask_seed1/unet_best {'ckpt': 'Baselines/NFD/runs/nfd_3ch_flex_mask_seed1/unet_best.pth', 'accuracy': 0.6117231249809265, 'rms_swept': 0.21877029538154602, 'soft_iou_swept': 0.7923605442047119, 'accuracy_whole_grid': 0.5741209983825684}
+nfd_3ch_flex_mask_seed1/unet_last {'ckpt': 'Baselines/NFD/runs/nfd_3ch_flex_mask_seed1/unet_last.pth', 'accuracy': 0.6117231249809265, 'rms_swept': 0.21877029538154602, 'soft_iou_swept': 0.7923605442047119, 'accuracy_whole_grid': 0.5741209983825684}
+nfd_3ch_flex_mask_seed2/unet_best {'ckpt': 'Baselines/NFD/runs/nfd_3ch_flex_mask_seed2/unet_best.pth', 'accuracy': 0.6098418831825256, 'rms_swept': 0.21983025968074799, 'soft_iou_swept': 0.7920297980308533, 'accuracy_whole_grid': 0.5725500583648682}
+nfd_3ch_flex_mask_seed2/unet_last {'ckpt': 'Baselines/NFD/runs/nfd_3ch_flex_mask_seed2/unet_last.pth', 'accuracy': 0.6098418831825256, 'rms_swept': 0.21983025968074799, 'soft_iou_swept': 0.7920297980308533, 'accuracy_whole_grid': 0.5725500583648682}
+wrote experiments/EXP-0061-flex-cross-corpus-rerun/results/nfd_val_accuracy.json

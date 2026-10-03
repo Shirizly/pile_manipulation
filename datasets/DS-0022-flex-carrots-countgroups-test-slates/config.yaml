@@ -1,0 +1,54 @@
+# Resolved instance config. Source-repo collector config copied verbatim from EXP-0064 code/configs/; see DATASET.md
+id: DS-0022
+kind: slates
+units: flex
+action_frame: 'stored (x, -z): particle z = -action[1], -action[3] (flex-action-frame-neg-z)'
+flags: {escape_abs: 10.0}
+source_config: |
+  dataset:
+    folder: "data/true_action_slates_objbiased_carrots_grouped" # manifest + per-state/action data
+    init_pos: 'spread' # overridden per state to 'count_target' (see slates.count_groups)
+    global_scale: 24
+    obj: "carrots"
+    particle_r: 0.125
+    cam_idx: 0
+    wkspc_w: 5.0
+    headless: True
+    cont_motion: False
+    robot_type: 'franka'
+    franka_urdf: 'env/assets/franka_panda_plate/panda_plate.urdf'
+    action_margin: 1.6
+  
+  # Slates format (independent action replays from one fixed state, see
+  # collect_true_action_results_parallel.py) -- the TEST split paired with
+  # transitions_carrots_grouped.yaml's TRAIN split. Same 4 object-count groups,
+  # 200 states split into 4 equal contiguous blocks of 50 (state_idx // 50):
+  #   block 0 (0-49):    10-30 objects
+  #   block 1 (50-99):   50-70 objects
+  #   block 2 (100-149): 100-150 objects
+  #   block 3 (150-199): 400-500 objects
+  # 100 actions/state (independent replays from that state), stratified into
+  # the same 6 push-length bins the other slates datasets use -- unlike the
+  # transitions (train) set, these ARE bin-stratified, since the point of this
+  # split is ranking a pool of candidates per state (the "capture" metric),
+  # which needs the pool to actually span the push-length range.
+  slates:
+    n_states: 200
+    n_actions: 100
+    seed: 0
+    count_groups: [[10, 30], [50, 70], [100, 150], [400, 500]]
+    action_sampler: 'obj_biased'
+    bins:
+      edges_abs: [0.9617, 2.4042, 3.8467, 5.2892, 6.7317, 8.1742, 9.6167]
+  
+  parallel:
+    # Reduced from the other carrots slates datasets' n_envs=4: the top group
+    # targets up to 500 carrots, which earlier calibration (count_target
+    # smoke test) showed can mean tens of thousands of particles for a single
+    # tile -- 4 identical tiles of that size in one solver risks GPU memory/
+    # time blowup untested at that scale. n_envs=2 halves the batch's peak
+    # footprint; smoke-test before trusting this for the full run.
+    n_envs: 2
+    tile_pitch_scale: 2
+    tile_seed: 12345
+    nan_check_every: 1

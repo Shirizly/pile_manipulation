@@ -1,0 +1,8 @@
+FlexPileData(DS-0020, split=val, exclude_flagged=True): 2000 rows; flagged nan=0 escaped=0 out_of_grid=0 null=9 -> kept 1991
+val rows 600 / 1991; plate_px 10.67; persistence rms 0.5632
+[FlexGNNPredictor] Baselines/GNN/data/gnn_dyn_model/2023-01-28-10-42-05-114323/net_epoch_0_iter_1000.pth: particle_num=400 depth=plane plane_y=0.24 carry_k=1 device=cuda
+[n400_plane0.24] acc=0.2496 rms=0.4226 identity_mismatch=0px node_acc=0.608 moved=0.639 (rmse 1.033 vs 2.866, 9462 moved nodes) (244s)
+[FlexGNNPredictor] Baselines/GNN/data/gnn_dyn_model/2023-01-28-10-42-05-114323/net_epoch_0_iter_1000.pth: particle_num=400 depth=true plane_y=0.0 carry_k=1 device=cuda
+[n400_true] acc=0.2625 rms=0.4154 identity_mismatch=0px node_acc=0.606 moved=0.640 (rmse 1.029 vs 2.857, 9506 moved nodes) (274s)
+[FlexGNNPredictor] Baselines/GNN/data/gnn_dyn_model/2023-01-28-10-42-05-114323/net_epoch_0_iter_1000.pth: particle_num=200 depth=plane plane_y=0.24 carry_k=1 device=cuda
+[n200_plane0.24] acc=0.2482 rms=0.4234 identity_mismatch=0px node_acc=0.630 moved=0.652 (rmse 0.999 vs 2.868, 4604 moved nodes) (180s)

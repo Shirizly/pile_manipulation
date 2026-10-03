@@ -1,0 +1,51 @@
+truth done
+pred nfd_3ch_randlen done (1s)
+pred nfd_3ch_finetuned done (1s)
+pred nfd_warped_randlen done (2s)
+pred nfd_residual_warped done (2s)
+pred linear_switched_hard done (3s)
+[K128_lyapunov] median split-half r +0.16; switching gain -0.0286 [-0.0896,+0.0241] over splits, state-bootstrap [-0.1295,+0.0312]; single 0.684 -> switch 0.656 (hindsight 0.732)
+     nfd_3ch_randlen|nfd_warped_randlen                 r +0.35 [-0.07,+0.70]  mean adv -0.066
+     nfd_3ch_finetuned|nfd_residual_warped              r +0.20 [-0.24,+0.60]  mean adv +0.088
+     nfd_3ch_randlen|nfd_3ch_finetuned                  r +0.20 [-0.20,+0.59]  mean adv +0.257
+     nfd_warped_randlen|nfd_residual_warped             r +0.18 [-0.24,+0.58]  mean adv +0.410
+     nfd_3ch_randlen|nfd_residual_warped                r +0.17 [-0.28,+0.52]  mean adv +0.345
+     nfd_3ch_finetuned|nfd_warped_randlen               r +0.15 [-0.26,+0.47]  mean adv -0.322
+     nfd_3ch_randlen|linear_switched_hard               r +0.12 [-0.31,+0.54]  mean adv +0.056
+     nfd_residual_warped|linear_switched_hard           r +0.07 [-0.36,+0.50]  mean adv -0.289
+     nfd_warped_randlen|linear_switched_hard            r +0.03 [-0.43,+0.45]  mean adv +0.122
+     nfd_3ch_finetuned|linear_switched_hard             r +0.03 [-0.47,+0.43]  mean adv -0.201
+[K128_mass_in_region] median split-half r +0.22; switching gain -0.0012 [-0.0408,+0.0332] over splits, state-bootstrap [-0.0537,+0.0524]; single 0.681 -> switch 0.680 (hindsight 0.733)
+     nfd_3ch_finetuned|linear_switched_hard             r +0.29 [-0.13,+0.70]  mean adv -0.059
+     nfd_3ch_randlen|linear_switched_hard               r +0.27 [-0.13,+0.63]  mean adv +0.056
+     nfd_3ch_randlen|nfd_residual_warped                r +0.23 [-0.19,+0.58]  mean adv +0.327
+     nfd_3ch_randlen|nfd_warped_randlen                 r +0.23 [-0.23,+0.59]  mean adv -0.009
+     nfd_3ch_randlen|nfd_3ch_finetuned                  r +0.22 [-0.17,+0.64]  mean adv +0.115
+     nfd_3ch_finetuned|nfd_residual_warped              r +0.22 [-0.18,+0.58]  mean adv +0.211
+     nfd_residual_warped|linear_switched_hard           r +0.21 [-0.22,+0.55]  mean adv -0.270
+     nfd_warped_randlen|linear_switched_hard            r +0.21 [-0.25,+0.62]  mean adv +0.065
+     nfd_3ch_finetuned|nfd_warped_randlen               r +0.19 [-0.25,+0.60]  mean adv -0.124
+     nfd_warped_randlen|nfd_residual_warped             r +0.08 [-0.47,+0.51]  mean adv +0.336
+[K500_lyapunov] median split-half r +0.40; switching gain -0.0055 [-0.0550,+0.0248] over splits, state-bootstrap [-0.0829,+0.0505]; single 0.674 -> switch 0.668 (hindsight 0.715)
+     nfd_3ch_randlen|nfd_warped_randlen                 r +0.55 [+0.31,+0.74]  mean adv -0.060
+     nfd_warped_randlen|nfd_residual_warped             r +0.47 [+0.22,+0.69]  mean adv +0.407
+     nfd_3ch_randlen|nfd_residual_warped                r +0.44 [+0.14,+0.71]  mean adv +0.347
+     nfd_3ch_finetuned|nfd_warped_randlen               r +0.41 [+0.13,+0.67]  mean adv -0.334
+     nfd_3ch_randlen|nfd_3ch_finetuned                  r +0.40 [+0.13,+0.67]  mean adv +0.274
+     nfd_3ch_finetuned|nfd_residual_warped              r +0.40 [+0.15,+0.66]  mean adv +0.072
+     nfd_3ch_randlen|linear_switched_hard               r +0.26 [-0.06,+0.54]  mean adv +0.109
+     nfd_residual_warped|linear_switched_hard           r +0.23 [-0.10,+0.55]  mean adv -0.238
+     nfd_3ch_finetuned|linear_switched_hard             r +0.10 [-0.25,+0.50]  mean adv -0.166
+     nfd_warped_randlen|linear_switched_hard            r +0.06 [-0.31,+0.42]  mean adv +0.169
+[K500_mass_in_region] median split-half r +0.34; switching gain -0.0021 [-0.0291,+0.0271] over splits, state-bootstrap [-0.0453,+0.0386]; single 0.664 -> switch 0.662 (hindsight 0.704)
+     nfd_residual_warped|linear_switched_hard           r +0.47 [+0.22,+0.72]  mean adv -0.239
+     nfd_3ch_randlen|linear_switched_hard               r +0.42 [+0.12,+0.71]  mean adv +0.082
+     nfd_warped_randlen|linear_switched_hard            r +0.41 [+0.10,+0.68]  mean adv +0.106
+     nfd_3ch_randlen|nfd_residual_warped                r +0.37 [+0.06,+0.64]  mean adv +0.320
+     nfd_3ch_randlen|nfd_warped_randlen                 r +0.36 [-0.01,+0.63]  mean adv -0.024
+     nfd_3ch_finetuned|linear_switched_hard             r +0.31 [+0.04,+0.62]  mean adv -0.020
+     nfd_3ch_finetuned|nfd_warped_randlen               r +0.10 [-0.27,+0.47]  mean adv -0.126
+     nfd_3ch_randlen|nfd_3ch_finetuned                  r +0.08 [-0.21,+0.43]  mean adv +0.102
+     nfd_warped_randlen|nfd_residual_warped             r +0.07 [-0.26,+0.43]  mean adv +0.344
+     nfd_3ch_finetuned|nfd_residual_warped              r +0.06 [-0.25,+0.43]  mean adv +0.218
+wrote /home/alon/Code/pile_manipulation/experiments/EXP-0029-state-vs-pool-split/results/split_test.json

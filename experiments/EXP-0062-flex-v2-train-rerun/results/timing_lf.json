@@ -1,0 +1,597 @@
+{
+ "headline": "switched_cuda (operators resident on the GPU, the fixed predictor.py); switched_cuda_asis = before the fix (operators copied host->device every call)",
+ "model": "MODEL-0009 (lf_flex_switched / lf_flex_single, --ckpt weights/MODEL-0009-*/checkpoint.pt)",
+ "configs": {
+  "single_cpu": {
+   "status": "complete",
+   "command": "/home/alon/anaconda3/envs/pme/bin/python -u experiments/EXP-0062-flex-v2-train-rerun/code/time_inference.py --model lf_flex_single --ckpt weights/MODEL-0009-linear-foresight-flex-mask-v2/checkpoint.pt --name lf_v2_single_cpu --device cpu --png 0 --out experiments/EXP-0062-flex-v2-train-rerun/results/timing_lf_parts/single_cpu.json",
+   "device_requested": "cpu",
+   "output_device": [
+    "cpu"
+   ],
+   "contended": false,
+   "per_slate_ms_median": {
+    "values": [
+     40.04961811006069,
+     39.74631754681468,
+     39.36632757540792
+    ],
+    "median": 39.74631754681468,
+    "rel_spread": 0.01719129159193087
+   },
+   "per_slate_ms_p90": {
+    "values": [
+     43.96445327438414,
+     43.797775311395526,
+     43.74611862003803
+    ],
+    "median": 43.797775311395526,
+    "rel_spread": 0.0049850626611461935
+   },
+   "per_slate_ms_with_h2d_median": {
+    "values": [
+     40.08694994263351,
+     40.971994400024414,
+     40.16042593866587
+    ],
+    "median": 40.16042593866587,
+    "rel_spread": 0.022037725863330464
+   },
+   "us_per_candidate": {
+    "values": [
+     239.41435047039445,
+     236.72565736848375,
+     234.99460672871064
+    ],
+    "median": 236.72565736848375,
+    "rel_spread": 0.018670319858079886
+   },
+   "total_all_slates_s": {
+    "values": [
+     3.9702081738505512,
+     3.925621576141566,
+     3.8969155633822083
+    ],
+    "median": 3.925621576141566,
+    "rel_spread": 0.018670319858079928
+   },
+   "batch128_ms_per_batch": {
+    "values": [
+     29.50018714182079,
+     29.642208013683558,
+     30.032924842089415
+    ],
+    "median": 29.642208013683558,
+    "rel_spread": 0.017972267788644546
+   },
+   "batch128_us_per_candidate": {
+    "values": [
+     232.34117757655363,
+     233.21942340814087,
+     234.62756045294435
+    ],
+    "median": 233.21942340814087,
+    "rel_spread": 0.009803569715501271
+   },
+   "loop_check_ratio": [
+    {
+     "aten_ops": 1.0,
+     "cuda_kernels": 0.0
+    },
+    {
+     "aten_ops": 1.0,
+     "cuda_kernels": 0.0
+    },
+    {
+     "aten_ops": 1.0,
+     "cuda_kernels": 0.0
+    }
+   ],
+   "per_sample_loop_flag": false,
+   "loop_flag_note": "time_inference's flag fires on a count ratio > 2 at B=16 vs 128; for the SWITCHED model the extra ops are the per-BIN loop (B=16 occupies fewer of the 6 bins), not a per-sample loop -- single (no bins) has ratio 1.00",
+   "pool_size": {
+    "n": 100,
+    "median": 167.5,
+    "p10": 142.7,
+    "p90": 186.0,
+    "mean": 165.83,
+    "min": 86.0,
+    "max": 191.0,
+    "total": 16583.0
+   },
+   "gpu": "NVIDIA GeForce RTX 4070 Laptop GPU"
+  },
+  "single_cuda": {
+   "status": "complete",
+   "command": "/home/alon/anaconda3/envs/pme/bin/python -u experiments/EXP-0062-flex-v2-train-rerun/code/time_inference.py --model lf_flex_single --ckpt weights/MODEL-0009-linear-foresight-flex-mask-v2/checkpoint.pt --name lf_v2_single_cuda --device cuda --png 0 --out experiments/EXP-0062-flex-v2-train-rerun/results/timing_lf_parts/single_cuda.json",
+   "device_requested": "cuda",
+   "output_device": [
+    "cuda:0"
+   ],
+   "contended": false,
+   "per_slate_ms_median": {
+    "values": [
+     4.232142004184425,
+     4.256098414771259,
+     4.2282434878870845
+    ],
+    "median": 4.232142004184425,
+    "rel_spread": 0.006581756202091868
+   },
+   "per_slate_ms_p90": {
+    "values": [
+     4.522634530439973,
+     4.515444277785718,
+     4.50144165661186
+    ],
+    "median": 4.515444277785718,
+    "rel_spread": 0.004693419412210227
+   },
+   "per_slate_ms_with_h2d_median": {
+    "values": [
+     4.88469353877008,
+     4.802500596269965,
+     4.849587567150593
+    ],
+    "median": 4.849587567150593,
+    "rel_spread": 0.01694843970997877
+   },
+   "us_per_candidate": {
+    "values": [
+     25.323848994042734,
+     25.169267460388447,
+     25.17978333791314
+    ],
+    "median": 25.17978333791314,
+    "rel_spread": 0.00613911293754201
+   },
+   "total_all_slates_s": {
+    "values": [
+     0.4199453878682107,
+     0.41738196229562163,
+     0.4175563470926136
+    ],
+    "median": 0.4175563470926136,
+    "rel_spread": 0.006139112937541995
+   },
+   "batch128_ms_per_batch": {
+    "values": [
+     3.2007950358092785,
+     3.1808929052203894,
+     3.1666329596191645
+    ],
+    "median": 3.1808929052203894,
+    "rel_spread": 0.010739775656718341
+   },
+   "batch128_us_per_candidate": {
+    "values": [
+     24.898638031125074,
+     24.844589003008906,
+     24.76896637984797
+    ],
+    "median": 24.844589003008906,
+    "rel_spread": 0.005219311587782717
+   },
+   "loop_check_ratio": [
+    {
+     "aten_ops": 1.0,
+     "cuda_kernels": 1.0
+    },
+    {
+     "aten_ops": 1.0,
+     "cuda_kernels": 1.0
+    },
+    {
+     "aten_ops": 1.0,
+     "cuda_kernels": 1.0
+    }
+   ],
+   "per_sample_loop_flag": false,
+   "loop_flag_note": "time_inference's flag fires on a count ratio > 2 at B=16 vs 128; for the SWITCHED model the extra ops are the per-BIN loop (B=16 occupies fewer of the 6 bins), not a per-sample loop -- single (no bins) has ratio 1.00",
+   "pool_size": {
+    "n": 100,
+    "median": 167.5,
+    "p10": 142.7,
+    "p90": 186.0,
+    "mean": 165.83,
+    "min": 86.0,
+    "max": 191.0,
+    "total": 16583.0
+   },
+   "gpu": "NVIDIA GeForce RTX 4070 Laptop GPU"
+  },
+  "switched_cpu": {
+   "status": "complete",
+   "command": "/home/alon/anaconda3/envs/pme/bin/python -u experiments/EXP-0062-flex-v2-train-rerun/code/time_inference.py --model lf_flex_switched --ckpt weights/MODEL-0009-linear-foresight-flex-mask-v2/checkpoint.pt --name lf_v2_switched_cpu --device cpu --png 0 --out experiments/EXP-0062-flex-v2-train-rerun/results/timing_lf_parts/switched_cpu.json",
+   "device_requested": "cpu",
+   "output_device": [
+    "cpu"
+   ],
+   "contended": false,
+   "per_slate_ms_median": {
+    "values": [
+     55.43311056680977,
+     56.24353338498622,
+     55.68582296837121
+    ],
+    "median": 55.68582296837121,
+    "rel_spread": 0.014553485518868195
+   },
+   "per_slate_ms_p90": {
+    "values": [
+     59.71991040278226,
+     60.04960802383721,
+     59.901907038874924
+    ],
+    "median": 59.901907038874924,
+    "rel_spread": 0.00550395867765915
+   },
+   "per_slate_ms_with_h2d_median": {
+    "values": [
+     55.98417890723795,
+     55.93762348871678,
+     55.6103769922629
+    ],
+    "median": 55.93762348871678,
+    "rel_spread": 0.006682477582381507
+   },
+   "us_per_candidate": {
+    "values": [
+     332.1662543856292,
+     334.82836125512785,
+     333.442937477485
+    ],
+    "median": 333.442937477485,
+    "rel_spread": 0.007983695470168405
+   },
+   "total_all_slates_s": {
+    "values": [
+     5.508312996476889,
+     5.552458714693785,
+     5.529484232189134
+    ],
+    "median": 5.529484232189134,
+    "rel_spread": 0.007983695470168414
+   },
+   "batch128_ms_per_batch": {
+    "values": [
+     46.984455082565546,
+     46.89802089706063,
+     46.96832690387964
+    ],
+    "median": 46.96832690387964,
+    "rel_spread": 0.001840265370359057
+   },
+   "batch128_us_per_candidate": {
+    "values": [
+     366.02022304606186,
+     366.07441526671596,
+     366.4749388818994
+    ],
+    "median": 366.07441526671596,
+    "rel_spread": 0.001242140441599105
+   },
+   "loop_check_ratio": [
+    {
+     "aten_ops": 2.8294956140350878,
+     "cuda_kernels": 0.0
+    },
+    {
+     "aten_ops": 2.8294956140350878,
+     "cuda_kernels": 0.0
+    },
+    {
+     "aten_ops": 2.8294956140350878,
+     "cuda_kernels": 0.0
+    }
+   ],
+   "per_sample_loop_flag": true,
+   "loop_flag_note": "time_inference's flag fires on a count ratio > 2 at B=16 vs 128; for the SWITCHED model the extra ops are the per-BIN loop (B=16 occupies fewer of the 6 bins), not a per-sample loop -- single (no bins) has ratio 1.00",
+   "pool_size": {
+    "n": 100,
+    "median": 167.5,
+    "p10": 142.7,
+    "p90": 186.0,
+    "mean": 165.83,
+    "min": 86.0,
+    "max": 191.0,
+    "total": 16583.0
+   },
+   "gpu": "NVIDIA GeForce RTX 4070 Laptop GPU"
+  },
+  "switched_cuda": {
+   "status": "complete",
+   "command": "/home/alon/anaconda3/envs/pme/bin/python -u experiments/EXP-0062-flex-v2-train-rerun/code/time_inference.py --model lf_flex_switched --ckpt weights/MODEL-0009-linear-foresight-flex-mask-v2/checkpoint.pt --name lf_v2_switched_cuda --device cuda --png 0 --out experiments/EXP-0062-flex-v2-train-rerun/results/timing_lf_parts/switched_cuda.json",
+   "device_requested": "cuda",
+   "output_device": [
+    "cuda:0"
+   ],
+   "contended": false,
+   "per_slate_ms_median": {
+    "values": [
+     10.57537249289453,
+     10.43592148926109,
+     10.34991187043488
+    ],
+    "median": 10.43592148926109,
+    "rel_spread": 0.021604285035265597
+   },
+   "per_slate_ms_p90": {
+    "values": [
+     11.28915201406926,
+     11.406435281969607,
+     11.21406031306833
+    ],
+    "median": 11.28915201406926,
+    "rel_spread": 0.01704069257474137
+   },
+   "per_slate_ms_with_h2d_median": {
+    "values": [
+     12.735632131807506,
+     12.741581536829472,
+     12.557463604025543
+    ],
+    "median": 12.735632131807506,
+    "rel_spread": 0.01445691355547955
+   },
+   "us_per_candidate": {
+    "values": [
+     64.3824998641815,
+     63.74406533622756,
+     63.50935107118483
+    ],
+    "median": 63.74406533622756,
+    "rel_spread": 0.0136977268141138
+   },
+   "total_all_slates_s": {
+    "values": [
+     1.0676549952477217,
+     1.0570678354706615,
+     1.053175568813458
+    ],
+    "median": 1.0570678354706615,
+    "rel_spread": 0.01369772681411368
+   },
+   "batch128_ms_per_batch": {
+    "values": [
+     9.666581870988011,
+     9.963231161236763,
+     9.629884967580438
+    ],
+    "median": 9.666581870988011,
+    "rel_spread": 0.034484391494866054
+   },
+   "batch128_us_per_candidate": {
+    "values": [
+     74.49966373554676,
+     76.97859529812834,
+     74.27387125541946
+    ],
+    "median": 74.49966373554676,
+    "rel_spread": 0.03630518457519351
+   },
+   "loop_check_ratio": [
+    {
+     "aten_ops": 2.841601392515231,
+     "cuda_kernels": 2.804295942720764
+    },
+    {
+     "aten_ops": 2.841601392515231,
+     "cuda_kernels": 2.804295942720764
+    },
+    {
+     "aten_ops": 2.841601392515231,
+     "cuda_kernels": 2.804295942720764
+    }
+   ],
+   "per_sample_loop_flag": true,
+   "loop_flag_note": "time_inference's flag fires on a count ratio > 2 at B=16 vs 128; for the SWITCHED model the extra ops are the per-BIN loop (B=16 occupies fewer of the 6 bins), not a per-sample loop -- single (no bins) has ratio 1.00",
+   "pool_size": {
+    "n": 100,
+    "median": 167.5,
+    "p10": 142.7,
+    "p90": 186.0,
+    "mean": 165.83,
+    "min": 86.0,
+    "max": 191.0,
+    "total": 16583.0
+   },
+   "gpu": "NVIDIA GeForce RTX 4070 Laptop GPU"
+  },
+  "switched_cuda_asis": {
+   "status": "complete",
+   "command": "/home/alon/anaconda3/envs/pme/bin/python -u experiments/EXP-0062-flex-v2-train-rerun/code/time_inference.py --model lf_flex_switched --ckpt weights/MODEL-0009-linear-foresight-flex-mask-v2/checkpoint.pt --name lf_v2_switched_cuda_asis --device cuda --png 0 --out experiments/EXP-0062-flex-v2-train-rerun/results/timing_lf_parts/switched_cuda_asis.json",
+   "device_requested": "cuda",
+   "output_device": [
+    "cuda:0"
+   ],
+   "contended": false,
+   "per_slate_ms_median": {
+    "values": [
+     45.845863060094416,
+     45.8791465498507,
+     45.89038097765297
+    ],
+    "median": 45.8791465498507,
+    "rel_spread": 0.0009703301152339265
+   },
+   "per_slate_ms_p90": {
+    "values": [
+     46.47255185991526,
+     46.34473717305809,
+     46.49232332594693
+    ],
+    "median": 46.47255185991526,
+    "rel_spread": 0.0031757703629813885
+   },
+   "per_slate_ms_with_h2d_median": {
+    "values": [
+     48.200202523730695,
+     48.08936605695635,
+     48.00849698949605
+    ],
+    "median": 48.08936605695635,
+    "rel_spread": 0.003986443364788584
+   },
+   "us_per_candidate": {
+    "values": [
+     277.03294922909794,
+     277.12837261422595,
+     277.2915548273341
+    ],
+    "median": 277.12837261422595,
+    "rel_spread": 0.0009331617538711858
+   },
+   "total_all_slates_s": {
+    "values": [
+     4.594037397066131,
+     4.595619803061709,
+     4.598325853701681
+    ],
+    "median": 4.595619803061709,
+    "rel_spread": 0.0009331617538710655
+   },
+   "batch128_ms_per_batch": {
+    "values": [
+     45.19174597226083,
+     45.33963883295655,
+     45.26244197040796
+    ],
+    "median": 45.26244197040796,
+    "rel_spread": 0.003267452091789707
+   },
+   "batch128_us_per_candidate": {
+    "values": [
+     347.82991563468585,
+     349.2085936666753,
+     348.6788469009587
+    ],
+    "median": 348.6788469009587,
+    "rel_spread": 0.003954005366953264
+   },
+   "loop_check_ratio": [
+    {
+     "aten_ops": 2.8424242424242423,
+     "cuda_kernels": 2.8052256532066506
+    },
+    {
+     "aten_ops": 2.8424242424242423,
+     "cuda_kernels": 2.8052256532066506
+    },
+    {
+     "aten_ops": 2.8424242424242423,
+     "cuda_kernels": 2.8052256532066506
+    }
+   ],
+   "per_sample_loop_flag": true,
+   "loop_flag_note": "time_inference's flag fires on a count ratio > 2 at B=16 vs 128; for the SWITCHED model the extra ops are the per-BIN loop (B=16 occupies fewer of the 6 bins), not a per-sample loop -- single (no bins) has ratio 1.00",
+   "pool_size": {
+    "n": 100,
+    "median": 167.5,
+    "p10": 142.7,
+    "p90": 186.0,
+    "mean": 165.83,
+    "min": 86.0,
+    "max": 191.0,
+    "total": 16583.0
+   },
+   "gpu": "NVIDIA GeForce RTX 4070 Laptop GPU"
+  }
+ },
+ "breakdown": {
+  "cpu": {
+   "device": "cpu",
+   "ckpt": "weights/MODEL-0009-linear-foresight-flex-mask-v2/checkpoint.pt",
+   "n_slates": 100,
+   "n_candidates": 16583,
+   "gpu": "NVIDIA GeForce RTX 4070 Laptop GPU",
+   "operator_bytes_each": 67108864,
+   "n_operators": 6,
+   "predict_occ_operators_on_cpu": {
+    "per_slate_ms_median": 55.44172343797982,
+    "total_all_slates_s": 5.526278453180566,
+    "us_per_candidate": 333.24962028466297
+   },
+   "predict_occ_operators_resident": {
+    "per_slate_ms_median": 55.09247293230146,
+    "total_all_slates_s": 5.4722626155707985,
+    "us_per_candidate": 329.99231837247777
+   },
+   "staged_resident": {
+    "total_s_per_pass": 5.4789889402066665,
+    "per_slate_ms": 54.78988940206666,
+    "share": {
+     "operator_matmul": 0.672710406275386,
+     "validity_blend": 0.15387773295888463,
+     "unwarp": 0.08807099024876128,
+     "warp": 0.05809268677693026,
+     "mask_any_sync": 0.011664505007949365,
+     "scatter": 0.008451222087227078,
+     "pixels_bins": 0.007132456644861406
+    },
+    "ms_per_slate": {
+     "pixels_bins": 0.390786510736992,
+     "mask_any_sync": 0.6390969393153986,
+     "warp": 3.18289188357691,
+     "operator_matmul": 36.85772875944773,
+     "unwarp": 4.8253998152601225,
+     "validity_blend": 8.430943970258037,
+     "scatter": 0.46304152347147465
+    },
+    "note": "sync after every stage inflates the total vs predict_occ; read shares"
+   },
+   "syncs_per_call": {
+    "bool_m_any": 6,
+    "occupied_bins_per_slate_median": 6.0,
+    "note": "predict_switched: one bool(m.any()) per bin -> 6 host syncs per call, plus boolean-mask indexing (occ[m]) which also syncs to size the output"
+   }
+  },
+  "cuda": {
+   "device": "cuda",
+   "ckpt": "weights/MODEL-0009-linear-foresight-flex-mask-v2/checkpoint.pt",
+   "n_slates": 100,
+   "n_candidates": 16583,
+   "gpu": "NVIDIA GeForce RTX 4070 Laptop GPU",
+   "operator_bytes_each": 67108864,
+   "n_operators": 6,
+   "predict_occ_operators_on_cpu": {
+    "per_slate_ms_median": 46.01323651149869,
+    "total_all_slates_s": 4.6014132166747,
+    "us_per_candidate": 277.47773121116205
+   },
+   "predict_occ_operators_resident": {
+    "per_slate_ms_median": 10.152465547434986,
+    "total_all_slates_s": 1.0150915230624378,
+    "us_per_candidate": 61.212779537022115
+   },
+   "staged_resident": {
+    "total_s_per_pass": 1.2061990934113662,
+    "per_slate_ms": 12.061990934113663,
+    "share": {
+     "validity_blend": 0.33959216600479675,
+     "unwarp": 0.21721481813241295,
+     "operator_matmul": 0.17186737015157405,
+     "warp": 0.15624218051728722,
+     "mask_any_sync": 0.06492856789346826,
+     "scatter": 0.03150715075240024,
+     "pixels_bins": 0.01864774654806055
+    },
+    "ms_per_slate": {
+     "pixels_bins": 0.22492894980435568,
+     "mask_any_sync": 0.7831677972959976,
+     "warp": 1.8845917649256685,
+     "operator_matmul": 2.073062660638243,
+     "unwarp": 2.620043167068313,
+     "validity_blend": 4.09615762764588,
+     "scatter": 0.3800389667352041
+    },
+    "note": "sync after every stage inflates the total vs predict_occ; read shares"
+   },
+   "syncs_per_call": {
+    "bool_m_any": 6,
+    "occupied_bins_per_slate_median": 6.0,
+    "note": "predict_switched: one bool(m.any()) per bin -> 6 host syncs per call, plus boolean-mask indexing (occ[m]) which also syncs to size the output"
+   }
+  }
+ }
+}

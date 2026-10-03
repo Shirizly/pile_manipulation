@@ -1,0 +1,5 @@
+nfd_3ch_narrow_l20                   acc1 +0.506 (scatter +0.441, clump +0.523) rollout +0.467 +0.416 +0.369 +0.348  slateN 0.774
+nfd_3ch_narrow_l20_wide              acc1 +0.486 (scatter +0.413, clump +0.505) rollout +0.444 +0.397 +0.351 +0.336  slateN 0.803
+linear_narrow_l20_res32              acc1 +0.404 (scatter +0.193, clump +0.464) rollout +0.375 +0.344 +0.304 +0.291  slateN 0.648
+linear_narrow_l20_res64              acc1 +0.452 (scatter +0.292, clump +0.496) rollout +0.421 +0.375 +0.337 +0.324  slateN 0.582
+wrote /home/alon/Code/pile_manipulation/experiments/EXP-0053-narrow-domain-models/results/offline_eval.json

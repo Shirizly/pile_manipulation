@@ -1,0 +1,92 @@
+{
+ "_meta": {
+  "n_rows": 1991,
+  "n_val": 1991,
+  "plate_px": 10.666666666666666,
+  "persistence": {
+   "frobenius": 12.551839828491211,
+   "rms": 0.563438892364502,
+   "l1_per_mass": 0.7706955671310425,
+   "soft_iou": 0.5288904309272766,
+   "explained": 0.0,
+   "accuracy": 0.0
+  },
+  "rows_seed": 0,
+  "occ_source": "image_mask"
+ },
+ "n200_plane0.24": {
+  "cfg": {
+   "particle_num": 200,
+   "depth_mode": "plane",
+   "plane_y": 0.24,
+   "carry_k": 1
+  },
+  "accuracy": 0.25169289112091064,
+  "rms": 0.4216253161430359,
+  "soft_iou": 0.6618940234184265,
+  "renderer_identity_mismatch_px": 0.0,
+  "node": {
+   "node_rmse_model": 0.41343745589256287,
+   "node_rmse_persist": 1.052780270576477,
+   "node_rmse_model_moved": 1.1047940254211426,
+   "node_rmse_persist_moved": 3.019042491912842,
+   "n_nodes_moved": 9722,
+   "n_nodes": 80000,
+   "node_accuracy": 0.6072898899727912,
+   "node_accuracy_moved": 0.634058139830568
+  },
+  "n_node_rows": 400,
+  "seconds": 619.1690452098846,
+  "mean_den": 2195.029093583585
+ },
+ "n200_true": {
+  "cfg": {
+   "particle_num": 200,
+   "depth_mode": "true",
+   "plane_y": 0.0,
+   "carry_k": 1
+  },
+  "accuracy": 0.25493353605270386,
+  "rms": 0.41979941725730896,
+  "soft_iou": 0.6638780236244202,
+  "renderer_identity_mismatch_px": 0.0,
+  "node": {
+   "node_rmse_model": 0.40385058522224426,
+   "node_rmse_persist": 1.055273175239563,
+   "node_rmse_model_moved": 1.0976823568344116,
+   "node_rmse_persist_moved": 3.0240883827209473,
+   "n_nodes_moved": 9736,
+   "n_nodes": 80000,
+   "node_accuracy": 0.6173023301472966,
+   "node_accuracy_moved": 0.6370204114713197
+  },
+  "n_node_rows": 400,
+  "seconds": 628.4332954883575,
+  "mean_den": 1991.0323896915697
+ },
+ "n200_plane0": {
+  "cfg": {
+   "particle_num": 200,
+   "depth_mode": "plane",
+   "plane_y": 0.0,
+   "carry_k": 1
+  },
+  "accuracy": 0.24862265586853027,
+  "rms": 0.42335522174835205,
+  "soft_iou": 0.66135174036026,
+  "renderer_identity_mismatch_px": 0.0,
+  "node": {
+   "node_rmse_model": 0.40336668491363525,
+   "node_rmse_persist": 1.046250343322754,
+   "node_rmse_model_moved": 1.1057145595550537,
+   "node_rmse_persist_moved": 3.021695613861084,
+   "n_nodes_moved": 9585,
+   "n_nodes": 80000,
+   "node_accuracy": 0.6144644659015398,
+   "node_accuracy_moved": 0.6340748040659907
+  },
+  "n_node_rows": 400,
+  "seconds": 551.7222764492035,
+  "mean_den": 2145.3378193692884
+ }
+}

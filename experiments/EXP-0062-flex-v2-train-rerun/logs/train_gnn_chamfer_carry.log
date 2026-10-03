@@ -1,0 +1,60 @@
+FlexPileData(DS-0020, split=train, exclude_flagged=True): 17070 rows; flagged nan=0 escaped=1657 out_of_grid=109 null=245 -> kept 15093
+[Windows train R=5] 8289 windows, vmax 1129, fallback inputs 0
+FlexPileData(DS-0020, split=val, exclude_flagged=True): 1900 rows; flagged nan=0 escaped=208 out_of_grid=10 null=17 -> kept 1665
+[Windows val R=5] 911 windows, vmax 1025, fallback inputs 0
+[train] {'cmd': 'train', 'out': 'Baselines/GNN/runs/flex_v2_n30_chamfer_carry_s0', 'target': 'chamfer_carry', 'particle_num': 30, 'rollout': 5, 'batch': 4, 'lr': 0.001, 'seed': 0, 'max_epochs': 300, 'patience': 10, 'min_rel_delta': 0.005, 'max_wall_min': 25.0, 'save_min': 10.0, 'kill_after_iters': 0, 'resume': False, 'chamfer_sub': 384, 'device': 'cpu'} train windows 8289 val 911
+epoch 0 train~0.00194283 val 0.000956744 best 0.000956744@0 bad 0 (213.5s, wall 3.6 min)
+[ckpt] epoch epoch 1 pos 8289
+epoch 1 train~0.000758784 val 0.000372744 best 0.000372744@1 bad 0 (280.8s, wall 8.2 min)
+[ckpt] epoch epoch 2 pos 8289
+epoch 2 train~0.00061055 val 0.000500286 best 0.000372744@1 bad 1 (252.7s, wall 12.5 min)
+[ckpt] epoch epoch 3 pos 8289
+epoch 3 train~0.000579127 val 0.000368689 best 0.000368689@3 bad 0 (262.4s, wall 16.8 min)
+[ckpt] epoch epoch 4 pos 8289
+epoch 4 train~0.000459695 val 0.000821891 best 0.000368689@3 bad 1 (279.6s, wall 21.5 min)
+[ckpt] epoch epoch 5 pos 8289
+epoch 5 train~0.000467223 val 0.000340923 best 0.000340923@5 bad 0 (248.9s, wall 25.6 min)
+[ckpt] epoch epoch 6 pos 8289
+[stop] wall budget 25.0 min
+[done] 0.0003409228420792849 5
+FlexPileData(DS-0020, split=train, exclude_flagged=True): 17070 rows; flagged nan=0 escaped=1657 out_of_grid=109 null=245 -> kept 15093
+[Windows train R=5] 8289 windows, vmax 1129, fallback inputs 0
+FlexPileData(DS-0020, split=val, exclude_flagged=True): 1900 rows; flagged nan=0 escaped=208 out_of_grid=10 null=17 -> kept 1665
+[Windows val R=5] 911 windows, vmax 1025, fallback inputs 0
+[resume] epoch 6 pos 8289 best 0.000340923@5
+epoch 6 train~0.000498863 val 0.000366697 best 0.000340923@5 bad 1 (324.3s, wall 31.0 min)
+[ckpt] epoch epoch 7 pos 8289
+epoch 7 train~0.000485683 val 0.000541809 best 0.000340923@5 bad 2 (295.0s, wall 36.0 min)
+[ckpt] epoch epoch 8 pos 8289
+epoch 8 train~0.000431191 val 0.000355997 best 0.000340923@5 bad 3 (265.9s, wall 40.4 min)
+[ckpt] epoch epoch 9 pos 8289
+epoch 9 train~0.000448734 val 0.000395771 best 0.000340923@5 bad 4 (263.8s, wall 44.8 min)
+[ckpt] epoch epoch 10 pos 8289
+epoch 10 train~0.000491235 val 0.000560647 best 0.000340923@5 bad 5 (215.0s, wall 48.4 min)
+[ckpt] epoch epoch 11 pos 8289
+epoch 11 train~0.000402968 val 0.000308174 best 0.000308174@11 bad 0 (263.7s, wall 52.8 min)
+[ckpt] epoch epoch 12 pos 8289
+epoch 12 train~0.000393376 val 0.00029811 best 0.00029811@12 bad 0 (253.7s, wall 57.0 min)
+[ckpt] epoch epoch 13 pos 8289
+epoch 13 train~0.000415823 val 0.000322462 best 0.00029811@12 bad 1 (240.3s, wall 61.0 min)
+[ckpt] epoch epoch 14 pos 8289
+epoch 14 train~0.000386797 val 0.000324873 best 0.00029811@12 bad 2 (203.2s, wall 64.4 min)
+[ckpt] epoch epoch 15 pos 8289
+epoch 15 train~0.000467546 val 0.000301668 best 0.00029811@12 bad 3 (147.8s, wall 66.8 min)
+[ckpt] epoch epoch 16 pos 8289
+epoch 16 train~0.000376091 val 0.000347224 best 0.00029811@12 bad 4 (147.1s, wall 69.3 min)
+[ckpt] epoch epoch 17 pos 8289
+epoch 17 train~0.000390793 val 0.000320176 best 0.00029811@12 bad 5 (123.2s, wall 71.4 min)
+[ckpt] epoch epoch 18 pos 8289
+epoch 18 train~0.000392372 val 0.000310975 best 0.00029811@12 bad 6 (123.9s, wall 73.4 min)
+[ckpt] epoch epoch 19 pos 8289
+epoch 19 train~0.000365726 val 0.000326959 best 0.00029811@12 bad 7 (124.5s, wall 75.5 min)
+[ckpt] epoch epoch 20 pos 8289
+epoch 20 train~0.000353278 val 0.000317063 best 0.00029811@12 bad 8 (123.0s, wall 77.5 min)
+[ckpt] epoch epoch 21 pos 8289
+epoch 21 train~0.000426897 val 0.000324761 best 0.00029811@12 bad 9 (124.7s, wall 79.6 min)
+[ckpt] epoch epoch 22 pos 8289
+epoch 22 train~0.000368274 val 0.00030622 best 0.00029811@12 bad 10 (124.7s, wall 81.7 min)
+[ckpt] epoch epoch 23 pos 8289
+[stop] plateau: 10 epochs without a 0.500% relative val improvement
+[done] 0.00029811034611355755 12

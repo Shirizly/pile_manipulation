@@ -1,0 +1,7 @@
+FlexPileData(DS-0019, split=all, exclude_flagged=True): 17186 rows; flagged nan=0 escaped=397 out_of_grid=47 null=159 -> kept 16583
+[ds0019] 16583 rows, row order + persistence == EXP-0061 (13s)
+nfd_v2_s0 acc 0.5490 {'lyapunov': 0.961, 'mass_in_region': 0.9249, 'signed_mass': 0.933}
+nfd_v1_s0_rescored acc 0.4895 {'lyapunov': 0.9481, 'mass_in_region': 0.8775, 'signed_mass': 0.8963}
+FlexPileData(DS-0020, split=val, exclude_flagged=True): 1900 rows; flagged nan=0 escaped=208 out_of_grid=10 null=17 -> kept 1665
+val nfd_v2_s0 acc 0.5052
+val nfd_v1_s0_rescored acc 0.4290

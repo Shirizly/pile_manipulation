@@ -814,10 +814,24 @@ class OccupancyGradientAdapter:
         # `assert_dv_convention` checks the pair against goal geometry.
         self.value_fn = "lyapunov"
         self.higher_is_better = False
+        # Soft-occupancy models (EXP-0063, `occupancy_blur` dataset transform)
+        # were trained on Gaussian-blurred input rasters; > 0 here blurs a
+        # RASTER-BUILT input in `encode_state`. The model's own predictions
+        # are already in that representation and are fed back unblurred.
+        self.input_blur_sigma = 0.0
 
     # ── state ────────────────────────────────────────────────────────────────
+    def encode_state(self, occ):
+        """Raster occupancy (`occ_from_particles`) -> this model's input
+        representation. Call it on every model input built from particles,
+        never on a predicted occupancy being rolled forward."""
+        if self.input_blur_sigma > 0:
+            from transforms.functional import gaussian_blur_occ
+            return gaussian_blur_occ(occ, self.input_blur_sigma)
+        return occ
+
     def state_from_particles(self, states):
-        return occ_from_particles(states, self.device)
+        return self.encode_state(occ_from_particles(states, self.device))
 
     def expand_state(self, state, n_sample):
         return state.expand(n_sample, *state.shape[1:]).clone()
@@ -880,6 +894,7 @@ class PredictorGradientAdapter(OccupancyGradientAdapter):
         for p in self.predictor.model.parameters():
             p.requires_grad_(False)
         self._forward = _undecorated(type(predictor).predict_occ)
+        self.input_blur_sigma = float(getattr(predictor, "input_blur_sigma", 0.0))
 
     def predict_step(self, occ, act):
         out = self._forward(self.predictor, self._batch(occ, act))
@@ -1040,6 +1055,15 @@ for _seed in (1, 2):
     _ck = f"Baselines/NFD/runs/nfd_3ch_narrow_l20_v2_seed{_seed}/unet_best.pth"
     if _os.path.exists(_ck):
         OCC_ADAPTERS[f"nfd_3ch_narrow_l20_v2_seed{_seed}"] = _nfd(_ck)
+
+# EXP-0063 pilot variants of nfd_3ch_narrow_l20_v2 (same recipe, ONE change each): soft
+# occupancy (occupancy_blur sigma 1/2 px on input + target; the predictor reads the sigma
+# from the run's run_config.yaml and the adapter's `encode_state` blurs raster inputs) and
+# a condensed-output loss term (loss.sharpness 0.3/0.7).
+for _arm in ("soft_s1", "soft_s2", "sharp_w03", "sharp_w07"):
+    _ck = f"Baselines/NFD/runs/nfd_3ch_narrow_l20_v2_{_arm}/unet_best.pth"
+    if _os.path.exists(_ck):
+        OCC_ADAPTERS[f"nfd_3ch_narrow_l20_v2_{_arm}"] = _nfd(_ck)
 
 # EXP-0059 section 8: NFD with a retrieved reference + controls, registered
 # once each is trained.

@@ -1,0 +1,66 @@
+[train] {'cmd': 'train', 'out': 'Baselines/GNN/runs/flex_v2_n30_particle_s0', 'target': 'particle', 'particle_num': 30, 'rollout': 5, 'batch': 4, 'lr': 0.001, 'seed': 0, 'max_epochs': 300, 'patience': 10, 'min_rel_delta': 0.005, 'max_wall_min': 25.0, 'save_min': 0.5, 'kill_after_iters': 0, 'resume': False, 'chamfer_sub': 384, 'device': 'cpu'} train windows 8289 val 911
+[ckpt] mid-epoch epoch 0 pos 1904
+[ckpt] mid-epoch epoch 0 pos 3924
+[ckpt] mid-epoch epoch 0 pos 5688
+[ckpt] mid-epoch epoch 0 pos 7292
+epoch 0 train~0.0017108 val 0.00133162 best 0.00133162@0 bad 0 (27.9s, wall 2.5 min)
+[ckpt] epoch epoch 1 pos 8289
+[ckpt] mid-epoch epoch 1 pos 1332
+[resume] epoch 1 pos 1332 best 0.00133162@0
+epoch 1 train~0.00115567 val 0.00109998 best 0.00109998@1 bad 0 (121.2s, wall 5.0 min)
+[ckpt] epoch epoch 2 pos 8289
+epoch 2 train~0.00123415 val 0.00100096 best 0.00100096@2 bad 0 (159.8s, wall 7.7 min)
+[ckpt] epoch epoch 3 pos 8289
+epoch 3 train~0.0011114 val 0.00102123 best 0.00100096@2 bad 1 (161.6s, wall 10.3 min)
+[ckpt] epoch epoch 4 pos 8289
+epoch 4 train~0.00106286 val 0.00102827 best 0.00100096@2 bad 2 (137.2s, wall 12.6 min)
+[ckpt] epoch epoch 5 pos 8289
+epoch 5 train~0.00103318 val 0.00102479 best 0.00100096@2 bad 3 (151.7s, wall 15.2 min)
+[ckpt] epoch epoch 6 pos 8289
+epoch 6 train~0.00108829 val 0.00100688 best 0.00100096@2 bad 4 (121.1s, wall 17.2 min)
+[ckpt] epoch epoch 7 pos 8289
+epoch 7 train~0.00103879 val 0.000970162 best 0.000970162@7 bad 0 (140.4s, wall 19.5 min)
+[ckpt] epoch epoch 8 pos 8289
+epoch 8 train~0.00101701 val 0.000947258 best 0.000947258@8 bad 0 (137.2s, wall 21.8 min)
+[ckpt] epoch epoch 9 pos 8289
+epoch 9 train~0.000971351 val 0.000964951 best 0.000947258@8 bad 1 (145.4s, wall 24.2 min)
+[ckpt] epoch epoch 10 pos 8289
+epoch 10 train~0.000948782 val 0.0010199 best 0.000947258@8 bad 2 (81.1s, wall 25.6 min)
+[ckpt] epoch epoch 11 pos 8289
+[stop] wall budget 25.0 min
+[done] 0.0009472575779844783 8
+[resume] epoch 11 pos 8289 best 0.000947258@8
+epoch 11 train~0.00112994 val 0.00103455 best 0.000947258@8 bad 3 (135.6s, wall 27.8 min)
+[ckpt] epoch epoch 12 pos 8289
+epoch 12 train~0.000973037 val 0.00104618 best 0.000947258@8 bad 4 (161.8s, wall 30.5 min)
+[ckpt] epoch epoch 13 pos 8289
+epoch 13 train~0.0010362 val 0.00103393 best 0.000947258@8 bad 5 (155.9s, wall 33.1 min)
+[ckpt] epoch epoch 14 pos 8289
+epoch 14 train~0.000948423 val 0.000945428 best 0.000945428@14 bad 6 (195.0s, wall 36.4 min)
+[ckpt] epoch epoch 15 pos 8289
+epoch 15 train~0.00091978 val 0.0009645 best 0.000945428@14 bad 7 (220.6s, wall 40.1 min)
+[ckpt] epoch epoch 16 pos 8289
+epoch 16 train~0.00109318 val 0.000917577 best 0.000917577@16 bad 0 (178.7s, wall 43.0 min)
+[ckpt] epoch epoch 17 pos 8289
+epoch 17 train~0.00102769 val 0.000942112 best 0.000917577@16 bad 1 (162.5s, wall 45.7 min)
+[ckpt] epoch epoch 18 pos 8289
+epoch 18 train~0.000973492 val 0.000944827 best 0.000917577@16 bad 2 (140.2s, wall 48.1 min)
+[ckpt] epoch epoch 19 pos 8289
+epoch 19 train~0.000958136 val 0.000935104 best 0.000917577@16 bad 3 (98.5s, wall 49.7 min)
+[ckpt] epoch epoch 20 pos 8289
+epoch 20 train~0.000888262 val 0.000959668 best 0.000917577@16 bad 4 (145.5s, wall 52.2 min)
+[ckpt] epoch epoch 21 pos 8289
+epoch 21 train~0.000948463 val 0.000971133 best 0.000917577@16 bad 5 (103.7s, wall 53.9 min)
+[ckpt] epoch epoch 22 pos 8289
+epoch 22 train~0.0010046 val 0.000977775 best 0.000917577@16 bad 6 (103.0s, wall 55.6 min)
+[ckpt] epoch epoch 23 pos 8289
+epoch 23 train~0.000972228 val 0.00096088 best 0.000917577@16 bad 7 (106.1s, wall 57.4 min)
+[ckpt] epoch epoch 24 pos 8289
+epoch 24 train~0.000905817 val 0.000962823 best 0.000917577@16 bad 8 (103.9s, wall 59.1 min)
+[ckpt] epoch epoch 25 pos 8289
+epoch 25 train~0.000939873 val 0.00101635 best 0.000917577@16 bad 9 (121.0s, wall 61.1 min)
+[ckpt] epoch epoch 26 pos 8289
+epoch 26 train~0.000976416 val 0.000938773 best 0.000917577@16 bad 10 (131.2s, wall 63.3 min)
+[ckpt] epoch epoch 27 pos 8289
+[stop] plateau: 10 epochs without a 0.500% relative val improvement
+[done] 0.0009175774452974765 16

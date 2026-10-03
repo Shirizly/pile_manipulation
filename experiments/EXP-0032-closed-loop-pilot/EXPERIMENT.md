@@ -37,3 +37,10 @@ verdict: supported
 downgrades: [imprecision, incomplete-design]
 grade: low
 ---
+
+## Later evidence (2026-10-03 audit)
+
+Added by the cross-experiment audit (summary: `experiments/SUMMARY.md`). Numbers above are unchanged.
+
+- Superseded: EXP-0042 found these planner defaults far from optimum (C-047); EXP-0039 / EXP-0043 / EXP-0044 are the powered closed-loop runs (with tuning, model differences shrink to seed size, C-049).
+- ISS-013: planner candidates / initialisations in this record came from the pre-fix pile-aware sampler (ISS-010 class, ~half illegal touchdowns in audited banks); executed pushes have not been audited for touchdown legality.

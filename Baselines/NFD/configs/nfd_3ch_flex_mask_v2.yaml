@@ -1,0 +1,78 @@
+# NFD (non-FiLM, 3-channel) on FleX binary image masks, DS-0020 **v2** -- EXP-0062
+# (rerun of EXP-0061 with the new in-domain training collection). Copy of
+# Baselines/NFD/configs/nfd_3ch_flex_mask.yaml (whose header lists every deviation from
+# nfd_train_3ch_randlen.yaml; all of those still apply EXCEPT items 3, 5, 6 there).
+# Deviations from nfd_3ch_flex_mask.yaml:
+#  a. dataset block = configs/dataset/flex_ds0020v2_train_ds0019_test.yaml (DS-0020 v2,
+#     splits.json: 1707/190 trajectories, trajectories 0-99 EXCLUDED for DS-0019 leakage;
+#     15,093 / 1,665 kept rows after exclude_flagged). Test pass = DS-0019 (all 100 slates).
+#  b. epochs 250 (cap) + plateau stop: patience 20 with patience_min_rel_delta 0.005 (stop
+#     after 20 epochs with no val-loss improvement > 0.5 % relative; training/trainer.py knob
+#     added for this run). EXP-0061's 80 epochs were budget-forced and not converged.
+#  c. lr_scheduler.step_size 1000 (> cap): StepLR never fires -> constant LR 1e-4, as in
+#     EXP-0061 / randlen.
+#  d. output.log_dir Baselines/NFD/runs/nfd_3ch_flex_mask_v2_seed0; seed 0, shuffle_seed 0.
+# Unchanged: architecture, MSE loss, Adam lr 1e-4, batch 32, augmentation, AMP, grad clip 1.0,
+# occ_source image_mask (input AND target = binary top-down colour-image masks),
+# save_full_state true (last_state.pt atomic every epoch + every 10 min; resume with
+# train_nfd.py --resume).
+model:
+  type: nfd-unet3ch
+  in_channels: 3
+  out_channels: 1
+  features: [4, 8, 16]
+  kernel_size: 3
+  final_kernel_size: 1
+  activation: relu
+  residual: true
+  bottleneck_type: "None"
+  bottleneck_kwargs: {}
+  uses_physics: false
+
+dataset:
+  type: flex
+  instance: datasets/DS-0020-training-data-flex-N864/config.yaml
+  split_instances:
+    test:
+      instance: datasets/DS-0019-slates-flex-pile-varN/config.yaml
+      split: all
+  occ_source: image_mask
+  channels: 3
+  exclude_flagged: true
+  include_physics: false
+  transforms:
+    - type: ensure_representation
+      representation: eulerian
+    - type: eulerian_aliases
+
+training:
+  epochs: 250
+  batch_size: 32
+  lr: 0.0001
+  lr_scheduler:
+    type: StepLR
+    step_size: 1000
+    gamma: 0.75
+  augmentation: true
+  patience: 20
+  patience_min_rel_delta: 0.005
+  mixed_precision: true
+  grad_clip_norm: 1.0
+  save_every_n_epochs: 10
+  num_workers: 4
+  save_full_state: true
+  full_state_every_min: 10
+  shuffle_seed: 0
+  loss:
+    type: eulerian_combined
+    mse: 1.0
+    mass: 0.0
+    dice: 0.0
+    bce: 0.0
+    sharpness: 0.0
+    tv: 0.0
+    add: 0.0
+    remove: 0.0
+
+output:
+  log_dir: Baselines/NFD/runs/nfd_3ch_flex_mask_v2_seed0

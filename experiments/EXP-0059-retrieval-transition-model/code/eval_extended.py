@@ -157,6 +157,16 @@ def _predict_step_dispatch(ad, wants_particles, occ, act, states0=None):
     return ad.predict_step(occ, act)
 
 
+def _encode(ad, occ):
+    """Raster occupancy -> the model's input representation (identity except
+    for soft-occupancy models, EXP-0063: `OccupancyGradientAdapter.encode_state`).
+    Metric-side baselines (`prev`, rollout `start`, the pool's `o0` in vp) stay
+    the raster: vp's `- lyap(o0)` is one constant per pool, so the ranking is
+    unaffected either way."""
+    enc = getattr(ad, "encode_state", None)
+    return enc(occ) if enc is not None else occ
+
+
 def eval_occ_model(model_id, dev, ch, pools, Dist13, DistTough, Masks13, MasksTough):
     if model_id == "persistence":
         class _Persist:
@@ -173,8 +183,9 @@ def eval_occ_model(model_id, dev, ch, pools, Dist13, DistTough, Masks13, MasksTo
         o0 = occ_from_particles(d["states"].float(), dev)
         o1 = occ_from_particles(d["states_"].float(), dev)
         with torch.no_grad():
+            o0_in = _encode(ad, o0)
             p = torch.cat([_predict_step_dispatch(
-                              ad, wants_particles, o0[i:i + 128], act[i:i + 128].to(dev),
+                              ad, wants_particles, o0_in[i:i + 128], act[i:i + 128].to(dev),
                               d["states"][i:i + 128].to(dev) if wants_particles else None)
                           for i in range(0, len(act), 128)])
         preds.append(p.float().cpu()); truths.append(o1.float().cpu()); prevs.append(o0.float().cpu())
@@ -213,6 +224,7 @@ def eval_occ_model(model_id, dev, ch, pools, Dist13, DistTough, Masks13, MasksTo
                 continue
             cur = occ_from_particles(d["states"][rows[0]][None].float(), dev)
             start = cur.clone(); reg = torch.zeros(1, 64, 64, dtype=torch.bool)
+            cur = _encode(ad, cur)  # model input only; `start` (metric baseline) stays the raster
             for kk, i in enumerate(rows, 1):
                 act = torch.cat([d["p_starts"][i, :2], d["p_stops"][i, :2]])[None].float()
                 # true particles only exist for the FIRST rollout step (`cur` after that is a
@@ -242,7 +254,7 @@ def eval_occ_model(model_id, dev, ch, pools, Dist13, DistTough, Masks13, MasksTo
             truth_occ = occ_for_scoring(d["states_"][ix, :, :3].float()); t0 = occ_for_scoring(s0[:, :, :3])
             states0_pool = s0.expand(len(ix), -1, -1).contiguous().to(dev) if wants_particles else None
             with torch.no_grad():
-                po = _predict_step_dispatch(ad, wants_particles, o0.expand(len(ix), -1, -1).contiguous(),
+                po = _predict_step_dispatch(ad, wants_particles, _encode(ad, o0).expand(len(ix), -1, -1).contiguous(),
                                              act_all[ix].to(dev), states0_pool).float().cpu()
             for caps, mass_err, raw, Dist, Masks in ((caps13, mass_err13, raw13, Dist13, Masks13),
                                                      (capsT, mass_errT, rawT, DistTough, MasksTough)):

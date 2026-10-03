@@ -132,3 +132,11 @@ Full grid (t_act 0-10 s; T = 4, 8, 16 pushes at 1 s): results/analysis.json "tra
 At a 0.03 s budget the worldframe/CEM plateau (~0.063) matches EXP-0039's rank planner
 (~0.06). Picking the best of pile-aware candidates without refinement stalls whatever the
 model, which points at the candidate distribution rather than the models.
+
+## Later evidence (2026-10-03 audit)
+
+Added by the cross-experiment audit (summary: `experiments/SUMMARY.md`). Numbers above are unchanged.
+
+- EXP-0046: the plateau is 0.87-0.96 of achievable lyapunov; EXP-0051: in-goal mass for letters stalls at ~2/3 of possible -- the objective saturates, the task does not (C-050 note).
+- ISS-013: planner candidates / initialisations in this record came from the pre-fix pile-aware sampler (ISS-010 class, ~half illegal touchdowns in audited banks); executed pushes have not been audited for touchdown legality.
+- EXP-0065 RUN-0003 (C-067): executed closed-loop pushes include illegal touchdowns (blade on a cube); measured lower bounds per record in `experiments/EXP-0065-*/results/audit_closed_loop_actions.json` -- this record's episodes did not record states, so not measurable directly; sibling records show 16-53 %.

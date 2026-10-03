@@ -239,3 +239,9 @@ metric; `slateN` is what decides), `incomplete-design` (the cells below),
 * `mask_to_configuration` costs ~1 ms in the `grid` branch but the per-goal cost is
   strongly shape-dependent (letters fall back to rejection sampling): 2000 goals x 3
   samples took 82 s, with the first 500 in 0.7 s and the last 500 in ~14 s.
+
+## Later evidence (2026-10-03 audit)
+
+Added by the cross-experiment audit (summary: `experiments/SUMMARY.md`). Numbers above are unchanged.
+
+- ISS-002 (open): goal FEATURES were descriptors of rasterised configurations while TARGETS came from the raw (pre-fix, mirrored) mask arrays; this record's cache and its 51 persisted readouts are stale and must be regenerated before any number here is reused.

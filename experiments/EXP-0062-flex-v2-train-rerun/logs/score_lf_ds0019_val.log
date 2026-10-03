@@ -1,0 +1,23 @@
+FlexPileData(DS-0019, split=all, exclude_flagged=True): 17186 rows; flagged nan=0 escaped=397 out_of_grid=47 null=159 -> kept 16583
+[ds0019] 16583 rows (12s); bins {'equal': {'edges': [0.0, 1.5685969591140747, 3.1371939182281494, 4.705790996551514, 6.274388313293457, 7.842985153198242, 9.411581993103027], 'counts': [895, 3205, 3153, 3132, 3259, 2939]}, 'collection': {'edges': [0.9617000222206116, 2.4042000770568848, 3.8466999530792236, 5.2891998291015625, 6.7316999435424805, 8.174200057983398, 9.616700172424316], 'counts': [2688, 2754, 2707, 2817, 2867, 2750]}, 'v1_MODEL-0004': {'edges': [0.0, 2.2017018795013428, 4.4034037590026855, 6.605105400085449, 8.806806564331055, 11.008508682250977, 13.210210800170898], 'counts': [2229, 4454, 4156, 5403, 341, 0]}}
+[SwitchedLinearForesightPredictor] loaded weights/MODEL-0009-linear-foresight-flex-mask-v2/checkpoint.pt (6 bins, res=64, constraint=ridge, counts=[1722, 3973, 4530, 3435, 1323, 110])
+lf_v2_switched acc 0.4694 {'lyapunov': 0.9354, 'mass_in_region': 0.8845, 'signed_mass': 0.8973}
+[SingleLinearForesightPredictor] loaded weights/MODEL-0009-linear-foresight-flex-mask-v2/checkpoint.pt (res=64, fit on datasets/DS-0020-training-data-flex-N864/config.yaml split=train occ_source=image_mask (DS-0020 v2))
+lf_v2_single acc 0.3052 {'lyapunov': 0.6756, 'mass_in_region': 0.6833, 'signed_mass': 0.674}
+[SwitchedLinearForesightPredictor] loaded weights/MODEL-0009-linear-foresight-flex-mask-v2/alt_collection_bins/checkpoint.pt (6 bins, res=64, constraint=ridge, counts=[3712, 4057, 3940, 2630, 692, 62])
+lf_v2_switched_collection_bins acc 0.4602 {'lyapunov': 0.9341, 'mass_in_region': 0.8858, 'signed_mass': 0.8765}
+[SwitchedLinearForesightPredictor] loaded weights/MODEL-0004-linear-foresight-flex-mask/checkpoint.pt (6 bins, res=64, constraint=ridge, counts=[2124, 4867, 5325, 3961, 1424, 136])
+lf_v1_switched_rescored acc 0.3284 {'lyapunov': 0.8426, 'mass_in_region': 0.7105, 'signed_mass': 0.626}
+[SingleLinearForesightPredictor] loaded weights/MODEL-0004-linear-foresight-flex-mask/checkpoint.pt (res=64, fit on datasets/DS-0020-training-data-flex-N864/config.yaml split=train occ_source=image_mask)
+lf_v1_single_rescored acc 0.2394 {'lyapunov': 0.6771, 'mass_in_region': 0.5392, 'signed_mass': 0.5164}
+FlexPileData(DS-0020, split=val, exclude_flagged=True): 1900 rows; flagged nan=0 escaped=208 out_of_grid=10 null=17 -> kept 1665
+[SwitchedLinearForesightPredictor] loaded weights/MODEL-0009-linear-foresight-flex-mask-v2/checkpoint.pt (6 bins, res=64, constraint=ridge, counts=[1722, 3973, 4530, 3435, 1323, 110])
+val lf_v2_switched acc 0.3903
+[SingleLinearForesightPredictor] loaded weights/MODEL-0009-linear-foresight-flex-mask-v2/checkpoint.pt (res=64, fit on datasets/DS-0020-training-data-flex-N864/config.yaml split=train occ_source=image_mask (DS-0020 v2))
+val lf_v2_single acc 0.2852
+[SwitchedLinearForesightPredictor] loaded weights/MODEL-0009-linear-foresight-flex-mask-v2/alt_collection_bins/checkpoint.pt (6 bins, res=64, constraint=ridge, counts=[3712, 4057, 3940, 2630, 692, 62])
+val lf_v2_switched_collection_bins acc 0.3833
+[SwitchedLinearForesightPredictor] loaded weights/MODEL-0004-linear-foresight-flex-mask/checkpoint.pt (6 bins, res=64, constraint=ridge, counts=[2124, 4867, 5325, 3961, 1424, 136])
+val lf_v1_switched_rescored acc 0.2674
+[SingleLinearForesightPredictor] loaded weights/MODEL-0004-linear-foresight-flex-mask/checkpoint.pt (res=64, fit on datasets/DS-0020-training-data-flex-N864/config.yaml split=train occ_source=image_mask)
+val lf_v1_single_rescored acc 0.1625

@@ -121,3 +121,9 @@ correlated -- resampling by state, not file, may understate uncertainty slightly
 ## Unrelated findings
 
 None.
+
+## Later evidence (2026-10-03 audit)
+
+Added by the cross-experiment audit (summary: `experiments/SUMMARY.md`). Numbers above are unchanged.
+
+- C-039's ensemble win holds at EQUAL candidate count only; at a matched wall-clock budget the ensemble loses (EXP-0030 A5, C-043). DS-0007 (Sean) was audited 2026-10-03 (EXP-0065): <= 0.2 % illegal touchdowns in the n20 / n50 shards (scattered_n50 1 %) -- this record's data is effectively clean.

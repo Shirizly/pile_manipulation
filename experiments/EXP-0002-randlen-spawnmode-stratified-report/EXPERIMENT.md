@@ -207,3 +207,12 @@ Full JSON: `Baselines/common/runs/cross_corpus_report_spawnmode.json`.
   directory exists under `Genesis/data/overnight_randlen{,_train,_test}`)
   -- not a bug, just a corpus-composition fact worth knowing before
   reading `mixed` as symmetric with `piled`/`scattered`.
+
+## Later evidence (2026-10-03 audit)
+
+Added by the cross-experiment audit (summary: `experiments/SUMMARY.md`). Numbers above are unchanged.
+
+- GNN rows carry `gnn-node-sampling-consistent-within-state` (broken: node sampling seeded by batch row).
+- `slates_multistep` (L20mm/L40mm) was simulated with friction 0.3 / density 1000 -- off-training-physics for randlen-trained models (`benchmark-physics-matches-training`, broken); EXP-0048 later found physics sets barely change 20 mm single-push rankings on scatter (C-053), untested for piles/longer pushes.
+- Asymmetric goal masks (T / random_quadrant / ring_O / stripe / letters) in this record were scored BEFORE the goal-axis fix `28271c09` (2026-09-17) and were never rescored; transpose-invariant goals (corner, center, ...) are unaffected (ISS-003).
+- Spawn-mode strata rest on 5-10 files per mode; no later record re-tests spawn mode as a model-ranking stratifier with power (closest: EXP-0053's scatter vs clump accuracy split).

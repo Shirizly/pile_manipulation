@@ -325,3 +325,10 @@ persistence/random reproduction check matters.
   environment has a `cv2` / `libstdc++` `CXXABI_1.3.15` mismatch that makes
   `import Baselines.common.goals` fail outright. Added to `docs/CODEMAP.md` —
   two minutes were lost to it here and would be lost again.
+
+## Later evidence (2026-10-03 audit)
+
+Added by the cross-experiment audit (summary: `experiments/SUMMARY.md`). Numbers above are unchanged.
+
+- DS-0001 was simulated with friction 0.3 / density 1000, not the randlen models' training physics (`benchmark-physics-matches-training`, broken).
+- EXP-0065 / ISS-013: 46 % of DS-0001's candidate pushes put the blade on a cube at touchdown (pre-fix pile-aware sampler); this record's pools were not re-scored on legal-only candidates.

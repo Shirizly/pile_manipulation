@@ -1,0 +1,196 @@
+{
+ "experiments/EXP-0051-task-success-completion-time/results/success_states.json": {
+  "nfd_residual_worldframe_noaug_ep43|gd": {
+   "illegal": {
+    "n": 103,
+    "pred": -0.02098960024575947,
+    "true": -0.011449877423144532,
+    "optimism": 0.009539722822614937
+   },
+   "legal": {
+    "n": 329,
+    "pred": -0.021278187380710866,
+    "true": -0.013621398144209183,
+    "optimism": 0.007656789236501682
+   }
+  },
+  "nfd_residual_worldframe_noaug_ep43|cem": {
+   "illegal": {
+    "n": 90,
+    "pred": -0.03162636675616442,
+    "true": -0.016151409034221877,
+    "optimism": 0.01547495772194254
+   },
+   "legal": {
+    "n": 342,
+    "pred": -0.020231659818287156,
+    "true": -0.012178470608653407,
+    "optimism": 0.00805318920963375
+   }
+  },
+  "linear_switched_soft|gd": {
+   "illegal": {
+    "n": 59,
+    "pred": -0.021576484889426525,
+    "true": -0.018212817229588205,
+    "optimism": 0.0033636676598383214
+   },
+   "legal": {
+    "n": 373,
+    "pred": -0.012374769068879814,
+    "true": -0.01232914407903164,
+    "optimism": 4.562498984817268e-05
+   }
+  },
+  "linear_switched_soft|cem": {
+   "illegal": {
+    "n": 48,
+    "pred": -0.03011639937151263,
+    "true": -0.021176015406865645,
+    "optimism": 0.008940383964646989
+   },
+   "legal": {
+    "n": 384,
+    "pred": -0.013882029693604636,
+    "true": -0.0120588174416388,
+    "optimism": 0.0018232122519658371
+   }
+  }
+ },
+ "experiments/EXP-0052-success-objective/results/objective_states.json": {
+  "nfd_residual_worldframe_noaug_ep43|gd": {
+   "illegal": {
+    "n": 225,
+    "pred": -0.27272031982739764,
+    "true": -0.011942113759513531,
+    "optimism": 0.26077820606788416
+   },
+   "legal": {
+    "n": 447,
+    "pred": -0.23731894451099755,
+    "true": -0.014012027400341593,
+    "optimism": 0.22330691711065595
+   }
+  },
+  "nfd_residual_worldframe_noaug_ep43|cem": {
+   "illegal": {
+    "n": 261,
+    "pred": -0.2257838029400142,
+    "true": -0.010629855403212752,
+    "optimism": 0.21515394753680148
+   },
+   "legal": {
+    "n": 411,
+    "pred": -0.24643312347486362,
+    "true": -0.014136045498755327,
+    "optimism": 0.2322970779761083
+   }
+  }
+ },
+ "experiments/EXP-0054-narrow-closed-loop/results/narrow_gd_w3.json": {
+  "nfd_3ch_narrow_l20|gd": {
+   "illegal": {
+    "n": 345,
+    "pred": -0.15784817519395247,
+    "true": -0.00508228972338248,
+    "optimism": 0.15276588547057
+   },
+   "legal": {
+    "n": 327,
+    "pred": -0.1494903923994904,
+    "true": -0.0025821400162641425,
+    "optimism": 0.14690825238322627
+   }
+  },
+  "nfd_3ch_narrow_l20_wide|gd": {
+   "illegal": {
+    "n": 307,
+    "pred": -0.16284053051898845,
+    "true": -0.007533204150219306,
+    "optimism": 0.15530732636876915
+   },
+   "legal": {
+    "n": 365,
+    "pred": -0.1843067376580957,
+    "true": -0.004963035432443227,
+    "optimism": 0.17934370222565246
+   }
+  },
+  "nfd_3ch_randlen|gd": {
+   "illegal": {
+    "n": 312,
+    "pred": -0.12309417033042663,
+    "true": -0.011218068649610266,
+    "optimism": 0.11187610168081637
+   },
+   "legal": {
+    "n": 360,
+    "pred": -0.08867420612110032,
+    "true": -0.005898035778146651,
+    "optimism": 0.08277617034295368
+   }
+  },
+  "nfd_residual_worldframe_noaug_ep43|gd": {
+   "illegal": {
+    "n": 466,
+    "pred": -0.24157450712673653,
+    "true": -0.00877258203955679,
+    "optimism": 0.23280192508717976
+   },
+   "legal": {
+    "n": 206,
+    "pred": -0.2525518055535057,
+    "true": -0.008637355007592913,
+    "optimism": 0.24391445054591282
+   }
+  }
+ },
+ "experiments/EXP-0055-capacity-aware-value/results/all.json": {
+  "nfd_residual_worldframe_noaug_ep43|gd": {
+   "illegal": {
+    "n": 1284,
+    "pred": -1.687046169402637,
+    "true": -0.018515684728426074,
+    "optimism": 1.6685304846742108
+   },
+   "legal": {
+    "n": 4476,
+    "pred": -0.8133437037733213,
+    "true": -0.015417545828306008,
+    "optimism": 0.7979261579450154
+   }
+  }
+ },
+ "experiments/EXP-0055-capacity-aware-value/results/floor.json": {
+  "nfd_residual_worldframe_noaug_ep43|gd": {
+   "illegal": {
+    "n": 203,
+    "pred": -0.04272279264451248,
+    "true": -0.027873179475315778,
+    "optimism": 0.0148496131691967
+   },
+   "legal": {
+    "n": 1077,
+    "pred": -0.023323290128288522,
+    "true": -0.01486737894720896,
+    "optimism": 0.008455911181079563
+   }
+  }
+ },
+ "experiments/EXP-0055-capacity-aware-value/results/main.json": {
+  "nfd_residual_worldframe_noaug_ep43|gd": {
+   "illegal": {
+    "n": 1081,
+    "pred": -1.9958321504219703,
+    "true": -0.0167584493596762,
+    "optimism": 1.979073701062294
+   },
+   "legal": {
+    "n": 3399,
+    "pred": -1.0636679125099204,
+    "true": -0.01559187055056006,
+    "optimism": 1.0480760419593604
+   }
+  }
+ }
+}

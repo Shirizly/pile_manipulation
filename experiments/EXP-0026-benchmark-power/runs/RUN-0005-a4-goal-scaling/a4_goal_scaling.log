@@ -1,0 +1,77 @@
+[L20mm/nfd_randlen] 8.2s  lyap mean 0.957
+[L20mm/nfd_warped_randlen] 10.4s  lyap mean 0.945
+[L20mm/nfd_warped_randlen_flipaug] 10.6s  lyap mean 0.942
+[L20mm/nfd_warped_randlen_flipaug_epoch30] 10.6s  lyap mean 0.942
+[L20mm/nfd_residual_warped_flipaug_randlen] 9.6s  lyap mean 0.939
+[L20mm/nfd_residual_worldframe_noaug_ep43] 8.3s  lyap mean 0.943
+[SwitchedLinearForesightPredictor] loaded Baselines/LinearForesight/runs/operators_res32.pt (6 bins, res=32, constraint=ridge, counts=[7420, 18330, 24925, 22275, 18680, 6666])
+[L20mm/linear_switched_res32] 0.7s  lyap mean 0.957
+[SwitchedLinearForesightPredictor] loaded Baselines/LinearForesight/runs/operators_res64.pt (6 bins, res=64, constraint=ridge, counts=[141, 384, 496, 422, 396, 161])
+[L20mm/linear_switched_res64] 2.2s  lyap mean 0.903
+[SingleLinearForesightPredictor] loaded Baselines/LinearForesight/runs/operators_res32.pt (res=32, fit on configs/dataset/genesis_overnight_randlen_train_all.yaml)
+[L20mm/linear_single_res32] 0.6s  lyap mean 0.850
+[SingleLinearForesightPredictor] loaded Baselines/LinearForesight/runs/operators_res64.pt (res=64, fit on configs/dataset/genesis_overnight_randlen_train_all.yaml)
+[L20mm/linear_single_res64] 2.3s  lyap mean 0.810
+[GNNPredictor] loaded Baselines/GNN/runs/ckpt_best.pth (epoch=300, val_mse=4.0153605207630484e-06, n_particles=20)
+[L20mm/gnn_l20l40] 4.8s  lyap mean 0.955
+[GNNPredictor] loaded Baselines/GNN/runs/randlen_train_all_n30/ckpt_best.pth (epoch=101, val_mse=5.661420293748055e-06, n_particles=30)
+[L20mm/gnn_randlen_n30] 6.1s  lyap mean 0.891
+  L20mm lyapunov: ICC24 0.016  sd shrink G3->G24 2.30x  G=1: sd 0.131 nS(0.02)=339 res=27  G=3: sd 0.080 nS(0.02)=128 res=30  G=6: sd 0.059 nS(0.02)=71 res=43  G=12: sd 0.045 nS(0.02)=42 res=43  G=24: sd 0.035 nS(0.02)=26 res=52
+/home/alon/Code/pile_manipulation/experiments/EXP-0026-benchmark-power/code/a4_goal_scaling.py:96: RuntimeWarning: Mean of empty slice
+  X = np.nanmean(C[:, :, gsub], axis=2)
+/home/alon/anaconda3/envs/pme/lib/python3.10/site-packages/numpy/_core/_methods.py:223: RuntimeWarning: Degrees of freedom <= 0 for slice
+  ret = _var(a, axis=axis, dtype=dtype, out=out, ddof=ddof,
+/home/alon/anaconda3/envs/pme/lib/python3.10/site-packages/numpy/_core/_methods.py:181: RuntimeWarning: invalid value encountered in divide
+  arrmean = um.true_divide(arrmean, div, out=arrmean,
+/home/alon/anaconda3/envs/pme/lib/python3.10/site-packages/numpy/_core/_methods.py:215: RuntimeWarning: invalid value encountered in scalar divide
+  ret = ret.dtype.type(ret / rcount)
+/home/alon/Code/pile_manipulation/experiments/EXP-0026-benchmark-power/code/a4_goal_scaling.py:101: RuntimeWarning: Mean of empty slice
+  X = np.nanmean(C[:, :, rng.choice(G_MAX, size=G, replace=False)], axis=2)
+/home/alon/Code/pile_manipulation/experiments/EXP-0026-benchmark-power/code/a4_goal_scaling.py:113: RuntimeWarning: Degrees of freedom <= 0 for slice
+  msb = G * D.mean(0).var(ddof=1)
+/home/alon/Code/pile_manipulation/experiments/EXP-0026-benchmark-power/code/a4_goal_scaling.py:114: RuntimeWarning: invalid value encountered in scalar divide
+  msw = ((D - D.mean(0)) ** 2).sum() / (D.shape[1] * (G - 1))
+/home/alon/Code/pile_manipulation/experiments/EXP-0026-benchmark-power/code/a4_goal_scaling.py:117: RuntimeWarning: All-NaN slice encountered
+  rv["icc_24_median"] = float(np.nanmedian(iccs))
+  L20mm mass_in_region: ICC24 nan  sd shrink G3->G24 2.44x  G=1: sd nan nS(0.02)=-1 res=2  G=3: sd 0.217 nS(0.02)=929 res=42  G=6: sd 0.162 nS(0.02)=517 res=38  G=12: sd 0.117 nS(0.02)=269 res=42  G=24: sd 0.089 nS(0.02)=158 res=44
+[L40mm/nfd_randlen] 8.2s  lyap mean 0.983
+[L40mm/nfd_warped_randlen] 10.2s  lyap mean 0.967
+[L40mm/nfd_warped_randlen_flipaug] 10.3s  lyap mean 0.962
+[L40mm/nfd_warped_randlen_flipaug_epoch30] 10.4s  lyap mean 0.966
+[L40mm/nfd_residual_warped_flipaug_randlen] 9.7s  lyap mean 0.962
+[L40mm/nfd_residual_worldframe_noaug_ep43] 8.3s  lyap mean 0.977
+[SwitchedLinearForesightPredictor] loaded Baselines/LinearForesight/runs/operators_res32.pt (6 bins, res=32, constraint=ridge, counts=[7420, 18330, 24925, 22275, 18680, 6666])
+[L40mm/linear_switched_res32] 0.7s  lyap mean 0.974
+[SwitchedLinearForesightPredictor] loaded Baselines/LinearForesight/runs/operators_res64.pt (6 bins, res=64, constraint=ridge, counts=[141, 384, 496, 422, 396, 161])
+[L40mm/linear_switched_res64] 2.3s  lyap mean 0.959
+[SingleLinearForesightPredictor] loaded Baselines/LinearForesight/runs/operators_res32.pt (res=32, fit on configs/dataset/genesis_overnight_randlen_train_all.yaml)
+[L40mm/linear_single_res32] 0.6s  lyap mean 0.970
+[SingleLinearForesightPredictor] loaded Baselines/LinearForesight/runs/operators_res64.pt (res=64, fit on configs/dataset/genesis_overnight_randlen_train_all.yaml)
+[L40mm/linear_single_res64] 2.2s  lyap mean 0.944
+[GNNPredictor] loaded Baselines/GNN/runs/ckpt_best.pth (epoch=300, val_mse=4.0153605207630484e-06, n_particles=20)
+[L40mm/gnn_l20l40] 4.4s  lyap mean 0.982
+[GNNPredictor] loaded Baselines/GNN/runs/randlen_train_all_n30/ckpt_best.pth (epoch=101, val_mse=5.661420293748055e-06, n_particles=30)
+[L40mm/gnn_randlen_n30] 6.3s  lyap mean 0.955
+  L40mm lyapunov: ICC24 0.002  sd shrink G3->G24 2.85x  G=1: sd 0.048 nS(0.02)=48 res=7  G=3: sd 0.033 nS(0.02)=24 res=28  G=6: sd 0.024 nS(0.02)=14 res=38  G=12: sd 0.017 nS(0.02)=8 res=46  G=24: sd 0.012 nS(0.02)=5 res=54
+  L40mm mass_in_region: ICC24 0.006  sd shrink G3->G24 2.19x  G=1: sd 0.153 nS(0.02)=460 res=18  G=3: sd 0.105 nS(0.02)=219 res=17  G=6: sd 0.084 nS(0.02)=140 res=39  G=12: sd 0.063 nS(0.02)=80 res=41  G=24: sd 0.048 nS(0.02)=47 res=48
+[randlen_test/nfd_randlen] 11.9s  lyap mean 0.945
+[randlen_test/nfd_warped_randlen] 14.2s  lyap mean 0.944
+[randlen_test/nfd_warped_randlen_flipaug] 14.2s  lyap mean 0.950
+[randlen_test/nfd_warped_randlen_flipaug_epoch30] 14.3s  lyap mean 0.945
+[randlen_test/nfd_residual_warped_flipaug_randlen] 13.5s  lyap mean 0.958
+[randlen_test/nfd_residual_worldframe_noaug_ep43] 11.5s  lyap mean 0.945
+[SwitchedLinearForesightPredictor] loaded Baselines/LinearForesight/runs/operators_res32.pt (6 bins, res=32, constraint=ridge, counts=[7420, 18330, 24925, 22275, 18680, 6666])
+[randlen_test/linear_switched_res32] 0.8s  lyap mean 0.916
+[SwitchedLinearForesightPredictor] loaded Baselines/LinearForesight/runs/operators_res64.pt (6 bins, res=64, constraint=ridge, counts=[141, 384, 496, 422, 396, 161])
+[randlen_test/linear_switched_res64] 3.0s  lyap mean 0.797
+[SingleLinearForesightPredictor] loaded Baselines/LinearForesight/runs/operators_res32.pt (res=32, fit on configs/dataset/genesis_overnight_randlen_train_all.yaml)
+[randlen_test/linear_single_res32] 0.8s  lyap mean 0.678
+[SingleLinearForesightPredictor] loaded Baselines/LinearForesight/runs/operators_res64.pt (res=64, fit on configs/dataset/genesis_overnight_randlen_train_all.yaml)
+[randlen_test/linear_single_res64] 3.0s  lyap mean 0.524
+[GNNPredictor] loaded Baselines/GNN/runs/ckpt_best.pth (epoch=300, val_mse=4.0153605207630484e-06, n_particles=20)
+[randlen_test/gnn_l20l40] 6.3s  lyap mean 0.511
+[GNNPredictor] loaded Baselines/GNN/runs/randlen_train_all_n30/ckpt_best.pth (epoch=101, val_mse=5.661420293748055e-06, n_particles=30)
+[randlen_test/gnn_randlen_n30] 8.9s  lyap mean 0.799
+  randlen_test lyapunov: ICC24 0.128  sd shrink G3->G24 1.55x  G=1: sd 0.252 nS(0.02)=1244 res=41  G=3: sd 0.167 nS(0.02)=547 res=44  G=6: sd 0.136 nS(0.02)=364 res=50  G=12: sd 0.118 nS(0.02)=275 res=52  G=24: sd 0.108 nS(0.02)=230 res=52
+  randlen_test mass_in_region: ICC24 0.015  sd shrink G3->G24 2.37x  G=1: sd 0.315 nS(0.02)=1947 res=39  G=3: sd 0.190 nS(0.02)=708 res=45  G=6: sd 0.138 nS(0.02)=379 res=44  G=12: sd 0.104 nS(0.02)=214 res=52  G=24: sd 0.080 nS(0.02)=128 res=52
+wrote experiments/EXP-0026-benchmark-power/results/a4_goal_scaling.json

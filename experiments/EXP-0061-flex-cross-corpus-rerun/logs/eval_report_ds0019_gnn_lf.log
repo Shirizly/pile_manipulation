@@ -1,0 +1,32 @@
+FlexPileData(DS-0019, split=all, exclude_flagged=True): 17186 rows; flagged nan=0 escaped=397 out_of_grid=47 null=159 -> kept 16583
+[flex_ds0019_mask] loaded 16583 transitions (11.3s)
+[flex_ds0019_mask / persistence] accuracy=0.0000 (reference floor; slateN row below is DEGENERATE, see docstring)
+    goal=random_quadrant  lyapunov=+0.1839  mass_in_region=-0.0306  signed_mass=+0.0040
+    goal=ring_O           lyapunov=-0.1174  mass_in_region=-0.0934  signed_mass=+0.0609
+    goal=T                lyapunov=+0.3029  mass_in_region=+0.1582  signed_mass=+0.2148
+    averaged         lyapunov=+0.1231  mass_in_region=+0.0114  signed_mass=+0.0932
+[flex_ds0019_mask / random] accuracy=n/a (ranking-only floor)
+    goal=random_quadrant  lyapunov=+0.0085  mass_in_region=+0.0014  signed_mass=+0.0111
+    goal=ring_O           lyapunov=+0.0063  mass_in_region=+0.0091  signed_mass=+0.0013
+    goal=T                lyapunov=+0.0026  mass_in_region=-0.0043  signed_mass=-0.0037
+    averaged         lyapunov=+0.0058  mass_in_region=+0.0021  signed_mass=+0.0029
+[FlexGNNPredictor] Baselines/GNN/data/gnn_dyn_model/2023-01-28-10-42-05-114323/net_epoch_0_iter_1000.pth: particle_num=200 depth=plane plane_y=0.24 carry_k=1 device=cuda
+[flex_ds0019_mask / gnn_flex_drp] accuracy=0.1908  device=cuda  (29.5s)
+    goal=random_quadrant  lyapunov=+0.8631  mass_in_region=+0.7190  signed_mass=+0.8181
+    goal=ring_O           lyapunov=+0.5890  mass_in_region=+0.5616  signed_mass=+0.5087
+    goal=T                lyapunov=+0.8391  mass_in_region=+0.6502  signed_mass=+0.5816
+    averaged         lyapunov=+0.7637  mass_in_region=+0.6436  signed_mass=+0.6362
+[SwitchedLinearForesightPredictor] loaded weights/MODEL-0004-linear-foresight-flex-mask/checkpoint.pt (6 bins, res=64, constraint=ridge, counts=[2124, 4867, 5325, 3961, 1424, 136])
+[flex_ds0019_mask / lf_flex_switched] accuracy=0.3284  device=cuda  (4.6s)
+    goal=random_quadrant  lyapunov=+0.7418  mass_in_region=+0.5611  signed_mass=+0.4951
+    goal=ring_O           lyapunov=+0.8798  mass_in_region=+0.7378  signed_mass=+0.6951
+    goal=T                lyapunov=+0.9063  mass_in_region=+0.8326  signed_mass=+0.6878
+    averaged         lyapunov=+0.8426  mass_in_region=+0.7105  signed_mass=+0.6260
+[SingleLinearForesightPredictor] loaded weights/MODEL-0004-linear-foresight-flex-mask/checkpoint.pt (res=64, fit on datasets/DS-0020-training-data-flex-N864/config.yaml split=train occ_source=image_mask)
+[flex_ds0019_mask / lf_flex_single] accuracy=0.2394  device=cuda  (3.9s)
+    goal=random_quadrant  lyapunov=+0.6015  mass_in_region=+0.3656  signed_mass=+0.3623
+    goal=ring_O           lyapunov=+0.6483  mass_in_region=+0.5492  signed_mass=+0.5092
+    goal=T                lyapunov=+0.7814  mass_in_region=+0.7028  signed_mass=+0.6777
+    averaged         lyapunov=+0.6771  mass_in_region=+0.5392  signed_mass=+0.5164
+
+wrote experiments/EXP-0061-flex-cross-corpus-rerun/results/ds0019_gnn_lf.json

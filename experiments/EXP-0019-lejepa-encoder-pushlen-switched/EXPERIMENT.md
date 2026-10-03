@@ -368,3 +368,9 @@ SGD buying a little over a closed-form linear-in-`a` fit.
   dependency-free (torch + einops), so `stable_pretraining` is not needed; the
   `le-wm/jepa.py`/`train.py` around it are a ViT/CLS design and were not used.
 - **`docs/CODEMAP.md` had no entry for `le-wm` or SIGReg.** Added in this run.
+
+## Later evidence (2026-10-03 audit)
+
+Added by the cross-experiment audit (summary: `experiments/SUMMARY.md`). Numbers above are unchanged.
+
+- **ISS-001: the rank-collapse finding here is refuted.** Effective rank was measured on `pts[:8192]` (~the first 8 of 273 files, unshuffled); on the full 98,304-state corpus the random encoder is 40.5, SIGReg-on-p 41.7 -- the encoder did not collapse. The causal claim of this record does not stand; the latent-R^2 numbers do.

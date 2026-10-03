@@ -395,3 +395,11 @@ snapshot-restore-and-execute), which is why this record carries the
 ## Correction note (2026-09-24, EXP-0027)
 
 EXP-0027 briefly marked this record `invalidated` on finding that repeated `rollout_candidates` calls do not reproduce outcomes bit-for-bit. Its RUN-0005 then showed the PHYSICAL difference is small (particles within 0.9 mm median / 4.4 mm max; particle-based dv sd 3e-4 vs 3.2e-2 between actions), and that the large dv differences come from the image-based scoring (invariant `occupancy-dv-subpixel-stable`, broken: sd 4e-3, ~12% of between-action sd). The invalidation was withdrawn: the numbers here stand, carrying that extra scoring noise.
+
+## Later evidence (2026-10-03 audit)
+
+Added by the cross-experiment audit (summary: `experiments/SUMMARY.md`). Numbers above are unchanged.
+
+- Superseded as the gradient-source benchmark by EXP-0037 (clean re-run: training physics, one path, soft truth, 40 states x 6 goals; C-041/C-042). EXP-0026 A1: 0/15 arm pairs here are Holm-resolvable on gradient_gain.
+- DS-0001 was simulated with friction 0.3 / density 1000, not the randlen models' training physics (`benchmark-physics-matches-training`, broken).
+- EXP-0065 / ISS-013: 46 % of DS-0001's candidate pushes put the blade on a cube at touchdown (pre-fix pile-aware sampler); this record's pools were not re-scored on legal-only candidates.

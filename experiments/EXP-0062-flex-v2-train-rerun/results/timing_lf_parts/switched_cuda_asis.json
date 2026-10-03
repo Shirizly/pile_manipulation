@@ -1,0 +1,409 @@
+{
+  "command": "/home/alon/anaconda3/envs/pme/bin/python -u experiments/EXP-0062-flex-v2-train-rerun/code/time_inference.py --model lf_flex_switched --ckpt weights/MODEL-0009-linear-foresight-flex-mask-v2/checkpoint.pt --name lf_v2_switched_cuda_asis --device cuda --png 0 --out experiments/EXP-0062-flex-v2-train-rerun/results/timing_lf_parts/switched_cuda_asis.json",
+  "started": "2026-10-02T15:56:33",
+  "model": "lf_flex_switched",
+  "name": "lf_v2_switched_cuda_asis",
+  "ckpt": "weights/MODEL-0009-linear-foresight-flex-mask-v2/checkpoint.pt",
+  "workers": [
+    {
+      "pid": 2078963,
+      "model": "lf_flex_switched",
+      "name": "lf_v2_switched_cuda_asis",
+      "ckpt": "weights/MODEL-0009-linear-foresight-flex-mask-v2/checkpoint.pt",
+      "kwargs": {},
+      "corpus": "flex_ds0019_mask",
+      "device_requested": "cuda",
+      "gpu": "NVIDIA GeForce RTX 4070 Laptop GPU",
+      "torch": "2.11.0+cu130",
+      "contended": false,
+      "contention": {
+        "cuda_available": true,
+        "free_bytes": 8028946432,
+        "total_bytes": 8186822656,
+        "used_frac": 0.0193,
+        "other_training_processes": []
+      },
+      "device_fed_to_forward": [],
+      "n_forward_hook_calls": 0,
+      "n_modules_hooked": 0,
+      "load_s": 7.043582439422607,
+      "warmup_passes": 2,
+      "timed_passes": 3,
+      "n_slates": 100,
+      "n_candidates": 16583,
+      "pool_size": {
+        "n": 100,
+        "median": 167.5,
+        "p10": 142.7,
+        "p90": 186.0,
+        "mean": 165.83,
+        "min": 86.0,
+        "max": 191.0,
+        "total": 16583.0
+      },
+      "per_slate_ms": {
+        "n": 100,
+        "median": 45.845863060094416,
+        "p10": 45.607621246017516,
+        "p90": 46.47255185991526,
+        "mean": 45.94037397066131,
+        "min": 45.46287399716675,
+        "max": 47.11705516092479,
+        "total": 4594.037397066131
+      },
+      "per_slate_ms_with_h2d": {
+        "n": 100,
+        "median": 48.200202523730695,
+        "p10": 47.64035956468433,
+        "p90": 48.95304988604039,
+        "mean": 48.27653785934672,
+        "min": 47.14389215223491,
+        "max": 50.15409202314913,
+        "total": 4827.653785934672
+      },
+      "us_per_candidate_slate_batches": 277.03294922909794,
+      "us_per_candidate_slate_batches_with_h2d": 291.1206528333035,
+      "total_all_slates_s": 4.594037397066131,
+      "total_all_slates_s_with_h2d": 4.827653785934672,
+      "batch128": {
+        "n_batches": 129,
+        "ms_per_batch": {
+          "n": 129,
+          "median": 45.19174597226083,
+          "p10": 43.459103116765625,
+          "p90": 45.5482832621783,
+          "mean": 44.52222920123979,
+          "min": 37.7364931628108,
+          "max": 46.209179097786546,
+          "total": 5743.367566959932
+        },
+        "us_per_candidate": 347.82991563468585
+      },
+      "loop_check": {
+        "16": {
+          "aten_ops": 1155,
+          "cuda_kernels": 421
+        },
+        "128": {
+          "aten_ops": 3283,
+          "cuda_kernels": 1181
+        },
+        "top_ops_b128_us": {
+          "aten::copy_": 35068.693,
+          "aten::mm": 1825.753999999999,
+          "aten::bmm": 1180.9429999999993,
+          "aten::mul": 271.03800000004594,
+          "aten::cat": 149.44199999997636,
+          "aten::grid_sampler_2d": 136.09400000001006,
+          "aten::nonzero": 111.07199999996465,
+          "aten::div": 108.16099999998596
+        },
+        "top_ops_metric": "self_device_time_total",
+        "ratio_128_over_16": {
+          "aten_ops": 2.8424242424242423,
+          "cuda_kernels": 2.8052256532066506
+        },
+        "per_sample_loop_suspected": true
+      },
+      "output_device": "cuda:0"
+    },
+    {
+      "pid": 2080182,
+      "model": "lf_flex_switched",
+      "name": "lf_v2_switched_cuda_asis",
+      "ckpt": "weights/MODEL-0009-linear-foresight-flex-mask-v2/checkpoint.pt",
+      "kwargs": {},
+      "corpus": "flex_ds0019_mask",
+      "device_requested": "cuda",
+      "gpu": "NVIDIA GeForce RTX 4070 Laptop GPU",
+      "torch": "2.11.0+cu130",
+      "contended": false,
+      "contention": {
+        "cuda_available": true,
+        "free_bytes": 8028946432,
+        "total_bytes": 8186822656,
+        "used_frac": 0.0193,
+        "other_training_processes": []
+      },
+      "device_fed_to_forward": [],
+      "n_forward_hook_calls": 0,
+      "n_modules_hooked": 0,
+      "load_s": 8.134293556213379,
+      "warmup_passes": 2,
+      "timed_passes": 3,
+      "n_slates": 100,
+      "n_candidates": 16583,
+      "pool_size": {
+        "n": 100,
+        "median": 167.5,
+        "p10": 142.7,
+        "p90": 186.0,
+        "mean": 165.83,
+        "min": 86.0,
+        "max": 191.0,
+        "total": 16583.0
+      },
+      "per_slate_ms": {
+        "n": 100,
+        "median": 45.8791465498507,
+        "p10": 45.609938725829124,
+        "p90": 46.34473717305809,
+        "mean": 45.95619803061709,
+        "min": 45.35975190810859,
+        "max": 47.68540896475315,
+        "total": 4595.619803061709
+      },
+      "per_slate_ms_with_h2d": {
+        "n": 100,
+        "median": 48.08936605695635,
+        "p10": 47.471599536947906,
+        "p90": 49.307253560982645,
+        "mean": 48.29379571834579,
+        "min": 47.21516300924122,
+        "max": 52.42638592608273,
+        "total": 4829.379571834579
+      },
+      "us_per_candidate_slate_batches": 277.12837261422595,
+      "us_per_candidate_slate_batches_with_h2d": 291.2247224166061,
+      "total_all_slates_s": 4.595619803061709,
+      "total_all_slates_s_with_h2d": 4.829379571834579,
+      "batch128": {
+        "n_batches": 129,
+        "ms_per_batch": {
+          "n": 129,
+          "median": 45.33963883295655,
+          "p10": 43.70056646876038,
+          "p90": 45.73780773207545,
+          "mean": 44.69869998933444,
+          "min": 37.806081119924784,
+          "max": 46.69189220294356,
+          "total": 5766.132298624143
+        },
+        "us_per_candidate": 349.2085936666753
+      },
+      "loop_check": {
+        "16": {
+          "aten_ops": 1155,
+          "cuda_kernels": 421
+        },
+        "128": {
+          "aten_ops": 3283,
+          "cuda_kernels": 1181
+        },
+        "top_ops_b128_us": {
+          "aten::copy_": 34151.12499999999,
+          "aten::mm": 1813.8170000000027,
+          "aten::bmm": 1179.795000000011,
+          "aten::mul": 271.7490000000039,
+          "aten::cat": 149.82399999997915,
+          "aten::grid_sampler_2d": 136.70800000000963,
+          "aten::nonzero": 110.88599999999133,
+          "aten::div": 107.90800000001195
+        },
+        "top_ops_metric": "self_device_time_total",
+        "ratio_128_over_16": {
+          "aten_ops": 2.8424242424242423,
+          "cuda_kernels": 2.8052256532066506
+        },
+        "per_sample_loop_suspected": true
+      },
+      "output_device": "cuda:0"
+    },
+    {
+      "pid": 2081520,
+      "model": "lf_flex_switched",
+      "name": "lf_v2_switched_cuda_asis",
+      "ckpt": "weights/MODEL-0009-linear-foresight-flex-mask-v2/checkpoint.pt",
+      "kwargs": {},
+      "corpus": "flex_ds0019_mask",
+      "device_requested": "cuda",
+      "gpu": "NVIDIA GeForce RTX 4070 Laptop GPU",
+      "torch": "2.11.0+cu130",
+      "contended": false,
+      "contention": {
+        "cuda_available": true,
+        "free_bytes": 8028946432,
+        "total_bytes": 8186822656,
+        "used_frac": 0.0193,
+        "other_training_processes": []
+      },
+      "device_fed_to_forward": [],
+      "n_forward_hook_calls": 0,
+      "n_modules_hooked": 0,
+      "load_s": 8.347702503204346,
+      "warmup_passes": 2,
+      "timed_passes": 3,
+      "n_slates": 100,
+      "n_candidates": 16583,
+      "pool_size": {
+        "n": 100,
+        "median": 167.5,
+        "p10": 142.7,
+        "p90": 186.0,
+        "mean": 165.83,
+        "min": 86.0,
+        "max": 191.0,
+        "total": 16583.0
+      },
+      "per_slate_ms": {
+        "n": 100,
+        "median": 45.89038097765297,
+        "p10": 45.597983500920236,
+        "p90": 46.49232332594693,
+        "mean": 45.98325853701681,
+        "min": 45.23574816994369,
+        "max": 47.22473700530827,
+        "total": 4598.325853701681
+      },
+      "per_slate_ms_with_h2d": {
+        "n": 100,
+        "median": 48.00849698949605,
+        "p10": 47.57616417482495,
+        "p90": 48.55516804382205,
+        "mean": 48.03834822727367,
+        "min": 46.73261288553476,
+        "max": 49.52870891429484,
+        "total": 4803.834822727367
+      },
+      "us_per_candidate_slate_batches": 277.2915548273341,
+      "us_per_candidate_slate_batches_with_h2d": 289.6843045725965,
+      "total_all_slates_s": 4.598325853701681,
+      "total_all_slates_s_with_h2d": 4.803834822727367,
+      "batch128": {
+        "n_batches": 129,
+        "ms_per_batch": {
+          "n": 129,
+          "median": 45.26244197040796,
+          "p10": 43.48792294040323,
+          "p90": 45.739709213376045,
+          "mean": 44.63089240332271,
+          "min": 37.79229405336082,
+          "max": 46.64138494990766,
+          "total": 5757.38512002863
+        },
+        "us_per_candidate": 348.6788469009587
+      },
+      "loop_check": {
+        "16": {
+          "aten_ops": 1155,
+          "cuda_kernels": 421
+        },
+        "128": {
+          "aten_ops": 3283,
+          "cuda_kernels": 1181
+        },
+        "top_ops_b128_us": {
+          "aten::copy_": 34270.83199999998,
+          "aten::mm": 1822.2660000000014,
+          "aten::bmm": 1180.8790000000026,
+          "aten::mul": 271.07700000001046,
+          "aten::cat": 149.8580000000004,
+          "aten::grid_sampler_2d": 137.407999999994,
+          "aten::nonzero": 110.84700000002067,
+          "aten::div": 108.35599999996475
+        },
+        "top_ops_metric": "self_device_time_total",
+        "ratio_128_over_16": {
+          "aten_ops": 2.8424242424242423,
+          "cuda_kernels": 2.8052256532066506
+        },
+        "per_sample_loop_suspected": true
+      },
+      "output_device": "cuda:0"
+    }
+  ],
+  "status": "complete",
+  "aggregate": {
+    "n_processes": 3,
+    "per_slate_ms_median": {
+      "values": [
+        45.845863060094416,
+        45.8791465498507,
+        45.89038097765297
+      ],
+      "median": 45.8791465498507,
+      "rel_spread": 0.0009703301152339265
+    },
+    "per_slate_ms_p90": {
+      "values": [
+        46.47255185991526,
+        46.34473717305809,
+        46.49232332594693
+      ],
+      "median": 46.47255185991526,
+      "rel_spread": 0.0031757703629813885
+    },
+    "per_slate_ms_with_h2d_median": {
+      "values": [
+        48.200202523730695,
+        48.08936605695635,
+        48.00849698949605
+      ],
+      "median": 48.08936605695635,
+      "rel_spread": 0.003986443364788584
+    },
+    "us_per_candidate": {
+      "values": [
+        277.03294922909794,
+        277.12837261422595,
+        277.2915548273341
+      ],
+      "median": 277.12837261422595,
+      "rel_spread": 0.0009331617538711858
+    },
+    "us_per_candidate_with_h2d": {
+      "values": [
+        291.1206528333035,
+        291.2247224166061,
+        289.6843045725965
+      ],
+      "median": 291.1206528333035,
+      "rel_spread": 0.005291338244187174
+    },
+    "total_all_slates_s": {
+      "values": [
+        4.594037397066131,
+        4.595619803061709,
+        4.598325853701681
+      ],
+      "median": 4.595619803061709,
+      "rel_spread": 0.0009331617538710655
+    },
+    "batch128_ms_per_batch": {
+      "values": [
+        45.19174597226083,
+        45.33963883295655,
+        45.26244197040796
+      ],
+      "median": 45.26244197040796,
+      "rel_spread": 0.003267452091789707
+    },
+    "batch128_us_per_candidate": {
+      "values": [
+        347.82991563468585,
+        349.2085936666753,
+        348.6788469009587
+      ],
+      "median": 348.6788469009587,
+      "rel_spread": 0.003954005366953264
+    },
+    "device_fed_to_forward": [],
+    "any_contended": false,
+    "per_sample_loop_suspected": true,
+    "loop_check_ratio": [
+      {
+        "aten_ops": 2.8424242424242423,
+        "cuda_kernels": 2.8052256532066506
+      },
+      {
+        "aten_ops": 2.8424242424242423,
+        "cuda_kernels": 2.8052256532066506
+      },
+      {
+        "aten_ops": 2.8424242424242423,
+        "cuda_kernels": 2.8052256532066506
+      }
+    ]
+  },
+  "finished": "2026-10-02T15:59:54"
+}

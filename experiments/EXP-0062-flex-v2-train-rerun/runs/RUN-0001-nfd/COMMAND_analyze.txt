@@ -1,0 +1,1 @@
+PYTHONPATH=. /home/alon/anaconda3/envs/pme/bin/python -u experiments/EXP-0062-flex-v2-train-rerun/code/eval_nfd_v2.py analyze --name nfd_v2_s0

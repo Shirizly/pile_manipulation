@@ -285,3 +285,20 @@ re-running with per-slate output would add.
   other 4 groups (45-50 files each, 3-5 held out). Not a bug, just a
   size imbalance worth knowing before reading `randlen_test` results as
   balanced across groups.
+
+## Later re-tests (pointer only; this record's claim is unchanged)
+
+- 2026-10-01 **EXP-0061** re-tested this claim on FleX carrot-pile data (fit on DS-0020,
+  tested on DS-0019, binary image-mask truth, the original dyn-res-pile-manip GNN checkpoint):
+  it replicates in sign and order (NFD accuracy 0.485 vs GNN 0.191; all slateN cells positive).
+  See EXP-0061 / C-062.
+
+## Later evidence (2026-10-03 audit)
+
+Added by the cross-experiment audit (summary: `experiments/SUMMARY.md`). Numbers above are unchanged.
+
+- GNN rows carry `gnn-node-sampling-consistent-within-state` (broken: node sampling seeded by batch row).
+- EXP-0026 found this record's saved JSON up to 0.063 off on slateN (stale output); EXP-0026's per-slate re-run is the reference.
+- `slates_multistep` (L20mm/L40mm) was simulated with friction 0.3 / density 1000 -- off-training-physics for randlen-trained models (`benchmark-physics-matches-training`, broken); EXP-0048 later found physics sets barely change 20 mm single-push rankings on scatter (C-053), untested for piles/longer pushes.
+- Asymmetric goal masks (T / random_quadrant / ring_O / stripe / letters) in this record were scored BEFORE the goal-axis fix `28271c09` (2026-09-17) and were never rescored; transpose-invariant goals (corner, center, ...) are unaffected (ISS-003).
+- Re-tested on FleX carrots by EXP-0061 (C-062) and, with matched training data, EXP-0062 (C-063): NFD > GNN replicates.

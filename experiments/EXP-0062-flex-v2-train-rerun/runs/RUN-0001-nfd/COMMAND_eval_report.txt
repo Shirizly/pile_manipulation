@@ -1,0 +1,1 @@
+PYTHONPATH=. OMP_NUM_THREADS=4 /home/alon/anaconda3/envs/pme/bin/python -u Baselines/common/eval_report.py --corpora flex_ds0019_mask --models nfd_randlen --ckpt nfd_randlen=weights/MODEL-0008-nfd-flex-mask-v2-seed0/checkpoint.pth --device cuda --truth-scoring image --out-prefix experiments/EXP-0062-flex-v2-train-rerun/results/ds0019_eval_report_nfd_v2_s0

@@ -1,0 +1,12 @@
+calibration_DS-0006_every4th {'n': 5120, 'sure': 0.4673828125, 'possible': 0.584375, 'exact_SAT_reference': 0.543}
+experiments/EXP-0050-oracle-ceiling/results/cem_mass_s40.json {'n_pushes': 60, 'n_episodes': 5, 'illegal_sure': 0.2833333333333333, 'illegal_possible': 0.35, 'first_push_sure': 0.8}
+experiments/EXP-0051-task-success-completion-time/results/success_states.json {'n_pushes': 1728, 'n_episodes': 72, 'illegal_sure': 0.1736111111111111, 'illegal_possible': 0.234375, 'first_push_sure': 0.3888888888888889}
+experiments/EXP-0052-success-objective/results/objective_states.json {'n_pushes': 1344, 'n_episodes': 56, 'illegal_sure': 0.36160714285714285, 'illegal_possible': 0.4270833333333333, 'first_push_sure': 0.30357142857142855}
+experiments/EXP-0054-narrow-closed-loop/results/narrow_gd_w3.json {'n_pushes': 2688, 'n_episodes': 112, 'illegal_sure': 0.5319940476190477, 'illegal_possible': 0.6197916666666666, 'first_push_sure': 0.6160714285714286}
+experiments/EXP-0055-capacity-aware-value/results/all.json {'n_pushes': 5760, 'n_episodes': 288, 'illegal_sure': 0.22291666666666668, 'illegal_possible': 0.29305555555555557, 'first_push_sure': 0.3333333333333333}
+experiments/EXP-0055-capacity-aware-value/results/floor.json {'n_pushes': 1280, 'n_episodes': 64, 'illegal_sure': 0.15859375, 'illegal_possible': 0.225, 'first_push_sure': 0.375}
+experiments/EXP-0055-capacity-aware-value/results/main.json {'n_pushes': 4480, 'n_episodes': 224, 'illegal_sure': 0.24129464285714286, 'illegal_possible': 0.3125, 'first_push_sure': 0.32142857142857145}
+experiments/EXP-0057-oracle-budget-ablation/results/oracle_A_128x2.json {'n_pushes': 284, 'n_episodes': 16, 'illegal_sure': 0.2323943661971831, 'illegal_possible': 0.323943661971831, 'first_push_sure': 0.5}
+experiments/EXP-0057-oracle-budget-ablation/results/oracle_A_256x1.json {'n_pushes': 80, 'n_episodes': 16, 'illegal_sure': 0.625, 'illegal_possible': 0.7125, 'first_push_sure': 0.8125}
+experiments/EXP-0057-oracle-budget-ablation/results/oracle_A_32x8.json {'n_pushes': 278, 'n_episodes': 16, 'illegal_sure': 0.23741007194244604, 'illegal_possible': 0.31654676258992803, 'first_push_sure': 0.5}
+experiments/EXP-0057-oracle-budget-ablation/results/oracle_A_default.json {'n_pushes': 290, 'n_episodes': 16, 'illegal_sure': 0.2413793103448276, 'illegal_possible': 0.3103448275862069, 'first_push_sure': 0.375}

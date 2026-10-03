@@ -1,0 +1,567 @@
+{
+ "note": "CUDA rows (gnn_v2_n30_cuda_*) were measured 2026-10-02 ~19:30 after the GPU was reset, with the same time_inference.py settings as RUN-0001/0002 (device check on one extra untimed call with hooks on every submodule, because the GNN bypasses its top-level __call__; timed passes carry the same hooks as the other models). ORIGINAL CPU NOTE: GPU UNAVAILABLE for the first run (nvidia-smi: 'GPU requires reset' from ~16:50 CEST 2026-10-02; torch.cuda.is_available() False), so every number is CPU (torch 4 threads, OMP_NUM_THREADS=4, machine otherwise idle). NOT comparable with the CUDA rows of RUN-0001/0002; same-device references: NFD v2 CPU (measured here) and LF v2 CPU (RUN-0002 timing_lf.json). The forward-hook device probe sees no call for the GNN (it calls predict_one_step / model.forward, not __call__), so the device is the predictor's (cpu) by construction -- no GPU exists in the process.",
+ "model": "gnn_flex_v2_n30 (MODEL-0010)",
+ "configs": {
+  "gnn_v2_n30_cuda_INCLUDING_perception (cache_states=False)": {
+   "status": "complete",
+   "aggregate": {
+    "n_processes": 3,
+    "per_slate_ms_median": {
+     "values": [
+      77.22796999996717,
+      76.85113449997516,
+      77.66355549995296
+     ],
+     "median": 77.22796999996717,
+     "rel_spread": 0.010519776707560078
+    },
+    "per_slate_ms_p90": {
+     "values": [
+      107.55493219998016,
+      106.50047320008298,
+      107.77139209992583
+     ],
+     "median": 107.55493219998016,
+     "rel_spread": 0.011816463214162938
+    },
+    "per_slate_ms_with_h2d_median": {
+     "values": [
+      79.36030849998588,
+      77.45514949999688,
+      78.39424049996069
+     ],
+     "median": 78.39424049996069,
+     "rel_spread": 0.024302282767698396
+    },
+    "us_per_candidate": {
+     "values": [
+      498.4785738406665,
+      489.2093179762212,
+      502.51563142981405
+     ],
+     "median": 498.4785738406665,
+     "rel_spread": 0.02669385235772656
+    },
+    "us_per_candidate_with_h2d": {
+     "values": [
+      501.9975551468249,
+      501.3214906228431,
+      499.62279834771124
+     ],
+     "median": 501.3214906228431,
+     "rel_spread": 0.0047369938124201235
+    },
+    "total_all_slates_s": {
+     "values": [
+      8.266270189999773,
+      8.112558119999676,
+      8.333216716000607
+     ],
+     "median": 8.266270189999773,
+     "rel_spread": 0.02669385235772661
+    },
+    "batch128_ms_per_batch": {
+     "values": [
+      106.83945200003109,
+      105.32114200009346,
+      110.06762800002434
+     ],
+     "median": 106.83945200003109,
+     "rel_spread": 0.04442634168443228
+    },
+    "batch128_us_per_candidate": {
+     "values": [
+      798.8321557049613,
+      790.2364851016972,
+      825.1106914970898
+     ],
+     "median": 798.8321557049613,
+     "rel_spread": 0.04365648796976182
+    },
+    "device_fed_to_forward": [
+     "cuda:0"
+    ],
+    "any_contended": false,
+    "per_sample_loop_suspected": true,
+    "loop_check_ratio": [
+     {
+      "aten_ops": 5.492778249787595,
+      "cuda_kernels": 6.4022277227722775
+     },
+     {
+      "aten_ops": 5.492778249787595,
+      "cuda_kernels": 6.4022277227722775
+     },
+     {
+      "aten_ops": 5.492778249787595,
+      "cuda_kernels": 6.4022277227722775
+     }
+    ]
+   },
+   "command": "/home/alon/anaconda3/envs/pme/bin/python -u experiments/EXP-0062-flex-v2-train-rerun/code/time_inference.py --model gnn_flex_v2_n30 --name gnn_v2_n30_cuda_with_perception --device cuda --png 0 --kwargs {\"cache_states\": false, \"device\": \"cuda\"} --out experiments/EXP-0062-flex-v2-train-rerun/results/timing_gnn_parts/gnn_cuda_with_perception.json"
+  },
+  "gnn_v2_n30_cuda_model_and_render_only (perception cached after warm-up)": {
+   "status": "complete",
+   "aggregate": {
+    "n_processes": 3,
+    "per_slate_ms_median": {
+     "values": [
+      42.239772500010986,
+      43.653044500047145,
+      43.62334300014936
+     ],
+     "median": 43.62334300014936,
+     "rel_spread": 0.03239715030623214
+    },
+    "per_slate_ms_p90": {
+     "values": [
+      47.076971500086984,
+      47.81394160002037,
+      48.07763240000895
+     ],
+     "median": 47.81394160002037,
+     "rel_spread": 0.020928224413975977
+    },
+    "per_slate_ms_with_h2d_median": {
+     "values": [
+      43.6808839999685,
+      44.22729999987496,
+      44.35179799997968
+     ],
+     "median": 44.22729999987496,
+     "rel_spread": 0.015169680265652142
+    },
+    "us_per_candidate": {
+     "values": [
+      254.65831170483207,
+      259.029526442774,
+      260.0856826269064
+     ],
+     "median": 259.029526442774,
+     "rel_spread": 0.020952711440305187
+    },
+    "us_per_candidate_with_h2d": {
+     "values": [
+      261.8569472351563,
+      263.80166369181745,
+      263.63750473379037
+     ],
+     "median": 263.63750473379037,
+     "rel_spread": 0.007376478770062765
+    },
+    "total_all_slates_s": {
+     "values": [
+      4.2229987830012305,
+      4.295486637000522,
+      4.31300087500199
+     ],
+     "median": 4.295486637000522,
+     "rel_spread": 0.020952711440305246
+    },
+    "batch128_ms_per_batch": {
+     "values": [
+      36.33669400005601,
+      37.03332899999623,
+      36.80158799988931
+     ],
+     "median": 36.80158799988931,
+     "rel_spread": 0.018929482063173766
+    },
+    "batch128_us_per_candidate": {
+     "values": [
+      281.71308969244336,
+      287.33226265755656,
+      286.4044817707041
+     ],
+     "median": 286.4044817707041,
+     "rel_spread": 0.019619710314491213
+    },
+    "device_fed_to_forward": [
+     "cuda:0"
+    ],
+    "any_contended": false,
+    "per_sample_loop_suspected": true,
+    "loop_check_ratio": [
+     {
+      "aten_ops": 5.492778249787595,
+      "cuda_kernels": 6.4022277227722775
+     },
+     {
+      "aten_ops": 5.492778249787595,
+      "cuda_kernels": 6.4022277227722775
+     },
+     {
+      "aten_ops": 5.492778249787595,
+      "cuda_kernels": 6.4022277227722775
+     }
+    ]
+   },
+   "command": "/home/alon/anaconda3/envs/pme/bin/python -u experiments/EXP-0062-flex-v2-train-rerun/code/time_inference.py --model gnn_flex_v2_n30 --name gnn_v2_n30_cuda_cached_perception --device cuda --png 0 --kwargs {\"device\": \"cuda\"} --out experiments/EXP-0062-flex-v2-train-rerun/results/timing_gnn_parts/gnn_cuda_cached.json"
+  },
+  "gnn_v2_n30_cpu_INCLUDING_perception (cache_states=False: PNG imread + segment + back-project + voxel + FPS + recenter every call)": {
+   "status": "complete",
+   "aggregate": {
+    "n_processes": 3,
+    "per_slate_ms_median": {
+     "values": [
+      249.29982610046864,
+      269.54447047319263,
+      258.70168197434396
+     ],
+     "median": 258.70168197434396,
+     "rel_spread": 0.07825478450013211
+    },
+    "per_slate_ms_p90": {
+     "values": [
+      345.7501895027235,
+      357.2281777160242,
+      359.90300695411867
+     ],
+     "median": 357.2281777160242,
+     "rel_spread": 0.03961842411727617
+    },
+    "per_slate_ms_with_h2d_median": {
+     "values": [
+      245.86707551497966,
+      262.8534119576216,
+      248.33678314462304
+     ],
+     "median": 248.33678314462304,
+     "rel_spread": 0.06840040459390842
+    },
+    "us_per_candidate": {
+     "values": [
+      1559.0424351734514,
+      1626.4851041593529,
+      1607.03788951928
+     ],
+     "median": 1607.03788951928,
+     "rel_spread": 0.04196706837203191
+    },
+    "us_per_candidate_with_h2d": {
+     "values": [
+      1576.8370624969284,
+      1630.9219636420667,
+      1617.0128952389005
+     ],
+     "median": 1617.0128952389005,
+     "rel_spread": 0.033447414862543594
+    },
+    "total_all_slates_s": {
+     "values": [
+      25.853600702481344,
+      26.972002482274547,
+      26.649509321898222
+     ],
+     "median": 26.649509321898222,
+     "rel_spread": 0.04196706837203185
+    },
+    "batch128_ms_per_batch": {
+     "values": [
+      255.65166980959475,
+      265.6228840351105,
+      265.88265714235604
+     ],
+     "median": 265.6228840351105,
+     "rel_spread": 0.0385169650195084
+    },
+    "batch128_us_per_candidate": {
+     "values": [
+      1925.5524747882014,
+      2034.3857316241388,
+      2028.5366390594427
+     ],
+     "median": 2028.5366390594427,
+     "rel_spread": 0.05365111713555213
+    },
+    "device_fed_to_forward": [],
+    "any_contended": false,
+    "per_sample_loop_suspected": true,
+    "loop_check_ratio": [
+     {
+      "aten_ops": 5.353797019162527,
+      "cuda_kernels": 0.0
+     },
+     {
+      "aten_ops": 5.353797019162527,
+      "cuda_kernels": 0.0
+     },
+     {
+      "aten_ops": 5.353797019162527,
+      "cuda_kernels": 0.0
+     }
+    ]
+   },
+   "command": "/home/alon/anaconda3/envs/pme/bin/python -u experiments/EXP-0062-flex-v2-train-rerun/code/time_inference.py --model gnn_flex_v2_n30 --name gnn_v2_n30_cpu_with_perception --device cpu --png 0 --kwargs {\"cache_states\": false, \"device\": \"cpu\"} --out experiments/EXP-0062-flex-v2-train-rerun/results/timing_gnn_parts/gnn_cpu_with_perception.json"
+  },
+  "gnn_v2_n30_cpu_model_and_render_only (perception cached after warm-up, = the other models' 'model path')": {
+   "status": "complete",
+   "aggregate": {
+    "n_processes": 3,
+    "per_slate_ms_median": {
+     "values": [
+      211.8301804875955,
+      206.45789802074432,
+      206.84162841644138
+     ],
+     "median": 206.84162841644138,
+     "rel_spread": 0.025972926765181783
+    },
+    "per_slate_ms_p90": {
+     "values": [
+      278.2209829892963,
+      277.16183012817055,
+      274.76328299380845
+     ],
+     "median": 277.16183012817055,
+     "rel_spread": 0.012475383042062086
+    },
+    "per_slate_ms_with_h2d_median": {
+     "values": [
+      215.19375289790332,
+      212.74301107041538,
+      210.6370145920664
+     ],
+     "median": 212.74301107041538,
+     "rel_spread": 0.021418980030928913
+    },
+    "us_per_candidate": {
+     "values": [
+      1297.4187449167357,
+      1270.9234679648073,
+      1278.0600041381308
+     ],
+     "median": 1278.0600041381308,
+     "rel_spread": 0.020730855254167586
+    },
+    "us_per_candidate_with_h2d": {
+     "values": [
+      1311.5101314235105,
+      1273.7929888464107,
+      1292.3248171536088
+     ],
+     "median": 1292.3248171536088,
+     "rel_spread": 0.029185497389250144
+    },
+    "total_all_slates_s": {
+     "values": [
+      21.51509504695423,
+      21.0757238692604,
+      21.194069048622623
+     ],
+     "median": 21.194069048622623,
+     "rel_spread": 0.020730855254167586
+    },
+    "batch128_ms_per_batch": {
+     "values": [
+      171.55209905467927,
+      166.67916998267174,
+      167.69342008046806
+     ],
+     "median": 167.69342008046806,
+     "rel_spread": 0.029058558586671147
+    },
+    "batch128_us_per_candidate": {
+     "values": [
+      1332.122592528801,
+      1306.656160818949,
+      1315.9992368862506
+     ],
+     "median": 1315.9992368862506,
+     "rel_spread": 0.019351403098156385
+    },
+    "device_fed_to_forward": [],
+    "any_contended": false,
+    "per_sample_loop_suspected": true,
+    "loop_check_ratio": [
+     {
+      "aten_ops": 5.353797019162527,
+      "cuda_kernels": 0.0
+     },
+     {
+      "aten_ops": 5.353797019162527,
+      "cuda_kernels": 0.0
+     },
+     {
+      "aten_ops": 5.353797019162527,
+      "cuda_kernels": 0.0
+     }
+    ]
+   },
+   "command": "/home/alon/anaconda3/envs/pme/bin/python -u experiments/EXP-0062-flex-v2-train-rerun/code/time_inference.py --model gnn_flex_v2_n30 --name gnn_v2_n30_cpu_cached_perception --device cpu --png 0 --kwargs {\"device\": \"cpu\"} --out experiments/EXP-0062-flex-v2-train-rerun/results/timing_gnn_parts/gnn_cpu_cached.json"
+  },
+  "nfd_v2_s0_cpu_reference (MODEL-0008 on the same CPU)": {
+   "status": "complete",
+   "aggregate": {
+    "n_processes": 3,
+    "per_slate_ms_median": {
+     "values": [
+      80.76944551430643,
+      80.59851441066712,
+      80.7125645224005
+     ],
+     "median": 80.7125645224005,
+     "rel_spread": 0.0021177756480760244
+    },
+    "per_slate_ms_p90": {
+     "values": [
+      92.78385483194143,
+      93.49380030762404,
+      92.04219677485527
+     ],
+     "median": 92.78385483194143,
+     "rel_spread": 0.015645001335610042
+    },
+    "per_slate_ms_with_h2d_median": {
+     "values": [
+      81.62363700103015,
+      81.49224100634456,
+      81.02897298522294
+     ],
+     "median": 81.49224100634456,
+     "rel_spread": 0.007297185700917391
+    },
+    "us_per_candidate": {
+     "values": [
+      484.83539689600696,
+      486.1475831439196,
+      483.4242766070555
+     ],
+     "median": 484.83539689600696,
+     "rel_spread": 0.005616971356256396
+    },
+    "us_per_candidate_with_h2d": {
+     "values": [
+      489.5616171316911,
+      488.2317913685724,
+      487.1381989349497
+     ],
+     "median": 488.2317913685724,
+     "rel_spread": 0.004963663242715671
+    },
+    "total_all_slates_s": {
+     "values": [
+      8.040025386726484,
+      8.061785371275619,
+      8.016624778974801
+     ],
+     "median": 8.040025386726484,
+     "rel_spread": 0.005616971356256453
+    },
+    "batch128_ms_per_batch": {
+     "values": [
+      58.6461981292814,
+      58.83038695901632,
+      57.272001868113875
+     ],
+     "median": 58.6461981292814,
+     "rel_spread": 0.026572653311082464
+    },
+    "batch128_us_per_candidate": {
+     "values": [
+      459.64052895764917,
+      460.57224661958327,
+      450.2291029957421
+     ],
+     "median": 459.64052895764917,
+     "rel_spread": 0.022502679751276195
+    },
+    "device_fed_to_forward": [
+     "cpu"
+    ],
+    "any_contended": false,
+    "per_sample_loop_suspected": false,
+    "loop_check_ratio": [
+     {
+      "aten_ops": 1.0,
+      "cuda_kernels": 0.0
+     },
+     {
+      "aten_ops": 1.0,
+      "cuda_kernels": 0.0
+     },
+     {
+      "aten_ops": 1.0,
+      "cuda_kernels": 0.0
+     }
+    ]
+   },
+   "command": "/home/alon/anaconda3/envs/pme/bin/python -u experiments/EXP-0062-flex-v2-train-rerun/code/time_inference.py --model nfd_randlen --ckpt weights/MODEL-0008-nfd-flex-mask-v2-seed0/checkpoint.pth --name nfd_v2_s0_cpu --device cpu --png 0 --out experiments/EXP-0062-flex-v2-train-rerun/results/timing_gnn_parts/nfd_cpu_reference.json"
+  }
+ },
+ "stage_breakdown_breakdown_cpu": {
+  "ckpt": "weights/MODEL-0010-gnn-flex-mask-v2-n30/checkpoint.pth",
+  "n": 30,
+  "fast": false,
+  "device": "cpu",
+  "threads": 4,
+  "gpu": null,
+  "passes": 3,
+  "n_slates": 100,
+  "stage_ms_median_over_slates": {
+   "imread": 4.818209097720683,
+   "segment_backproject": 11.627281899563968,
+   "voxel": 28.887385968118906,
+   "fps": 0.6858916021883488,
+   "recenter": 0.797996879555285,
+   "s_delta": 1.1669524246826768,
+   "graph_build": 4.241318558342755,
+   "gnn_forward": 43.57202153187245,
+   "render": 133.04238149430603
+  },
+  "stage_share": {
+   "imread": 0.02105497683951332,
+   "segment_backproject": 0.050809781422234954,
+   "voxel": 0.12623429788477913,
+   "fps": 0.002997261327932836,
+   "recenter": 0.003487147501545489,
+   "s_delta": 0.005099437524646016,
+   "graph_build": 0.018534036652155604,
+   "gnn_forward": 0.19040433605057572,
+   "render": 0.5813787247966169
+  },
+  "total_ms_median": 240.59250706341118,
+  "perception_ms": 46.81676544714719,
+  "model_ms": 48.98029251489788,
+  "render_ms": 133.04238149430603,
+  "staged_output_equals_predict_occ": true
+ },
+ "stage_breakdown_breakdown_cpu_fast": {
+  "ckpt": "weights/MODEL-0010-gnn-flex-mask-v2-n30/checkpoint.pth",
+  "n": 30,
+  "fast": true,
+  "device": "cpu",
+  "threads": 4,
+  "gpu": null,
+  "passes": 3,
+  "n_slates": 100,
+  "stage_ms_median_over_slates": {
+   "imread": 5.005068611353636,
+   "segment_backproject": 12.101453496143222,
+   "voxel": 30.33022698946297,
+   "fps": 0.7023679791018367,
+   "recenter": 0.8188164792954922,
+   "s_delta": 1.2510160449892282,
+   "graph_build": 3.398323431611061,
+   "gnn_forward": 44.73284259438515,
+   "render": 210.0914129987359
+  },
+  "stage_share": {
+   "imread": 0.016227486968226488,
+   "segment_backproject": 0.03923546191950253,
+   "voxel": 0.09833698624997453,
+   "fps": 0.0022772249718854692,
+   "recenter": 0.002654775544334265,
+   "s_delta": 0.004056057597503047,
+   "graph_build": 0.011018080566406609,
+   "gnn_forward": 0.1450333005636439,
+   "render": 0.6811606256185232
+  },
+  "total_ms_median": 325.31568547710776,
+  "perception_ms": 48.95793355535716,
+  "model_ms": 49.382182070985436,
+  "render_ms": 210.0914129987359,
+  "staged_output_equals_predict_occ": true
+ },
+ "lf_v2_cpu_reference_from_RUN-0002": "see results/timing_lf.json (switched CPU 55.7 ms/slate, single 39.7)"
+}

@@ -25,8 +25,28 @@ Checkpoint format
 -----------------
 Each checkpoint is a plain ``state_dict`` saved with ``torch.save``.
 A ``model_card.yaml`` sidecar is always written alongside the best
-checkpoint.  To save epoch/optimiser state use the ``save_full_state``
-training flag (not yet implemented — the checkpoint is raw state_dict only).
+checkpoint.  Weight checkpoints are written atomically (``.tmp`` +
+``os.replace``).
+
+Full resumable state (``training.save_full_state: true``, opt-in; added
+2026-10-01 for EXP-0061): ``<log_dir>/last_state.pt`` holds model +
+optimizer + scheduler + GradScaler + epoch + batches-done-in-epoch + the
+partial epoch sums + best-val bookkeeping + RNG states + a fingerprint of
+the train/val rows. It is rewritten atomically at the end of every epoch
+(together with ``unet_last.pth``) and mid-epoch every
+``training.full_state_every_min`` minutes (default 10). The train loader
+then draws its order from ``_EpochPermSampler`` (permutation seeded by
+``training.shuffle_seed`` + epoch, independent of the global RNG), so a
+resume continues the SAME epoch from the SAME batch with the same LR
+schedule. On resume the stored row fingerprints must match (same split) or
+the run refuses to continue. ``resume=False`` (``--no-resume``) ignores it.
+
+Plateau stop (``training.patience_min_rel_delta``, opt-in, default 0 = the
+old behaviour; added 2026-10-02 for EXP-0062): an epoch only resets the
+early-stopping counter if its val loss is below ``(1 - delta) x`` the val
+loss at the last such reset (``plateau_ref``), so training stops after
+``patience`` epochs without a > delta relative improvement. ``unet_best.pth``
+is still written on ANY new best, independent of the counter.
 
 Deduplication
 -------------
@@ -38,8 +58,14 @@ no ``unet.pth``) is always resumed in-place.
 
 from __future__ import annotations
 
+import hashlib
+import os
+import random
+import time
 from pathlib import Path
 from typing import Any
+
+import numpy as np
 
 import torch
 import yaml
@@ -255,6 +281,45 @@ def _batch_size(batch: TrainingBatch) -> int:
     raise KeyError("Cannot infer batch size from batch keys.")
 
 
+class _EpochPermSampler(torch.utils.data.Sampler):
+    """Resumable shuffling: epoch e's order is randperm(n) under seed
+    (seed + e), independent of the global RNG; ``set_epoch(e, skip)`` drops
+    the first ``skip`` indices (the already-trained part of a resumed epoch)."""
+
+    def __init__(self, n: int, seed: int):
+        self.n, self.seed, self.epoch, self.skip = n, int(seed), 0, 0
+
+    def set_epoch(self, epoch: int, skip: int = 0) -> None:
+        self.epoch, self.skip = int(epoch), int(skip)
+
+    def __iter__(self):
+        g = torch.Generator().manual_seed(self.seed + self.epoch)
+        return iter(torch.randperm(self.n, generator=g)[self.skip:].tolist())
+
+    def __len__(self):
+        return self.n - self.skip
+
+
+def _rows_fingerprint(ds) -> str:
+    """sha1 of a dataset's row identity (the raw dataset's index map and
+    group ids when available, else just its length)."""
+    raw = getattr(ds, "raw_dataset", ds)
+    h = hashlib.sha1(str(len(ds)).encode())
+    im = getattr(raw, "_index_map", None)
+    if im is not None:
+        h.update(np.asarray(im, dtype=np.int64).tobytes())
+        if hasattr(raw, "get_run_index"):
+            h.update(np.asarray([raw.get_run_index(i) for i in range(len(raw))], np.int64).tobytes())
+    return h.hexdigest()
+
+
+def _atomic_torch_save(obj, path: Path) -> None:
+    path = Path(path)
+    tmp = path.with_name(path.name + ".tmp")
+    torch.save(obj, tmp)
+    os.replace(tmp, path)
+
+
 # ---------------------------------------------------------------------------
 # Trainer
 # ---------------------------------------------------------------------------
@@ -297,6 +362,7 @@ class Trainer:
         self.cfg       = cfg
         self._tcfg     = cfg.get("training", {})
         self._resumed  = False
+        self._resume_full = True
 
     @classmethod
     def from_config(cls, config_path: str | Path, resume: bool = True) -> "Trainer":
@@ -326,6 +392,7 @@ class Trainer:
         test_ds  = build_dataset(cfg["dataset"], "test")
 
         trainer = cls(model_wrapper, train_ds, val_ds, test_ds, loss_fn, metrics, cfg)
+        trainer._resume_full = bool(resume)
         if resume:
             trainer._try_resume()
         return trainer
@@ -375,23 +442,73 @@ class Trainer:
         loader_bs = (max(1, batch_size // AUGMENT_FACTOR[aug_mode])
                      if augment else batch_size)
 
-        train_loader = self._make_loader(self.train_ds, loader_bs, shuffle=True,  num_workers=num_workers)
+        full_state = bool(tcfg.get("save_full_state", False))
+        sampler = None
+        if full_state:
+            sampler = _EpochPermSampler(len(self.train_ds), int(tcfg.get("shuffle_seed", 0)))
+            train_loader = DataLoader(
+                self.train_ds, batch_size=loader_bs, sampler=sampler, num_workers=num_workers,
+                pin_memory=(DEVICE == "cuda"), collate_fn=getattr(self.train_ds, "collate_fn", None))
+        else:
+            train_loader = self._make_loader(self.train_ds, loader_bs, shuffle=True,  num_workers=num_workers)
         val_loader   = self._make_loader(self.val_ds,   loader_bs, shuffle=False, num_workers=num_workers)
 
         epochs     = int(tcfg.get("epochs",               100))
         patience   = int(tcfg.get("patience",             100))
+        min_rel    = float(tcfg.get("patience_min_rel_delta", 0.0))
         save_every = int(tcfg.get("save_every_n_epochs",   10))
 
         best_val_loss = float("inf")
         best_epoch    = 0
         no_improve    = 0
+        plateau_ref   = float("inf")
+        start_epoch, skip_batches = 0, 0
+        resume_sums = None
+        state_path = log_dir / "last_state.pt"
+        every_s = 60.0 * float(tcfg.get("full_state_every_min", 10))
+        fps = None
+        if full_state:
+            fps = {"train": _rows_fingerprint(self.train_ds), "val": _rows_fingerprint(self.val_ds)}
+        if full_state and self._resume_full and state_path.exists():
+            st = torch.load(state_path, map_location=DEVICE, weights_only=False)
+            if st["fingerprints"] != fps:
+                raise RuntimeError(f"{state_path}: train/val rows differ from the checkpoint "
+                                   f"({st['fingerprints']} vs {fps}); refusing to resume")
+            self.model_wrapper.load_state_dict(st["model"])
+            optimizer.load_state_dict(st["optimizer"])
+            scheduler.load_state_dict(st["scheduler"])
+            scaler.load_state_dict(st["scaler"])
+            best_val_loss, best_epoch, no_improve = st["best_val_loss"], st["best_epoch"], st["no_improve"]
+            plateau_ref = st.get("plateau_ref", best_val_loss)
+            start_epoch, skip_batches = st["epoch"], st["batches_done"]
+            resume_sums = st["sums"]
+            torch.set_rng_state(st["rng"]["torch"].cpu()); np.random.set_state(st["rng"]["numpy"])
+            random.setstate(st["rng"]["python"])
+            if DEVICE == "cuda" and st["rng"].get("cuda") is not None:
+                torch.cuda.set_rng_state_all([t.cpu() for t in st["rng"]["cuda"]])
+            print(f"Resumed FULL state from {state_path}: epoch {start_epoch} "
+                  f"(+{skip_batches} batches), best={best_epoch} ({best_val_loss:.6f}), "
+                  f"lr={scheduler.get_last_lr()[0]:.3g}", flush=True)
+
+        def _save_full(epoch_, batches_done_, sums_):
+            _atomic_torch_save({
+                "model": self.model_wrapper.state_dict(), "optimizer": optimizer.state_dict(),
+                "scheduler": scheduler.state_dict(), "scaler": scaler.state_dict(),
+                "epoch": epoch_, "batches_done": batches_done_, "sums": sums_,
+                "best_val_loss": best_val_loss, "best_epoch": best_epoch, "no_improve": no_improve,
+                "plateau_ref": plateau_ref,
+                "rng": {"torch": torch.get_rng_state(), "numpy": np.random.get_state(),
+                        "python": random.getstate(),
+                        "cuda": torch.cuda.get_rng_state_all() if DEVICE == "cuda" else None},
+                "fingerprints": fps, "loader_bs": loader_bs, "time": time.time(),
+            }, state_path)
 
         print(
             f"Training on {DEVICE}, epochs 0→{epochs}, log_dir={log_dir}\n"
             f"Train: {len(self.train_ds)}  Val: {len(self.val_ds)}  Test: {len(self.test_ds)}"
         )
 
-        with trange(epochs, desc="Epochs") as tbar:
+        with trange(start_epoch, epochs, desc="Epochs") as tbar:
             for epoch in tbar:
 
                 # ── Train ────────────────────────────────────────────────────
@@ -399,6 +516,14 @@ class Trainer:
                 train_loss_sum = 0.0
                 train_comp_sum: dict[str, float] = {}
                 train_n = 0
+                b_done = 0
+                if sampler is not None:
+                    sampler.set_epoch(epoch, skip_batches * loader_bs)
+                    if resume_sums is not None and skip_batches > 0:
+                        train_loss_sum, train_comp_sum, train_n = (
+                            resume_sums["loss"], dict(resume_sums["comp"]), resume_sums["n"])
+                    b_done, skip_batches, resume_sums = skip_batches, 0, None
+                t_last = time.time()
 
                 for batch in train_loader:
                     batch = _to_device(batch, DEVICE)
@@ -425,6 +550,11 @@ class Trainer:
                     for k, v in components.items():
                         train_comp_sum[k] = train_comp_sum.get(k, 0.0) + v * bsz
                     train_n += bsz
+                    b_done += 1
+                    if full_state and time.time() - t_last > every_s:
+                        _save_full(epoch, b_done, {"loss": train_loss_sum, "comp": train_comp_sum,
+                                                   "n": train_n})
+                        t_last = time.time()
 
                 scheduler.step()
                 train_loss  = train_loss_sum / max(1, train_n)
@@ -437,14 +567,19 @@ class Trainer:
                 if val_loss < best_val_loss:
                     best_val_loss = val_loss
                     best_epoch    = epoch + 1
-                    no_improve    = 0
                     self._save_checkpoint(log_dir / "unet_best.pth")
                     self._model_card.save()
+                if val_loss < plateau_ref * (1.0 - min_rel):
+                    plateau_ref = val_loss
+                    no_improve  = 0
                 else:
                     no_improve += 1
 
                 if (epoch + 1) % save_every == 0:
                     self._save_checkpoint(log_dir / f"unet_epoch_{epoch + 1}.pth")
+                if full_state:
+                    self._save_checkpoint(log_dir / "unet_last.pth")
+                    _save_full(epoch + 1, 0, None)
 
                 # ── Logging ───────────────────────────────────────────────────
                 self._log(
@@ -464,7 +599,7 @@ class Trainer:
                     f"Epoch {epoch+1:4d}: trn={train_loss:.6f}  val={val_loss:.6f}  "
                     f"iou={val_metrics.get('hard_iou', 0):.4f}  "
                     f"chg_mse={val_metrics.get('changed_mse', 0):.6f}  "
-                    f"best={best_epoch}"
+                    f"best={best_epoch}", flush=True
                 )
 
                 if no_improve >= patience:
@@ -569,7 +704,7 @@ class Trainer:
         )
 
     def _save_checkpoint(self, path: Path) -> None:
-        torch.save(self.model_wrapper.state_dict(), path)
+        _atomic_torch_save(self.model_wrapper.state_dict(), path)
 
     def _try_resume(self) -> None:
         """
@@ -578,6 +713,10 @@ class Trainer:
         """
         log_dir = Path(self.cfg.get("output", {}).get("log_dir", "runs/training"))
         if not log_dir.exists():
+            return
+        if bool(self._tcfg.get("save_full_state", False)) and (log_dir / "last_state.pt").exists():
+            self._resumed = True     # run() restores the full state itself
+            print(f"Found full resumable state {log_dir / 'last_state.pt'}")
             return
 
         # Prefer the most recent epoch checkpoint, fall back to unet_best.pth

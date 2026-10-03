@@ -1,0 +1,30 @@
++ cd /home/alon/Code/pile_manipulation
++ run gnn_cpu_perception --model gnn_flex_v2_n30 --name gnn_v2_n30_cpu_with_perception --device cpu --png 0 --kwargs '{"cache_states": false, "device": "cpu"}' --out experiments/EXP-0062-flex-v2-train-rerun/results/timing_gnn_parts/gnn_cpu_with_perception.json
++ name=gnn_cpu_perception
++ shift
+++ date +%FT%H:%M
++ echo '{"ts":"2026-10-02T18:31","run_id":"EXP-0062/RUN-0003/timing_gnn_cpu_perception","event":"start","argv":"env PYTHONPATH=. OMP_NUM_THREADS=4 /home/alon/anaconda3/envs/pme/bin/python -u experiments/EXP-0062-flex-v2-train-rerun/code/time_inference.py --model gnn_flex_v2_n30 --name gnn_v2_n30_cpu_with_perception --device cpu --png 0 --kwargs {"cache_states": false, "device": "cpu"} --out experiments/EXP-0062-flex-v2-train-rerun/results/timing_gnn_parts/gnn_cpu_with_perception.json","commit":"d72bb304","dirty":true}'
++ env PYTHONPATH=. OMP_NUM_THREADS=4 /home/alon/anaconda3/envs/pme/bin/python -u experiments/EXP-0062-flex-v2-train-rerun/code/time_inference.py --model gnn_flex_v2_n30 --name gnn_v2_n30_cpu_with_perception --device cpu --png 0 --kwargs '{"cache_states": false, "device": "cpu"}' --out experiments/EXP-0062-flex-v2-train-rerun/results/timing_gnn_parts/gnn_cpu_with_perception.json
++ x=0
+++ date +%FT%H:%M
++ echo '{"ts":"2026-10-02T18:48","run_id":"EXP-0062/RUN-0003/timing_gnn_cpu_perception","event":"end","status":"exit 0"}'
++ run gnn_cpu_cached --model gnn_flex_v2_n30 --name gnn_v2_n30_cpu_cached_perception --device cpu --png 0 --kwargs '{"device": "cpu"}' --out experiments/EXP-0062-flex-v2-train-rerun/results/timing_gnn_parts/gnn_cpu_cached.json
++ name=gnn_cpu_cached
++ shift
+++ date +%FT%H:%M
++ echo '{"ts":"2026-10-02T18:48","run_id":"EXP-0062/RUN-0003/timing_gnn_cpu_cached","event":"start","argv":"env PYTHONPATH=. OMP_NUM_THREADS=4 /home/alon/anaconda3/envs/pme/bin/python -u experiments/EXP-0062-flex-v2-train-rerun/code/time_inference.py --model gnn_flex_v2_n30 --name gnn_v2_n30_cpu_cached_perception --device cpu --png 0 --kwargs {"device": "cpu"} --out experiments/EXP-0062-flex-v2-train-rerun/results/timing_gnn_parts/gnn_cpu_cached.json","commit":"d72bb304","dirty":true}'
++ env PYTHONPATH=. OMP_NUM_THREADS=4 /home/alon/anaconda3/envs/pme/bin/python -u experiments/EXP-0062-flex-v2-train-rerun/code/time_inference.py --model gnn_flex_v2_n30 --name gnn_v2_n30_cpu_cached_perception --device cpu --png 0 --kwargs '{"device": "cpu"}' --out experiments/EXP-0062-flex-v2-train-rerun/results/timing_gnn_parts/gnn_cpu_cached.json
++ x=0
+++ date +%FT%H:%M
++ echo '{"ts":"2026-10-02T19:00","run_id":"EXP-0062/RUN-0003/timing_gnn_cpu_cached","event":"end","status":"exit 0"}'
++ run nfd_cpu_ref --model nfd_randlen --ckpt weights/MODEL-0008-nfd-flex-mask-v2-seed0/checkpoint.pth --name nfd_v2_s0_cpu --device cpu --png 0 --out experiments/EXP-0062-flex-v2-train-rerun/results/timing_gnn_parts/nfd_cpu_reference.json
++ name=nfd_cpu_ref
++ shift
+++ date +%FT%H:%M
++ echo '{"ts":"2026-10-02T19:00","run_id":"EXP-0062/RUN-0003/timing_nfd_cpu_ref","event":"start","argv":"env PYTHONPATH=. OMP_NUM_THREADS=4 /home/alon/anaconda3/envs/pme/bin/python -u experiments/EXP-0062-flex-v2-train-rerun/code/time_inference.py --model nfd_randlen --ckpt weights/MODEL-0008-nfd-flex-mask-v2-seed0/checkpoint.pth --name nfd_v2_s0_cpu --device cpu --png 0 --out experiments/EXP-0062-flex-v2-train-rerun/results/timing_gnn_parts/nfd_cpu_reference.json","commit":"d72bb304","dirty":true}'
++ env PYTHONPATH=. OMP_NUM_THREADS=4 /home/alon/anaconda3/envs/pme/bin/python -u experiments/EXP-0062-flex-v2-train-rerun/code/time_inference.py --model nfd_randlen --ckpt weights/MODEL-0008-nfd-flex-mask-v2-seed0/checkpoint.pth --name nfd_v2_s0_cpu --device cpu --png 0 --out experiments/EXP-0062-flex-v2-train-rerun/results/timing_gnn_parts/nfd_cpu_reference.json
++ x=0
+++ date +%FT%H:%M
++ echo '{"ts":"2026-10-02T19:05","run_id":"EXP-0062/RUN-0003/timing_nfd_cpu_ref","event":"end","status":"exit 0"}'
++ echo CHAIN_DONE
+CHAIN_DONE

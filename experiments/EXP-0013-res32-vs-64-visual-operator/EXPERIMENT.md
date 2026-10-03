@@ -173,3 +173,11 @@ magnitude in the pooled set -- see `results/results_res_compare.json`'s
   found by grepping "wins/losses/K=32" across EXP-0010/EXP-0012. Worth
   adding a line so a future K=32 control eval on this corpus does not
   reimplement it informally.
+
+## Later evidence (2026-10-03 audit)
+
+Added by the cross-experiment audit (summary: `experiments/SUMMARY.md`). Numbers above are unchanged.
+
+- Asymmetric goal masks (T / random_quadrant / ring_O / stripe / letters) in this record were scored BEFORE the goal-axis fix `28271c09` (2026-09-17) and were never rescored; transpose-invariant goals (corner, center, ...) are unaffected (ISS-003). ISS-003 names this record (control half of C-019 exposed).
+- DS-0001 was simulated with friction 0.3 / density 1000, not the randlen models' training physics (`benchmark-physics-matches-training`, broken).
+- EXP-0065 / ISS-013: 46 % of DS-0001's candidate pushes put the blade on a cube at touchdown (pre-fix pile-aware sampler); this record's pools were not re-scored on legal-only candidates.

@@ -292,3 +292,11 @@ mass inside a small goal region, so capture is undefined).
 - Building DS-0004 surfaced a real `torch.save` trap: saving a row VIEW of a
   large tensor writes the whole underlying storage (a 20-row bank was 225 MB
   instead of 12 MB). Fixed in `gt_bank.py` with `.clone()` and a test.
+
+## Later evidence (2026-10-03 audit)
+
+Added by the cross-experiment audit (summary: `experiments/SUMMARY.md`). Numbers above are unchanged.
+
+- EXP-0036 adds training-seed noise (slateN sd 0.01-0.04), which widens every interval here.
+- GNN rows carry `gnn-node-sampling-consistent-within-state` (broken: node sampling seeded by batch row).
+- A3 (DS-0001): EXP-0065 / ISS-013: 46 % of DS-0001's candidate pushes put the blade on a cube at touchdown (pre-fix pile-aware sampler); this record's pools were not re-scored on legal-only candidates.

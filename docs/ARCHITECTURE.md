@@ -356,7 +356,9 @@ transforms/
                         yaw / 5D-explicit-yaw action convention — see
                         docs/human_demo_design.md)
   representation.py     Compose, EnsureRepresentation, occupancy/particle
-                        alias transforms, build_transforms
+                        alias transforms, OccupancyBlur (config type
+                        `occupancy_blur`: soft-occupancy input+target,
+                        EXP-0063), build_transforms
 
 training/
   types.py              TrainingBatch and ModelOutput contracts
@@ -428,6 +430,42 @@ simple_mpc/
 RealData/
   dataset.py            RealPileSweepData (real camera data; mirrors the
                         PileSweepData output format)
+
+FlexData/                FleX carrot-pile corpora (DS-0019/DS-0020), NATIVE
+                        FleX units, Genesis-free (EXP-0061)
+  dataset.py            FlexPileData (PileSweepData-compatible duck interface:
+                        to_pxl/ctr_in_PXL/configs[0] plate+box/workspace_bounds/
+                        get_raw_action; registered as dataset type "flex"),
+                        load_flex_cell (eval_report corpus "flex_ds0019"),
+                        truth_for_scoring_flex, ImageMaskSource (loads the
+                        image-mask cache below). Table frame X = x_flex, Y = -z_flex
+  image_mask.py         OWNER of image -> top-down occupancy (moved from the
+                        EXP-0061 prototype, which stays as the validated record):
+                        segment (white = background), Camera (cam_params.json,
+                        derived f = 869.12, cx = cy = 359.5), table-plane
+                        warp to the instance grid -> area fraction; binary mask
+                        = frac > 0. CLI `python -u -m FlexData.image_mask
+                        ds0020|ds0019|ds0020_v1` builds cache/image_masks.npz
+                        (uint8 mask + float16 frac; chunked, atomic, manifest, .DONE)
+  cam_params.json       the camera (derived; `fit` block = confirmation only)
+  build_cache.py        checkpointed compact caches, splits, PNG path index.
+                        DS-0020 v2 (current; trajectory-manifest payload, variable
+                        particle count -> v2_chunk_*.npz, read by
+                        dataset._TrajManifestSource via instance cache_format
+                        traj_manifest_v2; splits exclude trajectories 0-99 =
+                        DS-0019 near-copies) and the archived v1 (old_data/,
+                        chunk_*.npz, _TrajSource)
+
+Baselines/GNN/ (FleX part, EXP-0061/0062; the rest of Baselines/GNN/ is Genesis-only)
+  flex_predictor.py     dyn-res-pile-manip GNN on FleX COLOUR images: perceive
+                        (fg -> constant plane -> voxel -> FPS -> recenter),
+                        s_delta_train, nearest-node mask render; eval_report
+                        gnn_flex_drp / gnn_flex_drp_n30 / gnn_flex_v2_n30;
+                        predict_one_step_vec (loop-free graph build, bit-identical)
+  flex_train.py         trains PropNetDiffDenModel from scratch on DS-0020 v2 from
+                        the same perception (node cache under DS-0020 cache/
+                        gnn_nodes_n*); targets chamfer_carry (visual) | particle;
+                        full-state resumable checkpoints (MODEL-0010)
 
 configs/
   model/                one YAML per architecture
@@ -849,6 +887,11 @@ training:
   grad_clip_norm: 1.0
   save_every_n_epochs: 10
   num_workers: 4
+  save_full_state: false   # true: <log_dir>/last_state.pt (model+optim+sched+scaler+
+                           # epoch+batch position+RNG+row fingerprints), atomic, every
+                           # epoch and every full_state_every_min (10) minutes; resume
+                           # continues the same epoch/batch/LR (Baselines/NFD/train_nfd.py
+                           # --resume). Train order then from _EpochPermSampler(shuffle_seed)
   loss:
     type: eulerian_combined   # default depends on model.type
                               # (lagrangian_mse for gnn-propnet)

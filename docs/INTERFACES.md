@@ -155,7 +155,8 @@ with `control_utility_test.lyapunov`. `simple_mpc.adapters` therefore carries
 a SECOND adapter family for them, with its own surface:
 
 ```python
-state_from_particles(states)   -> occ          # (B,n_particles,>=3) metres -> (B,64,64)
+state_from_particles(states)   -> occ          # (B,n_particles,>=3) metres -> (B,64,64), = encode_state(raster)
+encode_state(occ)              -> occ_in       # raster -> this model's INPUT representation
 expand_state(state, n_sample)  -> occ_batch
 predict_step(occ, act)         -> occ1         # act (B,4) world-metre [sx,sy,ex,ey]
 value(occ)                     -> (B,)         # Lyapunov COST, lower is better
@@ -166,6 +167,16 @@ dv(occ0, act)                  -> (B,)         # value(after) - value(before)
 The plate yaw is derived from the travel direction by
 `transforms.functional.action_to_pose` (matching the corpora's own `angles`),
 so the action has exactly four free parameters and no yaw argument.
+
+**`encode_state` is identity except for soft-occupancy models** (EXP-0063:
+`input_blur_sigma > 0`, read by `Baselines/NFD/predictor.py::input_blur_sigma_from_run`
+from the checkpoint's own `run_config.yaml`). Apply it to every model input
+built from particles (`occ_from_particles`), and NEVER to a predicted
+occupancy being rolled forward -- the prediction is already in the model's
+representation. Callers that bypass `state_from_particles` must call it
+themselves: `eval_extended.py::_encode`, `multistep_eval.py::run_occ`,
+`learned_mpc.ModelObjective` (per ensemble member, with that member's own
+start value).
 
 Selection is by string id, not by `isinstance`:
 `make_occ_adapter(model_id, device, goal_shape)` over the `OCC_ADAPTERS`
@@ -214,6 +225,30 @@ Dataset/grid convention:
 
 Bridge requirement:
 Any conversion path between wrapper-state and dataset-state must apply the same flip/transpose policy in forward and inverse directions.
+
+FleX corpora (`FlexData/dataset.py`, DS-0019/DS-0020; EXP-0061):
+- Units are native FleX workspace units, not metres; every geometric quantity
+  (grid bounds, plate width, thresholds) comes from the dataset's instance
+  `config.yaml`, exposed through the same `raw.to_pxl` / `raw.ctr_in_PXL` /
+  `raw.configs[0]["plate"]["size"]` / `raw.configs[0]["box"]["vol"]` /
+  `raw.workspace_bounds` attributes `PileSweepData` has, plus
+  `raw.plate_width_px` (read by `fit_linear_foresight.plate_width_px`) and
+  `raw.particles_before(i)` / `raw.particles_after(i)` (variable particle
+  count, so no `states` tensor).
+- DS-0020 has two payloads: v2 (current, `datasets/DS-0020-*/config.yaml`,
+  `cache_format: traj_manifest_v2`, image-mask input only) and the archived
+  v1 (`old_data/_ported_v1/config.yaml`, `chunks_v1`). Both give the same
+  row / group / step interface (row = (trajectory, push k); before = state k,
+  after = state k + 1).
+- Table frame: `X = x_flex`, `Y = -z_flex` (FleX y is up). This is the frame
+  the stored actions are in; the particle files' z is negated on load.
+  Grid: `dim 0 = X`, `dim 1 = Y`; pixel coordinate `world * to_pxl + ctr`,
+  occupancy pixel centres at integer coordinates (same as `draw_plate_soft`),
+  so `truth_for_scoring`'s Genesis `-1.0` px offset is replaced by
+  `raw.score_uv_offset_px = 0.0`.
+- The batch dict keys/shapes are identical to the Genesis `nfd-genesis-3ch`
+  (`channels: 3`) / `genesis` (`channels: 2`) datasets; `physics` is a zero
+  vector (omitted unless `include_physics: true`).
 
 ### 4.2 Sigmoid requirement at MPC boundary (Eulerian)
 

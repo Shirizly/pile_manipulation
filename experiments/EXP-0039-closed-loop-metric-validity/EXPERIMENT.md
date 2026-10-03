@@ -144,3 +144,11 @@ wins in closed loop under both GD and CEM.
 
 ## Unrelated findings
 none
+
+## Later evidence (2026-10-03 audit)
+
+Added by the cross-experiment audit (summary: `experiments/SUMMARY.md`). Numbers above are unchanged.
+
+- **Narrowed / superseded in its main reading:** EXP-0042 found the default GD settings used here far from optimum (gaps inflated); EXP-0044 (tuned planners, 12 goals x 8 starts, 768 episodes) erased most model differences (<= 0.016) and the CEM > GD ordering (tuned GD = CEM); EXP-0045/0046 showed lyapunov saturates near its ceiling by ~8-16 pushes and EXP-0051 that it misreports letter completion. The metric-agreement pattern (accuracy > slateN > spearman) persists in EXP-0044 but on seed-sized gaps (C-045 / C-046 narrowed 2026-10-03).
+- ISS-013: planner candidates / initialisations in this record came from the pre-fix pile-aware sampler (ISS-010 class, ~half illegal touchdowns in audited banks); executed pushes have not been audited for touchdown legality.
+- EXP-0065 RUN-0003 (C-067): executed closed-loop pushes include illegal touchdowns (blade on a cube); measured lower bounds per record in `experiments/EXP-0065-*/results/audit_closed_loop_actions.json` -- this record's episodes did not record states, so not measurable directly; sibling records show 16-53 %.

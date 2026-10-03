@@ -159,3 +159,11 @@ are row-order curves — and `scripts/probes/binned_pool_cache.py` and
   point. These are different readouts, not just different models, so this
   record cannot separate "MODEL-0002's operator is worse" from "MODEL-0002's
   readout is worse". EXP-0015 attacks exactly that separation.
+
+## Later evidence (2026-10-03 audit)
+
+Added by the cross-experiment audit (summary: `experiments/SUMMARY.md`). Numbers above are unchanged.
+
+- DS-0001 was simulated with friction 0.3 / density 1000, not the randlen models' training physics (`benchmark-physics-matches-training`, broken).
+- EXP-0065 / ISS-013: 46 % of DS-0001's candidate pushes put the blade on a cube at touchdown (pre-fix pile-aware sampler); this record's pools were not re-scored on legal-only candidates.
+- The pre-registered 9-cell repeat (EXP-0021) was never run; C-020 remains a one-goal exploratory ordering.

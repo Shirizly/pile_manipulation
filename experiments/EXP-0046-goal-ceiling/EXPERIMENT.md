@@ -154,3 +154,9 @@ Redundancy on a second corpus (other start distribution) reordering the clusters
 - Distance-field correlation between letter goals is 0.95-0.99 for almost every pair: the
   normalised distance field is dominated by the tray-scale far field, which is why lyapunov ranks
   pushes similarly across very different letters.
+
+## Later evidence (2026-10-03 audit)
+
+Added by the cross-experiment audit (summary: `experiments/SUMMARY.md`). Numbers above are unchanged.
+
+- Goal-redundancy clusters were computed on DS-0006 one-step pools: EXP-0065 / ISS-013: 54 % of DS-0006's candidate pushes put the blade on a cube at touchdown (pre-fix pile-aware sampler); this record's pool numbers were not re-scored on legal-only candidates.

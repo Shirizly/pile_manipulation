@@ -1,0 +1,44 @@
+
+=== lyapunov ===
+A1 median r (NFD pairs) +0.01, all +0.01
+   nfd_residual_warped_flipaug_randlen|linear_switched_hard       r +0.06 (primary +0.00) adv +0.062
+   nfd_warped_randlen|nfd_residual_warped_flipaug_randlen         r +0.06 (primary +0.02) adv -0.044
+   nfd_residual_warped_flipaug_randlen|nfd_residual_worldframe_noaug_ep43 r +0.05 (primary +0.03) adv +0.071
+   nfd_warped_randlen_flipaug|nfd_residual_worldframe_noaug_ep43  r +0.04 (primary +0.05) adv +0.025
+   nfd_warped_randlen_flipaug_epoch30|nfd_residual_worldframe_noaug_ep43 r +0.04 (primary +0.02) adv +0.021
+   nfd_warped_randlen_flipaug_epoch30|nfd_residual_warped_flipaug_randlen r +0.04 (primary -0.02) adv -0.050
+   nfd_3ch_randlen|nfd_residual_warped_flipaug_randlen            r +0.03 (primary +0.05) adv -0.068
+   nfd_3ch_randlen|nfd_residual_worldframe_noaug_ep43             r +0.03 (primary +0.04) adv +0.002
+undefined (state, pool) cells: 0 of 160000
+A2 switch-within-NFD gain -0.0472 state-boot [-0.057429098771441194, -0.037506909468768335]
+A3 ensemble - best single +0.0144 state-boot [0.006209032006351997, 0.019907611031516084]
+   model means: nfd_3ch_randlen=0.830 nfd_warped_randlen=0.853 nfd_warped_randlen_flipaug=0.852 nfd_warped_randlen_flipaug_epoch30=0.848 nfd_residual_warped_flipaug_randlen=0.897 nfd_residual_worldframe_noaug_ep43=0.827 nfd_3ch_finetuned=0.594 linear_switched_hard=0.835 ensemble_nfd=0.912
+A4 pairs tested 0; Holm<.05 descriptor links 0
+
+=== mass_in_region ===
+A1 median r (NFD pairs) +0.01, all +0.02
+   nfd_3ch_finetuned|linear_switched_hard                         r +0.25 (primary +0.28) adv -0.128
+   nfd_warped_randlen_flipaug|nfd_3ch_finetuned                   r +0.23 (primary +0.24) adv +0.129
+   nfd_warped_randlen_flipaug_epoch30|nfd_3ch_finetuned           r +0.23 (primary +0.26) adv +0.152
+   nfd_residual_worldframe_noaug_ep43|nfd_3ch_finetuned           r +0.21 (primary +0.25) adv +0.161
+   nfd_3ch_randlen|nfd_3ch_finetuned                              r +0.20 (primary +0.23) adv +0.145
+   nfd_warped_randlen|nfd_3ch_finetuned                           r +0.20 (primary +0.24) adv +0.113
+   nfd_residual_warped_flipaug_randlen|nfd_3ch_finetuned          r +0.18 (primary +0.22) adv +0.161
+   nfd_residual_warped_flipaug_randlen|linear_switched_hard       r +0.04 (primary +0.05) adv +0.033
+undefined (state, pool) cells: 0 of 160000
+A2 switch-within-NFD gain -0.0172 state-boot [-0.032154673873561565, -0.012839652013133742]
+A3 ensemble - best single +0.0460 state-boot [0.03933761993655211, 0.05593843120318433]
+   model means: nfd_3ch_randlen=0.790 nfd_warped_randlen=0.758 nfd_warped_randlen_flipaug=0.773 nfd_warped_randlen_flipaug_epoch30=0.796 nfd_residual_warped_flipaug_randlen=0.805 nfd_residual_worldframe_noaug_ep43=0.805 nfd_3ch_finetuned=0.645 linear_switched_hard=0.772 ensemble_nfd=0.850
+A4 pairs tested 5; Holm<.05 descriptor links 0
+   nfd_warped_randlen_flipaug|nfd_3ch_finetuned                   centroid_offset    rho +0.06 p 0.0670 holm 1.000
+   nfd_3ch_finetuned|linear_switched_hard                         mean_wall_dist     rho -0.06 p 0.0950 holm 1.000
+   nfd_3ch_finetuned|linear_switched_hard                         radius_of_gyration rho +0.06 p 0.1100 holm 1.000
+   nfd_3ch_randlen|nfd_3ch_finetuned                              centroid_offset    rho +0.05 p 0.1170 holm 1.000
+   nfd_warped_randlen_flipaug_epoch30|nfd_3ch_finetuned           centroid_offset    rho +0.05 p 0.1280 holm 1.000
+   nfd_3ch_finetuned|linear_switched_hard                         centroid_offset    rho -0.05 p 0.1640 holm 1.000
+   linear selector nfd_3ch_randlen|nfd_3ch_finetuned                  gain +0.0000 [0.0, 0.0]
+   linear selector nfd_warped_randlen_flipaug|nfd_3ch_finetuned       gain +0.0000 [0.0, 0.0]
+   linear selector nfd_warped_randlen_flipaug_epoch30|nfd_3ch_finetuned gain +0.0000 [0.0, 0.0]
+   linear selector nfd_residual_worldframe_noaug_ep43|nfd_3ch_finetuned gain +0.0000 [0.0, 0.0]
+   linear selector nfd_3ch_finetuned|linear_switched_hard             gain +0.0000 [0.0, 0.0]
+wrote experiments/EXP-0035-state-superiority-ds0007/results/analysis_n50.json

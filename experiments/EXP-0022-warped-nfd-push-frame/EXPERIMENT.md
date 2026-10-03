@@ -251,3 +251,10 @@ design rationale and the phase-by-phase state.
   gradient steps"; the real figure is 668,100 — it quotes the no-augmentation
   arithmetic. Comparisons are unaffected (all arms share the accounting); any run
   sized by trusting that comment is not. Logged in `OPEN_ISSUES.md`.
+
+## Later evidence (2026-10-03 audit)
+
+Added by the cross-experiment audit (summary: `experiments/SUMMARY.md`). Numbers above are unchanged.
+
+- Most arm differences here are below the later-measured noise: slateN gaps < 0.03 are unresolvable at 20 slates x 3 goals (EXP-0026, C-029) and NFD training-seed sd is 0.01-0.04 (EXP-0036, C-044).
+- `slates_multistep` (L20mm/L40mm) was simulated with friction 0.3 / density 1000 -- off-training-physics for randlen-trained models (`benchmark-physics-matches-training`, broken); EXP-0048 later found physics sets barely change 20 mm single-push rankings on scatter (C-053), untested for piles/longer pushes.

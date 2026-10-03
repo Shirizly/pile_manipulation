@@ -429,3 +429,63 @@ relaunched with `--no-resume` before anything was scored. **Workaround:** always
 apply overrides before resume resolution in `Baselines/NFD/train_nfd.py` / `training/trainer.py`.
 **Possible exposure:** any earlier run that used `--override output.log_dir` without
 `--no-resume` while the config's own log_dir held checkpoints — not audited.
+
+## ISS-012 — slateN capture explodes on near-tie (pool, goal) cells; DS-0017 val has three
+
+Found 2026-10-03 (EXP-0063). Capture = (mean(vt) - vt[pick]) / (mean(vt) - min(vt)) is
+unbounded below, and EXP-0059 `eval_extended.py` skips a cell only when the denominator is
+< 1e-9. DS-0017 `val_pools_v2` has three `quadrant_0` cells (pools 17, 22, 27) whose true dv
+spread is 0-1% of the split median; one wrong pick there scores -1.3 to -40 and moves a model's
+32-pool val slateN_tough by up to ~0.16 (EXP-0059's seed-2 val 0.567 -> 0.713 with them dropped;
+EXP-0063 soft_s1 0.639 -> 0.798). DS-0016 test pools have none. **Fix owed:** a relative
+degeneracy threshold (EXP-0063 `summarize.py::drop_degenerate` uses 5% of the split median),
+or per-cell clipping, decided once and applied to every harness. **Exposure:** every
+val_pools_v2 slateN/slateN_tough number (EXP-0059 val selection, EXP-0063 val column).
+
+## ISS-013 — DS-0001 / DS-0006 (and pre-fix planner candidate banks) carry the ISS-010 illegal-touchdown defect
+
+**status:** open · **found:** 2026-10-03 (EXP-0065, prompted by the 2026-10-03 experiment-summary audit) ·
+**severity:** high (DS-0006 is the main offline benchmark corpus and the start-state source of every closed-loop record)
+
+**Task definition (user, 2026-10-03):** in Genesis (rigid cubes) touchdown-illegal pushes are NOT part of the
+task (they would mostly fail in reality), so everything below is a defect to fix and re-run. In FleX
+(flexible carrots) they are allowed for now; FleX data/tests may be re-run later if that changes.
+
+ISS-010 audited only DS-0008..0013. The same pre-fix pile-aware path also produced the candidate
+pushes of DS-0001 and DS-0006 (`Genesis/binned_slate_collection.py`). EXP-0065 measured (exact SAT,
+same code as ISS-010): **DS-0001 46.1 % (1 mm: 59.1 %), DS-0006 54.3 % (1 mm: 79.8 %)** of candidate
+pushes put the blade on a cube at touchdown; per-slate 0.21-0.63 / 0.31-0.76.
+
+**Measured on one table (EXP-0065 RUN-0002, EXP-0030's DS-0006 cache):** the true best push is an
+illegal touchdown in 72 % (lyapunov) / 54 % (mass) of state x goal cells, and dropping illegal
+candidates raises slateN beyond the pool-size effect UNEVENLY across models (linear_switched_hard
++0.113 lyapunov, NFDs +0.01..+0.07), reordering them (Kendall 0.83). So DS-0006 slateN partly
+measures how well a model predicts illegal-touchdown outcomes.
+
+**Measured for executed closed-loop pushes (EXP-0065 RUN-0003, lower bound from cube-disk bounds):**
+planners EXECUTE illegal touchdowns in 16-53 % of pushes (EXP-0051 0.17, EXP-0052 0.36, EXP-0054 0.53,
+EXP-0055 0.16-0.24), including the perfect-model simulator CEM (EXP-0057, 0.23-0.24) -- the simulator
+lets the blade land on cubes and the optimisers exploit it. The rate is MODEL-dependent (EXP-0054:
+worldframe NFD 0.69, the closed-loop winner, vs 0.46-0.51; EXP-0051: NFD ~2x linear), so closed-loop
+model comparisons partly compare how much each model's objective rewards illegal pushes. Fix owed:
+a legality constraint/projection in the planners' action space (and in `execute_action`), then re-run
+the headline closed-loop cells.
+
+**Exposure (the rest is unmeasured):**
+1. Offline ranking on DS-0006 / DS-0001 pools: roughly half of every pool is illegal pushes whose
+   simulated outcome (ejection / violent displacement) is both off-distribution for the models and
+   often a large true dv, so slateN's denominator and the "best" action can be illegal pushes.
+   Records: EXP-0011..0014, 0016, 0023, 0026 A3, 0029 (DS-0001); EXP-0030, 0036, 0037, 0038, 0040,
+   0041, 0042, 0046 (redundancy), 0048, 0049 (DS-0006).
+2. Closed loop (EXP-0032, 0039-0057): start states from DS-0006 are legal settled states, but planner
+   candidates / initialisations were drawn with `generate_action_samples(pile_aware=True)` before
+   2026-09-28. Executed (GD/CEM-refined) pushes have not been audited for touchdown legality; the
+   flat rank-planner results (EXP-0039/0042/0045) and the sampler ranking of EXP-0049 (C-054) are the
+   most exposed.
+3. Training corpora: overnight_randlen-derived DS-0010 audited at 0.0002 (0 mm) / 0.33 (1 mm) in ISS-010,
+   so the broad models' training data is mostly legal at 0 mm; DS-0007 (Sean) audited 2026-10-03 (EXP-0065): <= 0.2 % illegal in every n20/n50 shard except scattered_n50 1 % and scattered_n100 9 % -- EXP-0035 / EXP-0036's DS-0007 results are effectively clean.
+
+**To close:** (a) re-score the key DS-0006 offline tables on legal-only candidates (filter with
+`_row_illegal`) and report rank changes; (b) audit executed closed-loop pushes from the recorded
+episode actions (EXP-0044/0051/0054/0055 artifacts) with the same SAT test; (c) recollect a legal
+DS-0006 successor with `pile_aware_action_batch` if (a) moves rankings.

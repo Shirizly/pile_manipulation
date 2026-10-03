@@ -1,0 +1,33 @@
+
+== rank_capture: Friedman p=2.2e-05; Holm<.05 pairs 5/21
+   ensemble_nfd                             +0.875  rank95 [1,1]
+   nfd_residual_warped_flipaug_randlen      +0.834  rank95 [2,4]
+   nfd_warped_randlen                       +0.822  rank95 [2,6]
+   linear_switched_soft                     +0.819  rank95 [2,6]
+   nfd_warped_randlen_flipaug               +0.795  rank95 [4,7]
+   nfd_residual_worldframe_noaug_ep43       +0.785  rank95 [4,7]
+   nfd_3ch_randlen                          +0.772  rank95 [4,7]
+
+== grad_capture: Friedman p=2.5e-18; Holm<.05 pairs 13/21
+   ensemble_nfd                             +1.374  rank95 [1,1]
+   nfd_residual_worldframe_noaug_ep43       +1.301  rank95 [2,3]
+   nfd_residual_warped_flipaug_randlen      +1.271  rank95 [2,3]
+   nfd_warped_randlen_flipaug               +1.152  rank95 [4,6]
+   nfd_3ch_randlen                          +1.145  rank95 [4,6]
+   linear_switched_soft                     +1.119  rank95 [4,7]
+   nfd_warped_randlen                       +1.078  rank95 [6,7]
+
+== gain_capture: Friedman p=7.5e-14; Holm<.05 pairs 12/21
+   nfd_residual_worldframe_noaug_ep43       +0.516  rank95 [1,2]
+   ensemble_nfd                             +0.499  rank95 [1,2]
+   nfd_residual_warped_flipaug_randlen      +0.437  rank95 [3,3]
+   nfd_3ch_randlen                          +0.373  rank95 [4,5]
+   nfd_warped_randlen_flipaug               +0.357  rank95 [4,6]
+   linear_switched_soft                     +0.300  rank95 [5,7]
+   nfd_warped_randlen                       +0.256  rank95 [6,7]
+
+P2 Kendall(rank_capture, grad_capture) over arms: +0.14 (p 0.77)
+P3 ensemble - best single (nfd_residual_worldframe_noaug_ep43) grad_capture: +0.0734 [0.021070678556958843, 0.1277700273490819]
+P4 median restart sd 0.233 vs between-arm sd 0.110 (ratio 2.12)
+frac cells GD beats whole pool: {'nfd_3ch_randlen': 0.61, 'nfd_warped_randlen': 0.55, 'nfd_warped_randlen_flipaug': 0.66, 'nfd_residual_warped_flipaug_randlen': 0.75, 'nfd_residual_worldframe_noaug_ep43': 0.75, 'linear_switched_soft': 0.63, 'ensemble_nfd': 0.85}
+frac cells GD worse than rank pick: {'nfd_3ch_randlen': 0.25, 'nfd_warped_randlen': 0.32, 'nfd_warped_randlen_flipaug': 0.2, 'nfd_residual_warped_flipaug_randlen': 0.16, 'nfd_residual_worldframe_noaug_ep43': 0.1, 'linear_switched_soft': 0.23, 'ensemble_nfd': 0.1}

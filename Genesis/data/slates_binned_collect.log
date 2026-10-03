@@ -1,0 +1,206 @@
+[38;5;159m[Genesis] [21:15:55] [INFO] [38;5;121m╭───────────────────────────────────────────────╮[0m[38;5;159m[0m
+[38;5;159m[Genesis] [21:15:55] [INFO] [38;5;121m│┈┉┈┉┈┉┈┉┈┉┈┉┈┉┈┉┈┉┈[0m[38;5;159m [38;5;121m[1m[3mGenesis[0m[38;5;159m [38;5;121m┈┉┈┉┈┉┈┉┈┉┈┉┈┉┈┉┈┉┈│[0m[38;5;159m[0m
+[38;5;159m[Genesis] [21:15:55] [INFO] [38;5;121m╰───────────────────────────────────────────────╯[0m[38;5;159m[0m
+[38;5;159m[Genesis] [21:15:56] [INFO] Running on [38;5;121m[4m[NVIDIA GeForce RTX 4070 Laptop GPU][0m[38;5;159m with backend [38;5;121m[4mgs.cuda[0m[38;5;159m. Device memory: [38;5;121m[4m7.62[0m[38;5;159m GB.[0m
+[38;5;159m[Genesis] [21:15:56] [INFO] 🚀 Genesis initialized. 🔖 version: [38;5;121m[4m1.3.3[0m[38;5;159m, 🎨 theme: [38;5;121m[4mdark[0m[38;5;159m, 🌱 seed: [38;5;121m[4mNone[0m[38;5;159m, 🐛 debug: [38;5;121m[4mFalse[0m[38;5;159m, 📏 precision: [38;5;121m[4m32[0m[38;5;159m, 🔥 performance: [38;5;121m[4mTrue[0m[38;5;159m, 💬 verbose: [38;5;121m[4mINFO[0m[38;5;159m[0m
+[38;5;159m[Genesis] [21:15:57] [INFO] Scene [38;5;121m[3m<df7319d>[0m[38;5;159m created.[0m
+[38;5;159m[Genesis] [21:15:57] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m0[0m[38;5;159m, uid: [38;5;121m[3m<b67eba6>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Plane>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [21:15:57] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m1[0m[38;5;159m, uid: [38;5;121m[3m<7c2d785>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [21:15:57] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m2[0m[38;5;159m, uid: [38;5;121m[3m<8021e05>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [21:15:57] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m3[0m[38;5;159m, uid: [38;5;121m[3m<6dc2916>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [21:15:57] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m4[0m[38;5;159m, uid: [38;5;121m[3m<b897827>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [21:15:57] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m5[0m[38;5;159m, uid: [38;5;121m[3m<f74e009>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [21:15:57] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m6[0m[38;5;159m, uid: [38;5;121m[3m<c6f0f8f>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [21:15:57] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m7[0m[38;5;159m, uid: [38;5;121m[3m<6ed452e>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [21:15:57] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m8[0m[38;5;159m, uid: [38;5;121m[3m<1f59a93>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [21:15:57] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m9[0m[38;5;159m, uid: [38;5;121m[3m<2336ada>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [21:15:57] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m10[0m[38;5;159m, uid: [38;5;121m[3m<096274e>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [21:15:57] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m11[0m[38;5;159m, uid: [38;5;121m[3m<585039a>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [21:15:57] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m12[0m[38;5;159m, uid: [38;5;121m[3m<0e18c6e>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [21:15:57] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m13[0m[38;5;159m, uid: [38;5;121m[3m<f464569>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [21:15:57] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m14[0m[38;5;159m, uid: [38;5;121m[3m<f605fa0>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [21:15:57] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m15[0m[38;5;159m, uid: [38;5;121m[3m<7499f14>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [21:15:57] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m16[0m[38;5;159m, uid: [38;5;121m[3m<2077317>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [21:15:57] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m17[0m[38;5;159m, uid: [38;5;121m[3m<9b45517>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [21:15:57] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m18[0m[38;5;159m, uid: [38;5;121m[3m<9a266cf>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [21:15:57] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m19[0m[38;5;159m, uid: [38;5;121m[3m<a961f05>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [21:15:57] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m20[0m[38;5;159m, uid: [38;5;121m[3m<b94c510>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [21:15:57] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m21[0m[38;5;159m, uid: [38;5;121m[3m<98485b2>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [21:15:57] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m22[0m[38;5;159m, uid: [38;5;121m[3m<9d9c148>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [21:15:57] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m23[0m[38;5;159m, uid: [38;5;121m[3m<2d76be9>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [21:15:57] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m24[0m[38;5;159m, uid: [38;5;121m[3m<57920f9>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [21:15:57] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m25[0m[38;5;159m, uid: [38;5;121m[3m<f21d714>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [21:15:57] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m26[0m[38;5;159m, uid: [38;5;121m[3m<28bd151>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+Generated 20 particles out of 20
+[38;5;159m[Genesis] [21:15:57] [INFO] Building scene [38;5;121m[3m<df7319d>[0m[38;5;159m...[0m
+[38;5;159m[Genesis] [21:16:02] [INFO] Compiling simulation kernels...[0m
+[38;5;159m[Genesis] [21:16:28] [INFO] Building visualizer...[0m
+build: 34s
+  settled pile 1/2
+  settled pile 2/2
+  state library: 256 settled x 1 symmetries = 256 states
+state library: 256 states in 14s
+  step 1/1 bin -1: batch 1/161 (1 pushes) -- 14s/batch, ~39 min left in this step
+  step 1/1 bin 0: batch 2/161 (128 pushes) -- 18s/batch, ~48 min left in this step
+  step 1/1 bin 0: batch 3/161 (128 pushes) -- 19s/batch, ~50 min left in this step
+  step 1/1 bin 0: batch 4/161 (128 pushes) -- 19s/batch, ~50 min left in this step
+  step 1/1 bin 0: batch 5/161 (128 pushes) -- 20s/batch, ~52 min left in this step
+  step 1/1 bin 0: batch 6/161 (128 pushes) -- 20s/batch, ~51 min left in this step
+  step 1/1 bin 0: batch 7/161 (128 pushes) -- 21s/batch, ~54 min left in this step
+  step 1/1 bin 0: batch 8/161 (128 pushes) -- 22s/batch, ~55 min left in this step
+  step 1/1 bin 0: batch 9/161 (128 pushes) -- 21s/batch, ~54 min left in this step
+  step 1/1 bin 0: batch 10/161 (128 pushes) -- 21s/batch, ~54 min left in this step
+  step 1/1 bin 0: batch 11/161 (128 pushes) -- 21s/batch, ~53 min left in this step
+  step 1/1 bin 0: batch 12/161 (128 pushes) -- 21s/batch, ~53 min left in this step
+  step 1/1 bin 0: batch 13/161 (128 pushes) -- 21s/batch, ~52 min left in this step
+  step 1/1 bin 0: batch 14/161 (128 pushes) -- 21s/batch, ~52 min left in this step
+  step 1/1 bin 0: batch 15/161 (128 pushes) -- 21s/batch, ~51 min left in this step
+  step 1/1 bin 0: batch 16/161 (128 pushes) -- 21s/batch, ~51 min left in this step
+  step 1/1 bin 0: batch 17/161 (128 pushes) -- 21s/batch, ~50 min left in this step
+  step 1/1 bin 0: batch 18/161 (128 pushes) -- 21s/batch, ~50 min left in this step
+  step 1/1 bin 0: batch 19/161 (128 pushes) -- 21s/batch, ~50 min left in this step
+  step 1/1 bin 0: batch 20/161 (128 pushes) -- 21s/batch, ~49 min left in this step
+  step 1/1 bin 0: batch 21/161 (128 pushes) -- 22s/batch, ~50 min left in this step
+  step 1/1 bin 0: batch 22/161 (128 pushes) -- 22s/batch, ~50 min left in this step
+  step 1/1 bin 0: batch 23/161 (128 pushes) -- 21s/batch, ~49 min left in this step
+  step 1/1 bin 0: batch 24/161 (128 pushes) -- 21s/batch, ~49 min left in this step
+  step 1/1 bin 0: batch 25/161 (128 pushes) -- 22s/batch, ~49 min left in this step
+  step 1/1 bin 0: batch 26/161 (128 pushes) -- 22s/batch, ~49 min left in this step
+  step 1/1 bin 0: batch 27/161 (128 pushes) -- 22s/batch, ~48 min left in this step
+  step 1/1 bin 0: batch 28/161 (128 pushes) -- 22s/batch, ~48 min left in this step
+  step 1/1 bin 0: batch 29/161 (128 pushes) -- 22s/batch, ~47 min left in this step
+  step 1/1 bin 0: batch 30/161 (128 pushes) -- 22s/batch, ~47 min left in this step
+  step 1/1 bin 0: batch 31/161 (128 pushes) -- 22s/batch, ~47 min left in this step
+  step 1/1 bin 0: batch 32/161 (128 pushes) -- 22s/batch, ~47 min left in this step
+  step 1/1 bin 0: batch 33/161 (32 pushes) -- 22s/batch, ~47 min left in this step
+  step 1/1 bin 1: batch 34/161 (128 pushes) -- 22s/batch, ~47 min left in this step
+  step 1/1 bin 1: batch 35/161 (128 pushes) -- 23s/batch, ~47 min left in this step
+  step 1/1 bin 1: batch 36/161 (128 pushes) -- 23s/batch, ~48 min left in this step
+  step 1/1 bin 1: batch 37/161 (128 pushes) -- 23s/batch, ~48 min left in this step
+  step 1/1 bin 1: batch 38/161 (128 pushes) -- 23s/batch, ~47 min left in this step
+  step 1/1 bin 1: batch 39/161 (128 pushes) -- 23s/batch, ~47 min left in this step
+  step 1/1 bin 1: batch 40/161 (128 pushes) -- 23s/batch, ~47 min left in this step
+  step 1/1 bin 1: batch 41/161 (128 pushes) -- 23s/batch, ~46 min left in this step
+  step 1/1 bin 1: batch 42/161 (128 pushes) -- 23s/batch, ~46 min left in this step
+  step 1/1 bin 1: batch 43/161 (128 pushes) -- 23s/batch, ~46 min left in this step
+  step 1/1 bin 1: batch 44/161 (128 pushes) -- 23s/batch, ~45 min left in this step
+  step 1/1 bin 1: batch 45/161 (128 pushes) -- 23s/batch, ~45 min left in this step
+  step 1/1 bin 1: batch 46/161 (128 pushes) -- 23s/batch, ~45 min left in this step
+  step 1/1 bin 1: batch 47/161 (128 pushes) -- 24s/batch, ~45 min left in this step
+  step 1/1 bin 1: batch 48/161 (128 pushes) -- 24s/batch, ~44 min left in this step
+  step 1/1 bin 1: batch 49/161 (128 pushes) -- 24s/batch, ~44 min left in this step
+  step 1/1 bin 1: batch 50/161 (128 pushes) -- 24s/batch, ~44 min left in this step
+  step 1/1 bin 1: batch 51/161 (128 pushes) -- 24s/batch, ~43 min left in this step
+  step 1/1 bin 1: batch 52/161 (128 pushes) -- 24s/batch, ~44 min left in this step
+  step 1/1 bin 1: batch 53/161 (128 pushes) -- 24s/batch, ~43 min left in this step
+  step 1/1 bin 1: batch 54/161 (128 pushes) -- 24s/batch, ~43 min left in this step
+  step 1/1 bin 1: batch 55/161 (128 pushes) -- 24s/batch, ~43 min left in this step
+  step 1/1 bin 1: batch 56/161 (128 pushes) -- 24s/batch, ~42 min left in this step
+  step 1/1 bin 1: batch 57/161 (128 pushes) -- 24s/batch, ~42 min left in this step
+  step 1/1 bin 1: batch 58/161 (128 pushes) -- 24s/batch, ~42 min left in this step
+  step 1/1 bin 1: batch 59/161 (128 pushes) -- 25s/batch, ~42 min left in this step
+  step 1/1 bin 1: batch 60/161 (128 pushes) -- 25s/batch, ~41 min left in this step
+  step 1/1 bin 1: batch 61/161 (128 pushes) -- 25s/batch, ~41 min left in this step
+  step 1/1 bin 1: batch 62/161 (128 pushes) -- 25s/batch, ~41 min left in this step
+  step 1/1 bin 1: batch 63/161 (128 pushes) -- 25s/batch, ~40 min left in this step
+  step 1/1 bin 1: batch 64/161 (128 pushes) -- 25s/batch, ~40 min left in this step
+  step 1/1 bin 1: batch 65/161 (32 pushes) -- 25s/batch, ~40 min left in this step
+  step 1/1 bin 2: batch 66/161 (128 pushes) -- 25s/batch, ~39 min left in this step
+  step 1/1 bin 2: batch 67/161 (128 pushes) -- 25s/batch, ~39 min left in this step
+  step 1/1 bin 2: batch 68/161 (128 pushes) -- 25s/batch, ~39 min left in this step
+  step 1/1 bin 2: batch 69/161 (128 pushes) -- 25s/batch, ~39 min left in this step
+  step 1/1 bin 2: batch 70/161 (128 pushes) -- 25s/batch, ~38 min left in this step
+  step 1/1 bin 2: batch 71/161 (128 pushes) -- 25s/batch, ~38 min left in this step
+  step 1/1 bin 2: batch 72/161 (128 pushes) -- 25s/batch, ~38 min left in this step
+  step 1/1 bin 2: batch 73/161 (128 pushes) -- 25s/batch, ~37 min left in this step
+  step 1/1 bin 2: batch 74/161 (128 pushes) -- 25s/batch, ~37 min left in this step
+  step 1/1 bin 2: batch 75/161 (128 pushes) -- 26s/batch, ~37 min left in this step
+  step 1/1 bin 2: batch 76/161 (128 pushes) -- 26s/batch, ~36 min left in this step
+  step 1/1 bin 2: batch 77/161 (128 pushes) -- 26s/batch, ~36 min left in this step
+  step 1/1 bin 2: batch 78/161 (128 pushes) -- 26s/batch, ~36 min left in this step
+  step 1/1 bin 2: batch 79/161 (128 pushes) -- 26s/batch, ~35 min left in this step
+  step 1/1 bin 2: batch 80/161 (128 pushes) -- 26s/batch, ~35 min left in this step
+  step 1/1 bin 2: batch 81/161 (128 pushes) -- 26s/batch, ~34 min left in this step
+  step 1/1 bin 2: batch 82/161 (128 pushes) -- 26s/batch, ~34 min left in this step
+  step 1/1 bin 2: batch 83/161 (128 pushes) -- 26s/batch, ~34 min left in this step
+  step 1/1 bin 2: batch 84/161 (128 pushes) -- 26s/batch, ~33 min left in this step
+  step 1/1 bin 2: batch 85/161 (128 pushes) -- 26s/batch, ~33 min left in this step
+  step 1/1 bin 2: batch 86/161 (128 pushes) -- 26s/batch, ~33 min left in this step
+  step 1/1 bin 2: batch 87/161 (128 pushes) -- 26s/batch, ~32 min left in this step
+  step 1/1 bin 2: batch 88/161 (128 pushes) -- 26s/batch, ~32 min left in this step
+  step 1/1 bin 2: batch 89/161 (128 pushes) -- 26s/batch, ~32 min left in this step
+  step 1/1 bin 2: batch 90/161 (128 pushes) -- 26s/batch, ~31 min left in this step
+  step 1/1 bin 2: batch 91/161 (128 pushes) -- 26s/batch, ~31 min left in this step
+  step 1/1 bin 2: batch 92/161 (128 pushes) -- 26s/batch, ~30 min left in this step
+  step 1/1 bin 2: batch 93/161 (128 pushes) -- 26s/batch, ~30 min left in this step
+  step 1/1 bin 2: batch 94/161 (128 pushes) -- 26s/batch, ~30 min left in this step
+  step 1/1 bin 2: batch 95/161 (128 pushes) -- 26s/batch, ~29 min left in this step
+  step 1/1 bin 2: batch 96/161 (128 pushes) -- 27s/batch, ~29 min left in this step
+  step 1/1 bin 2: batch 97/161 (31 pushes) -- 27s/batch, ~28 min left in this step
+  step 1/1 bin 3: batch 98/161 (128 pushes) -- 27s/batch, ~28 min left in this step
+  step 1/1 bin 3: batch 99/161 (128 pushes) -- 27s/batch, ~28 min left in this step
+  step 1/1 bin 3: batch 100/161 (128 pushes) -- 27s/batch, ~27 min left in this step
+  step 1/1 bin 3: batch 101/161 (128 pushes) -- 27s/batch, ~27 min left in this step
+  step 1/1 bin 3: batch 102/161 (128 pushes) -- 27s/batch, ~27 min left in this step
+  step 1/1 bin 3: batch 103/161 (128 pushes) -- 27s/batch, ~26 min left in this step
+  step 1/1 bin 3: batch 104/161 (128 pushes) -- 27s/batch, ~26 min left in this step
+  step 1/1 bin 3: batch 105/161 (128 pushes) -- 27s/batch, ~25 min left in this step
+  step 1/1 bin 3: batch 106/161 (128 pushes) -- 27s/batch, ~25 min left in this step
+  step 1/1 bin 3: batch 107/161 (128 pushes) -- 27s/batch, ~25 min left in this step
+  step 1/1 bin 3: batch 108/161 (128 pushes) -- 27s/batch, ~24 min left in this step
+  step 1/1 bin 3: batch 109/161 (128 pushes) -- 28s/batch, ~24 min left in this step
+  step 1/1 bin 3: batch 110/161 (128 pushes) -- 28s/batch, ~24 min left in this step
+  step 1/1 bin 3: batch 111/161 (128 pushes) -- 28s/batch, ~23 min left in this step
+  step 1/1 bin 3: batch 112/161 (128 pushes) -- 28s/batch, ~23 min left in this step
+  step 1/1 bin 3: batch 113/161 (128 pushes) -- 28s/batch, ~22 min left in this step
+  step 1/1 bin 3: batch 114/161 (128 pushes) -- 28s/batch, ~22 min left in this step
+  step 1/1 bin 3: batch 115/161 (128 pushes) -- 28s/batch, ~21 min left in this step
+  step 1/1 bin 3: batch 116/161 (128 pushes) -- 28s/batch, ~21 min left in this step
+  step 1/1 bin 3: batch 117/161 (128 pushes) -- 28s/batch, ~21 min left in this step
+  step 1/1 bin 3: batch 118/161 (128 pushes) -- 28s/batch, ~20 min left in this step
+  step 1/1 bin 3: batch 119/161 (128 pushes) -- 28s/batch, ~20 min left in this step
+  step 1/1 bin 3: batch 120/161 (128 pushes) -- 28s/batch, ~19 min left in this step
+  step 1/1 bin 3: batch 121/161 (128 pushes) -- 28s/batch, ~19 min left in this step
+  step 1/1 bin 3: batch 122/161 (128 pushes) -- 28s/batch, ~19 min left in this step
+  step 1/1 bin 3: batch 123/161 (128 pushes) -- 29s/batch, ~18 min left in this step
+  step 1/1 bin 3: batch 124/161 (128 pushes) -- 29s/batch, ~18 min left in this step
+  step 1/1 bin 3: batch 125/161 (128 pushes) -- 29s/batch, ~17 min left in this step
+  step 1/1 bin 3: batch 126/161 (128 pushes) -- 29s/batch, ~17 min left in this step
+  step 1/1 bin 3: batch 127/161 (128 pushes) -- 29s/batch, ~16 min left in this step
+  step 1/1 bin 3: batch 128/161 (128 pushes) -- 29s/batch, ~16 min left in this step
+  step 1/1 bin 3: batch 129/161 (32 pushes) -- 29s/batch, ~15 min left in this step
+  step 1/1 bin 4: batch 130/161 (128 pushes) -- 29s/batch, ~15 min left in this step
+  step 1/1 bin 4: batch 131/161 (128 pushes) -- 29s/batch, ~15 min left in this step
+  step 1/1 bin 4: batch 132/161 (128 pushes) -- 29s/batch, ~14 min left in this step
+  step 1/1 bin 4: batch 133/161 (128 pushes) -- 29s/batch, ~14 min left in this step
+  step 1/1 bin 4: batch 134/161 (128 pushes) -- 29s/batch, ~13 min left in this step
+  step 1/1 bin 4: batch 135/161 (128 pushes) -- 29s/batch, ~13 min left in this step
+  step 1/1 bin 4: batch 136/161 (128 pushes) -- 29s/batch, ~12 min left in this step
+  step 1/1 bin 4: batch 137/161 (128 pushes) -- 30s/batch, ~12 min left in this step
+  step 1/1 bin 4: batch 138/161 (128 pushes) -- 30s/batch, ~11 min left in this step
+  step 1/1 bin 4: batch 139/161 (128 pushes) -- 30s/batch, ~11 min left in this step
+  step 1/1 bin 4: batch 140/161 (128 pushes) -- 30s/batch, ~10 min left in this step
+  step 1/1 bin 4: batch 141/161 (128 pushes) -- 30s/batch, ~10 min left in this step
+  step 1/1 bin 4: batch 142/161 (128 pushes) -- 30s/batch, ~9 min left in this step
+  step 1/1 bin 4: batch 143/161 (128 pushes) -- 30s/batch, ~9 min left in this step
+  step 1/1 bin 4: batch 144/161 (128 pushes) -- 30s/batch, ~9 min left in this step
+  step 1/1 bin 4: batch 145/161 (128 pushes) -- 30s/batch, ~8 min left in this step
+  step 1/1 bin 4: batch 146/161 (128 pushes) -- 30s/batch, ~8 min left in this step
+  step 1/1 bin 4: batch 147/161 (128 pushes) -- 30s/batch, ~7 min left in this step
+  step 1/1 bin 4: batch 148/161 (128 pushes) -- 30s/batch, ~7 min left in this step
+  step 1/1 bin 4: batch 149/161 (128 pushes) -- 30s/batch, ~6 min left in this step
+  step 1/1 bin 4: batch 150/161 (128 pushes) -- 30s/batch, ~6 min left in this step
+  step 1/1 bin 4: batch 151/161 (128 pushes) -- 31s/batch, ~5 min left in this step
+  step 1/1 bin 4: batch 152/161 (128 pushes) -- 31s/batch, ~5 min left in this step
+  step 1/1 bin 4: batch 153/161 (128 pushes) -- 31s/batch, ~4 min left in this step
+  step 1/1 bin 4: batch 154/161 (128 pushes) -- 31s/batch, ~4 min left in this step
+  step 1/1 bin 4: batch 155/161 (128 pushes) -- 31s/batch, ~3 min left in this step
+  step 1/1 bin 4: batch 156/161 (128 pushes) -- 31s/batch, ~3 min left in this step
+  step 1/1 bin 4: batch 157/161 (128 pushes) -- 31s/batch, ~2 min left in this step
+  step 1/1 bin 4: batch 158/161 (128 pushes) -- 31s/batch, ~2 min left in this step
+  step 1/1 bin 4: batch 159/161 (128 pushes) -- 31s/batch, ~1 min left in this step
+  step 1/1 bin 4: batch 160/161 (128 pushes) -- 31s/batch, ~1 min left in this step
+  step 1/1 bin 4: batch 161/161 (32 pushes) -- 31s/batch, ~0 min left in this step
+step 1/1: requested [4000, 4000, 4000, 4000, 4000] -> realized [4000, 4000, 3999, 4000, 4000] (+1 underflow); 19999/20000 reached their bin; 5027s elapsed
+done: 20 slates x 1000 chains x 1 steps = 20000 pushes (20 particles) in 5027s -> /home/alon/Code/pile_manipulation/Genesis/data/slates_binned/n20_scatter_s20a1000_L20-70mm
+[38;5;159m[Genesis] [22:40:30] [INFO] 💤 Exiting Genesis and caching compiled kernels...[0m

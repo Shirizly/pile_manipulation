@@ -1,0 +1,21 @@
+# ARCHIVED-DATA CONFIG: points at DS-0020 **v1** (old_data/_ported_v1/config.yaml), the payload
+# EXP-0061 / MODEL-0004..0007 were trained on. For the current DS-0020 v2 use
+# flex_ds0020v2_train_ds0019_test.yaml. (Instance path repointed 2026-10-02; nothing else changed.)
+# FleX carrot-pile corpora (EXP-0061, rerun of EXP-0001), native FleX units.
+# train/val: DS-0020 trajectory-level split (datasets/DS-0020-*/old_data/_ported_v1/splits.json -- the ARCHIVED v1 payload; v2: flex_ds0020v2_train_ds0019_test.yaml);
+# test: DS-0019 (all 100 same-state slates) -- the Trainer's end-of-run test
+# pass therefore reports the held-out-corpus loss. Grid/plate/flags come from
+# each instance's own config.yaml (identical by construction).
+type: flex
+instance: datasets/DS-0020-training-data-flex-N864/old_data/_ported_v1/config.yaml
+split_instances:
+  test:
+    instance: datasets/DS-0019-slates-flex-pile-varN/config.yaml
+    split: all
+channels: 3
+exclude_flagged: true
+include_physics: false
+transforms:
+  - type: ensure_representation
+    representation: eulerian
+  - type: eulerian_aliases

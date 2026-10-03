@@ -271,3 +271,10 @@ reworded to scope the claim to point-mass/descriptor readouts, and `C-018` in
 `REGISTER.md` has been moved to "Open and contested" with status `narrowed`,
 citing this amendment. See `experiments/EXP-0013-*` for the full resolution
 comparison this counter-evidence was found inside of.
+
+## Later evidence (2026-10-03 audit)
+
+Added by the cross-experiment audit (summary: `experiments/SUMMARY.md`). Numbers above are unchanged.
+
+- DS-0001 was simulated with friction 0.3 / density 1000, not the randlen models' training physics (`benchmark-physics-matches-training`, broken).
+- EXP-0065 / ISS-013: 46 % of DS-0001's candidate pushes put the blade on a cube at touchdown (pre-fix pile-aware sampler); this record's pools were not re-scored on legal-only candidates.

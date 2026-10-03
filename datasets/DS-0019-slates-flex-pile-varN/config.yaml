@@ -1,0 +1,30 @@
+# Resolved instance config for DS-0019 (FlexData/dataset.py). See DATASET.md.
+template: configs/dataset/flex_pile_instance.yaml@732994bab5110e303c7f7bace188b6aa452d43ba (git blob sha; template uncommitted at creation)
+id: DS-0019
+kind: slates
+units: flex
+cache_dir: datasets/DS-0019-slates-flex-pile-varN/cache
+split_file: datasets/DS-0019-slates-flex-pile-varN/splits.json
+scene:                    # copied from this dataset's run_config.json
+  global_scale: 24
+  wkspc_w: 5.0
+  action_margin: 1.6
+  particle_r: 0.125
+  cam_idx: 0
+# grid/plate/flags deliberately IDENTICAL to DS-0020 (train corpus) so occupancies are comparable
+grid:
+  half_extent: 7.2        # 64 px -> 0.225 units/px; contains all but 2e-5 of particle-states (DATASET.md)
+  resolution: 64
+  footprint_radius_px: 1.0
+occupancy:                # model-input occupancy source (scoring truth is ALWAYS particle soft splat)
+  source: particles       # particles (disk raster) | image_mask (precomputed, FlexData.dataset.ImageMaskSource)
+  mask_file: null         # image_mask only; default <cache_dir>/image_masks.npz (EXP-0061 image_mask pipeline)
+plate:
+  width: 2.4              # 0.1 x global_scale; validated from data (EXP-0061 plate_width.json)
+  thickness: 0.225        # rendering choice (1 px, like Genesis's 1-px plate channel); data: <~0.45
+  height: null
+  sigma_px: 0.75
+flags:
+  null_disp: 0.1          # ~0.44 px; analogue of Genesis's 1 mm (0.5 px) null threshold
+  escape_abs: 10.0        # 2 x wkspc_w
+  max_out_of_grid_frac: 0.01

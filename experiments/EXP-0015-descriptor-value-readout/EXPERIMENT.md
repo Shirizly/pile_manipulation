@@ -226,3 +226,9 @@ direction. Result (5)'s capacity ORDERING survives: EXP-0017 re-measured it
 under slate-aware folds across 3 goal splits and this record's single-split
 numbers all lie within ~1–2 sd. The MLP this record did not persist is now
 persisted by EXP-0017.
+
+## Later evidence (2026-10-03 audit)
+
+Added by the cross-experiment audit (summary: `experiments/SUMMARY.md`). Numbers above are unchanged.
+
+- ISS-003: C-021 narrowed 2026-10-03 -- under grouped CV folds the effect rests on lyapunov alone, carried by one held-out goal. ISS-002: the 500-goal library generated here predates the axis fix.

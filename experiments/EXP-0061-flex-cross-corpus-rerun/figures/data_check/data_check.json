@@ -1,0 +1,18 @@
+{
+ "DS-0020": {
+  "n_rows": 1000,
+  "removed_px_inside_swept_region": 0.9994191854656971,
+  "added_px_inside_swept_region": 0.5998527821175339,
+  "swept_region_frac_of_grid": 0.12189404666423798,
+  "to_pxl": 4.444444444444445,
+  "plate_width_px": 10.666666666666666
+ },
+ "DS-0019": {
+  "n_rows": 1000,
+  "removed_px_inside_swept_region": 0.9987731956889188,
+  "added_px_inside_swept_region": 0.5395807711176973,
+  "swept_region_frac_of_grid": 0.11915649473667145,
+  "to_pxl": 4.444444444444445,
+  "plate_width_px": 10.666666666666666
+ }
+}

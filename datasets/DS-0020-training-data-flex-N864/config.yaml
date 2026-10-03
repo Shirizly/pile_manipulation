@@ -1,0 +1,34 @@
+# Resolved instance config for DS-0020 **v2** (FlexData/dataset.py), 2026-10-02. See DATASET.md.
+# The v1 config (single-start-state payload; EXP-0061, MODEL-0004..0007) is old_data/_ported_v1/config.yaml.
+template: configs/dataset/flex_pile_instance_v2.yaml@c7c4a2c8e63e701cabcaa063d5bb420bf9212bf7 (git blob sha; template uncommitted at creation)
+id: DS-0020
+version: 2
+kind: trajectories
+units: flex
+cache_dir: datasets/DS-0020-training-data-flex-N864/cache
+cache_format: traj_manifest_v2   # v2_chunk_*.npz, variable particle count (FlexData/build_cache.py ds0020)
+raw_dir: datasets/DS-0020-training-data-flex-N864/data/true_action_transitions_carrots
+split_file: datasets/DS-0020-training-data-flex-N864/splits.json   # trajectories 0-99 excluded (leakage, see DATASET.md)
+scene:                    # copied from data/true_action_transitions_carrots/run_config.json (= DS-0019's scene)
+  global_scale: 24
+  wkspc_w: 5.0
+  action_margin: 1.6      # actions in +-3.4 (measured), like DS-0019
+  particle_r: 0.125
+  cam_idx: 0
+# grid/plate/flags deliberately IDENTICAL to DS-0019 (test corpus) and DS-0020 v1
+grid:
+  half_extent: 7.2        # 64 px -> 0.225 units/px
+  resolution: 64
+  footprint_radius_px: 1.0
+occupancy:                # model-input occupancy source. v2: VISUAL ONLY -- the colour-image mask route.
+  source: image_mask      # particles are cached for audit / plate checks only, never as model input
+  mask_file: null         # default <cache_dir>/image_masks.npz (python -u -m FlexData.image_mask ds0020)
+plate:
+  width: 2.4              # 0.1 x global_scale; validated on v1 + DS-0019 (EXP-0061 plate_width.json)
+  thickness: 0.225        # rendering choice (1 px, like Genesis's 1-px plate channel)
+  height: null
+  sigma_px: 0.75
+flags:
+  null_disp: 0.1          # ~0.44 px; analogue of Genesis's 1 mm (0.5 px) null threshold
+  escape_abs: 10.0        # 2 x wkspc_w
+  max_out_of_grid_frac: 0.01

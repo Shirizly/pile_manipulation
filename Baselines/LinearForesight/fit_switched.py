@@ -64,12 +64,13 @@ import torch
 
 from fit_linear_foresight import (
     actions_to_pixels, canonicalise, fit_operator, fit_operator_nonneg,
-    metrics, predict_world, swept_region_mask,
+    metrics, plate_width_px, predict_world, swept_region_mask,
 )
 from scripts.probes.exp0009_rerun import predict_meandelta
 from utils import git_provenance
 
 from Baselines.common.randlen_data import load_randlen_cell
+from FlexData.dataset import is_flex_dataset_cfg, load_flex_cell_from_cfg
 from Baselines.LinearForesight.model import bin_index, predict_switched, push_length_m
 
 TRAIN_CFG = "configs/dataset/genesis_overnight_randlen_train_all.yaml"
@@ -117,7 +118,7 @@ def evaluate(operators, bin_edges, res, crop, train_bmd, train_A_single,
     lengths_te = push_length_m(test_cell.actions)
     s_te, e_te = actions_to_pixels(test_cell.actions, test_cell.workspace_min,
                                     test_cell.workspace_max, (H, W))
-    plate_px = 0.04 / 0.128 * W
+    plate_px = plate_width_px(test_cell.raw, W)
     region = swept_region_mask(s_te, e_te, (H, W), 0.5 * plate_px + 2.0, 0.5 * plate_px)
 
     preds = {
@@ -182,7 +183,9 @@ def main():
           f"@ {args.res}x{args.res}, constraint={args.constraint} ===")
 
     t0 = time.time()
-    data = load_randlen_cell(args.train_cfg, "train", tag="train", need_step_idx=False)
+    flex = is_flex_dataset_cfg(args.train_cfg)   # EXP-0061: FleX units; test = cfg's own "test" split
+    data = (load_flex_cell_from_cfg(args.train_cfg, "train", tag="train") if flex else
+            load_randlen_cell(args.train_cfg, "train", tag="train", need_step_idx=False))
     print(f"loaded {data.occ0.shape[0]} train transitions from "
           f"{data.run_idx.unique().numel()} files, grid {data.H}x{data.W}, "
           f"{time.time() - t0:.1f}s")
@@ -239,7 +242,8 @@ def main():
     print(f"\nwrote {args.out}")
 
     print(f"\nloading held-out test split ({args.test_cfg}) ...")
-    test_cell = load_randlen_cell(args.test_cfg, "train", tag="test", need_step_idx=False)
+    test_cell = (load_flex_cell_from_cfg(args.test_cfg, "test", tag="test") if flex else
+                 load_randlen_cell(args.test_cfg, "train", tag="test", need_step_idx=False))
     print(f"loaded {test_cell.occ0.shape[0]} test transitions from "
           f"{test_cell.run_idx.unique().numel()} files")
 

@@ -1,0 +1,430 @@
+{
+ "method": "DS-0020 v2 vs DS-0019 near-duplicate scan, particle level (complements the",
+ "leak_same_index_chamfer": {
+  "p0": 0.0135,
+  "p1": 0.0141,
+  "p5": 0.0163,
+  "p50": 0.0254,
+  "p95": 0.0314,
+  "p100": 0.0359
+ },
+ "leak_vs_other_same_type_chamfer": {
+  "p0": 0.0437,
+  "p1": 0.0446,
+  "p5": 0.0496,
+  "p50": 0.065,
+  "p95": 0.6164,
+  "p100": 2.0843
+ },
+ "traj_ge_100_best_chamfer": {
+  "p0": 0.0305,
+  "p1": 0.0354,
+  "p5": 0.0418,
+  "p50": 0.0548,
+  "p95": 0.107,
+  "p100": 0.5109
+ },
+ "threshold_used": "max chamfer of the known leaked pairs (traj 0-99 vs same index)",
+ "threshold": 0.035868084104643386,
+ "n_traj_ge_100_within_threshold": 24,
+ "flagged": [
+  {
+   "traj": 1022,
+   "pieces": 430,
+   "init_pos": 0,
+   "best_state": 76,
+   "best_chamfer": 0.030525768921144086,
+   "iou_best_state": 0.8222222328186035,
+   "max_iou": 0.8222222328186035
+  },
+  {
+   "traj": 1904,
+   "pieces": 190,
+   "init_pos": 0,
+   "best_state": 74,
+   "best_chamfer": 0.03268347465739983,
+   "iou_best_state": 0.8229665160179138,
+   "max_iou": 0.8229665160179138
+  },
+  {
+   "traj": 814,
+   "pieces": 298,
+   "init_pos": 0,
+   "best_state": 74,
+   "best_chamfer": 0.03287495425931892,
+   "iou_best_state": 0.7962962985038757,
+   "max_iou": 0.7962962985038757
+  },
+  {
+   "traj": 1796,
+   "pieces": 190,
+   "init_pos": 0,
+   "best_state": 74,
+   "best_chamfer": 0.03300953961403026,
+   "iou_best_state": 0.8110598921775818,
+   "max_iou": 0.8110598921775818
+  },
+  {
+   "traj": 1776,
+   "pieces": 298,
+   "init_pos": 0,
+   "best_state": 84,
+   "best_chamfer": 0.033115279193297,
+   "iou_best_state": 0.78125,
+   "max_iou": 0.78125
+  },
+  {
+   "traj": 246,
+   "pieces": 298,
+   "init_pos": 0,
+   "best_state": 42,
+   "best_chamfer": 0.03330891059848062,
+   "iou_best_state": 0.8006644248962402,
+   "max_iou": 0.8006644248962402
+  },
+  {
+   "traj": 1946,
+   "pieces": 190,
+   "init_pos": 0,
+   "best_state": 12,
+   "best_chamfer": 0.033551232440406385,
+   "iou_best_state": 0.7669903039932251,
+   "max_iou": 0.7669903039932251
+  },
+  {
+   "traj": 878,
+   "pieces": 298,
+   "init_pos": 0,
+   "best_state": 12,
+   "best_chamfer": 0.03392795804622405,
+   "iou_best_state": 0.751173734664917,
+   "max_iou": 0.751173734664917
+  },
+  {
+   "traj": 1246,
+   "pieces": 430,
+   "init_pos": 0,
+   "best_state": 38,
+   "best_chamfer": 0.034114394979954464,
+   "iou_best_state": 0.8120805621147156,
+   "max_iou": 0.8120805621147156
+  },
+  {
+   "traj": 570,
+   "pieces": 298,
+   "init_pos": 0,
+   "best_state": 42,
+   "best_chamfer": 0.03422285154824284,
+   "iou_best_state": 0.7861841917037964,
+   "max_iou": 0.7861841917037964
+  },
+  {
+   "traj": 1376,
+   "pieces": 190,
+   "init_pos": 0,
+   "best_state": 74,
+   "best_chamfer": 0.03423128052503444,
+   "iou_best_state": 0.8119266033172607,
+   "max_iou": 0.8119266033172607
+  },
+  {
+   "traj": 292,
+   "pieces": 190,
+   "init_pos": 0,
+   "best_state": 64,
+   "best_chamfer": 0.03423411256013123,
+   "iou_best_state": 0.8011695742607117,
+   "max_iou": 0.8011695742607117
+  },
+  {
+   "traj": 1944,
+   "pieces": 430,
+   "init_pos": 0,
+   "best_state": 74,
+   "best_chamfer": 0.03435036593403712,
+   "iou_best_state": 0.8289473652839661,
+   "max_iou": 0.8289473652839661
+  },
+  {
+   "traj": 1422,
+   "pieces": 190,
+   "init_pos": 0,
+   "best_state": 96,
+   "best_chamfer": 0.03447835619491896,
+   "iou_best_state": 0.7695473432540894,
+   "max_iou": 0.7695473432540894
+  },
+  {
+   "traj": 1668,
+   "pieces": 190,
+   "init_pos": 0,
+   "best_state": 0,
+   "best_chamfer": 0.034732256244078524,
+   "iou_best_state": 0.8208333253860474,
+   "max_iou": 0.8208333253860474
+  },
+  {
+   "traj": 772,
+   "pieces": 190,
+   "init_pos": 0,
+   "best_state": 26,
+   "best_chamfer": 0.034819131294577296,
+   "iou_best_state": 0.8131868243217468,
+   "max_iou": 0.8131868243217468
+  },
+  {
+   "traj": 252,
+   "pieces": 298,
+   "init_pos": 0,
+   "best_state": 12,
+   "best_chamfer": 0.035053138247951074,
+   "iou_best_state": 0.727748692035675,
+   "max_iou": 0.727748692035675
+  },
+  {
+   "traj": 258,
+   "pieces": 298,
+   "init_pos": 0,
+   "best_state": 66,
+   "best_chamfer": 0.035126202762851305,
+   "iou_best_state": 0.7710843086242676,
+   "max_iou": 0.7710843086242676
+  },
+  {
+   "traj": 422,
+   "pieces": 190,
+   "init_pos": 0,
+   "best_state": 86,
+   "best_chamfer": 0.035368637555231494,
+   "iou_best_state": 0.7797619104385376,
+   "max_iou": 0.7797619104385376
+  },
+  {
+   "traj": 1980,
+   "pieces": 190,
+   "init_pos": 0,
+   "best_state": 40,
+   "best_chamfer": 0.035413978188613734,
+   "iou_best_state": 0.8085106611251831,
+   "max_iou": 0.8085106611251831
+  },
+  {
+   "traj": 1722,
+   "pieces": 190,
+   "init_pos": 0,
+   "best_state": 20,
+   "best_chamfer": 0.03543131857849447,
+   "iou_best_state": 0.7682926654815674,
+   "max_iou": 0.7682926654815674
+  },
+  {
+   "traj": 146,
+   "pieces": 190,
+   "init_pos": 0,
+   "best_state": 48,
+   "best_chamfer": 0.03557701256856073,
+   "iou_best_state": 0.8258928656578064,
+   "max_iou": 0.8258928656578064
+  },
+  {
+   "traj": 340,
+   "pieces": 298,
+   "init_pos": 0,
+   "best_state": 72,
+   "best_chamfer": 0.03568144339097204,
+   "iou_best_state": 0.7715517282485962,
+   "max_iou": 0.7715517282485962
+  },
+  {
+   "traj": 1356,
+   "pieces": 430,
+   "init_pos": 0,
+   "best_state": 20,
+   "best_chamfer": 0.03582701855699775,
+   "iou_best_state": 0.8033472895622253,
+   "max_iou": 0.8033472895622253
+  }
+ ],
+ "closest_20_traj_ge_100": [
+  {
+   "traj": 1022,
+   "pieces": 430,
+   "init_pos": 0,
+   "best_state": 76,
+   "best_chamfer": 0.030525768921144086,
+   "iou_best_state": 0.8222222328186035,
+   "max_iou": 0.8222222328186035
+  },
+  {
+   "traj": 1904,
+   "pieces": 190,
+   "init_pos": 0,
+   "best_state": 74,
+   "best_chamfer": 0.03268347465739983,
+   "iou_best_state": 0.8229665160179138,
+   "max_iou": 0.8229665160179138
+  },
+  {
+   "traj": 814,
+   "pieces": 298,
+   "init_pos": 0,
+   "best_state": 74,
+   "best_chamfer": 0.03287495425931892,
+   "iou_best_state": 0.7962962985038757,
+   "max_iou": 0.7962962985038757
+  },
+  {
+   "traj": 1796,
+   "pieces": 190,
+   "init_pos": 0,
+   "best_state": 74,
+   "best_chamfer": 0.03300953961403026,
+   "iou_best_state": 0.8110598921775818,
+   "max_iou": 0.8110598921775818
+  },
+  {
+   "traj": 1776,
+   "pieces": 298,
+   "init_pos": 0,
+   "best_state": 84,
+   "best_chamfer": 0.033115279193297,
+   "iou_best_state": 0.78125,
+   "max_iou": 0.78125
+  },
+  {
+   "traj": 246,
+   "pieces": 298,
+   "init_pos": 0,
+   "best_state": 42,
+   "best_chamfer": 0.03330891059848062,
+   "iou_best_state": 0.8006644248962402,
+   "max_iou": 0.8006644248962402
+  },
+  {
+   "traj": 1946,
+   "pieces": 190,
+   "init_pos": 0,
+   "best_state": 12,
+   "best_chamfer": 0.033551232440406385,
+   "iou_best_state": 0.7669903039932251,
+   "max_iou": 0.7669903039932251
+  },
+  {
+   "traj": 878,
+   "pieces": 298,
+   "init_pos": 0,
+   "best_state": 12,
+   "best_chamfer": 0.03392795804622405,
+   "iou_best_state": 0.751173734664917,
+   "max_iou": 0.751173734664917
+  },
+  {
+   "traj": 1246,
+   "pieces": 430,
+   "init_pos": 0,
+   "best_state": 38,
+   "best_chamfer": 0.034114394979954464,
+   "iou_best_state": 0.8120805621147156,
+   "max_iou": 0.8120805621147156
+  },
+  {
+   "traj": 570,
+   "pieces": 298,
+   "init_pos": 0,
+   "best_state": 42,
+   "best_chamfer": 0.03422285154824284,
+   "iou_best_state": 0.7861841917037964,
+   "max_iou": 0.7861841917037964
+  },
+  {
+   "traj": 1376,
+   "pieces": 190,
+   "init_pos": 0,
+   "best_state": 74,
+   "best_chamfer": 0.03423128052503444,
+   "iou_best_state": 0.8119266033172607,
+   "max_iou": 0.8119266033172607
+  },
+  {
+   "traj": 292,
+   "pieces": 190,
+   "init_pos": 0,
+   "best_state": 64,
+   "best_chamfer": 0.03423411256013123,
+   "iou_best_state": 0.8011695742607117,
+   "max_iou": 0.8011695742607117
+  },
+  {
+   "traj": 1944,
+   "pieces": 430,
+   "init_pos": 0,
+   "best_state": 74,
+   "best_chamfer": 0.03435036593403712,
+   "iou_best_state": 0.8289473652839661,
+   "max_iou": 0.8289473652839661
+  },
+  {
+   "traj": 1422,
+   "pieces": 190,
+   "init_pos": 0,
+   "best_state": 96,
+   "best_chamfer": 0.03447835619491896,
+   "iou_best_state": 0.7695473432540894,
+   "max_iou": 0.7695473432540894
+  },
+  {
+   "traj": 1668,
+   "pieces": 190,
+   "init_pos": 0,
+   "best_state": 0,
+   "best_chamfer": 0.034732256244078524,
+   "iou_best_state": 0.8208333253860474,
+   "max_iou": 0.8208333253860474
+  },
+  {
+   "traj": 772,
+   "pieces": 190,
+   "init_pos": 0,
+   "best_state": 26,
+   "best_chamfer": 0.034819131294577296,
+   "iou_best_state": 0.8131868243217468,
+   "max_iou": 0.8131868243217468
+  },
+  {
+   "traj": 252,
+   "pieces": 298,
+   "init_pos": 0,
+   "best_state": 12,
+   "best_chamfer": 0.035053138247951074,
+   "iou_best_state": 0.727748692035675,
+   "max_iou": 0.727748692035675
+  },
+  {
+   "traj": 258,
+   "pieces": 298,
+   "init_pos": 0,
+   "best_state": 66,
+   "best_chamfer": 0.035126202762851305,
+   "iou_best_state": 0.7710843086242676,
+   "max_iou": 0.7710843086242676
+  },
+  {
+   "traj": 422,
+   "pieces": 190,
+   "init_pos": 0,
+   "best_state": 86,
+   "best_chamfer": 0.035368637555231494,
+   "iou_best_state": 0.7797619104385376,
+   "max_iou": 0.7797619104385376
+  },
+  {
+   "traj": 1980,
+   "pieces": 190,
+   "init_pos": 0,
+   "best_state": 40,
+   "best_chamfer": 0.035413978188613734,
+   "iou_best_state": 0.8085106611251831,
+   "max_iou": 0.8085106611251831
+  }
+ ]
+}

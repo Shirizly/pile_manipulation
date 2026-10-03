@@ -443,3 +443,103 @@ this as still open); DS-0013 legal-only multistep only ran for persistence/k5_cu
 not the NFD family; `retrieval_1nn` was not rebuilt on the curated bank specifically (only the
 legacy-bank+fix combination was run, to isolate the two effects) -- a straightforward follow-up,
 not run for time.
+
+## 2026-09-28: compute timing benchmark (retrieval vs NFD, bank-size scaling, sub-linear search prototype)
+
+Script: `code/benchmark_timing.py`. Results: `results/benchmark_timing.json`. GPU idle at start
+(`used_frac=0.019`, no other training processes) -- numbers not contaminated by contention.
+Methodology reused from `Baselines/common/benchmark_time.py` (warm-up=5, repeats=20, CUDA sync,
+median/IQR).
+
+**End-to-end (curated bank, 11,659 rows), median ms/call:** B=1: retrieval nn1/k5=28.7/29.0ms vs
+NFD single=1.6ms, NFD 3-seed=4.7ms. B=64: retrieval=1655/1681ms vs NFD=2.5ms, ensemble=7.5ms.
+B=512: retrieval=13440/13628ms vs NFD=17.7ms, ensemble=53.9ms. **Retrieval is ~250-660x slower
+than a single NFD forward, and the gap only WIDENS with batch size** (NFD batches efficiently on
+GPU; retrieval's own core loop does not -- see stage breakdown). Per-stage breakdown at B=64
+(nn1): search=1654.7ms, Hungarian transfer loop=4.1ms, transfer+apply=9.7ms, rasterise=2.6ms --
+**contrary to the a-priori guess, the batched GPU chamfer search (`topk_search`), not the
+per-candidate Python Hungarian loop, dominates** (>99% of wall time). This is almost certainly
+chunking/kernel-launch overhead (`bank_search_chunk=1500` forces ~8 chunks per call at this bank
+size, each round-tripping CPU<->GPU) rather than FLOPs -- a concrete follow-up (bigger chunk size
+or one fused kernel) that was NOT attempted here (out of scope: this pass measures, not optimizes).
+
+**Bank-size scaling (Sean n20 corpus, B=64 fixed query batch):** loaded 150 n20-cube files
+(76,800 raw rows) in 0.17s; sizes above that were reached by tiling the loaded tensors in memory
+(content duplicated, timing-only -- correctness of the resulting bank was never a goal). Bank
+CONSTRUCTION (`TransitionBank.from_states`) is cheap at every size tested (<=0.09s even at
+200k). Search/end-to-end median ms: N=10k: 1419/1431, 25k: 3558/3584, 50k: 7149/7157, 100k:
+14288/14305, 200k: 28592/28613. **Clean O(N): log-log slope = 1.00 for both search and
+end-to-end** (fit over the 5 points) -- exactly the exhaustive-search behaviour `bank.py`'s own
+`MAX_RECOMMENDED_BANK_SIZE=50_000` docstring warns about, now measured, not just asserted.
+
+**Sub-linear search prototype (one variant, as scoped):** flattened push-frame uv descriptor
+(20 cubes x 2 = 40-dim) into an `sklearn.neighbors.BallTree`, retrieve M=200 approximate
+candidates, exact-rerank with the real chamfer distance. Query time DOES scale much better than
+exhaustive (10k: 20.8ms, 25k: 58.3ms, 50k: 126ms, 100k: 398ms, 200k: 991ms -- roughly log-ish/
+sub-linear, and each is 10-30x cheaper than the matching exhaustive search at that N) but
+**recall@5 of the exact top-5 collapses with N: 0.056 (10k) -> 0.019 (25k) -> 0.003 (50k) ->
+0.003 (100k) -> 0.000 (200k)**. Diagnosis (not fixed): flattening per-cube (u,v) coordinates
+in FIXED CUBE-INDEX ORDER makes the descriptor order-sensitive, while the chamfer distance the
+model actually uses is permutation-invariant over cubes -- two geometrically identical
+interaction sets with cubes enumerated in a different order land far apart in R^40 under plain
+L2/BallTree, so the approximate index is retrieving the wrong candidates almost immediately.
+**This one prototype variant does NOT work as a drop-in accelerant as tried; a permutation-
+invariant descriptor (e.g. sorted-by-radius coords, a small rasterised occupancy patch, or a
+learned/pooled embedding) is the needed next step, not attempted here (scope: "one variant only").**
+
+**Judgement on scaling to general scenes (piles/multi-layer, n50-n100, variable push length),
+reasoned from the above + code read, not separately measured:**
+- *Key/interaction-set size*: narrow_l20_n20's bank rows are single-layer, n=20, uniform
+  18-22mm push length by construction (`bank.py`'s DS-0008/DS-0010 provenance docstring); Sean's
+  corpus already mixes n20/n50/n100 cube counts and (per the task brief) variable push length --
+  `TransitionBank`'s per-object fields are fixed-n (bank.py docstring: "`n` is fixed at 20 for
+  every source corpus here"), so a general-scene bank needs padding/masking or a per-n bank
+  split before it can even be BUILT the way this codebase's bank.py works today, independent of
+  search cost.
+- *Hungarian cost growth*: `_transfer_one`'s `scipy.optimize.linear_sum_assignment` is O(n^3) in
+  the (masked) interaction-set size per query-donor pair; going from n=20 to n=100 is a 125x
+  per-pair cost increase in the part of the pipeline that was NOT the bottleneck here (4-10ms at
+  n=20, B=64) -- at n=100 this stage alone could plausibly become bank search's equal or exceed
+  it, on top of the chamfer search itself also scaling with interaction-set size (cost/query
+  pair is O(n^2) inside `chamfer_distance_chunk`'s pairwise cdist).
+- *Coverage/data needs*: exhaustive search cost is bank-size-only (confirmed O(N) above,
+  independent of scene complexity), so the real risk for piles/multi-layer is COVERAGE, not
+  latency -- a bank built at narrow-single-layer scale (11.7k-76.8k rows) almost certainly
+  undersamples the vastly larger state space of stacked/occluded configurations and n50-n100
+  interaction sets; the sub-linear prototype's near-total recall collapse further suggests any
+  future indexed/approximate search over a much bigger, more varied bank needs a descriptor
+  redesigned for permutation invariance before scale is attempted, not just a bigger index.
+
+Not run (out of this pass's scope): chunk-size retuning of `topk_search` to isolate whether the
+1654ms/call at 11.7k rows is genuinely FLOP-bound or a chunking artifact; a second sub-linear
+descriptor variant (task specified one).
+
+## 2026-10-01 -- `retrieval_debug.py` query source still used the pre-ISS-010-fix sampler
+
+User noticed (visually, in the already-rendered `q0908` figure) the tool touching down on a
+cube -- the exact defect ISS-010 closed. Root cause: `load_test_chains()` was never repointed
+after the ISS-010 fix landed (same day, earlier in this log) -- it still globbed DS-0009's own
+`test_chains/_*_data.pt` (pre-fix `_pile_aware_stops` clamp, ~46% illegal touchdowns), even
+though the fix itself (`Genesis/action_sampling.py::pile_aware_action_batch`, now the one path
+`generate_action_samples(pile_aware=True)` and hence every *collection* driver uses) and its
+replacement corpora (DS-0015/16/17/18) already existed. So production data collection was
+correctly using the fixed sampler the whole time; only this one visualization script's
+hardcoded query source was stale.
+
+Fix: `load_test_chains()` now globs DS-0016's `test_chains_v2_clean/_*_data.pt` (same shape,
+fixed `pile_aware_action_batch` sampler, 0/1024 illegal touchdowns, pre-split to drop the
+remaining `valid==False` rows) instead of DS-0009's `test_chains`. Updated the module
+docstring/comments, `select_queries`'s docstring, and `main()`'s printed/README query-source
+text accordingly; no other EXP-0059 script globs DS-0009 directly for queries (grepped `pile_
+aware`/`generate_action_samples`/DS-0009 across `code/*.py`), so this was the only stale
+reference. Also updated `docs/CODEMAP.md`'s entry for this figure to name DS-0016 and record
+the fix.
+
+Reran the CLI (`--bank artifacts/bank.pt --n 12`, CPU-forced -- the default GPU run hit an
+`OutOfMemoryError` on this box's 8 GB card for the full 896x11921 chamfer search, unrelated to
+this fix) to regenerate all 12 figures against the fixed-sampler query set (new query indices,
+since the row population changed); removed the 12 stale pre-fix PNGs/PDFs and `README.md` is
+rewritten by the script. Visually spot-checked two of the regenerated figures (`q0409_near_wall`,
+`q0017_clump_typical`, panels 2/3): in both, the blade's start edge sits flush against or just
+short of the pile's near face, never overlapping a cube footprint -- consistent with
+`pile_aware_action_batch`'s legality guarantee, unlike the old figures.

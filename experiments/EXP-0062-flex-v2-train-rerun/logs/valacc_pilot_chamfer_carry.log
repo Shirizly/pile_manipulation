@@ -1,0 +1,3 @@
+FlexPileData(DS-0020, split=val, exclude_flagged=True): 1900 rows; flagged nan=0 escaped=208 out_of_grid=10 null=17 -> kept 1665
+[FlexGNNPredictor] experiments/EXP-0062-flex-v2-train-rerun/artifacts/RUN-0003-gnn/pilot25min_chamfer_carry_best.pth: particle_num=30 depth=plane plane_y=0.24 carry_k=1 device=cpu
+experiments/EXP-0062-flex-v2-train-rerun/artifacts/RUN-0003-gnn/pilot25min_chamfer_carry_best.pth val acc 0.1805 (111s)

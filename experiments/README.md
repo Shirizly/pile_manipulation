@@ -5,6 +5,7 @@ they have a home from data collection through to a citable result.
 
 | File / dir | Role |
 |---|---|
+| `SUMMARY.md` | experiments grouped by question (not number), cross-cutting confounds, state of the hypotheses, holes and directions — synthesis only, cites ids |
 | `REGISTER.md` | one row per claim: status, what supports it, what contradicts it, and what it **depends on** |
 | `INVARIANTS.md` | the `depends_on` tag registry — each tag is a property that can be false, with the test that checks it |
 | `METRICS.md` | `design.metric` key → exact formula |

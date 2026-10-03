@@ -1,0 +1,90 @@
+known-number L20mm/nfd_randlen/lyapunov: new 0.852749 old 0.859685 diff -6.94e-03
+known-number L20mm/nfd_randlen/mass_in_region: new 0.820188 old 0.779292 diff +4.09e-02
+known-number L20mm/nfd_randlen/signed_mass: new 0.752706 old 0.689445 diff +6.33e-02
+known-number L40mm/nfd_randlen/lyapunov: new 0.932183 old 0.898099 diff +3.41e-02
+known-number L40mm/nfd_randlen/mass_in_region: new 0.783189 old 0.770873 diff +1.23e-02
+known-number L40mm/nfd_randlen/signed_mass: new 0.841112 old 0.834264 diff +6.85e-03
+known-number randlen_test/nfd_randlen/lyapunov: new 0.941687 old 0.937684 diff +4.00e-03
+known-number randlen_test/nfd_randlen/mass_in_region: new 0.888584 old 0.850274 diff +3.83e-02
+known-number randlen_test/nfd_randlen/signed_mass: new 0.865526 old 0.843875 diff +2.17e-02
+
+######## L20mm  (n_slates=20, 12 models)
+== lyapunov: resolved CI 38/66, Holm<.05 19/66; |d|<0.03 unresolved 19/19; Friedman p=4.2e-14 W=0.40
+   sd model-means 0.125 state-means 0.073 residual 0.116; median sd_diff 0.136; goal ICC 0.00
+   required slates: d=0.01: 1464 (Bonf 3306)  d=0.02: 368 (Bonf 831)  d=0.03: 165 (Bonf 372)  d=0.05: 61 (Bonf 138)
+     gnn_l20l40                               0.907  rank95 [1,6]  P1=0.56
+     linear_switched_res32                    0.902  rank95 [1,3]  P1=0.32
+     nfd_residual_worldframe_noaug_ep43       0.880  rank95 [1,8]  P1=0.11
+     linear_switched_res64                    0.873  rank95 [2,7]  P1=0.01
+     nfd_warped_randlen_flipaug_epoch30       0.859  rank95 [3,8]  P1=0.00
+     nfd_warped_randlen_flipaug               0.858  rank95 [3,9]  P1=0.00
+     nfd_randlen                              0.853  rank95 [3,9]  P1=0.00
+     nfd_residual_warped_flipaug_randlen      0.846  rank95 [3,9]  P1=0.00
+     nfd_warped_randlen                       0.820  rank95 [6,10]  P1=0.00
+     gnn_randlen_n30                          0.774  rank95 [8,10]  P1=0.00
+     linear_single_res32                      0.658  rank95 [11,11]  P1=0.00
+     linear_single_res64                      0.475  rank95 [12,12]  P1=0.00
+== mass_in_region: resolved CI 35/66, Holm<.05 26/66; |d|<0.03 unresolved 19/19; Friedman p=4.3e-17 W=0.47
+   sd model-means 0.169 state-means 0.091 residual 0.146; median sd_diff 0.194; goal ICC 0.00
+   required slates: d=0.01: 2948 (Bonf 6656)  d=0.02: 739 (Bonf 1668)  d=0.03: 330 (Bonf 744)  d=0.05: 120 (Bonf 272)
+== signed_mass: resolved CI 28/66, Holm<.05 25/66; |d|<0.03 unresolved 10/10; Friedman p=1.2e-15 W=0.44
+   sd model-means 0.181 state-means 0.128 residual 0.184; median sd_diff 0.256; goal ICC 0.00
+   required slates: d=0.01: 5134 (Bonf 11590)  d=0.02: 1285 (Bonf 2902)  d=0.03: 573 (Bonf 1293)  d=0.05: 208 (Bonf 469)
+
+######## L40mm  (n_slates=20, 12 models)
+== lyapunov: resolved CI 22/66, Holm<.05 9/66; |d|<0.03 unresolved 42/45; Friedman p=1.4e-07 W=0.24
+   sd model-means 0.030 state-means 0.030 residual 0.050; median sd_diff 0.070; goal ICC 0.00
+   required slates: d=0.01: 391 (Bonf 884)  d=0.02: 100 (Bonf 225)  d=0.03: 46 (Bonf 103)  d=0.05: 18 (Bonf 41)
+     linear_switched_res32                    0.943  rank95 [1,4]  P1=0.54
+     gnn_l20l40                               0.937  rank95 [1,8]  P1=0.27
+     nfd_randlen                              0.932  rank95 [1,7]  P1=0.15
+     linear_switched_res64                    0.924  rank95 [2,9]  P1=0.00
+     nfd_residual_warped_flipaug_randlen      0.921  rank95 [1,10]  P1=0.03
+     linear_single_res32                      0.915  rank95 [3,11]  P1=0.00
+     nfd_warped_randlen_flipaug               0.911  rank95 [3,10]  P1=0.00
+     nfd_warped_randlen_flipaug_epoch30       0.909  rank95 [3,11]  P1=0.00
+     nfd_warped_randlen                       0.908  rank95 [5,11]  P1=0.00
+     nfd_residual_worldframe_noaug_ep43       0.904  rank95 [5,11]  P1=0.00
+     linear_single_res64                      0.888  rank95 [6,11]  P1=0.00
+     gnn_randlen_n30                          0.830  rank95 [12,12]  P1=0.00
+== mass_in_region: resolved CI 22/66, Holm<.05 4/66; |d|<0.03 unresolved 30/30; Friedman p=0.0023 W=0.13
+   sd model-means 0.045 state-means 0.040 residual 0.092; median sd_diff 0.123; goal ICC 0.01
+   required slates: d=0.01: 1197 (Bonf 2703)  d=0.02: 301 (Bonf 680)  d=0.03: 135 (Bonf 305)  d=0.05: 50 (Bonf 113)
+== signed_mass: resolved CI 22/66, Holm<.05 1/66; |d|<0.03 unresolved 33/33; Friedman p=0.022 W=0.10
+   sd model-means 0.040 state-means 0.048 residual 0.086; median sd_diff 0.111; goal ICC 0.10
+   required slates: d=0.01: 975 (Bonf 2202)  d=0.02: 246 (Bonf 555)  d=0.03: 111 (Bonf 250)  d=0.05: 41 (Bonf 93)
+
+######## randlen_test  (n_slates=21, 12 models)
+== lyapunov: resolved CI 47/66, Holm<.05 42/66; |d|<0.03 unresolved 17/17; Friedman p=1.1e-27 W=0.67
+   sd model-means 0.194 state-means 0.049 residual 0.145; median sd_diff 0.185; goal ICC 0.04
+   required slates: d=0.01: 2698 (Bonf 6091)  d=0.02: 676 (Bonf 1527)  d=0.03: 302 (Bonf 682)  d=0.05: 110 (Bonf 249)
+     nfd_residual_worldframe_noaug_ep43       0.953  rank95 [1,6]  P1=0.44
+     nfd_warped_randlen_flipaug_epoch30       0.950  rank95 [1,5]  P1=0.28
+     nfd_warped_randlen_flipaug               0.943  rank95 [1,6]  P1=0.03
+     nfd_randlen                              0.942  rank95 [1,6]  P1=0.07
+     nfd_residual_warped_flipaug_randlen      0.938  rank95 [1,6]  P1=0.13
+     nfd_warped_randlen                       0.927  rank95 [1,6]  P1=0.05
+     linear_switched_res32                    0.856  rank95 [7,7]  P1=0.00
+     linear_switched_res64                    0.711  rank95 [8,10]  P1=0.00
+     gnn_randlen_n30                          0.705  rank95 [8,10]  P1=0.00
+     linear_single_res32                      0.629  rank95 [9,10]  P1=0.00
+     linear_single_res64                      0.465  rank95 [11,12]  P1=0.00
+     gnn_l20l40                               0.436  rank95 [11,12]  P1=0.00
+== mass_in_region: resolved CI 48/66, Holm<.05 37/66; |d|<0.03 unresolved 16/16; Friedman p=1e-25 W=0.63
+   sd model-means 0.191 state-means 0.084 residual 0.142; median sd_diff 0.182; goal ICC 0.00
+   required slates: d=0.01: 2590 (Bonf 5848)  d=0.02: 649 (Bonf 1466)  d=0.03: 290 (Bonf 655)  d=0.05: 106 (Bonf 239)
+== signed_mass: resolved CI 49/66, Holm<.05 36/66; |d|<0.03 unresolved 11/11; Friedman p=2.1e-24 W=0.60
+   sd model-means 0.207 state-means 0.114 residual 0.154; median sd_diff 0.201; goal ICC 0.02
+   required slates: d=0.01: 3184 (Bonf 7189)  d=0.02: 798 (Bonf 1801)  d=0.03: 356 (Bonf 804)  d=0.05: 130 (Bonf 293)
+
+cross-corpus Kendall tau of model means:
+   lyapunov:L20mm~L40mm                          tau=+0.42 p=0.063
+   lyapunov:L20mm~randlen_test                   tau=+0.33 p=0.153
+   lyapunov:L40mm~randlen_test                   tau=-0.12 p=0.638
+   mass_in_region:L20mm~L40mm                    tau=+0.33 p=0.153
+   mass_in_region:L20mm~randlen_test             tau=+0.45 p=0.045
+   mass_in_region:L40mm~randlen_test             tau=+0.33 p=0.153
+   signed_mass:L20mm~L40mm                       tau=+0.21 p=0.381
+   signed_mass:L20mm~randlen_test                tau=+0.42 p=0.063
+   signed_mass:L40mm~randlen_test                tau=+0.12 p=0.638
+wrote experiments/EXP-0026-benchmark-power/results/a2_slaten_paired.json

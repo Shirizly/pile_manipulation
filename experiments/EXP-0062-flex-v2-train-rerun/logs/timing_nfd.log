@@ -1,0 +1,126 @@
+[time_inference] worker 0: --model nfd_randlen --ckpt weights/MODEL-0008-nfd-flex-mask-v2-seed0/checkpoint.pth --name nfd_v2_s0 --out experiments/EXP-0062-flex-v2-train-rerun/results/timing_nfd.json.worker0.json --worker
+FlexPileData(DS-0019, split=all, exclude_flagged=True): 17186 rows; flagged nan=0 escaped=397 out_of_grid=47 null=159 -> kept 16583
+/home/alon/anaconda3/envs/pme/lib/python3.10/site-packages/torch/profiler/profiler.py:224: UserWarning: Warning: Profiler clears events at the end of each cycle.Only events from the current cycle will be reported.To keep events across cycles, set acc_events=True.
+  _warn_once(
+[time_inference] worker 0: per-slate median 4.833 ms, 28.88 us/cand, b128 29.63 us/cand, fed ['cuda:0'], loop {'aten_ops': 1.0, 'cuda_kernels': 1.048}
+[time_inference] worker 1: --model nfd_randlen --ckpt weights/MODEL-0008-nfd-flex-mask-v2-seed0/checkpoint.pth --name nfd_v2_s0 --out experiments/EXP-0062-flex-v2-train-rerun/results/timing_nfd.json.worker1.json --worker
+FlexPileData(DS-0019, split=all, exclude_flagged=True): 17186 rows; flagged nan=0 escaped=397 out_of_grid=47 null=159 -> kept 16583
+/home/alon/anaconda3/envs/pme/lib/python3.10/site-packages/torch/profiler/profiler.py:224: UserWarning: Warning: Profiler clears events at the end of each cycle.Only events from the current cycle will be reported.To keep events across cycles, set acc_events=True.
+  _warn_once(
+[time_inference] worker 1: per-slate median 4.884 ms, 29.15 us/cand, b128 29.80 us/cand, fed ['cuda:0'], loop {'aten_ops': 1.0, 'cuda_kernels': 1.048}
+[time_inference] worker 2: --model nfd_randlen --ckpt weights/MODEL-0008-nfd-flex-mask-v2-seed0/checkpoint.pth --name nfd_v2_s0 --out experiments/EXP-0062-flex-v2-train-rerun/results/timing_nfd.json.worker2.json --worker
+FlexPileData(DS-0019, split=all, exclude_flagged=True): 17186 rows; flagged nan=0 escaped=397 out_of_grid=47 null=159 -> kept 16583
+/home/alon/anaconda3/envs/pme/lib/python3.10/site-packages/torch/profiler/profiler.py:224: UserWarning: Warning: Profiler clears events at the end of each cycle.Only events from the current cycle will be reported.To keep events across cycles, set acc_events=True.
+  _warn_once(
+[time_inference] worker 2: per-slate median 4.901 ms, 29.28 us/cand, b128 29.78 us/cand, fed ['cuda:0'], loop {'aten_ops': 1.0, 'cuda_kernels': 1.048}
+{
+ "n_processes": 3,
+ "per_slate_ms_median": {
+  "values": [
+   4.833235987462103,
+   4.88388747908175,
+   4.90066537167877
+  ],
+  "median": 4.88388747908175,
+  "rel_spread": 0.013806498308053576
+ },
+ "per_slate_ms_p90": {
+  "values": [
+   5.298264161683619,
+   5.280885100364685,
+   5.334457173012197
+  ],
+  "median": 5.298264161683619,
+  "rel_spread": 0.010111249838190112
+ },
+ "per_slate_ms_with_h2d_median": {
+  "values": [
+   5.570614477619529,
+   5.550079513341188,
+   5.537582910619676
+  ],
+  "median": 5.550079513341188,
+  "rel_spread": 0.005951548427450801
+ },
+ "us_per_candidate": {
+  "values": [
+   28.88449121371962,
+   29.149436522352712,
+   29.277418134281938
+  ],
+  "median": 29.149436522352712,
+  "rel_spread": 0.013479743262310004
+ },
+ "us_per_candidate_with_h2d": {
+  "values": [
+   33.112114671868675,
+   33.061185976708174,
+   33.04098999984879
+  ],
+  "median": 33.061185976708174,
+  "rel_spread": 0.0021513043140676254
+ },
+ "total_all_slates_s": {
+  "values": [
+   0.47899151779711246,
+   0.483385105850175,
+   0.48550742492079735
+  ],
+  "median": 0.483385105850175,
+  "rel_spread": 0.013479743262309959
+ },
+ "batch128_ms_per_batch": {
+  "values": [
+   3.786996938288212,
+   3.805068088695407,
+   3.8102250546216965
+  ],
+  "median": 3.805068088695407,
+  "rel_spread": 0.0061045205478697665
+ },
+ "batch128_us_per_candidate": {
+  "values": [
+   29.625071430589657,
+   29.79588705699804,
+   29.784926151168214
+  ],
+  "median": 29.784926151168214,
+  "rel_spread": 0.005734968941720351
+ },
+ "device_fed_to_forward": [
+  "cuda:0"
+ ],
+ "any_contended": false,
+ "per_sample_loop_suspected": false,
+ "loop_check_ratio": [
+  {
+   "aten_ops": 1.0,
+   "cuda_kernels": 1.048
+  },
+  {
+   "aten_ops": 1.0,
+   "cuda_kernels": 1.048
+  },
+  {
+   "aten_ops": 1.0,
+   "cuda_kernels": 1.048
+  }
+ ],
+ "png_to_mask_ms_per_image": {
+  "imread": [
+   3.248334163799882,
+   3.246675943955779,
+   3.254851559177041
+  ],
+  "segment_warp_threshold": [
+   6.992680486291647,
+   7.083895965479314,
+   7.067975006066263
+  ],
+  "total": [
+   10.2729054633528,
+   10.37570892367512,
+   10.330856428481638
+  ]
+ }
+}

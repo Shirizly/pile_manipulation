@@ -1,0 +1,22 @@
+{
+ "n50_plane0.24": {
+  "n_rows": 300,
+  "accuracy_model": 0.09679371118545532,
+  "accuracy_oracle_node_carry": 0.28028762340545654
+ },
+ "n100_plane0.24": {
+  "n_rows": 300,
+  "accuracy_model": 0.2091572880744934,
+  "accuracy_oracle_node_carry": 0.3765565752983093
+ },
+ "n200_plane0.24": {
+  "n_rows": 300,
+  "accuracy_model": 0.24906492233276367,
+  "accuracy_oracle_node_carry": 0.4574868083000183
+ },
+ "n200_true": {
+  "n_rows": 300,
+  "accuracy_model": 0.25513285398483276,
+  "accuracy_oracle_node_carry": 0.4613204002380371
+ }
+}

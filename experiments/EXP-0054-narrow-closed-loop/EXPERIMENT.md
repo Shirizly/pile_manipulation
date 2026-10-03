@@ -101,3 +101,11 @@ For reference, EXP-0052 (free push length 20-70 mm, same objective, worldframe G
 
 ## Unrelated findings
 none
+
+## Later evidence (2026-10-03 audit)
+
+Added by the cross-experiment audit (summary: `experiments/SUMMARY.md`). Numbers above are unchanged.
+
+- **ISS-010 caveat (added 2026-10-03; was missing here):** the narrow NFDs were trained on DS-0008 (+DS-0010), ~45 % illegal tool touchdowns, so the 'clean narrow domain' wording above is wrong. C-057 carries the caveat; no closed-loop re-run with clean-data (DS-0015-trained, EXP-0059 v2) NFDs exists.
+- ISS-013: planner candidates / initialisations in this record came from the pre-fix pile-aware sampler (ISS-010 class, ~half illegal touchdowns in audited banks); executed pushes have not been audited for touchdown legality.
+- EXP-0065 RUN-0003 (C-067): executed closed-loop pushes include illegal touchdowns (blade on a cube); measured lower bounds per record in `experiments/EXP-0065-*/results/audit_closed_loop_actions.json`.

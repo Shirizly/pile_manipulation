@@ -1,0 +1,55 @@
+slates=20 reps=200
+mean capture:
+  K=   25 nfd=+0.652  visual-switched=+0.775  descriptor=-0.031   regret: nfd=0.0143  visual-switched=0.0091  descriptor=0.0440
+  K=   50 nfd=+0.613  visual-switched=+0.762  descriptor=-0.018   regret: nfd=0.0183  visual-switched=0.0110  descriptor=0.0494
+  K=  100 nfd=+0.589  visual-switched=+0.746  descriptor=-0.028   regret: nfd=0.0215  visual-switched=0.0131  descriptor=0.0550
+  K=  250 nfd=+0.560  visual-switched=+0.726  descriptor=-0.021   regret: nfd=0.0255  visual-switched=0.0152  descriptor=0.0595
+  K=  500 nfd=+0.543  visual-switched=+0.727  descriptor=-0.023   regret: nfd=0.0279  visual-switched=0.0157  descriptor=0.0625
+  K= 1000 nfd=+0.516  visual-switched=+0.740  descriptor=+0.011   regret: nfd=0.0308  visual-switched=0.0155  descriptor=0.0626
+
+capture: paired difference variance split (slate-level var | within-slate pool var)
+  capture:nfd-visual-switched
+     K=   25 mean -0.1229  s2_slate(mean over pools) 1.02e-02  s2_pool 1.57e-01  sd(one pool/state) 0.4186
+     K=   50 mean -0.1491  s2_slate(mean over pools) 1.48e-02  s2_pool 1.39e-01  sd(one pool/state) 0.3972
+     K=  100 mean -0.1563  s2_slate(mean over pools) 3.04e-02  s2_pool 1.15e-01  sd(one pool/state) 0.3560
+     K=  250 mean -0.1668  s2_slate(mean over pools) 5.03e-02  s2_pool 7.87e-02  sd(one pool/state) 0.3319
+     K=  500 mean -0.1832  s2_slate(mean over pools) 5.99e-02  s2_pool 4.56e-02  sd(one pool/state) 0.3089
+     K= 1000 mean -0.2237  s2_slate(mean over pools) 8.53e-02  s2_pool 0.00e+00  sd(one pool/state) 0.2921
+  capture:nfd-descriptor
+     K=   25 mean +0.6830  s2_slate(mean over pools) 3.12e-02  s2_pool 3.20e-01  sd(one pool/state) 0.5873
+     K=   50 mean +0.6307  s2_slate(mean over pools) 3.55e-02  s2_pool 2.64e-01  sd(one pool/state) 0.5110
+     K=  100 mean +0.6177  s2_slate(mean over pools) 4.48e-02  s2_pool 2.18e-01  sd(one pool/state) 0.4952
+     K=  250 mean +0.5807  s2_slate(mean over pools) 7.22e-02  s2_pool 1.74e-01  sd(one pool/state) 0.5185
+     K=  500 mean +0.5669  s2_slate(mean over pools) 7.94e-02  s2_pool 1.37e-01  sd(one pool/state) 0.3864
+     K= 1000 mean +0.5053  s2_slate(mean over pools) 2.35e-01  s2_pool 0.00e+00  sd(one pool/state) 0.4849
+  capture:visual-switched-descriptor
+     K=   25 mean +0.8059  s2_slate(mean over pools) 2.55e-02  s2_pool 2.84e-01  sd(one pool/state) 0.4295
+     K=   50 mean +0.7798  s2_slate(mean over pools) 2.68e-02  s2_pool 2.30e-01  sd(one pool/state) 0.5597
+     K=  100 mean +0.7740  s2_slate(mean over pools) 2.97e-02  s2_pool 1.91e-01  sd(one pool/state) 0.3818
+     K=  250 mean +0.7475  s2_slate(mean over pools) 3.73e-02  s2_pool 1.61e-01  sd(one pool/state) 0.4101
+     K=  500 mean +0.7501  s2_slate(mean over pools) 4.88e-02  s2_pool 1.32e-01  sd(one pool/state) 0.3270
+     K= 1000 mean +0.7290  s2_slate(mean over pools) 2.14e-01  s2_pool 0.00e+00  sd(one pool/state) 0.4625
+
+regret: paired difference variance split (slate-level var | within-slate pool var)
+  regret:nfd-visual-switched
+     K=   25 mean -0.0052  s2_slate(mean over pools) 1.89e-05  s2_pool 2.95e-04  sd(one pool/state) 0.0177
+     K=   50 mean -0.0072  s2_slate(mean over pools) 3.41e-05  s2_pool 3.24e-04  sd(one pool/state) 0.0192
+     K=  100 mean -0.0084  s2_slate(mean over pools) 7.46e-05  s2_pool 3.27e-04  sd(one pool/state) 0.0223
+     K=  250 mean -0.0103  s2_slate(mean over pools) 1.33e-04  s2_pool 2.65e-04  sd(one pool/state) 0.0199
+     K=  500 mean -0.0122  s2_slate(mean over pools) 2.09e-04  s2_pool 1.62e-04  sd(one pool/state) 0.0176
+     K= 1000 mean -0.0153  s2_slate(mean over pools) 3.51e-04  s2_pool 0.00e+00  sd(one pool/state) 0.0187
+  regret:nfd-descriptor
+     K=   25 mean +0.0297  s2_slate(mean over pools) 9.12e-05  s2_pool 6.65e-04  sd(one pool/state) 0.0252
+     K=   50 mean +0.0312  s2_slate(mean over pools) 1.43e-04  s2_pool 6.72e-04  sd(one pool/state) 0.0281
+     K=  100 mean +0.0335  s2_slate(mean over pools) 2.12e-04  s2_pool 6.61e-04  sd(one pool/state) 0.0344
+     K=  250 mean +0.0341  s2_slate(mean over pools) 3.30e-04  s2_pool 6.01e-04  sd(one pool/state) 0.0339
+     K=  500 mean +0.0345  s2_slate(mean over pools) 3.61e-04  s2_pool 5.31e-04  sd(one pool/state) 0.0256
+     K= 1000 mean +0.0318  s2_slate(mean over pools) 1.18e-03  s2_pool 0.00e+00  sd(one pool/state) 0.0343
+  regret:visual-switched-descriptor
+     K=   25 mean +0.0349  s2_slate(mean over pools) 8.56e-05  s2_pool 6.16e-04  sd(one pool/state) 0.0212
+     K=   50 mean +0.0384  s2_slate(mean over pools) 1.25e-04  s2_pool 6.37e-04  sd(one pool/state) 0.0295
+     K=  100 mean +0.0419  s2_slate(mean over pools) 1.82e-04  s2_pool 6.14e-04  sd(one pool/state) 0.0259
+     K=  250 mean +0.0443  s2_slate(mean over pools) 2.95e-04  s2_pool 5.99e-04  sd(one pool/state) 0.0344
+     K=  500 mean +0.0468  s2_slate(mean over pools) 3.92e-04  s2_pool 5.28e-04  sd(one pool/state) 0.0226
+     K= 1000 mean +0.0471  s2_slate(mean over pools) 1.10e-03  s2_pool 0.00e+00  sd(one pool/state) 0.0331
+wrote experiments/EXP-0026-benchmark-power/results/a3_pool_vs_states.json

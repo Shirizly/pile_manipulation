@@ -1,0 +1,34 @@
+{
+ "inbetween_n100.pt": {
+  "n": 5015,
+  "frac_illegal_0mm": 0.001794616151545364
+ },
+ "inbetween_n20.pt": {
+  "n": 6391,
+  "frac_illegal_0mm": 0.0
+ },
+ "inbetween_n50.pt": {
+  "n": 6128,
+  "frac_illegal_0mm": 0.00032637075718015666
+ },
+ "piled_n20.pt": {
+  "n": 6418,
+  "frac_illegal_0mm": 0.0003116235587410408
+ },
+ "piled_n50.pt": {
+  "n": 5758,
+  "frac_illegal_0mm": 0.0008683570684265369
+ },
+ "scattered_n100.pt": {
+  "n": 6360,
+  "frac_illegal_0mm": 0.0930817610062893
+ },
+ "scattered_n20.pt": {
+  "n": 6910,
+  "frac_illegal_0mm": 0.0002894356005788712
+ },
+ "scattered_n50.pt": {
+  "n": 6529,
+  "frac_illegal_0mm": 0.009802419972430693
+ }
+}

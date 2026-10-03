@@ -1,0 +1,1 @@
+PYTHONPATH=. OMP_NUM_THREADS=4 /home/alon/anaconda3/envs/pme/bin/python -u Baselines/NFD/train_nfd.py Baselines/NFD/configs/nfd_3ch_flex_mask_v2.yaml --seed 0  # commit d72bb304 dirty

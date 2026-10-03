@@ -1,0 +1,49 @@
+timed nfd_3ch_randlen: 56.6 us/candidate (17669/s)
+timed nfd_warped_randlen: 87.7 us/candidate (11396/s)
+timed nfd_warped_randlen_flipaug: 84.2 us/candidate (11870/s)
+timed nfd_warped_randlen_flipaug_epoch30: 88.7 us/candidate (11280/s)
+timed nfd_residual_warped_flipaug_randlen: 75.7 us/candidate (13218/s)
+timed nfd_residual_worldframe_noaug_ep43: 57.0 us/candidate (17545/s)
+timed nfd_3ch_finetuned: 55.5 us/candidate (18034/s)
+timed linear_switched_hard: 144.2 us/candidate (6935/s)
+
+== lyapunov: budgets (ref nfd_3ch_randlen m) [16, 32, 64, 128] = ['0.91ms', '1.81ms', '3.62ms', '7.24ms']
+  nfd_residual_warped_flipaug_randlen      n=[11, 23, 47, 95]  capture [0.524, 0.633, 0.718, 0.784]
+  nfd_residual_worldframe_noaug_ep43       n=[15, 31, 63, 127]  capture [0.539, 0.633, 0.706, 0.761]
+  nfd_3ch_randlen                          n=[16, 32, 64, 128]  capture [0.544, 0.628, 0.692, 0.745]
+  nfd_warped_randlen                       n=[10, 20, 41, 82]  capture [0.492, 0.592, 0.674, 0.737]
+  nfd_warped_randlen_flipaug_epoch30       n=[10, 20, 40, 81]  capture [0.494, 0.594, 0.673, 0.736]
+  nfd_warped_randlen_flipaug               n=[10, 21, 42, 85]  capture [0.49, 0.594, 0.67, 0.729]
+  ensemble_nfd5                            n=[2, 5, 10, 20]  capture [0.199, 0.4, 0.53, 0.64]
+  linear_switched_hard                     n=[6, 12, 25, 50]  capture [0.382, 0.483, 0.566, 0.62]
+  ensemble_nfd                             n=[1, 3, 7, 14]  capture [-0.001, 0.295, 0.464, 0.584]
+  nfd_3ch_finetuned                        n=[16, 32, 65, 128]  capture [0.394, 0.445, 0.483, 0.512]
+  ensemble_nfd m=16: n_ens 1 vs nfd_residual_warped_flipaug_randlen n 11: -0.525 [-0.532 -0.516]; best here nfd_3ch_randlen -0.545 [-0.555 -0.535]
+  ensemble_nfd m=32: n_ens 3 vs nfd_residual_warped_flipaug_randlen n 23: -0.338 [-0.344 -0.333]; best here nfd_residual_worldframe_noaug_ep43 -0.338 [-0.347 -0.33 ]
+  ensemble_nfd m=64: n_ens 7 vs nfd_residual_warped_flipaug_randlen n 47: -0.253 [-0.26  -0.246]; best here nfd_residual_warped_flipaug_randlen -0.253 [-0.26  -0.246]
+  ensemble_nfd m=128: n_ens 14 vs nfd_residual_warped_flipaug_randlen n 95: -0.200 [-0.211 -0.19 ]; best here nfd_residual_warped_flipaug_randlen -0.200 [-0.211 -0.189]
+  ensemble_nfd5 m=16: n_ens 2 vs nfd_residual_warped_flipaug_randlen n 11: -0.324 [-0.33  -0.319]; best here nfd_3ch_randlen -0.345 [-0.352 -0.337]
+  ensemble_nfd5 m=32: n_ens 5 vs nfd_residual_warped_flipaug_randlen n 23: -0.233 [-0.238 -0.228]; best here nfd_residual_worldframe_noaug_ep43 -0.233 [-0.241 -0.225]
+  ensemble_nfd5 m=64: n_ens 10 vs nfd_residual_warped_flipaug_randlen n 47: -0.188 [-0.194 -0.182]; best here nfd_residual_warped_flipaug_randlen -0.188 [-0.195 -0.181]
+  ensemble_nfd5 m=128: n_ens 20 vs nfd_residual_warped_flipaug_randlen n 95: -0.144 [-0.153 -0.134]; best here nfd_residual_warped_flipaug_randlen -0.144 [-0.153 -0.134]
+
+== mass_in_region: budgets (ref nfd_3ch_randlen m) [16, 32, 64, 128] = ['0.91ms', '1.81ms', '3.62ms', '7.24ms']
+  nfd_residual_worldframe_noaug_ep43       n=[15, 31, 63, 127]  capture [0.486, 0.595, 0.689, 0.769]
+  nfd_residual_warped_flipaug_randlen      n=[11, 23, 47, 95]  capture [0.426, 0.543, 0.645, 0.733]
+  nfd_3ch_randlen                          n=[16, 32, 64, 128]  capture [0.475, 0.567, 0.647, 0.716]
+  nfd_warped_randlen                       n=[10, 20, 41, 82]  capture [0.399, 0.506, 0.607, 0.693]
+  nfd_warped_randlen_flipaug_epoch30       n=[10, 20, 40, 81]  capture [0.404, 0.51, 0.606, 0.689]
+  nfd_warped_randlen_flipaug               n=[10, 21, 42, 85]  capture [0.391, 0.5, 0.593, 0.675]
+  nfd_3ch_finetuned                        n=[16, 32, 65, 128]  capture [0.403, 0.483, 0.556, 0.617]
+  ensemble_nfd5                            n=[2, 5, 10, 20]  capture [0.148, 0.321, 0.447, 0.567]
+  linear_switched_hard                     n=[6, 12, 25, 50]  capture [0.301, 0.401, 0.494, 0.566]
+  ensemble_nfd                             n=[1, 3, 7, 14]  capture [0.001, 0.227, 0.384, 0.509]
+  ensemble_nfd m=16: n_ens 1 vs nfd_residual_worldframe_noaug_ep43 n 15: -0.486 [-0.49  -0.481]; best here nfd_residual_worldframe_noaug_ep43 -0.486 [-0.49  -0.481]
+  ensemble_nfd m=32: n_ens 3 vs nfd_residual_worldframe_noaug_ep43 n 31: -0.368 [-0.373 -0.362]; best here nfd_residual_worldframe_noaug_ep43 -0.368 [-0.373 -0.362]
+  ensemble_nfd m=64: n_ens 7 vs nfd_residual_worldframe_noaug_ep43 n 63: -0.305 [-0.313 -0.297]; best here nfd_residual_worldframe_noaug_ep43 -0.305 [-0.313 -0.297]
+  ensemble_nfd m=128: n_ens 14 vs nfd_residual_worldframe_noaug_ep43 n 127: -0.260 [-0.271 -0.249]; best here nfd_residual_worldframe_noaug_ep43 -0.260 [-0.271 -0.25 ]
+  ensemble_nfd5 m=16: n_ens 2 vs nfd_residual_worldframe_noaug_ep43 n 15: -0.338 [-0.342 -0.334]; best here nfd_residual_worldframe_noaug_ep43 -0.338 [-0.342 -0.334]
+  ensemble_nfd5 m=32: n_ens 5 vs nfd_residual_worldframe_noaug_ep43 n 31: -0.274 [-0.279 -0.268]; best here nfd_residual_worldframe_noaug_ep43 -0.274 [-0.279 -0.269]
+  ensemble_nfd5 m=64: n_ens 10 vs nfd_residual_worldframe_noaug_ep43 n 63: -0.242 [-0.249 -0.234]; best here nfd_residual_worldframe_noaug_ep43 -0.242 [-0.249 -0.235]
+  ensemble_nfd5 m=128: n_ens 20 vs nfd_residual_worldframe_noaug_ep43 n 127: -0.202 [-0.212 -0.192]; best here nfd_residual_worldframe_noaug_ep43 -0.202 [-0.212 -0.191]
+wrote /home/alon/Code/pile_manipulation/experiments/EXP-0030-state-superiority-ds0005/results/budget_matched.json

@@ -1,0 +1,81 @@
+EXP-0044 {"n": 768, "V0": 0.3264969368465245, "Vstar": 0.0017557454702910036, "impr_8": 0.28606523610053447, "af_8_mean": 0.8800868218954611, "af_8_median": 0.8940113422227648, "af_8_ratio_of_means": 0.8809022190508304}
+  letter_C    V0=0.302 V*=0.0021 impr8=0.246 af8=0.817
+  letter_H    V0=0.325 V*=0.0014 impr8=0.272 af8=0.839
+  letter_I    V0=0.434 V*=0.0063 impr8=0.383 af8=0.897
+  letter_L    V0=0.308 V*=0.0022 impr8=0.267 af8=0.872
+  letter_O    V0=0.300 V*=0.0017 impr8=0.241 af8=0.806
+  letter_S    V0=0.313 V*=0.0022 impr8=0.269 af8=0.865
+  letter_T    V0=0.340 V*=0.0011 impr8=0.295 af8=0.870
+  letter_X    V0=0.350 V*=0.0022 impr8=0.312 af8=0.899
+  letter_Z    V0=0.334 V*=0.0019 impr8=0.291 af8=0.874
+  quadrant_0  V0=0.311 V*=0.0000 impr8=0.288 af8=0.931
+  quadrant_1  V0=0.315 V*=0.0000 impr8=0.296 af8=0.937
+  quadrant_3  V0=0.286 V*=0.0000 impr8=0.274 af8=0.956
+  cell tuned {'af_8_mean': 0.88, 'af_8_median': 0.894, 'af_8_ratio_of_means': 0.881}
+  mp linear_switched_soft/cem {'af_8_mean': 0.872}
+  mp linear_switched_soft/gd {'af_8_mean': 0.904}
+  mp nfd_3ch_randlen/cem {'af_8_mean': 0.864}
+  mp nfd_3ch_randlen/gd {'af_8_mean': 0.888}
+  mp nfd_3ch_randlen_seed1/cem {'af_8_mean': 0.858}
+  mp nfd_3ch_randlen_seed1/gd {'af_8_mean': 0.859}
+  mp nfd_residual_worldframe_noaug_ep43/cem {'af_8_mean': 0.896}
+  mp nfd_residual_worldframe_noaug_ep43/gd {'af_8_mean': 0.9}
+EXP-0045 {"n": 512, "V0": 0.3280125595629215, "Vstar": 0.001409811302437447, "impr_8": 0.2620035903719118, "af_8_mean": 0.8021609986869619, "af_8_median": 0.8868352149364092, "af_8_ratio_of_means": 0.8022087743209961, "impr_24": 0.28222421024869454, "af_24_mean": 0.8646828023696042, "af_24_median": 0.9480910755471366, "af_24_ratio_of_means": 0.864120745314748}
+  letter_L    V0=0.306 V*=0.0022 impr8=0.248 af8=0.815 af24=0.875
+  letter_O    V0=0.309 V*=0.0017 impr8=0.220 af8=0.715 af24=0.824
+  letter_S    V0=0.327 V*=0.0022 impr8=0.252 af8=0.775 af24=0.854
+  letter_T    V0=0.355 V*=0.0011 impr8=0.278 af8=0.784 af24=0.858
+  letter_X    V0=0.366 V*=0.0022 impr8=0.290 af8=0.797 af24=0.855
+  letter_Z    V0=0.355 V*=0.0019 impr8=0.281 af8=0.793 af24=0.844
+  quadrant_0  V0=0.301 V*=0.0000 impr8=0.257 af8=0.850 af24=0.895
+  quadrant_3  V0=0.306 V*=0.0000 impr8=0.272 af8=0.889 af24=0.912
+  cell b0.03 {'af_8_mean': 0.497, 'af_8_median': 0.487, 'af_8_ratio_of_means': 0.496, 'af_24_mean': 0.599, 'af_24_median': 0.642, 'af_24_ratio_of_means': 0.598}
+  cell b0.1 {'af_8_mean': 0.874, 'af_8_median': 0.881, 'af_8_ratio_of_means': 0.875, 'af_24_mean': 0.944, 'af_24_median': 0.952, 'af_24_ratio_of_means': 0.944}
+  cell b0.3 {'af_8_mean': 0.914, 'af_8_median': 0.922, 'af_8_ratio_of_means': 0.915, 'af_24_mean': 0.957, 'af_24_median': 0.959, 'af_24_ratio_of_means': 0.957}
+  cell b1.0 {'af_8_mean': 0.924, 'af_8_median': 0.929, 'af_8_ratio_of_means': 0.923, 'af_24_mean': 0.959, 'af_24_median': 0.96, 'af_24_ratio_of_means': 0.958}
+  mp linear_switched_soft/cem {'af_8_mean': 0.886, 'af_24_mean': 0.935}
+  mp linear_switched_soft/gd {'af_8_mean': 0.796, 'af_24_mean': 0.889}
+  mp nfd_residual_worldframe_noaug_ep43/cem {'af_8_mean': 0.727, 'af_24_mean': 0.763}
+  mp nfd_residual_worldframe_noaug_ep43/gd {'af_8_mean': 0.799, 'af_24_mean': 0.872}
+V0 check (start40, quadrant_0): 0.2938916087150574
+  letter_B    letter_S    rank=0.967 iou=0.63 dcorr=0.991 kendall=0.79
+  letter_F    letter_P    rank=0.956 iou=0.59 dcorr=0.989 kendall=0.71
+  letter_C    letter_O    rank=0.946 iou=0.64 dcorr=0.993 kendall=1.00
+  letter_O    letter_Q    rank=0.936 iou=0.90 dcorr=0.977 kendall=0.64
+  letter_B    letter_E    rank=0.924 iou=0.63 dcorr=0.981 kendall=1.00
+  letter_V    letter_Y    rank=0.921 iou=0.28 dcorr=0.986 kendall=0.79
+  letter_C    letter_D    rank=0.915 iou=0.48 dcorr=0.970 kendall=0.57
+  letter_C    letter_Q    rank=0.906 iou=0.59 dcorr=0.977 kendall=0.64
+  letter_E    letter_S    rank=0.905 iou=0.48 dcorr=0.976 kendall=0.79
+  letter_H    letter_N    rank=0.902 iou=0.59 dcorr=0.990 kendall=0.79
+  letter_D    letter_O    rank=0.902 iou=0.48 dcorr=0.973 kendall=0.57
+  letter_T    letter_Y    rank=0.901 iou=0.33 dcorr=0.984 kendall=0.93
+  letter_B    letter_R    rank=0.883 iou=0.57 dcorr=0.977 kendall=0.86
+  letter_K    letter_X    rank=0.883 iou=0.41 dcorr=0.975 kendall=0.86
+  letter_H    letter_R    rank=0.881 iou=0.64 dcorr=0.978 kendall=0.86
+  letter_G    letter_S    rank=0.865 iou=0.52 dcorr=0.977 kendall=0.93
+  letter_B    letter_G    rank=0.862 iou=0.43 dcorr=0.963 kendall=0.71
+  letter_D    letter_U    rank=0.858 iou=0.60 dcorr=0.961 kendall=0.86
+  letter_D    letter_Q    rank=0.852 iou=0.46 dcorr=0.945 kendall=0.93
+  letter_X    letter_Z    rank=0.848 iou=0.40 dcorr=0.972 kendall=0.93
+  letter_N    letter_R    rank=0.847 iou=0.44 dcorr=0.975 kendall=0.64
+  letter_R    letter_S    rank=0.847 iou=0.46 dcorr=0.969 kendall=0.64
+  letter_I    letter_T    rank=0.843 iou=0.59 dcorr=0.876 kendall=0.71
+  letter_B    letter_D    rank=0.825 iou=0.60 dcorr=0.983 kendall=1.00
+  letter_E    letter_R    rank=0.824 iou=0.47 dcorr=0.970 kendall=0.86
+8 [('letter_O', 5), ('letter_B', 19), ('letter_W', 1), ('letter_L', 1), ('quadrant_1', 1), ('quadrant_0', 1), ('quadrant_2', 1), ('quadrant_3', 1)]
+10 [('letter_O', 5), ('letter_Y', 5), ('letter_B', 13), ('letter_J', 1), ('letter_W', 1), ('letter_L', 1), ('quadrant_1', 1), ('quadrant_0', 1), ('quadrant_2', 1), ('quadrant_3', 1)]
+12 [('letter_O', 5), ('letter_Y', 5), ('letter_F', 2), ('letter_B', 10), ('letter_M', 1), ('letter_J', 1), ('letter_W', 1), ('letter_L', 1), ('quadrant_1', 1), ('quadrant_0', 1), ('quadrant_2', 1), ('quadrant_3', 1)]
+    letter_O ['letter_C', 'letter_D', 'letter_O', 'letter_Q', 'letter_U'] 0.898
+    letter_Y ['letter_I', 'letter_T', 'letter_V', 'letter_Y', 'letter_Z'] 0.827
+    letter_F ['letter_F', 'letter_P'] 0.978
+    letter_B ['letter_A', 'letter_B', 'letter_E', 'letter_G', 'letter_H', 'letter_K', 'letter_N', 'letter_R', 'letter_S', 'letter_X'] 0.796
+    letter_M ['letter_M'] 1.0
+    letter_J ['letter_J'] 1.0
+    letter_W ['letter_W'] 1.0
+    letter_L ['letter_L'] 1.0
+    quadrant_1 ['quadrant_1'] 1.0
+    quadrant_0 ['quadrant_0'] 1.0
+    quadrant_2 ['quadrant_2'] 1.0
+    quadrant_3 ['quadrant_3'] 1.0
+{'letter_A': 0.751, 'letter_B': 0.651, 'letter_C': 0.674, 'letter_D': 0.67, 'letter_E': 0.659, 'letter_F': 0.716, 'letter_G': 0.662, 'letter_H': 0.678, 'letter_I': 0.775, 'letter_J': 0.796, 'letter_K': 0.687, 'letter_L': 0.83, 'letter_M': 0.654, 'letter_N': 0.661, 'letter_O': 0.671, 'letter_P': 0.724, 'letter_Q': 0.69, 'letter_R': 0.657, 'letter_S': 0.662, 'letter_T': 0.801, 'letter_U': 0.685, 'letter_V': 0.753, 'letter_W': 0.667, 'letter_X': 0.696, 'letter_Y': 0.787, 'letter_Z': 0.713, 'quadrant_0': 0.815, 'quadrant_1': 0.838, 'quadrant_2': 0.818, 'quadrant_3': 0.845}

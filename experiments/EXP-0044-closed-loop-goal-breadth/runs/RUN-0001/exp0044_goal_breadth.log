@@ -1,0 +1,1025 @@
+[38;5;159m[Genesis] [19:11:13] [INFO] [38;5;121m╭───────────────────────────────────────────────╮[0m[38;5;159m[0m
+[38;5;159m[Genesis] [19:11:13] [INFO] [38;5;121m│┈┉┈┉┈┉┈┉┈┉┈┉┈┉┈┉┈┉┈[0m[38;5;159m [38;5;121m[1m[3mGenesis[0m[38;5;159m [38;5;121m┈┉┈┉┈┉┈┉┈┉┈┉┈┉┈┉┈┉┈│[0m[38;5;159m[0m
+[38;5;159m[Genesis] [19:11:13] [INFO] [38;5;121m╰───────────────────────────────────────────────╯[0m[38;5;159m[0m
+[38;5;159m[Genesis] [19:11:13] [INFO] Running on [38;5;121m[4m[NVIDIA GeForce RTX 4070 Laptop GPU][0m[38;5;159m with backend [38;5;121m[4mgs.cuda[0m[38;5;159m. Device memory: [38;5;121m[4m7.62[0m[38;5;159m GB.[0m
+[38;5;159m[Genesis] [19:11:13] [INFO] 🚀 Genesis initialized. 🔖 version: [38;5;121m[4m1.3.3[0m[38;5;159m, 🎨 theme: [38;5;121m[4mdark[0m[38;5;159m, 🌱 seed: [38;5;121m[4mNone[0m[38;5;159m, 🐛 debug: [38;5;121m[4mFalse[0m[38;5;159m, 📏 precision: [38;5;121m[4m32[0m[38;5;159m, 🔥 performance: [38;5;121m[4mTrue[0m[38;5;159m, 💬 verbose: [38;5;121m[4mINFO[0m[38;5;159m[0m
+[38;5;159m[Genesis] [19:11:15] [INFO] Scene [38;5;121m[3m<83e07ec>[0m[38;5;159m created.[0m
+[38;5;159m[Genesis] [19:11:15] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m0[0m[38;5;159m, uid: [38;5;121m[3m<f823f1b>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Plane>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [19:11:15] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m1[0m[38;5;159m, uid: [38;5;121m[3m<1607902>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [19:11:15] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m2[0m[38;5;159m, uid: [38;5;121m[3m<5f2a7e3>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [19:11:15] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m3[0m[38;5;159m, uid: [38;5;121m[3m<2c33c16>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [19:11:15] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m4[0m[38;5;159m, uid: [38;5;121m[3m<30fa9cd>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [19:11:15] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m5[0m[38;5;159m, uid: [38;5;121m[3m<95ddf72>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [19:11:15] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m6[0m[38;5;159m, uid: [38;5;121m[3m<29a72f2>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [19:11:15] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m7[0m[38;5;159m, uid: [38;5;121m[3m<28f4c32>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [19:11:15] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m8[0m[38;5;159m, uid: [38;5;121m[3m<00720f3>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [19:11:15] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m9[0m[38;5;159m, uid: [38;5;121m[3m<a7eb477>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [19:11:15] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m10[0m[38;5;159m, uid: [38;5;121m[3m<f76ffd6>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [19:11:15] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m11[0m[38;5;159m, uid: [38;5;121m[3m<4bc66d2>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [19:11:15] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m12[0m[38;5;159m, uid: [38;5;121m[3m<74fe8ea>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [19:11:15] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m13[0m[38;5;159m, uid: [38;5;121m[3m<827622c>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [19:11:15] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m14[0m[38;5;159m, uid: [38;5;121m[3m<6e81660>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [19:11:15] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m15[0m[38;5;159m, uid: [38;5;121m[3m<666cb10>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [19:11:15] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m16[0m[38;5;159m, uid: [38;5;121m[3m<9a720c6>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [19:11:15] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m17[0m[38;5;159m, uid: [38;5;121m[3m<22ea515>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [19:11:15] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m18[0m[38;5;159m, uid: [38;5;121m[3m<102b4f7>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [19:11:15] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m19[0m[38;5;159m, uid: [38;5;121m[3m<7a2111e>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [19:11:15] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m20[0m[38;5;159m, uid: [38;5;121m[3m<f9e28b9>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [19:11:15] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m21[0m[38;5;159m, uid: [38;5;121m[3m<8c98f8f>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [19:11:15] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m22[0m[38;5;159m, uid: [38;5;121m[3m<b23e17b>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [19:11:15] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m23[0m[38;5;159m, uid: [38;5;121m[3m<10aacbd>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [19:11:15] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m24[0m[38;5;159m, uid: [38;5;121m[3m<2c83422>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [19:11:15] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m25[0m[38;5;159m, uid: [38;5;121m[3m<18d35ac>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [19:11:15] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m26[0m[38;5;159m, uid: [38;5;121m[3m<9c03f6b>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+Generated 20 particles out of 20
+[38;5;159m[Genesis] [19:11:15] [INFO] Building scene [38;5;121m[3m<83e07ec>[0m[38;5;159m...[0m
+[38;5;159m[Genesis] [19:11:19] [INFO] Compiling simulation kernels...[0m
+[38;5;159m[Genesis] [19:11:38] [INFO] Building visualizer...[0m
+libEGL warning: egl: failed to create dri2 screen
+libEGL warning: egl: failed to create dri2 screen
+chunk 0: step 1/8 (46s)
+chunk 0: step 2/8 (90s)
+chunk 0: step 3/8 (135s)
+chunk 0: step 4/8 (180s)
+chunk 0: step 5/8 (225s)
+chunk 0: step 6/8 (270s)
+chunk 0: step 7/8 (316s)
+chunk 0: step 8/8 (361s)
+chunk 0: step 8/8 (361s)
+  nfd_3ch_randlen                      gd   tuned      quadrant_0 40: improve +0.290; evals/step 3180
+  nfd_3ch_randlen                      gd   tuned      quadrant_0 41: improve +0.263; evals/step 3184
+  nfd_3ch_randlen                      gd   tuned      quadrant_0 42: improve +0.347; evals/step 3204
+  nfd_3ch_randlen                      gd   tuned      quadrant_0 43: improve +0.297; evals/step 3184
+  nfd_3ch_randlen                      gd   tuned      quadrant_0 44: improve +0.296; evals/step 3212
+  nfd_3ch_randlen                      gd   tuned      quadrant_0 45: improve +0.279; evals/step 3152
+  nfd_3ch_randlen                      gd   tuned      quadrant_0 46: improve +0.286; evals/step 3152
+  nfd_3ch_randlen                      gd   tuned      quadrant_0 47: improve +0.230; evals/step 3176
+  nfd_3ch_randlen                      gd   tuned      quadrant_1 40: improve +0.380; evals/step 3188
+  nfd_3ch_randlen                      gd   tuned      quadrant_1 41: improve +0.290; evals/step 3192
+  nfd_3ch_randlen                      gd   tuned      quadrant_1 42: improve +0.381; evals/step 3172
+  nfd_3ch_randlen                      gd   tuned      quadrant_1 43: improve +0.358; evals/step 3132
+  nfd_3ch_randlen                      gd   tuned      quadrant_1 44: improve +0.224; evals/step 3204
+  nfd_3ch_randlen                      gd   tuned      quadrant_1 45: improve +0.260; evals/step 3200
+  nfd_3ch_randlen                      gd   tuned      quadrant_1 46: improve +0.271; evals/step 3216
+  nfd_3ch_randlen                      gd   tuned      quadrant_1 47: improve +0.205; evals/step 3176
+  nfd_3ch_randlen                      gd   tuned      quadrant_3 40: improve +0.290; evals/step 3208
+  nfd_3ch_randlen                      gd   tuned      quadrant_3 41: improve +0.307; evals/step 3116
+  nfd_3ch_randlen                      gd   tuned      quadrant_3 42: improve +0.299; evals/step 3188
+  nfd_3ch_randlen                      gd   tuned      quadrant_3 43: improve +0.316; evals/step 3184
+  nfd_3ch_randlen                      gd   tuned      quadrant_3 44: improve +0.256; evals/step 3176
+  nfd_3ch_randlen                      gd   tuned      quadrant_3 45: improve +0.160; evals/step 3176
+  nfd_3ch_randlen                      gd   tuned      quadrant_3 46: improve +0.248; evals/step 3260
+  nfd_3ch_randlen                      gd   tuned      quadrant_3 47: improve +0.280; evals/step 3224
+  nfd_3ch_randlen                      gd   tuned      letter_O   40: improve +0.313; evals/step 3220
+  nfd_3ch_randlen                      gd   tuned      letter_O   41: improve +0.239; evals/step 3188
+  nfd_3ch_randlen                      gd   tuned      letter_O   42: improve +0.296; evals/step 3204
+  nfd_3ch_randlen                      gd   tuned      letter_O   43: improve +0.277; evals/step 3208
+  nfd_3ch_randlen                      gd   tuned      letter_O   44: improve +0.269; evals/step 3144
+  nfd_3ch_randlen                      gd   tuned      letter_O   45: improve +0.181; evals/step 3088
+  nfd_3ch_randlen                      gd   tuned      letter_O   46: improve +0.231; evals/step 3136
+  nfd_3ch_randlen                      gd   tuned      letter_O   47: improve +0.268; evals/step 3108
+chunk 1: step 1/8 (44s)
+chunk 1: step 2/8 (88s)
+chunk 1: step 3/8 (133s)
+chunk 1: step 4/8 (178s)
+chunk 1: step 5/8 (222s)
+chunk 1: step 6/8 (268s)
+chunk 1: step 7/8 (313s)
+chunk 1: step 8/8 (357s)
+chunk 1: step 8/8 (357s)
+  nfd_3ch_randlen                      gd   tuned      letter_T   40: improve +0.372; evals/step 3232
+  nfd_3ch_randlen                      gd   tuned      letter_T   41: improve +0.204; evals/step 3196
+  nfd_3ch_randlen                      gd   tuned      letter_T   42: improve +0.322; evals/step 3092
+  nfd_3ch_randlen                      gd   tuned      letter_T   43: improve +0.321; evals/step 3172
+  nfd_3ch_randlen                      gd   tuned      letter_T   44: improve +0.293; evals/step 3152
+  nfd_3ch_randlen                      gd   tuned      letter_T   45: improve +0.258; evals/step 3212
+  nfd_3ch_randlen                      gd   tuned      letter_T   46: improve +0.301; evals/step 3220
+  nfd_3ch_randlen                      gd   tuned      letter_T   47: improve +0.197; evals/step 3156
+  nfd_3ch_randlen                      gd   tuned      letter_S   40: improve +0.296; evals/step 3140
+  nfd_3ch_randlen                      gd   tuned      letter_S   41: improve +0.261; evals/step 3148
+  nfd_3ch_randlen                      gd   tuned      letter_S   42: improve +0.309; evals/step 3156
+  nfd_3ch_randlen                      gd   tuned      letter_S   43: improve +0.326; evals/step 3144
+  nfd_3ch_randlen                      gd   tuned      letter_S   44: improve +0.285; evals/step 3156
+  nfd_3ch_randlen                      gd   tuned      letter_S   45: improve +0.173; evals/step 3148
+  nfd_3ch_randlen                      gd   tuned      letter_S   46: improve +0.236; evals/step 3172
+  nfd_3ch_randlen                      gd   tuned      letter_S   47: improve +0.266; evals/step 3188
+  nfd_3ch_randlen                      gd   tuned      letter_L   40: improve +0.234; evals/step 3208
+  nfd_3ch_randlen                      gd   tuned      letter_L   41: improve +0.242; evals/step 3196
+  nfd_3ch_randlen                      gd   tuned      letter_L   42: improve +0.274; evals/step 3132
+  nfd_3ch_randlen                      gd   tuned      letter_L   43: improve +0.278; evals/step 3160
+  nfd_3ch_randlen                      gd   tuned      letter_L   44: improve +0.249; evals/step 3164
+  nfd_3ch_randlen                      gd   tuned      letter_L   45: improve +0.223; evals/step 3164
+  nfd_3ch_randlen                      gd   tuned      letter_L   46: improve +0.259; evals/step 3172
+  nfd_3ch_randlen                      gd   tuned      letter_L   47: improve +0.328; evals/step 3204
+  nfd_3ch_randlen                      gd   tuned      letter_C   40: improve +0.297; evals/step 3232
+  nfd_3ch_randlen                      gd   tuned      letter_C   41: improve +0.234; evals/step 3272
+  nfd_3ch_randlen                      gd   tuned      letter_C   42: improve +0.269; evals/step 3180
+  nfd_3ch_randlen                      gd   tuned      letter_C   43: improve +0.277; evals/step 3228
+  nfd_3ch_randlen                      gd   tuned      letter_C   44: improve +0.302; evals/step 3240
+  nfd_3ch_randlen                      gd   tuned      letter_C   45: improve +0.212; evals/step 3256
+  nfd_3ch_randlen                      gd   tuned      letter_C   46: improve +0.235; evals/step 3220
+  nfd_3ch_randlen                      gd   tuned      letter_C   47: improve +0.288; evals/step 3204
+chunk 2: step 1/8 (44s)
+chunk 2: step 2/8 (88s)
+chunk 2: step 3/8 (133s)
+chunk 2: step 4/8 (178s)
+chunk 2: step 5/8 (222s)
+chunk 2: step 6/8 (267s)
+chunk 2: step 7/8 (312s)
+chunk 2: step 8/8 (357s)
+chunk 2: step 8/8 (357s)
+  nfd_3ch_randlen                      gd   tuned      letter_X   40: improve +0.362; evals/step 3164
+  nfd_3ch_randlen                      gd   tuned      letter_X   41: improve +0.297; evals/step 3248
+  nfd_3ch_randlen                      gd   tuned      letter_X   42: improve +0.307; evals/step 3192
+  nfd_3ch_randlen                      gd   tuned      letter_X   43: improve +0.362; evals/step 3188
+  nfd_3ch_randlen                      gd   tuned      letter_X   44: improve +0.316; evals/step 3192
+  nfd_3ch_randlen                      gd   tuned      letter_X   45: improve +0.244; evals/step 3168
+  nfd_3ch_randlen                      gd   tuned      letter_X   46: improve +0.301; evals/step 3144
+  nfd_3ch_randlen                      gd   tuned      letter_X   47: improve +0.315; evals/step 3224
+  nfd_3ch_randlen                      gd   tuned      letter_H   40: improve +0.325; evals/step 3176
+  nfd_3ch_randlen                      gd   tuned      letter_H   41: improve +0.268; evals/step 3212
+  nfd_3ch_randlen                      gd   tuned      letter_H   42: improve +0.295; evals/step 3184
+  nfd_3ch_randlen                      gd   tuned      letter_H   43: improve +0.311; evals/step 3212
+  nfd_3ch_randlen                      gd   tuned      letter_H   44: improve +0.303; evals/step 3240
+  nfd_3ch_randlen                      gd   tuned      letter_H   45: improve +0.217; evals/step 3180
+  nfd_3ch_randlen                      gd   tuned      letter_H   46: improve +0.270; evals/step 3156
+  nfd_3ch_randlen                      gd   tuned      letter_H   47: improve +0.241; evals/step 3176
+  nfd_3ch_randlen                      gd   tuned      letter_Z   40: improve +0.369; evals/step 3204
+  nfd_3ch_randlen                      gd   tuned      letter_Z   41: improve +0.295; evals/step 3204
+  nfd_3ch_randlen                      gd   tuned      letter_Z   42: improve +0.303; evals/step 3204
+  nfd_3ch_randlen                      gd   tuned      letter_Z   43: improve +0.326; evals/step 3216
+  nfd_3ch_randlen                      gd   tuned      letter_Z   44: improve +0.329; evals/step 3192
+  nfd_3ch_randlen                      gd   tuned      letter_Z   45: improve +0.185; evals/step 3172
+  nfd_3ch_randlen                      gd   tuned      letter_Z   46: improve +0.249; evals/step 3152
+  nfd_3ch_randlen                      gd   tuned      letter_Z   47: improve +0.276; evals/step 3172
+  nfd_3ch_randlen                      gd   tuned      letter_I   40: improve +0.448; evals/step 3088
+  nfd_3ch_randlen                      gd   tuned      letter_I   41: improve +0.380; evals/step 3148
+  nfd_3ch_randlen                      gd   tuned      letter_I   42: improve +0.413; evals/step 3140
+  nfd_3ch_randlen                      gd   tuned      letter_I   43: improve +0.411; evals/step 3160
+  nfd_3ch_randlen                      gd   tuned      letter_I   44: improve +0.423; evals/step 3208
+  nfd_3ch_randlen                      gd   tuned      letter_I   45: improve +0.320; evals/step 3160
+  nfd_3ch_randlen                      gd   tuned      letter_I   46: improve +0.365; evals/step 3124
+  nfd_3ch_randlen                      gd   tuned      letter_I   47: improve +0.355; evals/step 3156
+chunk 3: step 1/8 (44s)
+chunk 3: step 2/8 (87s)
+chunk 3: step 3/8 (132s)
+chunk 3: step 4/8 (176s)
+chunk 3: step 5/8 (221s)
+chunk 3: step 6/8 (265s)
+chunk 3: step 7/8 (311s)
+chunk 3: step 8/8 (357s)
+chunk 3: step 8/8 (357s)
+  nfd_3ch_randlen                      cem  tuned      quadrant_0 40: improve +0.294; evals/step 26496
+  nfd_3ch_randlen                      cem  tuned      quadrant_0 41: improve +0.240; evals/step 26368
+  nfd_3ch_randlen                      cem  tuned      quadrant_0 42: improve +0.348; evals/step 26624
+  nfd_3ch_randlen                      cem  tuned      quadrant_0 43: improve +0.294; evals/step 26624
+  nfd_3ch_randlen                      cem  tuned      quadrant_0 44: improve +0.325; evals/step 26368
+  nfd_3ch_randlen                      cem  tuned      quadrant_0 45: improve +0.274; evals/step 26624
+  nfd_3ch_randlen                      cem  tuned      quadrant_0 46: improve +0.285; evals/step 26624
+  nfd_3ch_randlen                      cem  tuned      quadrant_0 47: improve +0.276; evals/step 26496
+  nfd_3ch_randlen                      cem  tuned      quadrant_1 40: improve +0.382; evals/step 26496
+  nfd_3ch_randlen                      cem  tuned      quadrant_1 41: improve +0.294; evals/step 26496
+  nfd_3ch_randlen                      cem  tuned      quadrant_1 42: improve +0.382; evals/step 26624
+  nfd_3ch_randlen                      cem  tuned      quadrant_1 43: improve +0.349; evals/step 26624
+  nfd_3ch_randlen                      cem  tuned      quadrant_1 44: improve +0.308; evals/step 26496
+  nfd_3ch_randlen                      cem  tuned      quadrant_1 45: improve +0.230; evals/step 26624
+  nfd_3ch_randlen                      cem  tuned      quadrant_1 46: improve +0.261; evals/step 26496
+  nfd_3ch_randlen                      cem  tuned      quadrant_1 47: improve +0.206; evals/step 26624
+  nfd_3ch_randlen                      cem  tuned      quadrant_3 40: improve +0.268; evals/step 26496
+  nfd_3ch_randlen                      cem  tuned      quadrant_3 41: improve +0.295; evals/step 26496
+  nfd_3ch_randlen                      cem  tuned      quadrant_3 42: improve +0.298; evals/step 26624
+  nfd_3ch_randlen                      cem  tuned      quadrant_3 43: improve +0.281; evals/step 26496
+  nfd_3ch_randlen                      cem  tuned      quadrant_3 44: improve +0.225; evals/step 26496
+  nfd_3ch_randlen                      cem  tuned      quadrant_3 45: improve +0.175; evals/step 26624
+  nfd_3ch_randlen                      cem  tuned      quadrant_3 46: improve +0.267; evals/step 26496
+  nfd_3ch_randlen                      cem  tuned      quadrant_3 47: improve +0.317; evals/step 26496
+  nfd_3ch_randlen                      cem  tuned      letter_O   40: improve +0.275; evals/step 26240
+  nfd_3ch_randlen                      cem  tuned      letter_O   41: improve +0.178; evals/step 26368
+  nfd_3ch_randlen                      cem  tuned      letter_O   42: improve +0.253; evals/step 26624
+  nfd_3ch_randlen                      cem  tuned      letter_O   43: improve +0.225; evals/step 26496
+  nfd_3ch_randlen                      cem  tuned      letter_O   44: improve +0.229; evals/step 26624
+  nfd_3ch_randlen                      cem  tuned      letter_O   45: improve +0.175; evals/step 26496
+  nfd_3ch_randlen                      cem  tuned      letter_O   46: improve +0.185; evals/step 26624
+  nfd_3ch_randlen                      cem  tuned      letter_O   47: improve +0.238; evals/step 26624
+chunk 4: step 1/8 (44s)
+chunk 4: step 2/8 (87s)
+chunk 4: step 3/8 (131s)
+chunk 4: step 4/8 (176s)
+chunk 4: step 5/8 (220s)
+chunk 4: step 6/8 (265s)
+chunk 4: step 7/8 (310s)
+chunk 4: step 8/8 (354s)
+chunk 4: step 8/8 (354s)
+  nfd_3ch_randlen                      cem  tuned      letter_T   40: improve +0.350; evals/step 26496
+  nfd_3ch_randlen                      cem  tuned      letter_T   41: improve +0.266; evals/step 26368
+  nfd_3ch_randlen                      cem  tuned      letter_T   42: improve +0.267; evals/step 26368
+  nfd_3ch_randlen                      cem  tuned      letter_T   43: improve +0.327; evals/step 26496
+  nfd_3ch_randlen                      cem  tuned      letter_T   44: improve +0.307; evals/step 26624
+  nfd_3ch_randlen                      cem  tuned      letter_T   45: improve +0.260; evals/step 26496
+  nfd_3ch_randlen                      cem  tuned      letter_T   46: improve +0.311; evals/step 26496
+  nfd_3ch_randlen                      cem  tuned      letter_T   47: improve +0.191; evals/step 26112
+  nfd_3ch_randlen                      cem  tuned      letter_S   40: improve +0.296; evals/step 26112
+  nfd_3ch_randlen                      cem  tuned      letter_S   41: improve +0.242; evals/step 26624
+  nfd_3ch_randlen                      cem  tuned      letter_S   42: improve +0.301; evals/step 26624
+  nfd_3ch_randlen                      cem  tuned      letter_S   43: improve +0.245; evals/step 26368
+  nfd_3ch_randlen                      cem  tuned      letter_S   44: improve +0.297; evals/step 26624
+  nfd_3ch_randlen                      cem  tuned      letter_S   45: improve +0.193; evals/step 26496
+  nfd_3ch_randlen                      cem  tuned      letter_S   46: improve +0.299; evals/step 26368
+  nfd_3ch_randlen                      cem  tuned      letter_S   47: improve +0.274; evals/step 26368
+  nfd_3ch_randlen                      cem  tuned      letter_L   40: improve +0.264; evals/step 26368
+  nfd_3ch_randlen                      cem  tuned      letter_L   41: improve +0.231; evals/step 26624
+  nfd_3ch_randlen                      cem  tuned      letter_L   42: improve +0.258; evals/step 26496
+  nfd_3ch_randlen                      cem  tuned      letter_L   43: improve +0.288; evals/step 26240
+  nfd_3ch_randlen                      cem  tuned      letter_L   44: improve +0.276; evals/step 26624
+  nfd_3ch_randlen                      cem  tuned      letter_L   45: improve +0.205; evals/step 26112
+  nfd_3ch_randlen                      cem  tuned      letter_L   46: improve +0.231; evals/step 26496
+  nfd_3ch_randlen                      cem  tuned      letter_L   47: improve +0.266; evals/step 26496
+  nfd_3ch_randlen                      cem  tuned      letter_C   40: improve +0.315; evals/step 26496
+  nfd_3ch_randlen                      cem  tuned      letter_C   41: improve +0.188; evals/step 26624
+  nfd_3ch_randlen                      cem  tuned      letter_C   42: improve +0.244; evals/step 26496
+  nfd_3ch_randlen                      cem  tuned      letter_C   43: improve +0.217; evals/step 26368
+  nfd_3ch_randlen                      cem  tuned      letter_C   44: improve +0.249; evals/step 26496
+  nfd_3ch_randlen                      cem  tuned      letter_C   45: improve +0.187; evals/step 26496
+  nfd_3ch_randlen                      cem  tuned      letter_C   46: improve +0.197; evals/step 26624
+  nfd_3ch_randlen                      cem  tuned      letter_C   47: improve +0.252; evals/step 26496
+chunk 5: step 1/8 (44s)
+chunk 5: step 2/8 (87s)
+chunk 5: step 3/8 (131s)
+chunk 5: step 4/8 (176s)
+chunk 5: step 5/8 (220s)
+chunk 5: step 6/8 (265s)
+chunk 5: step 7/8 (309s)
+chunk 5: step 8/8 (354s)
+chunk 5: step 8/8 (354s)
+  nfd_3ch_randlen                      cem  tuned      letter_X   40: improve +0.335; evals/step 26368
+  nfd_3ch_randlen                      cem  tuned      letter_X   41: improve +0.299; evals/step 26496
+  nfd_3ch_randlen                      cem  tuned      letter_X   42: improve +0.311; evals/step 26368
+  nfd_3ch_randlen                      cem  tuned      letter_X   43: improve +0.377; evals/step 26496
+  nfd_3ch_randlen                      cem  tuned      letter_X   44: improve +0.322; evals/step 26368
+  nfd_3ch_randlen                      cem  tuned      letter_X   45: improve +0.242; evals/step 26624
+  nfd_3ch_randlen                      cem  tuned      letter_X   46: improve +0.289; evals/step 26496
+  nfd_3ch_randlen                      cem  tuned      letter_X   47: improve +0.309; evals/step 26496
+  nfd_3ch_randlen                      cem  tuned      letter_H   40: improve +0.324; evals/step 26496
+  nfd_3ch_randlen                      cem  tuned      letter_H   41: improve +0.256; evals/step 26496
+  nfd_3ch_randlen                      cem  tuned      letter_H   42: improve +0.292; evals/step 26496
+  nfd_3ch_randlen                      cem  tuned      letter_H   43: improve +0.267; evals/step 26368
+  nfd_3ch_randlen                      cem  tuned      letter_H   44: improve +0.286; evals/step 26624
+  nfd_3ch_randlen                      cem  tuned      letter_H   45: improve +0.220; evals/step 26240
+  nfd_3ch_randlen                      cem  tuned      letter_H   46: improve +0.245; evals/step 26624
+  nfd_3ch_randlen                      cem  tuned      letter_H   47: improve +0.285; evals/step 26624
+  nfd_3ch_randlen                      cem  tuned      letter_Z   40: improve +0.374; evals/step 26496
+  nfd_3ch_randlen                      cem  tuned      letter_Z   41: improve +0.275; evals/step 26624
+  nfd_3ch_randlen                      cem  tuned      letter_Z   42: improve +0.307; evals/step 26496
+  nfd_3ch_randlen                      cem  tuned      letter_Z   43: improve +0.349; evals/step 26240
+  nfd_3ch_randlen                      cem  tuned      letter_Z   44: improve +0.245; evals/step 26368
+  nfd_3ch_randlen                      cem  tuned      letter_Z   45: improve +0.217; evals/step 26624
+  nfd_3ch_randlen                      cem  tuned      letter_Z   46: improve +0.235; evals/step 26240
+  nfd_3ch_randlen                      cem  tuned      letter_Z   47: improve +0.271; evals/step 26368
+  nfd_3ch_randlen                      cem  tuned      letter_I   40: improve +0.451; evals/step 26368
+  nfd_3ch_randlen                      cem  tuned      letter_I   41: improve +0.377; evals/step 26624
+  nfd_3ch_randlen                      cem  tuned      letter_I   42: improve +0.410; evals/step 26240
+  nfd_3ch_randlen                      cem  tuned      letter_I   43: improve +0.439; evals/step 26368
+  nfd_3ch_randlen                      cem  tuned      letter_I   44: improve +0.363; evals/step 26496
+  nfd_3ch_randlen                      cem  tuned      letter_I   45: improve +0.324; evals/step 26496
+  nfd_3ch_randlen                      cem  tuned      letter_I   46: improve +0.362; evals/step 26624
+  nfd_3ch_randlen                      cem  tuned      letter_I   47: improve +0.368; evals/step 26112
+chunk 6: step 1/8 (44s)
+chunk 6: step 2/8 (88s)
+chunk 6: step 3/8 (133s)
+chunk 6: step 4/8 (178s)
+chunk 6: step 5/8 (223s)
+chunk 6: step 6/8 (269s)
+chunk 6: step 7/8 (316s)
+chunk 6: step 8/8 (362s)
+chunk 6: step 8/8 (362s)
+  nfd_3ch_randlen_seed1                gd   tuned      quadrant_0 40: improve +0.294; evals/step 3128
+  nfd_3ch_randlen_seed1                gd   tuned      quadrant_0 41: improve +0.264; evals/step 3208
+  nfd_3ch_randlen_seed1                gd   tuned      quadrant_0 42: improve +0.348; evals/step 3164
+  nfd_3ch_randlen_seed1                gd   tuned      quadrant_0 43: improve +0.281; evals/step 3184
+  nfd_3ch_randlen_seed1                gd   tuned      quadrant_0 44: improve +0.001; evals/step 3208
+  nfd_3ch_randlen_seed1                gd   tuned      quadrant_0 45: improve +0.303; evals/step 3204
+  nfd_3ch_randlen_seed1                gd   tuned      quadrant_0 46: improve +0.280; evals/step 3104
+  nfd_3ch_randlen_seed1                gd   tuned      quadrant_0 47: improve +0.233; evals/step 3112
+  nfd_3ch_randlen_seed1                gd   tuned      quadrant_1 40: improve +0.345; evals/step 3192
+  nfd_3ch_randlen_seed1                gd   tuned      quadrant_1 41: improve +0.294; evals/step 3104
+  nfd_3ch_randlen_seed1                gd   tuned      quadrant_1 42: improve +0.382; evals/step 3204
+  nfd_3ch_randlen_seed1                gd   tuned      quadrant_1 43: improve +0.356; evals/step 3184
+  nfd_3ch_randlen_seed1                gd   tuned      quadrant_1 44: improve +0.331; evals/step 3232
+  nfd_3ch_randlen_seed1                gd   tuned      quadrant_1 45: improve +0.261; evals/step 3156
+  nfd_3ch_randlen_seed1                gd   tuned      quadrant_1 46: improve +0.252; evals/step 3152
+  nfd_3ch_randlen_seed1                gd   tuned      quadrant_1 47: improve +0.206; evals/step 3104
+  nfd_3ch_randlen_seed1                gd   tuned      quadrant_3 40: improve +0.272; evals/step 3152
+  nfd_3ch_randlen_seed1                gd   tuned      quadrant_3 41: improve +0.307; evals/step 3136
+  nfd_3ch_randlen_seed1                gd   tuned      quadrant_3 42: improve +0.299; evals/step 3168
+  nfd_3ch_randlen_seed1                gd   tuned      quadrant_3 43: improve +0.310; evals/step 3124
+  nfd_3ch_randlen_seed1                gd   tuned      quadrant_3 44: improve +0.259; evals/step 3140
+  nfd_3ch_randlen_seed1                gd   tuned      quadrant_3 45: improve +0.211; evals/step 3176
+  nfd_3ch_randlen_seed1                gd   tuned      quadrant_3 46: improve +0.269; evals/step 3132
+  nfd_3ch_randlen_seed1                gd   tuned      quadrant_3 47: improve +0.323; evals/step 3152
+  nfd_3ch_randlen_seed1                gd   tuned      letter_O   40: improve +0.309; evals/step 3156
+  nfd_3ch_randlen_seed1                gd   tuned      letter_O   41: improve +0.199; evals/step 3100
+  nfd_3ch_randlen_seed1                gd   tuned      letter_O   42: improve +0.268; evals/step 3152
+  nfd_3ch_randlen_seed1                gd   tuned      letter_O   43: improve +0.230; evals/step 3148
+  nfd_3ch_randlen_seed1                gd   tuned      letter_O   44: improve +0.211; evals/step 3132
+  nfd_3ch_randlen_seed1                gd   tuned      letter_O   45: improve +0.174; evals/step 3136
+  nfd_3ch_randlen_seed1                gd   tuned      letter_O   46: improve +0.236; evals/step 3168
+  nfd_3ch_randlen_seed1                gd   tuned      letter_O   47: improve +0.252; evals/step 3104
+chunk 7: step 1/8 (44s)
+chunk 7: step 2/8 (88s)
+chunk 7: step 3/8 (133s)
+chunk 7: step 4/8 (178s)
+chunk 7: step 5/8 (223s)
+chunk 7: step 6/8 (267s)
+chunk 7: step 7/8 (312s)
+chunk 7: step 8/8 (356s)
+chunk 7: step 8/8 (356s)
+  nfd_3ch_randlen_seed1                gd   tuned      letter_T   40: improve +0.381; evals/step 3140
+  nfd_3ch_randlen_seed1                gd   tuned      letter_T   41: improve +0.255; evals/step 3124
+  nfd_3ch_randlen_seed1                gd   tuned      letter_T   42: improve +0.304; evals/step 3168
+  nfd_3ch_randlen_seed1                gd   tuned      letter_T   43: improve +0.257; evals/step 3116
+  nfd_3ch_randlen_seed1                gd   tuned      letter_T   44: improve +0.290; evals/step 3164
+  nfd_3ch_randlen_seed1                gd   tuned      letter_T   45: improve +0.257; evals/step 3140
+  nfd_3ch_randlen_seed1                gd   tuned      letter_T   46: improve +0.304; evals/step 3192
+  nfd_3ch_randlen_seed1                gd   tuned      letter_T   47: improve +0.199; evals/step 3104
+  nfd_3ch_randlen_seed1                gd   tuned      letter_S   40: improve +0.313; evals/step 3148
+  nfd_3ch_randlen_seed1                gd   tuned      letter_S   41: improve +0.225; evals/step 3164
+  nfd_3ch_randlen_seed1                gd   tuned      letter_S   42: improve +0.293; evals/step 3184
+  nfd_3ch_randlen_seed1                gd   tuned      letter_S   43: improve +0.322; evals/step 3136
+  nfd_3ch_randlen_seed1                gd   tuned      letter_S   44: improve +0.253; evals/step 3176
+  nfd_3ch_randlen_seed1                gd   tuned      letter_S   45: improve +0.196; evals/step 3140
+  nfd_3ch_randlen_seed1                gd   tuned      letter_S   46: improve +0.254; evals/step 3080
+  nfd_3ch_randlen_seed1                gd   tuned      letter_S   47: improve +0.246; evals/step 3116
+  nfd_3ch_randlen_seed1                gd   tuned      letter_L   40: improve +0.274; evals/step 3176
+  nfd_3ch_randlen_seed1                gd   tuned      letter_L   41: improve +0.252; evals/step 3136
+  nfd_3ch_randlen_seed1                gd   tuned      letter_L   42: improve +0.269; evals/step 3116
+  nfd_3ch_randlen_seed1                gd   tuned      letter_L   43: improve +0.273; evals/step 3148
+  nfd_3ch_randlen_seed1                gd   tuned      letter_L   44: improve +0.266; evals/step 3212
+  nfd_3ch_randlen_seed1                gd   tuned      letter_L   45: improve +0.200; evals/step 3176
+  nfd_3ch_randlen_seed1                gd   tuned      letter_L   46: improve +0.240; evals/step 3204
+  nfd_3ch_randlen_seed1                gd   tuned      letter_L   47: improve +0.308; evals/step 3152
+  nfd_3ch_randlen_seed1                gd   tuned      letter_C   40: improve +0.311; evals/step 3192
+  nfd_3ch_randlen_seed1                gd   tuned      letter_C   41: improve +0.234; evals/step 3196
+  nfd_3ch_randlen_seed1                gd   tuned      letter_C   42: improve +0.246; evals/step 3204
+  nfd_3ch_randlen_seed1                gd   tuned      letter_C   43: improve +0.250; evals/step 3116
+  nfd_3ch_randlen_seed1                gd   tuned      letter_C   44: improve +0.246; evals/step 3124
+  nfd_3ch_randlen_seed1                gd   tuned      letter_C   45: improve +0.185; evals/step 3096
+  nfd_3ch_randlen_seed1                gd   tuned      letter_C   46: improve +0.236; evals/step 3124
+  nfd_3ch_randlen_seed1                gd   tuned      letter_C   47: improve +0.254; evals/step 3176
+chunk 8: step 1/8 (44s)
+chunk 8: step 2/8 (88s)
+chunk 8: step 3/8 (133s)
+chunk 8: step 4/8 (179s)
+chunk 8: step 5/8 (223s)
+chunk 8: step 6/8 (268s)
+chunk 8: step 7/8 (313s)
+chunk 8: step 8/8 (357s)
+chunk 8: step 8/8 (357s)
+  nfd_3ch_randlen_seed1                gd   tuned      letter_X   40: improve +0.364; evals/step 3160
+  nfd_3ch_randlen_seed1                gd   tuned      letter_X   41: improve +0.301; evals/step 3200
+  nfd_3ch_randlen_seed1                gd   tuned      letter_X   42: improve +0.300; evals/step 3136
+  nfd_3ch_randlen_seed1                gd   tuned      letter_X   43: improve +0.357; evals/step 3128
+  nfd_3ch_randlen_seed1                gd   tuned      letter_X   44: improve +0.317; evals/step 3208
+  nfd_3ch_randlen_seed1                gd   tuned      letter_X   45: improve +0.237; evals/step 3192
+  nfd_3ch_randlen_seed1                gd   tuned      letter_X   46: improve +0.298; evals/step 3136
+  nfd_3ch_randlen_seed1                gd   tuned      letter_X   47: improve +0.279; evals/step 3116
+  nfd_3ch_randlen_seed1                gd   tuned      letter_H   40: improve +0.266; evals/step 3096
+  nfd_3ch_randlen_seed1                gd   tuned      letter_H   41: improve +0.230; evals/step 3100
+  nfd_3ch_randlen_seed1                gd   tuned      letter_H   42: improve +0.265; evals/step 3132
+  nfd_3ch_randlen_seed1                gd   tuned      letter_H   43: improve +0.304; evals/step 3168
+  nfd_3ch_randlen_seed1                gd   tuned      letter_H   44: improve +0.334; evals/step 3168
+  nfd_3ch_randlen_seed1                gd   tuned      letter_H   45: improve +0.196; evals/step 3220
+  nfd_3ch_randlen_seed1                gd   tuned      letter_H   46: improve +0.292; evals/step 3196
+  nfd_3ch_randlen_seed1                gd   tuned      letter_H   47: improve +0.237; evals/step 3216
+  nfd_3ch_randlen_seed1                gd   tuned      letter_Z   40: improve +0.362; evals/step 3152
+  nfd_3ch_randlen_seed1                gd   tuned      letter_Z   41: improve +0.271; evals/step 3156
+  nfd_3ch_randlen_seed1                gd   tuned      letter_Z   42: improve +0.255; evals/step 3080
+  nfd_3ch_randlen_seed1                gd   tuned      letter_Z   43: improve +0.338; evals/step 3140
+  nfd_3ch_randlen_seed1                gd   tuned      letter_Z   44: improve +0.289; evals/step 3160
+  nfd_3ch_randlen_seed1                gd   tuned      letter_Z   45: improve +0.223; evals/step 3160
+  nfd_3ch_randlen_seed1                gd   tuned      letter_Z   46: improve +0.282; evals/step 3144
+  nfd_3ch_randlen_seed1                gd   tuned      letter_Z   47: improve +0.271; evals/step 3092
+  nfd_3ch_randlen_seed1                gd   tuned      letter_I   40: improve +0.407; evals/step 3136
+  nfd_3ch_randlen_seed1                gd   tuned      letter_I   41: improve +0.321; evals/step 3160
+  nfd_3ch_randlen_seed1                gd   tuned      letter_I   42: improve +0.415; evals/step 3120
+  nfd_3ch_randlen_seed1                gd   tuned      letter_I   43: improve +0.396; evals/step 3140
+  nfd_3ch_randlen_seed1                gd   tuned      letter_I   44: improve +0.330; evals/step 3172
+  nfd_3ch_randlen_seed1                gd   tuned      letter_I   45: improve +0.303; evals/step 3156
+  nfd_3ch_randlen_seed1                gd   tuned      letter_I   46: improve +0.357; evals/step 3148
+  nfd_3ch_randlen_seed1                gd   tuned      letter_I   47: improve +0.332; evals/step 3160
+chunk 9: step 1/8 (44s)
+chunk 9: step 2/8 (87s)
+chunk 9: step 3/8 (131s)
+chunk 9: step 4/8 (175s)
+chunk 9: step 5/8 (219s)
+chunk 9: step 6/8 (264s)
+chunk 9: step 7/8 (308s)
+chunk 9: step 8/8 (354s)
+chunk 9: step 8/8 (354s)
+  nfd_3ch_randlen_seed1                cem  tuned      quadrant_0 40: improve +0.292; evals/step 26624
+  nfd_3ch_randlen_seed1                cem  tuned      quadrant_0 41: improve +0.266; evals/step 26624
+  nfd_3ch_randlen_seed1                cem  tuned      quadrant_0 42: improve +0.321; evals/step 26496
+  nfd_3ch_randlen_seed1                cem  tuned      quadrant_0 43: improve +0.249; evals/step 26368
+  nfd_3ch_randlen_seed1                cem  tuned      quadrant_0 44: improve +0.320; evals/step 26624
+  nfd_3ch_randlen_seed1                cem  tuned      quadrant_0 45: improve +0.297; evals/step 26368
+  nfd_3ch_randlen_seed1                cem  tuned      quadrant_0 46: improve +0.287; evals/step 26624
+  nfd_3ch_randlen_seed1                cem  tuned      quadrant_0 47: improve +0.276; evals/step 26496
+  nfd_3ch_randlen_seed1                cem  tuned      quadrant_1 40: improve +0.349; evals/step 26368
+  nfd_3ch_randlen_seed1                cem  tuned      quadrant_1 41: improve +0.269; evals/step 26624
+  nfd_3ch_randlen_seed1                cem  tuned      quadrant_1 42: improve +0.332; evals/step 26496
+  nfd_3ch_randlen_seed1                cem  tuned      quadrant_1 43: improve +0.357; evals/step 26368
+  nfd_3ch_randlen_seed1                cem  tuned      quadrant_1 44: improve +0.335; evals/step 26496
+  nfd_3ch_randlen_seed1                cem  tuned      quadrant_1 45: improve +0.261; evals/step 26496
+  nfd_3ch_randlen_seed1                cem  tuned      quadrant_1 46: improve +0.272; evals/step 26624
+  nfd_3ch_randlen_seed1                cem  tuned      quadrant_1 47: improve +0.206; evals/step 26240
+  nfd_3ch_randlen_seed1                cem  tuned      quadrant_3 40: improve +0.290; evals/step 26624
+  nfd_3ch_randlen_seed1                cem  tuned      quadrant_3 41: improve +0.302; evals/step 26624
+  nfd_3ch_randlen_seed1                cem  tuned      quadrant_3 42: improve +0.295; evals/step 26368
+  nfd_3ch_randlen_seed1                cem  tuned      quadrant_3 43: improve +0.329; evals/step 26496
+  nfd_3ch_randlen_seed1                cem  tuned      quadrant_3 44: improve +0.259; evals/step 26368
+  nfd_3ch_randlen_seed1                cem  tuned      quadrant_3 45: improve +0.211; evals/step 26624
+  nfd_3ch_randlen_seed1                cem  tuned      quadrant_3 46: improve +0.269; evals/step 26624
+  nfd_3ch_randlen_seed1                cem  tuned      quadrant_3 47: improve +0.324; evals/step 26496
+  nfd_3ch_randlen_seed1                cem  tuned      letter_O   40: improve +0.300; evals/step 26368
+  nfd_3ch_randlen_seed1                cem  tuned      letter_O   41: improve +0.171; evals/step 26240
+  nfd_3ch_randlen_seed1                cem  tuned      letter_O   42: improve +0.267; evals/step 26496
+  nfd_3ch_randlen_seed1                cem  tuned      letter_O   43: improve +0.239; evals/step 26368
+  nfd_3ch_randlen_seed1                cem  tuned      letter_O   44: improve +0.242; evals/step 26496
+  nfd_3ch_randlen_seed1                cem  tuned      letter_O   45: improve +0.127; evals/step 26624
+  nfd_3ch_randlen_seed1                cem  tuned      letter_O   46: improve +0.221; evals/step 26624
+  nfd_3ch_randlen_seed1                cem  tuned      letter_O   47: improve +0.242; evals/step 26368
+chunk 10: step 1/8 (44s)
+chunk 10: step 2/8 (87s)
+chunk 10: step 3/8 (131s)
+chunk 10: step 4/8 (176s)
+chunk 10: step 5/8 (220s)
+chunk 10: step 6/8 (265s)
+chunk 10: step 7/8 (309s)
+chunk 10: step 8/8 (353s)
+chunk 10: step 8/8 (353s)
+  nfd_3ch_randlen_seed1                cem  tuned      letter_T   40: improve +0.325; evals/step 26496
+  nfd_3ch_randlen_seed1                cem  tuned      letter_T   41: improve +0.266; evals/step 26368
+  nfd_3ch_randlen_seed1                cem  tuned      letter_T   42: improve +0.306; evals/step 26496
+  nfd_3ch_randlen_seed1                cem  tuned      letter_T   43: improve +0.305; evals/step 26368
+  nfd_3ch_randlen_seed1                cem  tuned      letter_T   44: improve +0.341; evals/step 26368
+  nfd_3ch_randlen_seed1                cem  tuned      letter_T   45: improve +0.253; evals/step 26368
+  nfd_3ch_randlen_seed1                cem  tuned      letter_T   46: improve +0.316; evals/step 26368
+  nfd_3ch_randlen_seed1                cem  tuned      letter_T   47: improve +0.215; evals/step 26624
+  nfd_3ch_randlen_seed1                cem  tuned      letter_S   40: improve +0.303; evals/step 26496
+  nfd_3ch_randlen_seed1                cem  tuned      letter_S   41: improve +0.216; evals/step 26496
+  nfd_3ch_randlen_seed1                cem  tuned      letter_S   42: improve +0.263; evals/step 26496
+  nfd_3ch_randlen_seed1                cem  tuned      letter_S   43: improve +0.313; evals/step 26496
+  nfd_3ch_randlen_seed1                cem  tuned      letter_S   44: improve +0.277; evals/step 26624
+  nfd_3ch_randlen_seed1                cem  tuned      letter_S   45: improve +0.207; evals/step 26624
+  nfd_3ch_randlen_seed1                cem  tuned      letter_S   46: improve +0.270; evals/step 26368
+  nfd_3ch_randlen_seed1                cem  tuned      letter_S   47: improve +0.276; evals/step 26624
+  nfd_3ch_randlen_seed1                cem  tuned      letter_L   40: improve +0.251; evals/step 26368
+  nfd_3ch_randlen_seed1                cem  tuned      letter_L   41: improve +0.234; evals/step 26368
+  nfd_3ch_randlen_seed1                cem  tuned      letter_L   42: improve +0.274; evals/step 26240
+  nfd_3ch_randlen_seed1                cem  tuned      letter_L   43: improve +0.255; evals/step 26496
+  nfd_3ch_randlen_seed1                cem  tuned      letter_L   44: improve +0.288; evals/step 26496
+  nfd_3ch_randlen_seed1                cem  tuned      letter_L   45: improve +0.197; evals/step 26496
+  nfd_3ch_randlen_seed1                cem  tuned      letter_L   46: improve +0.257; evals/step 26624
+  nfd_3ch_randlen_seed1                cem  tuned      letter_L   47: improve +0.308; evals/step 26496
+  nfd_3ch_randlen_seed1                cem  tuned      letter_C   40: improve +0.263; evals/step 26496
+  nfd_3ch_randlen_seed1                cem  tuned      letter_C   41: improve +0.225; evals/step 26496
+  nfd_3ch_randlen_seed1                cem  tuned      letter_C   42: improve +0.187; evals/step 26240
+  nfd_3ch_randlen_seed1                cem  tuned      letter_C   43: improve +0.246; evals/step 26368
+  nfd_3ch_randlen_seed1                cem  tuned      letter_C   44: improve +0.206; evals/step 26624
+  nfd_3ch_randlen_seed1                cem  tuned      letter_C   45: improve +0.165; evals/step 26368
+  nfd_3ch_randlen_seed1                cem  tuned      letter_C   46: improve +0.207; evals/step 26368
+  nfd_3ch_randlen_seed1                cem  tuned      letter_C   47: improve +0.261; evals/step 26496
+chunk 11: step 1/8 (44s)
+chunk 11: step 2/8 (88s)
+chunk 11: step 3/8 (132s)
+chunk 11: step 4/8 (177s)
+chunk 11: step 5/8 (221s)
+chunk 11: step 6/8 (266s)
+chunk 11: step 7/8 (311s)
+chunk 11: step 8/8 (355s)
+chunk 11: step 8/8 (355s)
+  nfd_3ch_randlen_seed1                cem  tuned      letter_X   40: improve +0.358; evals/step 26624
+  nfd_3ch_randlen_seed1                cem  tuned      letter_X   41: improve +0.307; evals/step 26496
+  nfd_3ch_randlen_seed1                cem  tuned      letter_X   42: improve +0.271; evals/step 26496
+  nfd_3ch_randlen_seed1                cem  tuned      letter_X   43: improve +0.371; evals/step 26496
+  nfd_3ch_randlen_seed1                cem  tuned      letter_X   44: improve +0.322; evals/step 26368
+  nfd_3ch_randlen_seed1                cem  tuned      letter_X   45: improve +0.235; evals/step 26368
+  nfd_3ch_randlen_seed1                cem  tuned      letter_X   46: improve +0.309; evals/step 26624
+  nfd_3ch_randlen_seed1                cem  tuned      letter_X   47: improve +0.257; evals/step 26496
+  nfd_3ch_randlen_seed1                cem  tuned      letter_H   40: improve +0.347; evals/step 26624
+  nfd_3ch_randlen_seed1                cem  tuned      letter_H   41: improve +0.245; evals/step 26624
+  nfd_3ch_randlen_seed1                cem  tuned      letter_H   42: improve +0.283; evals/step 26496
+  nfd_3ch_randlen_seed1                cem  tuned      letter_H   43: improve +0.313; evals/step 26368
+  nfd_3ch_randlen_seed1                cem  tuned      letter_H   44: improve +0.282; evals/step 26624
+  nfd_3ch_randlen_seed1                cem  tuned      letter_H   45: improve +0.147; evals/step 25984
+  nfd_3ch_randlen_seed1                cem  tuned      letter_H   46: improve +0.258; evals/step 26496
+  nfd_3ch_randlen_seed1                cem  tuned      letter_H   47: improve +0.279; evals/step 26496
+  nfd_3ch_randlen_seed1                cem  tuned      letter_Z   40: improve +0.361; evals/step 26496
+  nfd_3ch_randlen_seed1                cem  tuned      letter_Z   41: improve +0.256; evals/step 26240
+  nfd_3ch_randlen_seed1                cem  tuned      letter_Z   42: improve +0.282; evals/step 26496
+  nfd_3ch_randlen_seed1                cem  tuned      letter_Z   43: improve +0.315; evals/step 26240
+  nfd_3ch_randlen_seed1                cem  tuned      letter_Z   44: improve +0.289; evals/step 26368
+  nfd_3ch_randlen_seed1                cem  tuned      letter_Z   45: improve +0.202; evals/step 26368
+  nfd_3ch_randlen_seed1                cem  tuned      letter_Z   46: improve +0.238; evals/step 26368
+  nfd_3ch_randlen_seed1                cem  tuned      letter_Z   47: improve +0.215; evals/step 26240
+  nfd_3ch_randlen_seed1                cem  tuned      letter_I   40: improve +0.431; evals/step 26496
+  nfd_3ch_randlen_seed1                cem  tuned      letter_I   41: improve +0.336; evals/step 26624
+  nfd_3ch_randlen_seed1                cem  tuned      letter_I   42: improve +0.387; evals/step 26624
+  nfd_3ch_randlen_seed1                cem  tuned      letter_I   43: improve +0.451; evals/step 26368
+  nfd_3ch_randlen_seed1                cem  tuned      letter_I   44: improve +0.380; evals/step 26496
+  nfd_3ch_randlen_seed1                cem  tuned      letter_I   45: improve +0.310; evals/step 26624
+  nfd_3ch_randlen_seed1                cem  tuned      letter_I   46: improve +0.362; evals/step 26496
+  nfd_3ch_randlen_seed1                cem  tuned      letter_I   47: improve +0.318; evals/step 26624
+chunk 12: step 1/8 (44s)
+chunk 12: step 2/8 (89s)
+chunk 12: step 3/8 (133s)
+chunk 12: step 4/8 (177s)
+chunk 12: step 5/8 (223s)
+chunk 12: step 6/8 (272s)
+chunk 12: step 7/8 (319s)
+chunk 12: step 8/8 (367s)
+chunk 12: step 8/8 (367s)
+  linear_switched_soft                 gd   tuned      quadrant_0 40: improve +0.294; evals/step 3896
+  linear_switched_soft                 gd   tuned      quadrant_0 41: improve +0.266; evals/step 3940
+  linear_switched_soft                 gd   tuned      quadrant_0 42: improve +0.348; evals/step 3948
+  linear_switched_soft                 gd   tuned      quadrant_0 43: improve +0.297; evals/step 3912
+  linear_switched_soft                 gd   tuned      quadrant_0 44: improve +0.344; evals/step 3944
+  linear_switched_soft                 gd   tuned      quadrant_0 45: improve +0.303; evals/step 3908
+  linear_switched_soft                 gd   tuned      quadrant_0 46: improve +0.287; evals/step 3936
+  linear_switched_soft                 gd   tuned      quadrant_0 47: improve +0.233; evals/step 3920
+  linear_switched_soft                 gd   tuned      quadrant_1 40: improve +0.377; evals/step 3904
+  linear_switched_soft                 gd   tuned      quadrant_1 41: improve +0.294; evals/step 3900
+  linear_switched_soft                 gd   tuned      quadrant_1 42: improve +0.350; evals/step 3928
+  linear_switched_soft                 gd   tuned      quadrant_1 43: improve +0.358; evals/step 3936
+  linear_switched_soft                 gd   tuned      quadrant_1 44: improve +0.335; evals/step 3884
+  linear_switched_soft                 gd   tuned      quadrant_1 45: improve +0.223; evals/step 3912
+  linear_switched_soft                 gd   tuned      quadrant_1 46: improve +0.231; evals/step 3928
+  linear_switched_soft                 gd   tuned      quadrant_1 47: improve +0.172; evals/step 3804
+  linear_switched_soft                 gd   tuned      quadrant_3 40: improve +0.290; evals/step 3896
+  linear_switched_soft                 gd   tuned      quadrant_3 41: improve +0.306; evals/step 3916
+  linear_switched_soft                 gd   tuned      quadrant_3 42: improve +0.299; evals/step 3940
+  linear_switched_soft                 gd   tuned      quadrant_3 43: improve +0.328; evals/step 3916
+  linear_switched_soft                 gd   tuned      quadrant_3 44: improve +0.188; evals/step 3876
+  linear_switched_soft                 gd   tuned      quadrant_3 45: improve +0.211; evals/step 3888
+  linear_switched_soft                 gd   tuned      quadrant_3 46: improve +0.268; evals/step 3908
+  linear_switched_soft                 gd   tuned      quadrant_3 47: improve +0.324; evals/step 3924
+  linear_switched_soft                 gd   tuned      letter_O   40: improve +0.298; evals/step 3868
+  linear_switched_soft                 gd   tuned      letter_O   41: improve +0.239; evals/step 3904
+  linear_switched_soft                 gd   tuned      letter_O   42: improve +0.289; evals/step 3920
+  linear_switched_soft                 gd   tuned      letter_O   43: improve +0.275; evals/step 3892
+  linear_switched_soft                 gd   tuned      letter_O   44: improve +0.303; evals/step 3828
+  linear_switched_soft                 gd   tuned      letter_O   45: improve +0.196; evals/step 3888
+  linear_switched_soft                 gd   tuned      letter_O   46: improve +0.265; evals/step 3872
+  linear_switched_soft                 gd   tuned      letter_O   47: improve +0.275; evals/step 3904
+chunk 13: step 1/8 (44s)
+chunk 13: step 2/8 (88s)
+chunk 13: step 3/8 (133s)
+chunk 13: step 4/8 (178s)
+chunk 13: step 5/8 (222s)
+chunk 13: step 6/8 (267s)
+chunk 13: step 7/8 (312s)
+chunk 13: step 8/8 (356s)
+chunk 13: step 8/8 (356s)
+  linear_switched_soft                 gd   tuned      letter_T   40: improve +0.380; evals/step 3876
+  linear_switched_soft                 gd   tuned      letter_T   41: improve +0.248; evals/step 3884
+  linear_switched_soft                 gd   tuned      letter_T   42: improve +0.324; evals/step 3796
+  linear_switched_soft                 gd   tuned      letter_T   43: improve +0.339; evals/step 3880
+  linear_switched_soft                 gd   tuned      letter_T   44: improve +0.358; evals/step 3860
+  linear_switched_soft                 gd   tuned      letter_T   45: improve +0.260; evals/step 3852
+  linear_switched_soft                 gd   tuned      letter_T   46: improve +0.300; evals/step 3840
+  linear_switched_soft                 gd   tuned      letter_T   47: improve +0.243; evals/step 3824
+  linear_switched_soft                 gd   tuned      letter_S   40: improve +0.307; evals/step 3768
+  linear_switched_soft                 gd   tuned      letter_S   41: improve +0.261; evals/step 3856
+  linear_switched_soft                 gd   tuned      letter_S   42: improve +0.307; evals/step 3924
+  linear_switched_soft                 gd   tuned      letter_S   43: improve +0.293; evals/step 3952
+  linear_switched_soft                 gd   tuned      letter_S   44: improve +0.277; evals/step 3940
+  linear_switched_soft                 gd   tuned      letter_S   45: improve +0.190; evals/step 3888
+  linear_switched_soft                 gd   tuned      letter_S   46: improve +0.247; evals/step 3916
+  linear_switched_soft                 gd   tuned      letter_S   47: improve +0.253; evals/step 3872
+  linear_switched_soft                 gd   tuned      letter_L   40: improve +0.279; evals/step 3880
+  linear_switched_soft                 gd   tuned      letter_L   41: improve +0.250; evals/step 3916
+  linear_switched_soft                 gd   tuned      letter_L   42: improve +0.301; evals/step 3848
+  linear_switched_soft                 gd   tuned      letter_L   43: improve +0.306; evals/step 3868
+  linear_switched_soft                 gd   tuned      letter_L   44: improve +0.290; evals/step 3824
+  linear_switched_soft                 gd   tuned      letter_L   45: improve +0.209; evals/step 3844
+  linear_switched_soft                 gd   tuned      letter_L   46: improve +0.255; evals/step 3896
+  linear_switched_soft                 gd   tuned      letter_L   47: improve +0.338; evals/step 3900
+  linear_switched_soft                 gd   tuned      letter_C   40: improve +0.299; evals/step 3904
+  linear_switched_soft                 gd   tuned      letter_C   41: improve +0.247; evals/step 3976
+  linear_switched_soft                 gd   tuned      letter_C   42: improve +0.285; evals/step 3932
+  linear_switched_soft                 gd   tuned      letter_C   43: improve +0.281; evals/step 3932
+  linear_switched_soft                 gd   tuned      letter_C   44: improve +0.243; evals/step 3952
+  linear_switched_soft                 gd   tuned      letter_C   45: improve +0.209; evals/step 3920
+  linear_switched_soft                 gd   tuned      letter_C   46: improve +0.229; evals/step 3920
+  linear_switched_soft                 gd   tuned      letter_C   47: improve +0.265; evals/step 3892
+chunk 14: step 1/8 (44s)
+chunk 14: step 2/8 (89s)
+chunk 14: step 3/8 (134s)
+chunk 14: step 4/8 (179s)
+chunk 14: step 5/8 (224s)
+chunk 14: step 6/8 (269s)
+chunk 14: step 7/8 (313s)
+chunk 14: step 8/8 (357s)
+chunk 14: step 8/8 (357s)
+  linear_switched_soft                 gd   tuned      letter_X   40: improve +0.359; evals/step 3864
+  linear_switched_soft                 gd   tuned      letter_X   41: improve +0.309; evals/step 3920
+  linear_switched_soft                 gd   tuned      letter_X   42: improve +0.277; evals/step 3928
+  linear_switched_soft                 gd   tuned      letter_X   43: improve +0.388; evals/step 3908
+  linear_switched_soft                 gd   tuned      letter_X   44: improve +0.303; evals/step 3924
+  linear_switched_soft                 gd   tuned      letter_X   45: improve +0.235; evals/step 3940
+  linear_switched_soft                 gd   tuned      letter_X   46: improve +0.343; evals/step 3844
+  linear_switched_soft                 gd   tuned      letter_X   47: improve +0.304; evals/step 3848
+  linear_switched_soft                 gd   tuned      letter_H   40: improve +0.342; evals/step 3880
+  linear_switched_soft                 gd   tuned      letter_H   41: improve +0.264; evals/step 3932
+  linear_switched_soft                 gd   tuned      letter_H   42: improve +0.287; evals/step 3900
+  linear_switched_soft                 gd   tuned      letter_H   43: improve +0.316; evals/step 3900
+  linear_switched_soft                 gd   tuned      letter_H   44: improve +0.325; evals/step 3916
+  linear_switched_soft                 gd   tuned      letter_H   45: improve +0.218; evals/step 3944
+  linear_switched_soft                 gd   tuned      letter_H   46: improve +0.272; evals/step 3952
+  linear_switched_soft                 gd   tuned      letter_H   47: improve +0.208; evals/step 3896
+  linear_switched_soft                 gd   tuned      letter_Z   40: improve +0.378; evals/step 3876
+  linear_switched_soft                 gd   tuned      letter_Z   41: improve +0.294; evals/step 3916
+  linear_switched_soft                 gd   tuned      letter_Z   42: improve +0.302; evals/step 3944
+  linear_switched_soft                 gd   tuned      letter_Z   43: improve +0.360; evals/step 3952
+  linear_switched_soft                 gd   tuned      letter_Z   44: improve +0.343; evals/step 3908
+  linear_switched_soft                 gd   tuned      letter_Z   45: improve +0.225; evals/step 3888
+  linear_switched_soft                 gd   tuned      letter_Z   46: improve +0.262; evals/step 3872
+  linear_switched_soft                 gd   tuned      letter_Z   47: improve +0.272; evals/step 3880
+  linear_switched_soft                 gd   tuned      letter_I   40: improve +0.431; evals/step 3880
+  linear_switched_soft                 gd   tuned      letter_I   41: improve +0.304; evals/step 3852
+  linear_switched_soft                 gd   tuned      letter_I   42: improve +0.384; evals/step 3872
+  linear_switched_soft                 gd   tuned      letter_I   43: improve +0.459; evals/step 3880
+  linear_switched_soft                 gd   tuned      letter_I   44: improve +0.420; evals/step 3944
+  linear_switched_soft                 gd   tuned      letter_I   45: improve +0.321; evals/step 3940
+  linear_switched_soft                 gd   tuned      letter_I   46: improve +0.394; evals/step 3928
+  linear_switched_soft                 gd   tuned      letter_I   47: improve +0.366; evals/step 3936
+chunk 15: step 1/8 (44s)
+chunk 15: step 2/8 (88s)
+chunk 15: step 3/8 (132s)
+chunk 15: step 4/8 (177s)
+chunk 15: step 5/8 (222s)
+chunk 15: step 6/8 (268s)
+chunk 15: step 7/8 (313s)
+chunk 15: step 8/8 (361s)
+chunk 15: step 8/8 (361s)
+  linear_switched_soft                 cem  tuned      quadrant_0 40: improve +0.294; evals/step 48000
+  linear_switched_soft                 cem  tuned      quadrant_0 41: improve +0.265; evals/step 48640
+  linear_switched_soft                 cem  tuned      quadrant_0 42: improve +0.348; evals/step 48768
+  linear_switched_soft                 cem  tuned      quadrant_0 43: improve +0.264; evals/step 48896
+  linear_switched_soft                 cem  tuned      quadrant_0 44: improve +0.334; evals/step 48256
+  linear_switched_soft                 cem  tuned      quadrant_0 45: improve +0.303; evals/step 48512
+  linear_switched_soft                 cem  tuned      quadrant_0 46: improve +0.287; evals/step 48128
+  linear_switched_soft                 cem  tuned      quadrant_0 47: improve +0.276; evals/step 48256
+  linear_switched_soft                 cem  tuned      quadrant_1 40: improve +0.360; evals/step 48896
+  linear_switched_soft                 cem  tuned      quadrant_1 41: improve +0.264; evals/step 48128
+  linear_switched_soft                 cem  tuned      quadrant_1 42: improve +0.345; evals/step 48384
+  linear_switched_soft                 cem  tuned      quadrant_1 43: improve +0.358; evals/step 47872
+  linear_switched_soft                 cem  tuned      quadrant_1 44: improve +0.270; evals/step 48128
+  linear_switched_soft                 cem  tuned      quadrant_1 45: improve +0.188; evals/step 47744
+  linear_switched_soft                 cem  tuned      quadrant_1 46: improve +0.305; evals/step 47744
+  linear_switched_soft                 cem  tuned      quadrant_1 47: improve +0.175; evals/step 47744
+  linear_switched_soft                 cem  tuned      quadrant_3 40: improve +0.290; evals/step 48384
+  linear_switched_soft                 cem  tuned      quadrant_3 41: improve +0.302; evals/step 48512
+  linear_switched_soft                 cem  tuned      quadrant_3 42: improve +0.255; evals/step 48512
+  linear_switched_soft                 cem  tuned      quadrant_3 43: improve +0.297; evals/step 48000
+  linear_switched_soft                 cem  tuned      quadrant_3 44: improve +0.231; evals/step 48384
+  linear_switched_soft                 cem  tuned      quadrant_3 45: improve +0.211; evals/step 48256
+  linear_switched_soft                 cem  tuned      quadrant_3 46: improve +0.240; evals/step 48128
+  linear_switched_soft                 cem  tuned      quadrant_3 47: improve +0.324; evals/step 48640
+  linear_switched_soft                 cem  tuned      letter_O   40: improve +0.257; evals/step 48384
+  linear_switched_soft                 cem  tuned      letter_O   41: improve +0.184; evals/step 48128
+  linear_switched_soft                 cem  tuned      letter_O   42: improve +0.255; evals/step 47360
+  linear_switched_soft                 cem  tuned      letter_O   43: improve +0.260; evals/step 47616
+  linear_switched_soft                 cem  tuned      letter_O   44: improve +0.257; evals/step 49152
+  linear_switched_soft                 cem  tuned      letter_O   45: improve +0.094; evals/step 47744
+  linear_switched_soft                 cem  tuned      letter_O   46: improve +0.161; evals/step 48384
+  linear_switched_soft                 cem  tuned      letter_O   47: improve +0.270; evals/step 48384
+chunk 16: step 1/8 (44s)
+chunk 16: step 2/8 (88s)
+chunk 16: step 3/8 (133s)
+chunk 16: step 4/8 (177s)
+chunk 16: step 5/8 (221s)
+chunk 16: step 6/8 (266s)
+chunk 16: step 7/8 (311s)
+chunk 16: step 8/8 (351s)
+chunk 16: step 8/8 (351s)
+  linear_switched_soft                 cem  tuned      letter_T   40: improve +0.361; evals/step 47360
+  linear_switched_soft                 cem  tuned      letter_T   41: improve +0.251; evals/step 48000
+  linear_switched_soft                 cem  tuned      letter_T   42: improve +0.298; evals/step 48128
+  linear_switched_soft                 cem  tuned      letter_T   43: improve +0.345; evals/step 48512
+  linear_switched_soft                 cem  tuned      letter_T   44: improve +0.330; evals/step 48256
+  linear_switched_soft                 cem  tuned      letter_T   45: improve +0.254; evals/step 48384
+  linear_switched_soft                 cem  tuned      letter_T   46: improve +0.345; evals/step 48640
+  linear_switched_soft                 cem  tuned      letter_T   47: improve +0.246; evals/step 48000
+  linear_switched_soft                 cem  tuned      letter_S   40: improve +0.327; evals/step 48256
+  linear_switched_soft                 cem  tuned      letter_S   41: improve +0.251; evals/step 47744
+  linear_switched_soft                 cem  tuned      letter_S   42: improve +0.296; evals/step 48000
+  linear_switched_soft                 cem  tuned      letter_S   43: improve +0.319; evals/step 48512
+  linear_switched_soft                 cem  tuned      letter_S   44: improve +0.317; evals/step 47616
+  linear_switched_soft                 cem  tuned      letter_S   45: improve +0.180; evals/step 48000
+  linear_switched_soft                 cem  tuned      letter_S   46: improve +0.257; evals/step 48000
+  linear_switched_soft                 cem  tuned      letter_S   47: improve +0.281; evals/step 47616
+  linear_switched_soft                 cem  tuned      letter_L   40: improve +0.276; evals/step 48128
+  linear_switched_soft                 cem  tuned      letter_L   41: improve +0.264; evals/step 48384
+  linear_switched_soft                 cem  tuned      letter_L   42: improve +0.272; evals/step 48256
+  linear_switched_soft                 cem  tuned      letter_L   43: improve +0.305; evals/step 48640
+  linear_switched_soft                 cem  tuned      letter_L   44: improve +0.270; evals/step 47872
+  linear_switched_soft                 cem  tuned      letter_L   45: improve +0.217; evals/step 48128
+  linear_switched_soft                 cem  tuned      letter_L   46: improve +0.199; evals/step 48128
+  linear_switched_soft                 cem  tuned      letter_L   47: improve +0.333; evals/step 48256
+  linear_switched_soft                 cem  tuned      letter_C   40: improve +0.299; evals/step 48640
+  linear_switched_soft                 cem  tuned      letter_C   41: improve +0.253; evals/step 47744
+  linear_switched_soft                 cem  tuned      letter_C   42: improve +0.227; evals/step 47616
+  linear_switched_soft                 cem  tuned      letter_C   43: improve +0.225; evals/step 48128
+  linear_switched_soft                 cem  tuned      letter_C   44: improve +0.241; evals/step 47360
+  linear_switched_soft                 cem  tuned      letter_C   45: improve +0.103; evals/step 48640
+  linear_switched_soft                 cem  tuned      letter_C   46: improve +0.225; evals/step 48128
+  linear_switched_soft                 cem  tuned      letter_C   47: improve +0.235; evals/step 48128
+chunk 17: step 1/8 (44s)
+chunk 17: step 2/8 (88s)
+chunk 17: step 3/8 (133s)
+chunk 17: step 4/8 (177s)
+chunk 17: step 5/8 (223s)
+chunk 17: step 6/8 (266s)
+chunk 17: step 7/8 (310s)
+chunk 17: step 8/8 (354s)
+chunk 17: step 8/8 (354s)
+  linear_switched_soft                 cem  tuned      letter_X   40: improve +0.356; evals/step 47488
+  linear_switched_soft                 cem  tuned      letter_X   41: improve +0.296; evals/step 48128
+  linear_switched_soft                 cem  tuned      letter_X   42: improve +0.271; evals/step 47744
+  linear_switched_soft                 cem  tuned      letter_X   43: improve +0.376; evals/step 48384
+  linear_switched_soft                 cem  tuned      letter_X   44: improve +0.346; evals/step 48640
+  linear_switched_soft                 cem  tuned      letter_X   45: improve +0.230; evals/step 47360
+  linear_switched_soft                 cem  tuned      letter_X   46: improve +0.350; evals/step 48000
+  linear_switched_soft                 cem  tuned      letter_X   47: improve +0.304; evals/step 47872
+  linear_switched_soft                 cem  tuned      letter_H   40: improve +0.341; evals/step 48000
+  linear_switched_soft                 cem  tuned      letter_H   41: improve +0.244; evals/step 48384
+  linear_switched_soft                 cem  tuned      letter_H   42: improve +0.230; evals/step 48256
+  linear_switched_soft                 cem  tuned      letter_H   43: improve +0.318; evals/step 48256
+  linear_switched_soft                 cem  tuned      letter_H   44: improve +0.314; evals/step 48128
+  linear_switched_soft                 cem  tuned      letter_H   45: improve +0.211; evals/step 47488
+  linear_switched_soft                 cem  tuned      letter_H   46: improve +0.251; evals/step 48000
+  linear_switched_soft                 cem  tuned      letter_H   47: improve +0.244; evals/step 48384
+  linear_switched_soft                 cem  tuned      letter_Z   40: improve +0.376; evals/step 48384
+  linear_switched_soft                 cem  tuned      letter_Z   41: improve +0.301; evals/step 48384
+  linear_switched_soft                 cem  tuned      letter_Z   42: improve +0.285; evals/step 48128
+  linear_switched_soft                 cem  tuned      letter_Z   43: improve +0.326; evals/step 47360
+  linear_switched_soft                 cem  tuned      letter_Z   44: improve +0.319; evals/step 47360
+  linear_switched_soft                 cem  tuned      letter_Z   45: improve +0.224; evals/step 48256
+  linear_switched_soft                 cem  tuned      letter_Z   46: improve +0.274; evals/step 48384
+  linear_switched_soft                 cem  tuned      letter_Z   47: improve +0.249; evals/step 47744
+  linear_switched_soft                 cem  tuned      letter_I   40: improve +0.445; evals/step 48000
+  linear_switched_soft                 cem  tuned      letter_I   41: improve +0.389; evals/step 48512
+  linear_switched_soft                 cem  tuned      letter_I   42: improve +0.440; evals/step 48384
+  linear_switched_soft                 cem  tuned      letter_I   43: improve +0.451; evals/step 48256
+  linear_switched_soft                 cem  tuned      letter_I   44: improve +0.429; evals/step 48768
+  linear_switched_soft                 cem  tuned      letter_I   45: improve +0.334; evals/step 48384
+  linear_switched_soft                 cem  tuned      letter_I   46: improve +0.337; evals/step 48000
+  linear_switched_soft                 cem  tuned      letter_I   47: improve +0.371; evals/step 47872
+chunk 18: step 1/8 (44s)
+chunk 18: step 2/8 (89s)
+chunk 18: step 3/8 (134s)
+chunk 18: step 4/8 (178s)
+chunk 18: step 5/8 (223s)
+chunk 18: step 6/8 (269s)
+chunk 18: step 7/8 (316s)
+chunk 18: step 8/8 (362s)
+chunk 18: step 8/8 (362s)
+  nfd_residual_worldframe_noaug_ep43   gd   tuned      quadrant_0 40: improve +0.287; evals/step 3064
+  nfd_residual_worldframe_noaug_ep43   gd   tuned      quadrant_0 41: improve +0.266; evals/step 3056
+  nfd_residual_worldframe_noaug_ep43   gd   tuned      quadrant_0 42: improve +0.348; evals/step 2972
+  nfd_residual_worldframe_noaug_ep43   gd   tuned      quadrant_0 43: improve +0.298; evals/step 2972
+  nfd_residual_worldframe_noaug_ep43   gd   tuned      quadrant_0 44: improve +0.277; evals/step 2976
+  nfd_residual_worldframe_noaug_ep43   gd   tuned      quadrant_0 45: improve +0.303; evals/step 3036
+  nfd_residual_worldframe_noaug_ep43   gd   tuned      quadrant_0 46: improve +0.286; evals/step 3004
+  nfd_residual_worldframe_noaug_ep43   gd   tuned      quadrant_0 47: improve +0.276; evals/step 3000
+  nfd_residual_worldframe_noaug_ep43   gd   tuned      quadrant_1 40: improve +0.382; evals/step 2932
+  nfd_residual_worldframe_noaug_ep43   gd   tuned      quadrant_1 41: improve +0.294; evals/step 3004
+  nfd_residual_worldframe_noaug_ep43   gd   tuned      quadrant_1 42: improve +0.292; evals/step 2968
+  nfd_residual_worldframe_noaug_ep43   gd   tuned      quadrant_1 43: improve +0.358; evals/step 3024
+  nfd_residual_worldframe_noaug_ep43   gd   tuned      quadrant_1 44: improve +0.335; evals/step 3004
+  nfd_residual_worldframe_noaug_ep43   gd   tuned      quadrant_1 45: improve +0.261; evals/step 3032
+  nfd_residual_worldframe_noaug_ep43   gd   tuned      quadrant_1 46: improve +0.304; evals/step 2992
+  nfd_residual_worldframe_noaug_ep43   gd   tuned      quadrant_1 47: improve +0.120; evals/step 3000
+  nfd_residual_worldframe_noaug_ep43   gd   tuned      quadrant_3 40: improve +0.227; evals/step 3012
+  nfd_residual_worldframe_noaug_ep43   gd   tuned      quadrant_3 41: improve +0.292; evals/step 3012
+  nfd_residual_worldframe_noaug_ep43   gd   tuned      quadrant_3 42: improve +0.243; evals/step 2884
+  nfd_residual_worldframe_noaug_ep43   gd   tuned      quadrant_3 43: improve +0.329; evals/step 3008
+  nfd_residual_worldframe_noaug_ep43   gd   tuned      quadrant_3 44: improve +0.174; evals/step 3004
+  nfd_residual_worldframe_noaug_ep43   gd   tuned      quadrant_3 45: improve +0.211; evals/step 3048
+  nfd_residual_worldframe_noaug_ep43   gd   tuned      quadrant_3 46: improve +0.269; evals/step 3016
+  nfd_residual_worldframe_noaug_ep43   gd   tuned      quadrant_3 47: improve +0.324; evals/step 3032
+  nfd_residual_worldframe_noaug_ep43   gd   tuned      letter_O   40: improve +0.309; evals/step 2992
+  nfd_residual_worldframe_noaug_ep43   gd   tuned      letter_O   41: improve +0.250; evals/step 2968
+  nfd_residual_worldframe_noaug_ep43   gd   tuned      letter_O   42: improve +0.285; evals/step 2956
+  nfd_residual_worldframe_noaug_ep43   gd   tuned      letter_O   43: improve +0.245; evals/step 3004
+  nfd_residual_worldframe_noaug_ep43   gd   tuned      letter_O   44: improve +0.317; evals/step 2948
+  nfd_residual_worldframe_noaug_ep43   gd   tuned      letter_O   45: improve +0.181; evals/step 2988
+  nfd_residual_worldframe_noaug_ep43   gd   tuned      letter_O   46: improve +0.254; evals/step 2948
+  nfd_residual_worldframe_noaug_ep43   gd   tuned      letter_O   47: improve +0.275; evals/step 3008
+chunk 19: step 1/8 (44s)
+chunk 19: step 2/8 (88s)
+chunk 19: step 3/8 (133s)
+chunk 19: step 4/8 (177s)
+chunk 19: step 5/8 (221s)
+chunk 19: step 6/8 (267s)
+chunk 19: step 7/8 (312s)
+chunk 19: step 8/8 (357s)
+chunk 19: step 8/8 (357s)
+  nfd_residual_worldframe_noaug_ep43   gd   tuned      letter_T   40: improve +0.367; evals/step 2988
+  nfd_residual_worldframe_noaug_ep43   gd   tuned      letter_T   41: improve +0.269; evals/step 2964
+  nfd_residual_worldframe_noaug_ep43   gd   tuned      letter_T   42: improve +0.312; evals/step 2972
+  nfd_residual_worldframe_noaug_ep43   gd   tuned      letter_T   43: improve +0.345; evals/step 2984
+  nfd_residual_worldframe_noaug_ep43   gd   tuned      letter_T   44: improve +0.350; evals/step 3008
+  nfd_residual_worldframe_noaug_ep43   gd   tuned      letter_T   45: improve +0.268; evals/step 3020
+  nfd_residual_worldframe_noaug_ep43   gd   tuned      letter_T   46: improve +0.305; evals/step 2944
+  nfd_residual_worldframe_noaug_ep43   gd   tuned      letter_T   47: improve +0.218; evals/step 2992
+  nfd_residual_worldframe_noaug_ep43   gd   tuned      letter_S   40: improve +0.318; evals/step 3020
+  nfd_residual_worldframe_noaug_ep43   gd   tuned      letter_S   41: improve +0.257; evals/step 2976
+  nfd_residual_worldframe_noaug_ep43   gd   tuned      letter_S   42: improve +0.288; evals/step 3036
+  nfd_residual_worldframe_noaug_ep43   gd   tuned      letter_S   43: improve +0.281; evals/step 2980
+  nfd_residual_worldframe_noaug_ep43   gd   tuned      letter_S   44: improve +0.302; evals/step 2976
+  nfd_residual_worldframe_noaug_ep43   gd   tuned      letter_S   45: improve +0.195; evals/step 2960
+  nfd_residual_worldframe_noaug_ep43   gd   tuned      letter_S   46: improve +0.274; evals/step 3016
+  nfd_residual_worldframe_noaug_ep43   gd   tuned      letter_S   47: improve +0.294; evals/step 2992
+  nfd_residual_worldframe_noaug_ep43   gd   tuned      letter_L   40: improve +0.267; evals/step 3040
+  nfd_residual_worldframe_noaug_ep43   gd   tuned      letter_L   41: improve +0.240; evals/step 3004
+  nfd_residual_worldframe_noaug_ep43   gd   tuned      letter_L   42: improve +0.286; evals/step 2984
+  nfd_residual_worldframe_noaug_ep43   gd   tuned      letter_L   43: improve +0.300; evals/step 3012
+  nfd_residual_worldframe_noaug_ep43   gd   tuned      letter_L   44: improve +0.294; evals/step 3024
+  nfd_residual_worldframe_noaug_ep43   gd   tuned      letter_L   45: improve +0.228; evals/step 3004
+  nfd_residual_worldframe_noaug_ep43   gd   tuned      letter_L   46: improve +0.257; evals/step 2948
+  nfd_residual_worldframe_noaug_ep43   gd   tuned      letter_L   47: improve +0.345; evals/step 3016
+  nfd_residual_worldframe_noaug_ep43   gd   tuned      letter_C   40: improve +0.324; evals/step 3000
+  nfd_residual_worldframe_noaug_ep43   gd   tuned      letter_C   41: improve +0.260; evals/step 2976
+  nfd_residual_worldframe_noaug_ep43   gd   tuned      letter_C   42: improve +0.271; evals/step 2968
+  nfd_residual_worldframe_noaug_ep43   gd   tuned      letter_C   43: improve +0.271; evals/step 2968
+  nfd_residual_worldframe_noaug_ep43   gd   tuned      letter_C   44: improve +0.296; evals/step 3028
+  nfd_residual_worldframe_noaug_ep43   gd   tuned      letter_C   45: improve +0.201; evals/step 3040
+  nfd_residual_worldframe_noaug_ep43   gd   tuned      letter_C   46: improve +0.250; evals/step 2988
+  nfd_residual_worldframe_noaug_ep43   gd   tuned      letter_C   47: improve +0.286; evals/step 3036
+chunk 20: step 1/8 (44s)
+chunk 20: step 2/8 (88s)
+chunk 20: step 3/8 (133s)
+chunk 20: step 4/8 (178s)
+chunk 20: step 5/8 (223s)
+chunk 20: step 6/8 (269s)
+chunk 20: step 7/8 (314s)
+chunk 20: step 8/8 (359s)
+chunk 20: step 8/8 (359s)
+  nfd_residual_worldframe_noaug_ep43   gd   tuned      letter_X   40: improve +0.318; evals/step 3076
+  nfd_residual_worldframe_noaug_ep43   gd   tuned      letter_X   41: improve +0.308; evals/step 3060
+  nfd_residual_worldframe_noaug_ep43   gd   tuned      letter_X   42: improve +0.295; evals/step 3040
+  nfd_residual_worldframe_noaug_ep43   gd   tuned      letter_X   43: improve +0.382; evals/step 3032
+  nfd_residual_worldframe_noaug_ep43   gd   tuned      letter_X   44: improve +0.325; evals/step 3008
+  nfd_residual_worldframe_noaug_ep43   gd   tuned      letter_X   45: improve +0.246; evals/step 3020
+  nfd_residual_worldframe_noaug_ep43   gd   tuned      letter_X   46: improve +0.309; evals/step 3016
+  nfd_residual_worldframe_noaug_ep43   gd   tuned      letter_X   47: improve +0.295; evals/step 3024
+  nfd_residual_worldframe_noaug_ep43   gd   tuned      letter_H   40: improve +0.348; evals/step 3012
+  nfd_residual_worldframe_noaug_ep43   gd   tuned      letter_H   41: improve +0.259; evals/step 2992
+  nfd_residual_worldframe_noaug_ep43   gd   tuned      letter_H   42: improve +0.288; evals/step 2988
+  nfd_residual_worldframe_noaug_ep43   gd   tuned      letter_H   43: improve +0.277; evals/step 2968
+  nfd_residual_worldframe_noaug_ep43   gd   tuned      letter_H   44: improve +0.309; evals/step 2984
+  nfd_residual_worldframe_noaug_ep43   gd   tuned      letter_H   45: improve +0.185; evals/step 2964
+  nfd_residual_worldframe_noaug_ep43   gd   tuned      letter_H   46: improve +0.287; evals/step 2956
+  nfd_residual_worldframe_noaug_ep43   gd   tuned      letter_H   47: improve +0.223; evals/step 3012
+  nfd_residual_worldframe_noaug_ep43   gd   tuned      letter_Z   40: improve +0.375; evals/step 3044
+  nfd_residual_worldframe_noaug_ep43   gd   tuned      letter_Z   41: improve +0.294; evals/step 3036
+  nfd_residual_worldframe_noaug_ep43   gd   tuned      letter_Z   42: improve +0.313; evals/step 3028
+  nfd_residual_worldframe_noaug_ep43   gd   tuned      letter_Z   43: improve +0.364; evals/step 2972
+  nfd_residual_worldframe_noaug_ep43   gd   tuned      letter_Z   44: improve +0.342; evals/step 3036
+  nfd_residual_worldframe_noaug_ep43   gd   tuned      letter_Z   45: improve +0.214; evals/step 3056
+  nfd_residual_worldframe_noaug_ep43   gd   tuned      letter_Z   46: improve +0.265; evals/step 3036
+  nfd_residual_worldframe_noaug_ep43   gd   tuned      letter_Z   47: improve +0.274; evals/step 3056
+  nfd_residual_worldframe_noaug_ep43   gd   tuned      letter_I   40: improve +0.454; evals/step 3020
+  nfd_residual_worldframe_noaug_ep43   gd   tuned      letter_I   41: improve +0.331; evals/step 2984
+  nfd_residual_worldframe_noaug_ep43   gd   tuned      letter_I   42: improve +0.414; evals/step 3020
+  nfd_residual_worldframe_noaug_ep43   gd   tuned      letter_I   43: improve +0.427; evals/step 3040
+  nfd_residual_worldframe_noaug_ep43   gd   tuned      letter_I   44: improve +0.415; evals/step 3044
+  nfd_residual_worldframe_noaug_ep43   gd   tuned      letter_I   45: improve +0.339; evals/step 3032
+  nfd_residual_worldframe_noaug_ep43   gd   tuned      letter_I   46: improve +0.361; evals/step 3028
+  nfd_residual_worldframe_noaug_ep43   gd   tuned      letter_I   47: improve +0.367; evals/step 3004
+chunk 21: step 1/8 (44s)
+chunk 21: step 2/8 (88s)
+chunk 21: step 3/8 (132s)
+chunk 21: step 4/8 (177s)
+chunk 21: step 5/8 (222s)
+chunk 21: step 6/8 (269s)
+chunk 21: step 7/8 (315s)
+chunk 21: step 8/8 (360s)
+chunk 21: step 8/8 (360s)
+  nfd_residual_worldframe_noaug_ep43   cem  tuned      quadrant_0 40: improve +0.294; evals/step 26496
+  nfd_residual_worldframe_noaug_ep43   cem  tuned      quadrant_0 41: improve +0.265; evals/step 26624
+  nfd_residual_worldframe_noaug_ep43   cem  tuned      quadrant_0 42: improve +0.348; evals/step 26496
+  nfd_residual_worldframe_noaug_ep43   cem  tuned      quadrant_0 43: improve +0.298; evals/step 26624
+  nfd_residual_worldframe_noaug_ep43   cem  tuned      quadrant_0 44: improve +0.320; evals/step 26112
+  nfd_residual_worldframe_noaug_ep43   cem  tuned      quadrant_0 45: improve +0.303; evals/step 26624
+  nfd_residual_worldframe_noaug_ep43   cem  tuned      quadrant_0 46: improve +0.286; evals/step 26368
+  nfd_residual_worldframe_noaug_ep43   cem  tuned      quadrant_0 47: improve +0.276; evals/step 26368
+  nfd_residual_worldframe_noaug_ep43   cem  tuned      quadrant_1 40: improve +0.382; evals/step 26496
+  nfd_residual_worldframe_noaug_ep43   cem  tuned      quadrant_1 41: improve +0.259; evals/step 26112
+  nfd_residual_worldframe_noaug_ep43   cem  tuned      quadrant_1 42: improve +0.382; evals/step 26240
+  nfd_residual_worldframe_noaug_ep43   cem  tuned      quadrant_1 43: improve +0.358; evals/step 25984
+  nfd_residual_worldframe_noaug_ep43   cem  tuned      quadrant_1 44: improve +0.302; evals/step 26240
+  nfd_residual_worldframe_noaug_ep43   cem  tuned      quadrant_1 45: improve +0.259; evals/step 26240
+  nfd_residual_worldframe_noaug_ep43   cem  tuned      quadrant_1 46: improve +0.269; evals/step 26368
+  nfd_residual_worldframe_noaug_ep43   cem  tuned      quadrant_1 47: improve +0.206; evals/step 26112
+  nfd_residual_worldframe_noaug_ep43   cem  tuned      quadrant_3 40: improve +0.290; evals/step 26240
+  nfd_residual_worldframe_noaug_ep43   cem  tuned      quadrant_3 41: improve +0.307; evals/step 26112
+  nfd_residual_worldframe_noaug_ep43   cem  tuned      quadrant_3 42: improve +0.298; evals/step 26496
+  nfd_residual_worldframe_noaug_ep43   cem  tuned      quadrant_3 43: improve +0.319; evals/step 26240
+  nfd_residual_worldframe_noaug_ep43   cem  tuned      quadrant_3 44: improve +0.259; evals/step 26368
+  nfd_residual_worldframe_noaug_ep43   cem  tuned      quadrant_3 45: improve +0.211; evals/step 26112
+  nfd_residual_worldframe_noaug_ep43   cem  tuned      quadrant_3 46: improve +0.269; evals/step 26368
+  nfd_residual_worldframe_noaug_ep43   cem  tuned      quadrant_3 47: improve +0.324; evals/step 26368
+  nfd_residual_worldframe_noaug_ep43   cem  tuned      letter_O   40: improve +0.290; evals/step 26368
+  nfd_residual_worldframe_noaug_ep43   cem  tuned      letter_O   41: improve +0.242; evals/step 26368
+  nfd_residual_worldframe_noaug_ep43   cem  tuned      letter_O   42: improve +0.261; evals/step 25984
+  nfd_residual_worldframe_noaug_ep43   cem  tuned      letter_O   43: improve +0.281; evals/step 25984
+  nfd_residual_worldframe_noaug_ep43   cem  tuned      letter_O   44: improve +0.210; evals/step 26496
+  nfd_residual_worldframe_noaug_ep43   cem  tuned      letter_O   45: improve +0.157; evals/step 26112
+  nfd_residual_worldframe_noaug_ep43   cem  tuned      letter_O   46: improve +0.235; evals/step 26368
+  nfd_residual_worldframe_noaug_ep43   cem  tuned      letter_O   47: improve +0.250; evals/step 26496
+chunk 22: step 1/8 (43s)
+chunk 22: step 2/8 (87s)
+chunk 22: step 3/8 (131s)
+chunk 22: step 4/8 (176s)
+chunk 22: step 5/8 (220s)
+chunk 22: step 6/8 (265s)
+chunk 22: step 7/8 (310s)
+chunk 22: step 8/8 (355s)
+chunk 22: step 8/8 (355s)
+  nfd_residual_worldframe_noaug_ep43   cem  tuned      letter_T   40: improve +0.357; evals/step 26240
+  nfd_residual_worldframe_noaug_ep43   cem  tuned      letter_T   41: improve +0.252; evals/step 26368
+  nfd_residual_worldframe_noaug_ep43   cem  tuned      letter_T   42: improve +0.324; evals/step 26496
+  nfd_residual_worldframe_noaug_ep43   cem  tuned      letter_T   43: improve +0.345; evals/step 26112
+  nfd_residual_worldframe_noaug_ep43   cem  tuned      letter_T   44: improve +0.347; evals/step 26240
+  nfd_residual_worldframe_noaug_ep43   cem  tuned      letter_T   45: improve +0.265; evals/step 26368
+  nfd_residual_worldframe_noaug_ep43   cem  tuned      letter_T   46: improve +0.307; evals/step 26112
+  nfd_residual_worldframe_noaug_ep43   cem  tuned      letter_T   47: improve +0.237; evals/step 26240
+  nfd_residual_worldframe_noaug_ep43   cem  tuned      letter_S   40: improve +0.304; evals/step 26240
+  nfd_residual_worldframe_noaug_ep43   cem  tuned      letter_S   41: improve +0.268; evals/step 26496
+  nfd_residual_worldframe_noaug_ep43   cem  tuned      letter_S   42: improve +0.276; evals/step 26496
+  nfd_residual_worldframe_noaug_ep43   cem  tuned      letter_S   43: improve +0.302; evals/step 26368
+  nfd_residual_worldframe_noaug_ep43   cem  tuned      letter_S   44: improve +0.296; evals/step 26112
+  nfd_residual_worldframe_noaug_ep43   cem  tuned      letter_S   45: improve +0.206; evals/step 26368
+  nfd_residual_worldframe_noaug_ep43   cem  tuned      letter_S   46: improve +0.261; evals/step 26368
+  nfd_residual_worldframe_noaug_ep43   cem  tuned      letter_S   47: improve +0.210; evals/step 26112
+  nfd_residual_worldframe_noaug_ep43   cem  tuned      letter_L   40: improve +0.288; evals/step 26240
+  nfd_residual_worldframe_noaug_ep43   cem  tuned      letter_L   41: improve +0.243; evals/step 26112
+  nfd_residual_worldframe_noaug_ep43   cem  tuned      letter_L   42: improve +0.280; evals/step 26112
+  nfd_residual_worldframe_noaug_ep43   cem  tuned      letter_L   43: improve +0.301; evals/step 26368
+  nfd_residual_worldframe_noaug_ep43   cem  tuned      letter_L   44: improve +0.298; evals/step 26240
+  nfd_residual_worldframe_noaug_ep43   cem  tuned      letter_L   45: improve +0.225; evals/step 26368
+  nfd_residual_worldframe_noaug_ep43   cem  tuned      letter_L   46: improve +0.260; evals/step 26496
+  nfd_residual_worldframe_noaug_ep43   cem  tuned      letter_L   47: improve +0.343; evals/step 26112
+  nfd_residual_worldframe_noaug_ep43   cem  tuned      letter_C   40: improve +0.313; evals/step 26112
+  nfd_residual_worldframe_noaug_ep43   cem  tuned      letter_C   41: improve +0.220; evals/step 26112
+  nfd_residual_worldframe_noaug_ep43   cem  tuned      letter_C   42: improve +0.265; evals/step 26368
+  nfd_residual_worldframe_noaug_ep43   cem  tuned      letter_C   43: improve +0.274; evals/step 26240
+  nfd_residual_worldframe_noaug_ep43   cem  tuned      letter_C   44: improve +0.282; evals/step 26112
+  nfd_residual_worldframe_noaug_ep43   cem  tuned      letter_C   45: improve +0.182; evals/step 26112
+  nfd_residual_worldframe_noaug_ep43   cem  tuned      letter_C   46: improve +0.201; evals/step 26368
+  nfd_residual_worldframe_noaug_ep43   cem  tuned      letter_C   47: improve +0.279; evals/step 26112
+chunk 23: step 1/8 (44s)
+chunk 23: step 2/8 (88s)
+chunk 23: step 3/8 (132s)
+chunk 23: step 4/8 (177s)
+chunk 23: step 5/8 (222s)
+chunk 23: step 6/8 (267s)
+chunk 23: step 7/8 (312s)
+chunk 23: step 8/8 (357s)
+chunk 23: step 8/8 (357s)
+  nfd_residual_worldframe_noaug_ep43   cem  tuned      letter_X   40: improve +0.360; evals/step 26240
+  nfd_residual_worldframe_noaug_ep43   cem  tuned      letter_X   41: improve +0.318; evals/step 26112
+  nfd_residual_worldframe_noaug_ep43   cem  tuned      letter_X   42: improve +0.302; evals/step 26496
+  nfd_residual_worldframe_noaug_ep43   cem  tuned      letter_X   43: improve +0.373; evals/step 26240
+  nfd_residual_worldframe_noaug_ep43   cem  tuned      letter_X   44: improve +0.360; evals/step 26240
+  nfd_residual_worldframe_noaug_ep43   cem  tuned      letter_X   45: improve +0.246; evals/step 26368
+  nfd_residual_worldframe_noaug_ep43   cem  tuned      letter_X   46: improve +0.308; evals/step 26240
+  nfd_residual_worldframe_noaug_ep43   cem  tuned      letter_X   47: improve +0.312; evals/step 26624
+  nfd_residual_worldframe_noaug_ep43   cem  tuned      letter_H   40: improve +0.315; evals/step 26624
+  nfd_residual_worldframe_noaug_ep43   cem  tuned      letter_H   41: improve +0.233; evals/step 26368
+  nfd_residual_worldframe_noaug_ep43   cem  tuned      letter_H   42: improve +0.279; evals/step 26112
+  nfd_residual_worldframe_noaug_ep43   cem  tuned      letter_H   43: improve +0.299; evals/step 26368
+  nfd_residual_worldframe_noaug_ep43   cem  tuned      letter_H   44: improve +0.306; evals/step 26368
+  nfd_residual_worldframe_noaug_ep43   cem  tuned      letter_H   45: improve +0.199; evals/step 26496
+  nfd_residual_worldframe_noaug_ep43   cem  tuned      letter_H   46: improve +0.285; evals/step 26496
+  nfd_residual_worldframe_noaug_ep43   cem  tuned      letter_H   47: improve +0.221; evals/step 26368
+  nfd_residual_worldframe_noaug_ep43   cem  tuned      letter_Z   40: improve +0.376; evals/step 26368
+  nfd_residual_worldframe_noaug_ep43   cem  tuned      letter_Z   41: improve +0.267; evals/step 26240
+  nfd_residual_worldframe_noaug_ep43   cem  tuned      letter_Z   42: improve +0.308; evals/step 26368
+  nfd_residual_worldframe_noaug_ep43   cem  tuned      letter_Z   43: improve +0.331; evals/step 26240
+  nfd_residual_worldframe_noaug_ep43   cem  tuned      letter_Z   44: improve +0.310; evals/step 26368
+  nfd_residual_worldframe_noaug_ep43   cem  tuned      letter_Z   45: improve +0.199; evals/step 26240
+  nfd_residual_worldframe_noaug_ep43   cem  tuned      letter_Z   46: improve +0.270; evals/step 26240
+  nfd_residual_worldframe_noaug_ep43   cem  tuned      letter_Z   47: improve +0.259; evals/step 26624
+  nfd_residual_worldframe_noaug_ep43   cem  tuned      letter_I   40: improve +0.430; evals/step 26496
+  nfd_residual_worldframe_noaug_ep43   cem  tuned      letter_I   41: improve +0.374; evals/step 26368
+  nfd_residual_worldframe_noaug_ep43   cem  tuned      letter_I   42: improve +0.426; evals/step 25984
+  nfd_residual_worldframe_noaug_ep43   cem  tuned      letter_I   43: improve +0.447; evals/step 26240
+  nfd_residual_worldframe_noaug_ep43   cem  tuned      letter_I   44: improve +0.378; evals/step 26624
+  nfd_residual_worldframe_noaug_ep43   cem  tuned      letter_I   45: improve +0.321; evals/step 26624
+  nfd_residual_worldframe_noaug_ep43   cem  tuned      letter_I   46: improve +0.367; evals/step 26240
+  nfd_residual_worldframe_noaug_ep43   cem  tuned      letter_I   47: improve +0.351; evals/step 26112
+[38;5;159m[Genesis] [21:34:43] [INFO] 💤 Exiting Genesis and caching compiled kernels...[0m
+wrote experiments/EXP-0044-closed-loop-goal-breadth/results/goal_breadth_tuned.json

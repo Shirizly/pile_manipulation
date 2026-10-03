@@ -1,0 +1,37 @@
+{
+ "ckpt": "weights/MODEL-0010-gnn-flex-mask-v2-n30/checkpoint.pth",
+ "n": 30,
+ "fast": false,
+ "device": "cpu",
+ "threads": 4,
+ "gpu": null,
+ "passes": 3,
+ "n_slates": 100,
+ "stage_ms_median_over_slates": {
+  "imread": 4.818209097720683,
+  "segment_backproject": 11.627281899563968,
+  "voxel": 28.887385968118906,
+  "fps": 0.6858916021883488,
+  "recenter": 0.797996879555285,
+  "s_delta": 1.1669524246826768,
+  "graph_build": 4.241318558342755,
+  "gnn_forward": 43.57202153187245,
+  "render": 133.04238149430603
+ },
+ "stage_share": {
+  "imread": 0.02105497683951332,
+  "segment_backproject": 0.050809781422234954,
+  "voxel": 0.12623429788477913,
+  "fps": 0.002997261327932836,
+  "recenter": 0.003487147501545489,
+  "s_delta": 0.005099437524646016,
+  "graph_build": 0.018534036652155604,
+  "gnn_forward": 0.19040433605057572,
+  "render": 0.5813787247966169
+ },
+ "total_ms_median": 240.59250706341118,
+ "perception_ms": 46.81676544714719,
+ "model_ms": 48.98029251489788,
+ "render_ms": 133.04238149430603,
+ "staged_output_equals_predict_occ": true
+}

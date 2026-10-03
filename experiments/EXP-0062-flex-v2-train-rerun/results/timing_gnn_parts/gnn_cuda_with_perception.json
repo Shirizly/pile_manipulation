@@ -1,0 +1,438 @@
+{
+  "command": "/home/alon/anaconda3/envs/pme/bin/python -u experiments/EXP-0062-flex-v2-train-rerun/code/time_inference.py --model gnn_flex_v2_n30 --name gnn_v2_n30_cuda_with_perception --device cuda --png 0 --kwargs {\"cache_states\": false, \"device\": \"cuda\"} --out experiments/EXP-0062-flex-v2-train-rerun/results/timing_gnn_parts/gnn_cuda_with_perception.json",
+  "started": "2026-10-02T23:47:50",
+  "model": "gnn_flex_v2_n30",
+  "name": "gnn_v2_n30_cuda_with_perception",
+  "ckpt": null,
+  "workers": [
+    {
+      "pid": 15298,
+      "model": "gnn_flex_v2_n30",
+      "name": "gnn_v2_n30_cuda_with_perception",
+      "ckpt": "weights/MODEL-0010-gnn-flex-mask-v2-n30/checkpoint.pth",
+      "kwargs": {
+        "particle_num": 30,
+        "depth_mode": "plane",
+        "plane_y": 0.24,
+        "carry_k": 1,
+        "cache_states": false,
+        "device": "cuda"
+      },
+      "corpus": "flex_ds0019_mask",
+      "device_requested": "cuda",
+      "gpu": "NVIDIA GeForce RTX 4070 Laptop GPU",
+      "torch": "2.11.0+cu130",
+      "contended": false,
+      "contention": {
+        "cuda_available": true,
+        "free_bytes": 8029143040,
+        "total_bytes": 8186822656,
+        "used_frac": 0.0193,
+        "other_training_processes": []
+      },
+      "device_fed_to_forward": [
+        "cuda:0"
+      ],
+      "n_forward_hook_calls": 36,
+      "n_modules_hooked": 1,
+      "load_s": 6.802855014801025,
+      "warmup_passes": 2,
+      "timed_passes": 3,
+      "n_slates": 100,
+      "n_candidates": 16583,
+      "pool_size": {
+        "n": 100,
+        "median": 167.5,
+        "p10": 142.7,
+        "p90": 186.0,
+        "mean": 165.83,
+        "min": 86.0,
+        "max": 191.0,
+        "total": 16583.0
+      },
+      "per_slate_ms": {
+        "n": 100,
+        "median": 77.22796999996717,
+        "p10": 61.2149901000862,
+        "p90": 107.55493219998016,
+        "mean": 82.66270189999774,
+        "min": 42.53465800002232,
+        "max": 122.8715290000082,
+        "total": 8266.270189999774
+      },
+      "per_slate_ms_with_h2d": {
+        "n": 100,
+        "median": 79.36030849998588,
+        "p10": 60.47641979995433,
+        "p90": 108.36881260001974,
+        "mean": 83.24625456999796,
+        "min": 43.14097199994649,
+        "max": 123.73520300002383,
+        "total": 8324.625456999796
+      },
+      "us_per_candidate_slate_batches": 498.4785738406665,
+      "us_per_candidate_slate_batches_with_h2d": 501.9975551468249,
+      "total_all_slates_s": 8.266270189999773,
+      "total_all_slates_s_with_h2d": 8.324625456999797,
+      "batch128": {
+        "n_batches": 129,
+        "ms_per_batch": {
+          "n": 129,
+          "median": 106.83945200003109,
+          "p10": 58.47665119999874,
+          "p90": 123.76029739998557,
+          "mean": 102.25051593023505,
+          "min": 50.78601599996091,
+          "max": 135.73210600009133,
+          "total": 13190.316555000321
+        },
+        "us_per_candidate": 798.8321557049613
+      },
+      "loop_check": {
+        "16": {
+          "aten_ops": 2354,
+          "cuda_kernels": 808
+        },
+        "128": {
+          "aten_ops": 12930,
+          "cuda_kernels": 5173
+        },
+        "top_ops_b128_us": {
+          "aten::nonzero": 3569.23799999975,
+          "aten::index": 2548.90199999982,
+          "aten::mul": 2032.5769999999284,
+          "aten::add": 1874.2370000000737,
+          "aten::addmm": 1810.8450000000012,
+          "aten::copy_": 1454.723000000071,
+          "aten::bmm": 1421.270000000004,
+          "aten::cat": 1323.4119999999966
+        },
+        "top_ops_metric": "self_device_time_total",
+        "ratio_128_over_16": {
+          "aten_ops": 5.492778249787595,
+          "cuda_kernels": 6.4022277227722775
+        },
+        "per_sample_loop_suspected": true
+      },
+      "output_device": "cpu"
+    },
+    {
+      "pid": 16928,
+      "model": "gnn_flex_v2_n30",
+      "name": "gnn_v2_n30_cuda_with_perception",
+      "ckpt": "weights/MODEL-0010-gnn-flex-mask-v2-n30/checkpoint.pth",
+      "kwargs": {
+        "particle_num": 30,
+        "depth_mode": "plane",
+        "plane_y": 0.24,
+        "carry_k": 1,
+        "cache_states": false,
+        "device": "cuda"
+      },
+      "corpus": "flex_ds0019_mask",
+      "device_requested": "cuda",
+      "gpu": "NVIDIA GeForce RTX 4070 Laptop GPU",
+      "torch": "2.11.0+cu130",
+      "contended": false,
+      "contention": {
+        "cuda_available": true,
+        "free_bytes": 8029143040,
+        "total_bytes": 8186822656,
+        "used_frac": 0.0193,
+        "other_training_processes": []
+      },
+      "device_fed_to_forward": [
+        "cuda:0"
+      ],
+      "n_forward_hook_calls": 36,
+      "n_modules_hooked": 1,
+      "load_s": 6.802151918411255,
+      "warmup_passes": 2,
+      "timed_passes": 3,
+      "n_slates": 100,
+      "n_candidates": 16583,
+      "pool_size": {
+        "n": 100,
+        "median": 167.5,
+        "p10": 142.7,
+        "p90": 186.0,
+        "mean": 165.83,
+        "min": 86.0,
+        "max": 191.0,
+        "total": 16583.0
+      },
+      "per_slate_ms": {
+        "n": 100,
+        "median": 76.85113449997516,
+        "p10": 58.88733270002149,
+        "p90": 106.50047320008298,
+        "mean": 81.12558119999676,
+        "min": 42.338656999845625,
+        "max": 120.59028500004842,
+        "total": 8112.558119999676
+      },
+      "per_slate_ms_with_h2d": {
+        "n": 100,
+        "median": 77.45514949999688,
+        "p10": 60.96338269999251,
+        "p90": 110.08904919983708,
+        "mean": 83.13414278998607,
+        "min": 44.54705200009812,
+        "max": 123.34134299999278,
+        "total": 8313.414278998607
+      },
+      "us_per_candidate_slate_batches": 489.2093179762212,
+      "us_per_candidate_slate_batches_with_h2d": 501.3214906228431,
+      "total_all_slates_s": 8.112558119999676,
+      "total_all_slates_s_with_h2d": 8.313414278998607,
+      "batch128": {
+        "n_batches": 129,
+        "ms_per_batch": {
+          "n": 129,
+          "median": 105.32114200009346,
+          "p10": 57.35227739992297,
+          "p90": 123.75063980011873,
+          "mean": 101.15027009301723,
+          "min": 48.89280699990195,
+          "max": 132.47264999995423,
+          "total": 13048.384841999223
+        },
+        "us_per_candidate": 790.2364851016972
+      },
+      "loop_check": {
+        "16": {
+          "aten_ops": 2354,
+          "cuda_kernels": 808
+        },
+        "128": {
+          "aten_ops": 12930,
+          "cuda_kernels": 5173
+        },
+        "top_ops_b128_us": {
+          "aten::nonzero": 3192.7249999998567,
+          "aten::index": 2371.7899999999318,
+          "aten::mul": 1794.7619999999188,
+          "aten::add": 1649.5940000001283,
+          "aten::addmm": 1460.2160000000076,
+          "aten::bmm": 1406.7420000000093,
+          "aten::copy_": 1352.8030000001236,
+          "aten::cat": 1095.6650000000045
+        },
+        "top_ops_metric": "self_device_time_total",
+        "ratio_128_over_16": {
+          "aten_ops": 5.492778249787595,
+          "cuda_kernels": 6.4022277227722775
+        },
+        "per_sample_loop_suspected": true
+      },
+      "output_device": "cpu"
+    },
+    {
+      "pid": 18660,
+      "model": "gnn_flex_v2_n30",
+      "name": "gnn_v2_n30_cuda_with_perception",
+      "ckpt": "weights/MODEL-0010-gnn-flex-mask-v2-n30/checkpoint.pth",
+      "kwargs": {
+        "particle_num": 30,
+        "depth_mode": "plane",
+        "plane_y": 0.24,
+        "carry_k": 1,
+        "cache_states": false,
+        "device": "cuda"
+      },
+      "corpus": "flex_ds0019_mask",
+      "device_requested": "cuda",
+      "gpu": "NVIDIA GeForce RTX 4070 Laptop GPU",
+      "torch": "2.11.0+cu130",
+      "contended": false,
+      "contention": {
+        "cuda_available": true,
+        "free_bytes": 8029143040,
+        "total_bytes": 8186822656,
+        "used_frac": 0.0193,
+        "other_training_processes": []
+      },
+      "device_fed_to_forward": [
+        "cuda:0"
+      ],
+      "n_forward_hook_calls": 36,
+      "n_modules_hooked": 1,
+      "load_s": 6.833869934082031,
+      "warmup_passes": 2,
+      "timed_passes": 3,
+      "n_slates": 100,
+      "n_candidates": 16583,
+      "pool_size": {
+        "n": 100,
+        "median": 167.5,
+        "p10": 142.7,
+        "p90": 186.0,
+        "mean": 165.83,
+        "min": 86.0,
+        "max": 191.0,
+        "total": 16583.0
+      },
+      "per_slate_ms": {
+        "n": 100,
+        "median": 77.66355549995296,
+        "p10": 61.050694100003966,
+        "p90": 107.77139209992583,
+        "mean": 83.33216716000607,
+        "min": 42.0344550000209,
+        "max": 127.10094800013394,
+        "total": 8333.216716000607
+      },
+      "per_slate_ms_with_h2d": {
+        "n": 100,
+        "median": 78.39424049996069,
+        "p10": 60.62187370009724,
+        "p90": 108.81242560005832,
+        "mean": 82.85244865000095,
+        "min": 43.033074000049965,
+        "max": 124.73514499993144,
+        "total": 8285.244865000095
+      },
+      "us_per_candidate_slate_batches": 502.51563142981405,
+      "us_per_candidate_slate_batches_with_h2d": 499.62279834771124,
+      "total_all_slates_s": 8.333216716000607,
+      "total_all_slates_s_with_h2d": 8.285244865000095,
+      "batch128": {
+        "n_batches": 129,
+        "ms_per_batch": {
+          "n": 129,
+          "median": 110.06762800002434,
+          "p10": 61.027366800135496,
+          "p90": 129.64436659990497,
+          "mean": 105.61416851162748,
+          "min": 51.180116999830716,
+          "max": 190.04984000002878,
+          "total": 13624.227737999945
+        },
+        "us_per_candidate": 825.1106914970898
+      },
+      "loop_check": {
+        "16": {
+          "aten_ops": 2354,
+          "cuda_kernels": 808
+        },
+        "128": {
+          "aten_ops": 12930,
+          "cuda_kernels": 5173
+        },
+        "top_ops_b128_us": {
+          "aten::nonzero": 3574.785000000087,
+          "aten::index": 2549.842999999957,
+          "aten::mul": 2032.147999999881,
+          "aten::add": 1873.8999999999214,
+          "aten::addmm": 1811.283999999996,
+          "aten::copy_": 1457.047000000127,
+          "aten::bmm": 1420.7869999999966,
+          "aten::cat": 1318.25399999999
+        },
+        "top_ops_metric": "self_device_time_total",
+        "ratio_128_over_16": {
+          "aten_ops": 5.492778249787595,
+          "cuda_kernels": 6.4022277227722775
+        },
+        "per_sample_loop_suspected": true
+      },
+      "output_device": "cpu"
+    }
+  ],
+  "status": "complete",
+  "aggregate": {
+    "n_processes": 3,
+    "per_slate_ms_median": {
+      "values": [
+        77.22796999996717,
+        76.85113449997516,
+        77.66355549995296
+      ],
+      "median": 77.22796999996717,
+      "rel_spread": 0.010519776707560078
+    },
+    "per_slate_ms_p90": {
+      "values": [
+        107.55493219998016,
+        106.50047320008298,
+        107.77139209992583
+      ],
+      "median": 107.55493219998016,
+      "rel_spread": 0.011816463214162938
+    },
+    "per_slate_ms_with_h2d_median": {
+      "values": [
+        79.36030849998588,
+        77.45514949999688,
+        78.39424049996069
+      ],
+      "median": 78.39424049996069,
+      "rel_spread": 0.024302282767698396
+    },
+    "us_per_candidate": {
+      "values": [
+        498.4785738406665,
+        489.2093179762212,
+        502.51563142981405
+      ],
+      "median": 498.4785738406665,
+      "rel_spread": 0.02669385235772656
+    },
+    "us_per_candidate_with_h2d": {
+      "values": [
+        501.9975551468249,
+        501.3214906228431,
+        499.62279834771124
+      ],
+      "median": 501.3214906228431,
+      "rel_spread": 0.0047369938124201235
+    },
+    "total_all_slates_s": {
+      "values": [
+        8.266270189999773,
+        8.112558119999676,
+        8.333216716000607
+      ],
+      "median": 8.266270189999773,
+      "rel_spread": 0.02669385235772661
+    },
+    "batch128_ms_per_batch": {
+      "values": [
+        106.83945200003109,
+        105.32114200009346,
+        110.06762800002434
+      ],
+      "median": 106.83945200003109,
+      "rel_spread": 0.04442634168443228
+    },
+    "batch128_us_per_candidate": {
+      "values": [
+        798.8321557049613,
+        790.2364851016972,
+        825.1106914970898
+      ],
+      "median": 798.8321557049613,
+      "rel_spread": 0.04365648796976182
+    },
+    "device_fed_to_forward": [
+      "cuda:0"
+    ],
+    "any_contended": false,
+    "per_sample_loop_suspected": true,
+    "loop_check_ratio": [
+      {
+        "aten_ops": 5.492778249787595,
+        "cuda_kernels": 6.4022277227722775
+      },
+      {
+        "aten_ops": 5.492778249787595,
+        "cuda_kernels": 6.4022277227722775
+      },
+      {
+        "aten_ops": 5.492778249787595,
+        "cuda_kernels": 6.4022277227722775
+      }
+    ]
+  },
+  "finished": "2026-10-02T23:53:49"
+}

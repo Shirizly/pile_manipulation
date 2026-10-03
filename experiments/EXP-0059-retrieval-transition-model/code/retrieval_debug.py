@@ -72,14 +72,21 @@ PRED_COLOR = "#d62728"
 
 
 # --------------------------------------------------------------------------
-# data loading (DS-0009 test_chains)
+# data loading (DS-0016 test_chains_v2_clean -- ISS-010-fix sampler; DS-0009's
+# own `test_chains` was collected with the pre-fix `_pile_aware_stops` clamp,
+# which put the tool on top of a cube at touchdown in ~46% of rows -- see
+# ISS-010 in experiments/OPEN_ISSUES.md. Querying against that set made this
+# figure show the illegal-touchdown artifact it exists to catch, rather than
+# a representative query. DS-0016 is the same shape/physics/seeds-aside
+# replacement, collected with the fixed `pile_aware_action_batch` sampler,
+# already split so bad rows never reach this script.)
 # --------------------------------------------------------------------------
 def _cpu(d):
     return {k: (v.cpu() if torch.is_tensor(v) else v) for k, v in d.items()}
 
 
 def load_test_chains():
-    files = sorted(glob.glob(str(D / "test_chains/_*_data.pt")))
+    files = sorted(glob.glob(str(D / "test_chains_v2_clean/_*_data.pt")))
     ch = [_cpu(torch.load(f, map_location="cpu", weights_only=False)) for f in files]
     states0 = torch.cat([d["states"] for d in ch]).float()
     states1 = torch.cat([d["states_"] for d in ch]).float()
@@ -311,7 +318,7 @@ def _wall_distance_world(xy: torch.Tensor, bounds=OCC_BOUNDS) -> torch.Tensor:
 
 
 def select_queries(states0, states1, p_starts, p_stops, kinds, predictor, n_total=12):
-    """Batched confidence/error pass over every valid DS-0009 test_chains row,
+    """Batched confidence/error pass over every valid DS-0016 test_chains row,
     then a stratified pick: typical scatter/clump, near-wall pushes, best/
     worst by moved-cube mm error, highest retrieval disagreement."""
     N = states0.shape[0]
@@ -371,7 +378,7 @@ def main():
     states0, states1, p_starts, p_stops, valid, kinds = load_test_chains()
     v = valid.bool()
     states0, states1, p_starts, p_stops, kinds = states0[v], states1[v], p_starts[v], p_stops[v], kinds[v.numpy()]
-    print(f"DS-0009 test_chains: {states0.shape[0]} valid rows")
+    print(f"DS-0016 test_chains_v2_clean: {states0.shape[0]} valid rows")
 
     picked, stats = select_queries(states0, states1, p_starts, p_stops, kinds, predictor, n_total=a.n)
 
@@ -380,7 +387,8 @@ def main():
     index_lines = ["# Retrieval debug figures (EXP-0059)", "",
                   f"Bank: `{bank_rel}` ({len(bank)} transitions). Predictor: `{predictor.name}` "
                   f"(k=5, cube_median, cap=0.02, mismatch_penalty=0.04, corridor_weight=3.0). "
-                  "Query source: DS-0009 `test_chains` (valid rows only).", "",
+                  "Query source: DS-0016 `test_chains_v2_clean` (ISS-010-fix sampler; valid "
+                  "rows only).", "",
                   "| file | query idx | start kind | why picked | moved-mm | top1_dist | knn_disagreement |",
                   "|---|---|---|---|---|---|---|"]
     for i, tag in picked:

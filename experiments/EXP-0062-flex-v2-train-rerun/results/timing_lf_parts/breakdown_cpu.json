@@ -1,0 +1,47 @@
+{
+ "device": "cpu",
+ "ckpt": "weights/MODEL-0009-linear-foresight-flex-mask-v2/checkpoint.pt",
+ "n_slates": 100,
+ "n_candidates": 16583,
+ "gpu": "NVIDIA GeForce RTX 4070 Laptop GPU",
+ "operator_bytes_each": 67108864,
+ "n_operators": 6,
+ "predict_occ_operators_on_cpu": {
+  "per_slate_ms_median": 55.44172343797982,
+  "total_all_slates_s": 5.526278453180566,
+  "us_per_candidate": 333.24962028466297
+ },
+ "predict_occ_operators_resident": {
+  "per_slate_ms_median": 55.09247293230146,
+  "total_all_slates_s": 5.4722626155707985,
+  "us_per_candidate": 329.99231837247777
+ },
+ "staged_resident": {
+  "total_s_per_pass": 5.4789889402066665,
+  "per_slate_ms": 54.78988940206666,
+  "share": {
+   "operator_matmul": 0.672710406275386,
+   "validity_blend": 0.15387773295888463,
+   "unwarp": 0.08807099024876128,
+   "warp": 0.05809268677693026,
+   "mask_any_sync": 0.011664505007949365,
+   "scatter": 0.008451222087227078,
+   "pixels_bins": 0.007132456644861406
+  },
+  "ms_per_slate": {
+   "pixels_bins": 0.390786510736992,
+   "mask_any_sync": 0.6390969393153986,
+   "warp": 3.18289188357691,
+   "operator_matmul": 36.85772875944773,
+   "unwarp": 4.8253998152601225,
+   "validity_blend": 8.430943970258037,
+   "scatter": 0.46304152347147465
+  },
+  "note": "sync after every stage inflates the total vs predict_occ; read shares"
+ },
+ "syncs_per_call": {
+  "bool_m_any": 6,
+  "occupied_bins_per_slate_median": 6.0,
+  "note": "predict_switched: one bool(m.any()) per bin -> 6 host syncs per call, plus boolean-mask indexing (occ[m]) which also syncs to size the output"
+ }
+}

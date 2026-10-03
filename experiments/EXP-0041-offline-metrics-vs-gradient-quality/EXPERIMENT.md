@@ -31,3 +31,9 @@ verdict: inconclusive
 downgrades: [imprecision, indirectness]
 grade: low
 ---
+
+## Later evidence (2026-10-03 audit)
+
+Added by the cross-experiment audit (summary: `experiments/SUMMARY.md`). Numbers above are unchanged.
+
+- The gain/grad_capture being predicted was measured at the mistuned GD setting (EXP-0042); EXP-0054 is a counter-example (narrow NFDs more accurate offline, worse closed loop -- across a domain shift).

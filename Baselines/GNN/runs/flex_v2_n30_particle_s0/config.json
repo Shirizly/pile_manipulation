@@ -1,0 +1,32 @@
+{
+ "cmd": "train",
+ "out": "Baselines/GNN/runs/flex_v2_n30_particle_s0",
+ "target": "particle",
+ "particle_num": 30,
+ "rollout": 5,
+ "batch": 4,
+ "lr": 0.001,
+ "seed": 0,
+ "max_epochs": 300,
+ "patience": 10,
+ "min_rel_delta": 0.005,
+ "max_wall_min": 25.0,
+ "save_min": 0.5,
+ "kill_after_iters": 0,
+ "resume": false,
+ "chamfer_sub": 384,
+ "device": "cpu",
+ "n_train_windows": 8289,
+ "n_val_windows": 911,
+ "n_params": 38403,
+ "model_cfg": {
+  "train": {
+   "particle": {
+    "nf_effect": 64,
+    "add_delta": false,
+    "adj_thresh": 0.08
+   }
+  }
+ },
+ "started": "2026-10-02 16:55:49"
+}

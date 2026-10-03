@@ -1051,3 +1051,10 @@ beats every INDIVIDUAL trained NFD seed with a resolved CI at 3-step horizon (an
 1-step), but an ENSEMBLE of seeds is a different, stronger comparison point retrieval does not
 clearly beat. The honest summary is "retrieval matches or beats a single trained NFD model,
 individual-seed noise included; it does not clearly beat an ensemble of several."
+
+## Later evidence (2026-10-03 audit)
+
+Added by the cross-experiment audit (summary: `experiments/SUMMARY.md`). Numbers above are unchanged.
+
+- ISS-012 (2026-10-03): DS-0017 val has three near-tie quadrant_0 cells that move val slateN_tough by up to ~0.16; k = 5 was selected on that val set -- the selection was not re-checked.
+- EXP-0063: the sigma-2 soft-occupancy NFD reaches 3-push slateN_tough 0.819 vs retrieval 0.821 on the same DS-0018 pools (one seed, cross-record) -- narrows C-061 to hard-raster NFDs.

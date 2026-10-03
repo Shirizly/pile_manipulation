@@ -1,0 +1,110 @@
+[time_inference] worker 0: --model lf_flex_switched --ckpt weights/MODEL-0009-linear-foresight-flex-mask-v2/checkpoint.pt --name lf_v2_switched_cuda_asis --device cuda --png 0 --out experiments/EXP-0062-flex-v2-train-rerun/results/timing_lf_parts/switched_cuda_asis.json.worker0.json --worker
+FlexPileData(DS-0019, split=all, exclude_flagged=True): 17186 rows; flagged nan=0 escaped=397 out_of_grid=47 null=159 -> kept 16583
+[SwitchedLinearForesightPredictor] loaded weights/MODEL-0009-linear-foresight-flex-mask-v2/checkpoint.pt (6 bins, res=64, constraint=ridge, counts=[1722, 3973, 4530, 3435, 1323, 110])
+/home/alon/anaconda3/envs/pme/lib/python3.10/site-packages/torch/profiler/profiler.py:224: UserWarning: Warning: Profiler clears events at the end of each cycle.Only events from the current cycle will be reported.To keep events across cycles, set acc_events=True.
+  _warn_once(
+[time_inference] worker 0: per-slate median 45.846 ms, 277.03 us/cand, b128 347.83 us/cand, fed [], loop {'aten_ops': 2.8424242424242423, 'cuda_kernels': 2.8052256532066506}
+[time_inference] worker 1: --model lf_flex_switched --ckpt weights/MODEL-0009-linear-foresight-flex-mask-v2/checkpoint.pt --name lf_v2_switched_cuda_asis --device cuda --png 0 --out experiments/EXP-0062-flex-v2-train-rerun/results/timing_lf_parts/switched_cuda_asis.json.worker1.json --worker
+FlexPileData(DS-0019, split=all, exclude_flagged=True): 17186 rows; flagged nan=0 escaped=397 out_of_grid=47 null=159 -> kept 16583
+[SwitchedLinearForesightPredictor] loaded weights/MODEL-0009-linear-foresight-flex-mask-v2/checkpoint.pt (6 bins, res=64, constraint=ridge, counts=[1722, 3973, 4530, 3435, 1323, 110])
+/home/alon/anaconda3/envs/pme/lib/python3.10/site-packages/torch/profiler/profiler.py:224: UserWarning: Warning: Profiler clears events at the end of each cycle.Only events from the current cycle will be reported.To keep events across cycles, set acc_events=True.
+  _warn_once(
+[time_inference] worker 1: per-slate median 45.879 ms, 277.13 us/cand, b128 349.21 us/cand, fed [], loop {'aten_ops': 2.8424242424242423, 'cuda_kernels': 2.8052256532066506}
+[time_inference] worker 2: --model lf_flex_switched --ckpt weights/MODEL-0009-linear-foresight-flex-mask-v2/checkpoint.pt --name lf_v2_switched_cuda_asis --device cuda --png 0 --out experiments/EXP-0062-flex-v2-train-rerun/results/timing_lf_parts/switched_cuda_asis.json.worker2.json --worker
+FlexPileData(DS-0019, split=all, exclude_flagged=True): 17186 rows; flagged nan=0 escaped=397 out_of_grid=47 null=159 -> kept 16583
+[SwitchedLinearForesightPredictor] loaded weights/MODEL-0009-linear-foresight-flex-mask-v2/checkpoint.pt (6 bins, res=64, constraint=ridge, counts=[1722, 3973, 4530, 3435, 1323, 110])
+/home/alon/anaconda3/envs/pme/lib/python3.10/site-packages/torch/profiler/profiler.py:224: UserWarning: Warning: Profiler clears events at the end of each cycle.Only events from the current cycle will be reported.To keep events across cycles, set acc_events=True.
+  _warn_once(
+[time_inference] worker 2: per-slate median 45.890 ms, 277.29 us/cand, b128 348.68 us/cand, fed [], loop {'aten_ops': 2.8424242424242423, 'cuda_kernels': 2.8052256532066506}
+{
+ "n_processes": 3,
+ "per_slate_ms_median": {
+  "values": [
+   45.845863060094416,
+   45.8791465498507,
+   45.89038097765297
+  ],
+  "median": 45.8791465498507,
+  "rel_spread": 0.0009703301152339265
+ },
+ "per_slate_ms_p90": {
+  "values": [
+   46.47255185991526,
+   46.34473717305809,
+   46.49232332594693
+  ],
+  "median": 46.47255185991526,
+  "rel_spread": 0.0031757703629813885
+ },
+ "per_slate_ms_with_h2d_median": {
+  "values": [
+   48.200202523730695,
+   48.08936605695635,
+   48.00849698949605
+  ],
+  "median": 48.08936605695635,
+  "rel_spread": 0.003986443364788584
+ },
+ "us_per_candidate": {
+  "values": [
+   277.03294922909794,
+   277.12837261422595,
+   277.2915548273341
+  ],
+  "median": 277.12837261422595,
+  "rel_spread": 0.0009331617538711858
+ },
+ "us_per_candidate_with_h2d": {
+  "values": [
+   291.1206528333035,
+   291.2247224166061,
+   289.6843045725965
+  ],
+  "median": 291.1206528333035,
+  "rel_spread": 0.005291338244187174
+ },
+ "total_all_slates_s": {
+  "values": [
+   4.594037397066131,
+   4.595619803061709,
+   4.598325853701681
+  ],
+  "median": 4.595619803061709,
+  "rel_spread": 0.0009331617538710655
+ },
+ "batch128_ms_per_batch": {
+  "values": [
+   45.19174597226083,
+   45.33963883295655,
+   45.26244197040796
+  ],
+  "median": 45.26244197040796,
+  "rel_spread": 0.003267452091789707
+ },
+ "batch128_us_per_candidate": {
+  "values": [
+   347.82991563468585,
+   349.2085936666753,
+   348.6788469009587
+  ],
+  "median": 348.6788469009587,
+  "rel_spread": 0.003954005366953264
+ },
+ "device_fed_to_forward": [],
+ "any_contended": false,
+ "per_sample_loop_suspected": true,
+ "loop_check_ratio": [
+  {
+   "aten_ops": 2.8424242424242423,
+   "cuda_kernels": 2.8052256532066506
+  },
+  {
+   "aten_ops": 2.8424242424242423,
+   "cuda_kernels": 2.8052256532066506
+  },
+  {
+   "aten_ops": 2.8424242424242423,
+   "cuda_kernels": 2.8052256532066506
+  }
+ ]
+}

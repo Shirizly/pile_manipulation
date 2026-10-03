@@ -148,3 +148,11 @@ batching pattern (flatten all episodes' candidates, chunk by n_envs) as a reusab
 future perfect-model planners -- added a one-line pointer in this record's TODO.md entry
 instead of CODEMAP, since the code itself is experiment-local (EXP-0050's), not a new project
 module.
+
+## Later evidence (2026-10-03 audit)
+
+Added by the cross-experiment audit (summary: `experiments/SUMMARY.md`). Numbers above are unchanged.
+
+- **Results exist and are not written up here:** `results/analysis.json` (2026-09-26); TODO.md: PAUSED by the user 2026-09-26 12:54. Fraction solved 64x4 0.125, 128x2 0.25, 32x8 0.375; final in-goal mass fraction 0.747 / 0.691 / 0.779 vs the learned NFD reference 0.770 (EXP-0055 lyap); 32x8 - default -1.0 pushes [-2.25, -0.19]; 256x1 stopped at push 5/20; 16x16 and all objective (B) cells never ran. C-060 note added.
+- ISS-013: CEM iteration 0 drew from the pre-fix pile-aware sampler.
+- EXP-0065 RUN-0003 (C-067): executed closed-loop pushes include illegal touchdowns (blade on a cube); measured lower bounds per record in `experiments/EXP-0065-*/results/audit_closed_loop_actions.json`.

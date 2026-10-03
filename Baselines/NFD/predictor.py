@@ -46,6 +46,24 @@ CKPT_3CH = "Baselines/NFD/runs/nfd_3ch/unet_best.pth"
 CKPT_2CH = "Baselines/NFD/runs/nfd_2ch_ablation/unet_best.pth"
 
 
+def input_blur_sigma_from_run(ckpt_path: str) -> float:
+    """Sigma of the `occupancy_blur` dataset transform the checkpoint was
+    trained with (EXP-0063 soft-occupancy NFD), read from the
+    `run_config.yaml` the trainer writes beside it; 0.0 when there is none
+    (every pre-EXP-0063 run). Reading it from the run, not from a registry
+    argument, keeps the eval-time input representation tied to training."""
+    import yaml
+    cfg_path = os.path.join(os.path.dirname(ckpt_path), "run_config.yaml")
+    if not os.path.exists(cfg_path):
+        return 0.0
+    with open(cfg_path) as f:
+        cfg = yaml.safe_load(f) or {}
+    for t in (cfg.get("dataset", {}) or {}).get("transforms", []) or []:
+        if t.get("type") == "occupancy_blur":
+            return float(t["sigma"])
+    return 0.0
+
+
 def _plate_geometry_px(raw) -> tuple[float, float, float]:
     """See Baselines/NFD/nfd_lib.py::plate_geometry_px -- duplicated here
     (rather than imported) to keep this predictor importable without pulling
@@ -75,6 +93,12 @@ class NFDPredictor:
         state = torch.load(ckpt_path, map_location="cpu", weights_only=True)
         self.model.load_state_dict(state)
         self.model.eval()
+        # Soft-occupancy runs (EXP-0063): the INPUT occupancy must be blurred
+        # the way training blurred it. Not applied inside `predict_occ` (a
+        # rollout feeds this model's own, already-soft prediction back in);
+        # callers building the input from particles apply it via
+        # `simple_mpc.adapters.OccupancyGradientAdapter.encode_state`.
+        self.input_blur_sigma = input_blur_sigma_from_run(ckpt_path)
 
     @torch.no_grad()
     def predict_occ(self, batch) -> torch.Tensor:

@@ -255,3 +255,10 @@ well above the `MIN_ROWS_PER_BIN=50` identity-fallback floor.
   the plan doc's ORCHESTRATION_LOG already flagged for the single-operator
   case. Nothing else in `Baselines/*/runs/` is remotely this size; worth a
   decision (gitignore, LFS, or float16) before it is committed.
+
+## Later evidence (2026-10-03 audit)
+
+Added by the cross-experiment audit (summary: `experiments/SUMMARY.md`). Numbers above are unchanged.
+
+- Asymmetric goal masks (T / random_quadrant / ring_O / stripe / letters) in this record were scored BEFORE the goal-axis fix `28271c09` (2026-09-17) and were never rescored; transpose-invariant goals (corner, center, ...) are unaffected (ISS-003). ISS-003 names this record explicitly.
+- EXP-0013 re-fits res32 vs res64 with a fair same-grid scoring (C-019) and reverses this record's resolution observation.

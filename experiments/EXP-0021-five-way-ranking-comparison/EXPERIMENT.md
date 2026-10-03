@@ -209,3 +209,9 @@ EXP-0019's memorisation (`experiments/temp/lejepa-debug/RESULTS.md`).
   (one rasteriser is used throughout; every ridge lambda is selected with
   grouped folds), but both are cited so a later invalidation finds this
   record.
+
+## Later evidence (2026-10-03 audit)
+
+Added by the cross-experiment audit (summary: `experiments/SUMMARY.md`). Numbers above are unchanged.
+
+- Never run. The project moved to the eval_report harness and closed-loop work (EXP-0026+); DS-0001, its planned corpus, is off-training-physics and 46 % illegal touchdowns (EXP-0065). On hiatus with the latent/embedding line (user, 2026-10-03), not abandoned; if resumed, re-register on a legal, training-physics corpus rather than DS-0001.

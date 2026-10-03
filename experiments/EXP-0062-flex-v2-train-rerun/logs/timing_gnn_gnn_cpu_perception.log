@@ -1,0 +1,113 @@
+[time_inference] worker 0: --model gnn_flex_v2_n30 --name gnn_v2_n30_cpu_with_perception --device cpu --png 0 --kwargs {"cache_states": false, "device": "cpu"} --out experiments/EXP-0062-flex-v2-train-rerun/results/timing_gnn_parts/gnn_cpu_with_perception.json.worker0.json --worker
+FlexPileData(DS-0019, split=all, exclude_flagged=True): 17186 rows; flagged nan=0 escaped=397 out_of_grid=47 null=159 -> kept 16583
+[FlexGNNPredictor] weights/MODEL-0010-gnn-flex-mask-v2-n30/checkpoint.pth: particle_num=30 depth=plane plane_y=0.24 carry_k=1 device=cpu
+/home/alon/anaconda3/envs/pme/lib/python3.10/site-packages/torch/profiler/profiler.py:224: UserWarning: Warning: Profiler clears events at the end of each cycle.Only events from the current cycle will be reported.To keep events across cycles, set acc_events=True.
+  _warn_once(
+ERROR:2026-10-02 18:36:56 2247744:2247744 DeviceProperties.cpp:48] gpuGetDeviceCount failed with code 100
+[time_inference] worker 0: per-slate median 249.300 ms, 1559.04 us/cand, b128 1925.55 us/cand, fed [], loop {'aten_ops': 5.353797019162527, 'cuda_kernels': 0.0}
+[time_inference] worker 1: --model gnn_flex_v2_n30 --name gnn_v2_n30_cpu_with_perception --device cpu --png 0 --kwargs {"cache_states": false, "device": "cpu"} --out experiments/EXP-0062-flex-v2-train-rerun/results/timing_gnn_parts/gnn_cpu_with_perception.json.worker1.json --worker
+FlexPileData(DS-0019, split=all, exclude_flagged=True): 17186 rows; flagged nan=0 escaped=397 out_of_grid=47 null=159 -> kept 16583
+[FlexGNNPredictor] weights/MODEL-0010-gnn-flex-mask-v2-n30/checkpoint.pth: particle_num=30 depth=plane plane_y=0.24 carry_k=1 device=cpu
+/home/alon/anaconda3/envs/pme/lib/python3.10/site-packages/torch/profiler/profiler.py:224: UserWarning: Warning: Profiler clears events at the end of each cycle.Only events from the current cycle will be reported.To keep events across cycles, set acc_events=True.
+  _warn_once(
+ERROR:2026-10-02 18:42:29 2253808:2253808 DeviceProperties.cpp:48] gpuGetDeviceCount failed with code 100
+[time_inference] worker 1: per-slate median 269.544 ms, 1626.49 us/cand, b128 2034.39 us/cand, fed [], loop {'aten_ops': 5.353797019162527, 'cuda_kernels': 0.0}
+[time_inference] worker 2: --model gnn_flex_v2_n30 --name gnn_v2_n30_cpu_with_perception --device cpu --png 0 --kwargs {"cache_states": false, "device": "cpu"} --out experiments/EXP-0062-flex-v2-train-rerun/results/timing_gnn_parts/gnn_cpu_with_perception.json.worker2.json --worker
+FlexPileData(DS-0019, split=all, exclude_flagged=True): 17186 rows; flagged nan=0 escaped=397 out_of_grid=47 null=159 -> kept 16583
+[FlexGNNPredictor] weights/MODEL-0010-gnn-flex-mask-v2-n30/checkpoint.pth: particle_num=30 depth=plane plane_y=0.24 carry_k=1 device=cpu
+/home/alon/anaconda3/envs/pme/lib/python3.10/site-packages/torch/profiler/profiler.py:224: UserWarning: Warning: Profiler clears events at the end of each cycle.Only events from the current cycle will be reported.To keep events across cycles, set acc_events=True.
+  _warn_once(
+ERROR:2026-10-02 18:47:58 2260131:2260131 DeviceProperties.cpp:48] gpuGetDeviceCount failed with code 100
+[time_inference] worker 2: per-slate median 258.702 ms, 1607.04 us/cand, b128 2028.54 us/cand, fed [], loop {'aten_ops': 5.353797019162527, 'cuda_kernels': 0.0}
+{
+ "n_processes": 3,
+ "per_slate_ms_median": {
+  "values": [
+   249.29982610046864,
+   269.54447047319263,
+   258.70168197434396
+  ],
+  "median": 258.70168197434396,
+  "rel_spread": 0.07825478450013211
+ },
+ "per_slate_ms_p90": {
+  "values": [
+   345.7501895027235,
+   357.2281777160242,
+   359.90300695411867
+  ],
+  "median": 357.2281777160242,
+  "rel_spread": 0.03961842411727617
+ },
+ "per_slate_ms_with_h2d_median": {
+  "values": [
+   245.86707551497966,
+   262.8534119576216,
+   248.33678314462304
+  ],
+  "median": 248.33678314462304,
+  "rel_spread": 0.06840040459390842
+ },
+ "us_per_candidate": {
+  "values": [
+   1559.0424351734514,
+   1626.4851041593529,
+   1607.03788951928
+  ],
+  "median": 1607.03788951928,
+  "rel_spread": 0.04196706837203191
+ },
+ "us_per_candidate_with_h2d": {
+  "values": [
+   1576.8370624969284,
+   1630.9219636420667,
+   1617.0128952389005
+  ],
+  "median": 1617.0128952389005,
+  "rel_spread": 0.033447414862543594
+ },
+ "total_all_slates_s": {
+  "values": [
+   25.853600702481344,
+   26.972002482274547,
+   26.649509321898222
+  ],
+  "median": 26.649509321898222,
+  "rel_spread": 0.04196706837203185
+ },
+ "batch128_ms_per_batch": {
+  "values": [
+   255.65166980959475,
+   265.6228840351105,
+   265.88265714235604
+  ],
+  "median": 265.6228840351105,
+  "rel_spread": 0.0385169650195084
+ },
+ "batch128_us_per_candidate": {
+  "values": [
+   1925.5524747882014,
+   2034.3857316241388,
+   2028.5366390594427
+  ],
+  "median": 2028.5366390594427,
+  "rel_spread": 0.05365111713555213
+ },
+ "device_fed_to_forward": [],
+ "any_contended": false,
+ "per_sample_loop_suspected": true,
+ "loop_check_ratio": [
+  {
+   "aten_ops": 5.353797019162527,
+   "cuda_kernels": 0.0
+  },
+  {
+   "aten_ops": 5.353797019162527,
+   "cuda_kernels": 0.0
+  },
+  {
+   "aten_ops": 5.353797019162527,
+   "cuda_kernels": 0.0
+  }
+ ]
+}

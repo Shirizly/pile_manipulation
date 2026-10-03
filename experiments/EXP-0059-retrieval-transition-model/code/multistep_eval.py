@@ -125,7 +125,8 @@ def run_occ(model_id, dev, pools, Dist13, DistTough):
         s0 = d["states"][r0[0]][None].float()          # shared start, (1,20,7)
         o0 = occ_from_particles(s0, dev)
         t0 = occ_for_scoring(s0[:, :, :3])
-        cur = o0.expand(n_cand, -1, -1).contiguous()
+        # model input only (EXP-0063 soft-occupancy models); later steps feed back predictions
+        cur = EE._encode(ad, o0).expand(n_cand, -1, -1).contiguous()
         reg_cum = torch.zeros(n_cand, 64, 64, dtype=torch.bool)
         for k in range(N_STEPS):
             ix = rows_by_step[k]

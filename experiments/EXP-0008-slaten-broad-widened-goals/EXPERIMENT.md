@@ -240,3 +240,10 @@ in `experiments/EXP-0008-slaten-broad-widened-goals/results/RESULTS.md`
   43-file holdout used here inherits whatever n20/n50 mix `build_data.py`
   produced, not separated by group size -- a possible confound between
   "holdout" and "n50-heavier" that was not checked in the source run.
+
+## Later evidence (2026-10-03 audit)
+
+Added by the cross-experiment audit (summary: `experiments/SUMMARY.md`). Numbers above are unchanged.
+
+- Asymmetric goal masks (T / random_quadrant / ring_O / stripe / letters) in this record were scored BEFORE the goal-axis fix `28271c09` (2026-09-17) and were never rescored; transpose-invariant goals (corner, center, ...) are unaffected (ISS-003). C-005's stripe x value-function interaction and C-010 rest on transposed masks.
+- `slates_multistep` (L20mm/L40mm) was simulated with friction 0.3 / density 1000 -- off-training-physics for randlen-trained models (`benchmark-physics-matches-training`, broken); EXP-0048 later found physics sets barely change 20 mm single-push rankings on scatter (C-053), untested for piles/longer pushes.

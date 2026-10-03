@@ -1,0 +1,409 @@
+{
+  "command": "/home/alon/anaconda3/envs/pme/bin/python -u experiments/EXP-0062-flex-v2-train-rerun/code/time_inference.py --model gnn_flex_v2_n30 --name gnn_v2_n30_cpu_cached_perception --device cpu --png 0 --kwargs {\"device\": \"cpu\"} --out experiments/EXP-0062-flex-v2-train-rerun/results/timing_gnn_parts/gnn_cpu_cached.json",
+  "started": "2026-10-02T18:48:01",
+  "model": "gnn_flex_v2_n30",
+  "name": "gnn_v2_n30_cpu_cached_perception",
+  "ckpt": null,
+  "workers": [
+    {
+      "pid": 2266268,
+      "model": "gnn_flex_v2_n30",
+      "name": "gnn_v2_n30_cpu_cached_perception",
+      "ckpt": "weights/MODEL-0010-gnn-flex-mask-v2-n30/checkpoint.pth",
+      "kwargs": {
+        "particle_num": 30,
+        "depth_mode": "plane",
+        "plane_y": 0.24,
+        "carry_k": 1,
+        "device": "cpu"
+      },
+      "corpus": "flex_ds0019_mask",
+      "device_requested": "cpu",
+      "gpu": null,
+      "torch": "2.11.0+cu130",
+      "contended": false,
+      "contention": {},
+      "device_fed_to_forward": [],
+      "n_forward_hook_calls": 0,
+      "n_modules_hooked": 1,
+      "load_s": 8.151135683059692,
+      "warmup_passes": 2,
+      "timed_passes": 3,
+      "n_slates": 100,
+      "n_candidates": 16583,
+      "pool_size": {
+        "n": 100,
+        "median": 167.5,
+        "p10": 142.7,
+        "p90": 186.0,
+        "mean": 165.83,
+        "min": 86.0,
+        "max": 191.0,
+        "total": 16583.0
+      },
+      "per_slate_ms": {
+        "n": 100,
+        "median": 211.8301804875955,
+        "p10": 147.39161708857864,
+        "p90": 278.2209829892963,
+        "mean": 215.1509504695423,
+        "min": 77.04873196780682,
+        "max": 333.44661188311875,
+        "total": 21515.09504695423
+      },
+      "per_slate_ms_with_h2d": {
+        "n": 100,
+        "median": 215.19375289790332,
+        "p10": 149.13339004851878,
+        "p90": 284.25747361034155,
+        "mean": 217.48772509396076,
+        "min": 79.27353493869305,
+        "max": 334.6083308570087,
+        "total": 21748.772509396076
+      },
+      "us_per_candidate_slate_batches": 1297.4187449167357,
+      "us_per_candidate_slate_batches_with_h2d": 1311.5101314235105,
+      "total_all_slates_s": 21.51509504695423,
+      "total_all_slates_s_with_h2d": 21.748772509396076,
+      "batch128": {
+        "n_batches": 129,
+        "ms_per_batch": {
+          "n": 129,
+          "median": 171.55209905467927,
+          "p10": 128.30965504981577,
+          "p90": 205.2315033506602,
+          "mean": 170.51169184368652,
+          "min": 104.98593794181943,
+          "max": 241.6464181151241,
+          "total": 21996.00824783556
+        },
+        "us_per_candidate": 1332.122592528801
+      },
+      "loop_check": {
+        "16": {
+          "aten_ops": 2818,
+          "cuda_kernels": 0
+        },
+        "128": {
+          "aten_ops": 15087,
+          "cuda_kernels": 0
+        },
+        "top_ops_b128_us": {
+          "aten::addmm": 20754.01900000006,
+          "aten::mul": 18006.578000000023,
+          "aten::nonzero": 15181.956000000066,
+          "aten::cat": 14342.204999999987,
+          "aten::index": 14027.52099999981,
+          "aten::bmm": 10626.989999999967,
+          "aten::copy_": 8600.5880000005,
+          "aten::add": 6764.1679999999415
+        },
+        "top_ops_metric": "self_cpu_time_total",
+        "ratio_128_over_16": {
+          "aten_ops": 5.353797019162527,
+          "cuda_kernels": 0.0
+        },
+        "per_sample_loop_suspected": true
+      },
+      "output_device": "cpu"
+    },
+    {
+      "pid": 2271151,
+      "model": "gnn_flex_v2_n30",
+      "name": "gnn_v2_n30_cpu_cached_perception",
+      "ckpt": "weights/MODEL-0010-gnn-flex-mask-v2-n30/checkpoint.pth",
+      "kwargs": {
+        "particle_num": 30,
+        "depth_mode": "plane",
+        "plane_y": 0.24,
+        "carry_k": 1,
+        "device": "cpu"
+      },
+      "corpus": "flex_ds0019_mask",
+      "device_requested": "cpu",
+      "gpu": null,
+      "torch": "2.11.0+cu130",
+      "contended": false,
+      "contention": {},
+      "device_fed_to_forward": [],
+      "n_forward_hook_calls": 0,
+      "n_modules_hooked": 1,
+      "load_s": 8.201399803161621,
+      "warmup_passes": 2,
+      "timed_passes": 3,
+      "n_slates": 100,
+      "n_candidates": 16583,
+      "pool_size": {
+        "n": 100,
+        "median": 167.5,
+        "p10": 142.7,
+        "p90": 186.0,
+        "mean": 165.83,
+        "min": 86.0,
+        "max": 191.0,
+        "total": 16583.0
+      },
+      "per_slate_ms": {
+        "n": 100,
+        "median": 206.45789802074432,
+        "p10": 145.36434698384255,
+        "p90": 277.16183012817055,
+        "mean": 210.757238692604,
+        "min": 76.36942388489842,
+        "max": 343.57499913312495,
+        "total": 21075.7238692604
+      },
+      "per_slate_ms_with_h2d": {
+        "n": 100,
+        "median": 212.74301107041538,
+        "p10": 144.71538760699332,
+        "p90": 278.21619287133217,
+        "mean": 211.23309134040028,
+        "min": 76.1394239962101,
+        "max": 332.60243805125356,
+        "total": 21123.309134040028
+      },
+      "us_per_candidate_slate_batches": 1270.9234679648073,
+      "us_per_candidate_slate_batches_with_h2d": 1273.7929888464107,
+      "total_all_slates_s": 21.0757238692604,
+      "total_all_slates_s_with_h2d": 21.123309134040028,
+      "batch128": {
+        "n_batches": 129,
+        "ms_per_batch": {
+          "n": 129,
+          "median": 166.67916998267174,
+          "p10": 134.71588548272848,
+          "p90": 197.20450420863926,
+          "mean": 167.25198858482545,
+          "min": 102.85302111878991,
+          "max": 236.68589210137725,
+          "total": 21575.506527442485
+        },
+        "us_per_candidate": 1306.656160818949
+      },
+      "loop_check": {
+        "16": {
+          "aten_ops": 2818,
+          "cuda_kernels": 0
+        },
+        "128": {
+          "aten_ops": 15087,
+          "cuda_kernels": 0
+        },
+        "top_ops_b128_us": {
+          "aten::nonzero": 15268.543000000029,
+          "aten::mul": 14736.75900000012,
+          "aten::addmm": 14610.997999999998,
+          "aten::cat": 12444.305999999973,
+          "aten::index": 11138.912999999644,
+          "aten::copy_": 7286.079999999692,
+          "aten::add": 6797.392999999811,
+          "aten::bmm": 6220.007999999991
+        },
+        "top_ops_metric": "self_cpu_time_total",
+        "ratio_128_over_16": {
+          "aten_ops": 5.353797019162527,
+          "cuda_kernels": 0.0
+        },
+        "per_sample_loop_suspected": true
+      },
+      "output_device": "cpu"
+    },
+    {
+      "pid": 2275870,
+      "model": "gnn_flex_v2_n30",
+      "name": "gnn_v2_n30_cpu_cached_perception",
+      "ckpt": "weights/MODEL-0010-gnn-flex-mask-v2-n30/checkpoint.pth",
+      "kwargs": {
+        "particle_num": 30,
+        "depth_mode": "plane",
+        "plane_y": 0.24,
+        "carry_k": 1,
+        "device": "cpu"
+      },
+      "corpus": "flex_ds0019_mask",
+      "device_requested": "cpu",
+      "gpu": null,
+      "torch": "2.11.0+cu130",
+      "contended": false,
+      "contention": {},
+      "device_fed_to_forward": [],
+      "n_forward_hook_calls": 0,
+      "n_modules_hooked": 1,
+      "load_s": 8.159977197647095,
+      "warmup_passes": 2,
+      "timed_passes": 3,
+      "n_slates": 100,
+      "n_candidates": 16583,
+      "pool_size": {
+        "n": 100,
+        "median": 167.5,
+        "p10": 142.7,
+        "p90": 186.0,
+        "mean": 165.83,
+        "min": 86.0,
+        "max": 191.0,
+        "total": 16583.0
+      },
+      "per_slate_ms": {
+        "n": 100,
+        "median": 206.84162841644138,
+        "p10": 145.66591060720384,
+        "p90": 274.76328299380845,
+        "mean": 211.94069048622623,
+        "min": 76.55299291945994,
+        "max": 346.44721588119864,
+        "total": 21194.069048622623
+      },
+      "per_slate_ms_with_h2d": {
+        "n": 100,
+        "median": 210.6370145920664,
+        "p10": 146.15361785981804,
+        "p90": 277.5211901636794,
+        "mean": 214.30622442858294,
+        "min": 78.0445490963757,
+        "max": 340.0083789601922,
+        "total": 21430.622442858294
+      },
+      "us_per_candidate_slate_batches": 1278.0600041381308,
+      "us_per_candidate_slate_batches_with_h2d": 1292.3248171536088,
+      "total_all_slates_s": 21.194069048622623,
+      "total_all_slates_s_with_h2d": 21.430622442858294,
+      "batch128": {
+        "n_batches": 129,
+        "ms_per_batch": {
+          "n": 129,
+          "median": 167.69342008046806,
+          "p10": 129.81875473633409,
+          "p90": 197.08839990198612,
+          "mean": 168.44790232144007,
+          "min": 98.583173006773,
+          "max": 258.68509500287473,
+          "total": 21729.77939946577
+        },
+        "us_per_candidate": 1315.9992368862506
+      },
+      "loop_check": {
+        "16": {
+          "aten_ops": 2818,
+          "cuda_kernels": 0
+        },
+        "128": {
+          "aten_ops": 15087,
+          "cuda_kernels": 0
+        },
+        "top_ops_b128_us": {
+          "aten::nonzero": 15155.311000000043,
+          "aten::addmm": 14877.329999999994,
+          "aten::mul": 14698.430999999971,
+          "aten::cat": 13467.554999999977,
+          "aten::index": 12322.172999999882,
+          "aten::copy_": 8571.14999999999,
+          "aten::bmm": 7615.90499999999,
+          "aten::add": 6573.47899999998
+        },
+        "top_ops_metric": "self_cpu_time_total",
+        "ratio_128_over_16": {
+          "aten_ops": 5.353797019162527,
+          "cuda_kernels": 0.0
+        },
+        "per_sample_loop_suspected": true
+      },
+      "output_device": "cpu"
+    }
+  ],
+  "status": "complete",
+  "aggregate": {
+    "n_processes": 3,
+    "per_slate_ms_median": {
+      "values": [
+        211.8301804875955,
+        206.45789802074432,
+        206.84162841644138
+      ],
+      "median": 206.84162841644138,
+      "rel_spread": 0.025972926765181783
+    },
+    "per_slate_ms_p90": {
+      "values": [
+        278.2209829892963,
+        277.16183012817055,
+        274.76328299380845
+      ],
+      "median": 277.16183012817055,
+      "rel_spread": 0.012475383042062086
+    },
+    "per_slate_ms_with_h2d_median": {
+      "values": [
+        215.19375289790332,
+        212.74301107041538,
+        210.6370145920664
+      ],
+      "median": 212.74301107041538,
+      "rel_spread": 0.021418980030928913
+    },
+    "us_per_candidate": {
+      "values": [
+        1297.4187449167357,
+        1270.9234679648073,
+        1278.0600041381308
+      ],
+      "median": 1278.0600041381308,
+      "rel_spread": 0.020730855254167586
+    },
+    "us_per_candidate_with_h2d": {
+      "values": [
+        1311.5101314235105,
+        1273.7929888464107,
+        1292.3248171536088
+      ],
+      "median": 1292.3248171536088,
+      "rel_spread": 0.029185497389250144
+    },
+    "total_all_slates_s": {
+      "values": [
+        21.51509504695423,
+        21.0757238692604,
+        21.194069048622623
+      ],
+      "median": 21.194069048622623,
+      "rel_spread": 0.020730855254167586
+    },
+    "batch128_ms_per_batch": {
+      "values": [
+        171.55209905467927,
+        166.67916998267174,
+        167.69342008046806
+      ],
+      "median": 167.69342008046806,
+      "rel_spread": 0.029058558586671147
+    },
+    "batch128_us_per_candidate": {
+      "values": [
+        1332.122592528801,
+        1306.656160818949,
+        1315.9992368862506
+      ],
+      "median": 1315.9992368862506,
+      "rel_spread": 0.019351403098156385
+    },
+    "device_fed_to_forward": [],
+    "any_contended": false,
+    "per_sample_loop_suspected": true,
+    "loop_check_ratio": [
+      {
+        "aten_ops": 5.353797019162527,
+        "cuda_kernels": 0.0
+      },
+      {
+        "aten_ops": 5.353797019162527,
+        "cuda_kernels": 0.0
+      },
+      {
+        "aten_ops": 5.353797019162527,
+        "cuda_kernels": 0.0
+      }
+    ]
+  },
+  "finished": "2026-10-02T19:00:49"
+}

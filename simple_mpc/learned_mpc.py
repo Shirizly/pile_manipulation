@@ -129,6 +129,12 @@ class ModelObjective:
         self.mask = mask.to(dev).float() if mask is not None else None
         self.wm, self.ws = float(mass_weight), float(signed_weight)
         self.v0 = self._value(self.occ0)
+        # each member's INPUT representation (soft-occupancy NFD, EXP-0063, blurs the raster;
+        # identity for every other model) and its value, so a member's predicted dv is measured
+        # against its own representation of the start state (a no-op push predicts dv = 0)
+        self._occ_in = [m.encode_state(self.occ0) if hasattr(m, "encode_state") else self.occ0
+                        for m in self.members]
+        self._v0_in = [self._value(o) for o in self._occ_in]
 
     def _value(self, occ):
         if self.value == "emd":
@@ -147,8 +153,8 @@ class ModelObjective:
         outs = []
         for i in range(0, act.shape[0], self.chunk):
             a = act[i:i + self.chunk]
-            occ = self.occ0.expand(a.shape[0], -1, -1).contiguous()
-            dvs = [self._value(m.predict_step(occ, a)) - self.v0 for m in self.members]
+            dvs = [self._value(m.predict_step(self._occ_in[j].expand(a.shape[0], -1, -1).contiguous(), a))
+                   - self._v0_in[j] for j, m in enumerate(self.members)]
             outs.append(torch.stack(dvs).mean(0) if len(dvs) > 1 else dvs[0])
         return torch.cat(outs)
 

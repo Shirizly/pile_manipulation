@@ -437,6 +437,51 @@ class _RealEulerianDatasetWrapper(EulerianDatasetWrapper):
         return self.transforms(sample)
 
 
+@register_dataset("flex")
+def _build_flex_dataset(cfg: dict, split: str) -> EulerianDatasetWrapper:
+    """
+    Wrap FlexData.dataset.FlexPileData (FleX carrot-pile corpora DS-0019/
+    DS-0020, native FleX units, table frame X = x_flex, Y = -z_flex).
+
+    Config keys:
+        instance:        str  — path to a datasets/DS-####-*/config.yaml
+                                (grid bounds, plate geometry, flag thresholds,
+                                cache + split files all come from there; DS-0020
+                                v2 = datasets/DS-0020-*/config.yaml, archived v1 =
+                                datasets/DS-0020-*/old_data/_ported_v1/config.yaml)
+        split_instances: dict — optional {split: {instance: path, split: name}}
+                                override, e.g. test -> DS-0019 "all", so the
+                                Trainer's end-of-run test pass scores the
+                                held-out corpus (DS-0020 has no test split)
+        channels:        int  (default 3) — 3 = [occ0, r_start, r_stop]
+                                (nfd-genesis-3ch layout), 2 = the genesis union
+        exclude_flagged: bool (default True) — drop nan/escaped/out-of-grid/null rows
+        include_physics: bool (default False) — physics is a zero vector here
+        occ_source:      str  (default: instance config's occupancy.source,
+                                else "particles") — "particles" (disk raster)
+                                or "image_mask" (precomputed masks, see
+                                FlexData.dataset.ImageMaskSource)
+    """
+    from FlexData.dataset import FlexPileData
+
+    inst, sub = cfg["instance"], split
+    override = (cfg.get("split_instances") or {}).get(split)
+    if override is not None:
+        inst, sub = override["instance"], override.get("split", "all")
+    raw = FlexPileData(
+        inst,
+        split=sub,
+        channels=int(cfg.get("channels", 3)),
+        exclude_flagged=bool(cfg.get("exclude_flagged", True)),
+        occ_source=cfg.get("occ_source"),
+    )
+    return EulerianDatasetWrapper(
+        raw,
+        include_physics=bool(cfg.get("include_physics", False)),
+        transforms_cfg=cfg.get("transforms"),
+    )
+
+
 @register_dataset("genesis-particles")
 def _build_genesis_particles_dataset(cfg: dict, split: str) -> LagrangianDatasetWrapper:
     """Build Lagrangian particle-transition dataset for GNN training."""

@@ -1,0 +1,28 @@
+[ckpt override] nfd_randlen -> Baselines/NFD/runs/nfd_3ch_randlen/unet_best.pth
+[randlen_test] loaded 10751 transitions (54.8s)
+[randlen_test / nfd_randlen] accuracy=0.4564  device=cpu  (13.3s)
+    averaged         lyapunov=+0.8939  mass_in_region=+0.8721  signed_mass=+0.8277  (30 goals)
+
+wrote experiments/EXP-0036-seed-noise-floor/results/randlen_test/seed0.json
+done seed0 Thu Sep 24 03:39:29 PM CEST 2026
+[ckpt override] nfd_randlen -> Baselines/NFD/runs/nfd_3ch_randlen_seed1/unet_best.pth
+[randlen_test] loaded 10751 transitions (47.6s)
+[randlen_test / nfd_randlen] accuracy=0.4615  device=cpu  (12.7s)
+    averaged         lyapunov=+0.9153  mass_in_region=+0.8713  signed_mass=+0.8751  (30 goals)
+
+wrote experiments/EXP-0036-seed-noise-floor/results/randlen_test/seed1.json
+done seed1 Thu Sep 24 03:40:31 PM CEST 2026
+[ckpt override] nfd_randlen -> Baselines/NFD/runs/nfd_3ch_randlen_seed2/unet_best.pth
+[randlen_test] loaded 10751 transitions (47.1s)
+[randlen_test / nfd_randlen] accuracy=0.4622  device=cpu  (12.8s)
+    averaged         lyapunov=+0.9089  mass_in_region=+0.8718  signed_mass=+0.8665  (30 goals)
+
+wrote experiments/EXP-0036-seed-noise-floor/results/randlen_test/seed2.json
+done seed2 Thu Sep 24 03:41:33 PM CEST 2026
+[ckpt override] nfd_randlen -> Baselines/NFD/runs/nfd_3ch_randlen_seed3/unet_best.pth
+[randlen_test] loaded 10751 transitions (47.3s)
+[randlen_test / nfd_randlen] accuracy=0.4642  device=cpu  (12.6s)
+    averaged         lyapunov=+0.9062  mass_in_region=+0.8732  signed_mass=+0.8794  (30 goals)
+
+wrote experiments/EXP-0036-seed-noise-floor/results/randlen_test/seed3.json
+done seed3 Thu Sep 24 03:42:35 PM CEST 2026

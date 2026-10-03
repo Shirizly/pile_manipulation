@@ -413,3 +413,9 @@ plus this experiment's own new directory `experiments/EXP-0020-lejepa-sigreg-on-
   the same, with file-disjoint grouped lambda selection.
 - `results/diag_lam_encoder.json` — full lambda x centring table for this
   encoder and for EXP-0016's frozen random encoder.
+
+## Later evidence (2026-10-03 audit)
+
+Added by the cross-experiment audit (summary: `experiments/SUMMARY.md`). Numbers above are unchanged.
+
+- **ISS-001: the conclusion that the SIGReg-on-z fix 'failed' reads the same misleading 8-file slice.** Full-corpus effective rank: SIGReg on p+z 18.6 (lower than SIGReg-on-p 41.7). What stands: latent R^2 +0.033/+0.060 -> +0.293/+0.412 and the train-test gap 0.301 -> 0.052.

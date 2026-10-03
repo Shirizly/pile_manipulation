@@ -1,0 +1,23 @@
+train:
+  adam_beta1: 0.9
+  batch_size: 16
+  ckp_per_iter: 200
+  data_root: data/true_action_transitions_carrots_grouped
+  log_per_iter: 20
+  lr: 0.001
+  n_epoch: 300
+  n_history: 1
+  n_rollout: 5
+  num_workers: 4
+  particle:
+    add_delta: false
+    adj_thresh: 0.08
+    nf_effect: 64
+    node_budget: 30
+    resume:
+      active: false
+      epoch: 0
+      folder: None
+      iter: 0
+  random_seed: 42
+  train_valid_ratio: 0.9

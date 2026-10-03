@@ -1,0 +1,37 @@
+{
+  "corpus": "ds0020_val",
+  "truth": "binary image mask of the true after-state (cell.occ1, occ_source=image_mask)",
+  "n_rows": 1991,
+  "models": {
+    "nfd_s0": {
+      "accuracy": 0.6095459461212158,
+      "seconds": 0.6146492958068848,
+      "accuracy_check": 0.6095459461212158
+    },
+    "nfd_s1": {
+      "accuracy": 0.6117231249809265,
+      "seconds": 0.2198963165283203,
+      "accuracy_check": 0.6117230653762817
+    },
+    "nfd_s2": {
+      "accuracy": 0.6098418831825256,
+      "seconds": 0.24835634231567383,
+      "accuracy_check": 0.6098419427871704
+    },
+    "lf_flex_switched": {
+      "accuracy": 0.48238682746887207,
+      "seconds": 0.451967716217041,
+      "accuracy_check": 0.48238688707351685
+    },
+    "lf_flex_single": {
+      "accuracy": 0.3543247580528259,
+      "seconds": 0.3733534812927246,
+      "accuracy_check": 0.3543248772621155
+    },
+    "gnn_flex_drp_samp0": {
+      "accuracy": 0.25169289112091064,
+      "seconds": 347.20478081703186,
+      "accuracy_check": 0.25169306993484497
+    }
+  }
+}

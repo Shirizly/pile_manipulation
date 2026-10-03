@@ -111,3 +111,10 @@ One optimiser setting; 40 states; the grad pick uses the model's own prediction
 
 ## Unrelated findings
 None.
+
+## Later evidence (2026-10-03 audit)
+
+Added by the cross-experiment audit (summary: `experiments/SUMMARY.md`). Numbers above are unchanged.
+
+- EXP-0042 later found this GD setting (lr 1.5e-3, 3 restarts) to be the WORST GD cell, and that tuning changes model GAPS, not just level; C-041/C-042 were not re-run with tuned GD.
+- EXP-0065 / ISS-013: 54 % of DS-0006's candidate pushes put the blade on a cube at touchdown (pre-fix pile-aware sampler); this record's pool numbers were not re-scored on legal-only candidates.

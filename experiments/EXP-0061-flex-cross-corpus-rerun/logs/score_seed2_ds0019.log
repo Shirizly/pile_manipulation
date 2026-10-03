@@ -1,0 +1,4 @@
+FlexPileData(DS-0019, split=all, exclude_flagged=True): 17186 rows; flagged nan=0 escaped=397 out_of_grid=47 null=159 -> kept 16583
+loaded 16583 rows, 100 slates (7s)
+nfd_flex_mask_seed2 acc 0.48418521881103516 {'lyapunov': 0.9528820391394586, 'mass_in_region': 0.8779703476221226, 'signed_mass': 0.9038302803398311}
+wrote experiments/EXP-0061-flex-cross-corpus-rerun/results/nfd_seed2_ds0019.json

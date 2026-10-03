@@ -277,3 +277,9 @@ overnight-holdout replication) and `experiments/REGISTER.md`'s revised
   remaining operators (hybrid14/hybrid94, latent family, descriptor-only)
   are still only in `experiments/temp/`, not yet promoted, since nothing
   outside this record currently compares against them directly.
+
+## Later evidence (2026-10-03 audit)
+
+Added by the cross-experiment audit (summary: `experiments/SUMMARY.md`). Numbers above are unchanged.
+
+- Asymmetric goal masks (T / random_quadrant / ring_O / stripe / letters) in this record were scored BEFORE the goal-axis fix `28271c09` (2026-09-17) and were never rescored; transpose-invariant goals (corner, center, ...) are unaffected (ISS-003). The existing amendment (superseded by EXP-0008) does not cover this.

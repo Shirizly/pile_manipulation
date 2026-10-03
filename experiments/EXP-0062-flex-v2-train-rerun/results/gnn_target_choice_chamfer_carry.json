@@ -1,0 +1,9 @@
+{
+ "experiments/EXP-0062-flex-v2-train-rerun/artifacts/RUN-0003-gnn/pilot25min_chamfer_carry_best.pth": {
+  "val_accuracy": 0.1805044412612915,
+  "n_rows": 1665,
+  "device": "cpu",
+  "seconds": 110.67687368392944,
+  "mtime": "Fri Oct  2 17:22:22 2026"
+ }
+}

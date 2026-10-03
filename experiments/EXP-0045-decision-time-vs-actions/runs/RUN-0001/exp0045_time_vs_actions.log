@@ -1,0 +1,961 @@
+[38;5;159m[Genesis] [21:37:11] [INFO] [38;5;121m╭───────────────────────────────────────────────╮[0m[38;5;159m[0m
+[38;5;159m[Genesis] [21:37:11] [INFO] [38;5;121m│┈┉┈┉┈┉┈┉┈┉┈┉┈┉┈┉┈┉┈[0m[38;5;159m [38;5;121m[1m[3mGenesis[0m[38;5;159m [38;5;121m┈┉┈┉┈┉┈┉┈┉┈┉┈┉┈┉┈┉┈│[0m[38;5;159m[0m
+[38;5;159m[Genesis] [21:37:11] [INFO] [38;5;121m╰───────────────────────────────────────────────╯[0m[38;5;159m[0m
+[38;5;159m[Genesis] [21:37:11] [INFO] Running on [38;5;121m[4m[NVIDIA GeForce RTX 4070 Laptop GPU][0m[38;5;159m with backend [38;5;121m[4mgs.cuda[0m[38;5;159m. Device memory: [38;5;121m[4m7.62[0m[38;5;159m GB.[0m
+[38;5;159m[Genesis] [21:37:11] [INFO] 🚀 Genesis initialized. 🔖 version: [38;5;121m[4m1.3.3[0m[38;5;159m, 🎨 theme: [38;5;121m[4mdark[0m[38;5;159m, 🌱 seed: [38;5;121m[4mNone[0m[38;5;159m, 🐛 debug: [38;5;121m[4mFalse[0m[38;5;159m, 📏 precision: [38;5;121m[4m32[0m[38;5;159m, 🔥 performance: [38;5;121m[4mTrue[0m[38;5;159m, 💬 verbose: [38;5;121m[4mINFO[0m[38;5;159m[0m
+[38;5;159m[Genesis] [21:37:14] [INFO] Scene [38;5;121m[3m<dfe928d>[0m[38;5;159m created.[0m
+[38;5;159m[Genesis] [21:37:14] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m0[0m[38;5;159m, uid: [38;5;121m[3m<d588ff5>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Plane>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [21:37:14] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m1[0m[38;5;159m, uid: [38;5;121m[3m<cca2b3b>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [21:37:14] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m2[0m[38;5;159m, uid: [38;5;121m[3m<f65e6e7>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [21:37:14] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m3[0m[38;5;159m, uid: [38;5;121m[3m<3fd2191>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [21:37:14] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m4[0m[38;5;159m, uid: [38;5;121m[3m<baf8cbe>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [21:37:14] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m5[0m[38;5;159m, uid: [38;5;121m[3m<4c2e511>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [21:37:14] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m6[0m[38;5;159m, uid: [38;5;121m[3m<cdac66c>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [21:37:14] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m7[0m[38;5;159m, uid: [38;5;121m[3m<84a182f>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [21:37:14] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m8[0m[38;5;159m, uid: [38;5;121m[3m<3fb81e9>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [21:37:14] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m9[0m[38;5;159m, uid: [38;5;121m[3m<2849ec3>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [21:37:14] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m10[0m[38;5;159m, uid: [38;5;121m[3m<8e03434>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [21:37:14] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m11[0m[38;5;159m, uid: [38;5;121m[3m<f4ab5d8>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [21:37:14] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m12[0m[38;5;159m, uid: [38;5;121m[3m<2a371bc>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [21:37:14] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m13[0m[38;5;159m, uid: [38;5;121m[3m<5fdd633>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [21:37:14] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m14[0m[38;5;159m, uid: [38;5;121m[3m<24bdb85>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [21:37:14] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m15[0m[38;5;159m, uid: [38;5;121m[3m<c11023d>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [21:37:14] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m16[0m[38;5;159m, uid: [38;5;121m[3m<d2ab384>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [21:37:14] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m17[0m[38;5;159m, uid: [38;5;121m[3m<e75d6ec>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [21:37:14] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m18[0m[38;5;159m, uid: [38;5;121m[3m<697ca59>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [21:37:14] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m19[0m[38;5;159m, uid: [38;5;121m[3m<90a5659>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [21:37:14] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m20[0m[38;5;159m, uid: [38;5;121m[3m<b665703>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [21:37:14] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m21[0m[38;5;159m, uid: [38;5;121m[3m<44ff287>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [21:37:14] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m22[0m[38;5;159m, uid: [38;5;121m[3m<3bfea2a>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [21:37:14] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m23[0m[38;5;159m, uid: [38;5;121m[3m<ebd8cf3>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [21:37:14] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m24[0m[38;5;159m, uid: [38;5;121m[3m<848fd1a>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [21:37:14] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m25[0m[38;5;159m, uid: [38;5;121m[3m<5f571f7>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [21:37:14] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m26[0m[38;5;159m, uid: [38;5;121m[3m<6c1ab32>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+Generated 20 particles out of 20
+[38;5;159m[Genesis] [21:37:14] [INFO] Building scene [38;5;121m[3m<dfe928d>[0m[38;5;159m...[0m
+[38;5;159m[Genesis] [21:37:17] [INFO] Compiling simulation kernels...[0m
+[38;5;159m[Genesis] [21:37:37] [INFO] Building visualizer...[0m
+libEGL warning: egl: failed to create dri2 screen
+libEGL warning: egl: failed to create dri2 screen
+chunk 0: step 1/24 (12s)
+chunk 0: step 2/24 (25s)
+chunk 0: step 3/24 (37s)
+chunk 0: step 4/24 (49s)
+chunk 0: step 5/24 (60s)
+chunk 0: step 6/24 (72s)
+chunk 0: step 7/24 (84s)
+chunk 0: step 8/24 (96s)
+chunk 0: step 9/24 (108s)
+chunk 0: step 10/24 (120s)
+chunk 0: step 11/24 (133s)
+chunk 0: step 12/24 (145s)
+pile-aware actions: swath holds 11.0 particles on average (min 2); 1/524288 draws could not reach min_swath=3
+chunk 0: step 13/24 (158s)
+chunk 0: step 14/24 (170s)
+chunk 0: step 15/24 (182s)
+chunk 0: step 16/24 (194s)
+chunk 0: step 17/24 (206s)
+chunk 0: step 18/24 (218s)
+chunk 0: step 19/24 (231s)
+chunk 0: step 20/24 (242s)
+pile-aware actions: swath holds 11.8 particles on average (min 2); 1/524288 draws could not reach min_swath=3
+chunk 0: step 21/24 (253s)
+chunk 0: step 22/24 (265s)
+chunk 0: step 23/24 (277s)
+chunk 0: step 24/24 (290s)
+chunk 0: step 24/24 (290s)
+  nfd_residual_worldframe_noaug_ep43   gd   b0.03      quadrant_0 40: improve +0.250; evals/step 124
+  nfd_residual_worldframe_noaug_ep43   gd   b0.03      quadrant_0 41: improve +0.154; evals/step 127
+  nfd_residual_worldframe_noaug_ep43   gd   b0.03      quadrant_0 42: improve +0.188; evals/step 128
+  nfd_residual_worldframe_noaug_ep43   gd   b0.03      quadrant_0 43: improve +0.182; evals/step 128
+  nfd_residual_worldframe_noaug_ep43   gd   b0.03      quadrant_3 40: improve +0.223; evals/step 127
+  nfd_residual_worldframe_noaug_ep43   gd   b0.03      quadrant_3 41: improve +0.262; evals/step 128
+  nfd_residual_worldframe_noaug_ep43   gd   b0.03      quadrant_3 42: improve +0.222; evals/step 128
+  nfd_residual_worldframe_noaug_ep43   gd   b0.03      quadrant_3 43: improve +0.222; evals/step 128
+  nfd_residual_worldframe_noaug_ep43   gd   b0.03      letter_O   40: improve +0.189; evals/step 128
+  nfd_residual_worldframe_noaug_ep43   gd   b0.03      letter_O   41: improve +0.156; evals/step 128
+  nfd_residual_worldframe_noaug_ep43   gd   b0.03      letter_O   42: improve +0.166; evals/step 127
+  nfd_residual_worldframe_noaug_ep43   gd   b0.03      letter_O   43: improve +0.164; evals/step 127
+  nfd_residual_worldframe_noaug_ep43   gd   b0.03      letter_T   40: improve +0.282; evals/step 127
+  nfd_residual_worldframe_noaug_ep43   gd   b0.03      letter_T   41: improve +0.189; evals/step 125
+  nfd_residual_worldframe_noaug_ep43   gd   b0.03      letter_T   42: improve +0.159; evals/step 127
+  nfd_residual_worldframe_noaug_ep43   gd   b0.03      letter_T   43: improve +0.231; evals/step 127
+  nfd_residual_worldframe_noaug_ep43   gd   b0.03      letter_S   40: improve +0.200; evals/step 127
+  nfd_residual_worldframe_noaug_ep43   gd   b0.03      letter_S   41: improve +0.186; evals/step 127
+  nfd_residual_worldframe_noaug_ep43   gd   b0.03      letter_S   42: improve +0.172; evals/step 127
+  nfd_residual_worldframe_noaug_ep43   gd   b0.03      letter_S   43: improve +0.135; evals/step 127
+  nfd_residual_worldframe_noaug_ep43   gd   b0.03      letter_L   40: improve +0.151; evals/step 127
+  nfd_residual_worldframe_noaug_ep43   gd   b0.03      letter_L   41: improve +0.221; evals/step 127
+  nfd_residual_worldframe_noaug_ep43   gd   b0.03      letter_L   42: improve +0.190; evals/step 127
+  nfd_residual_worldframe_noaug_ep43   gd   b0.03      letter_L   43: improve +0.220; evals/step 125
+  nfd_residual_worldframe_noaug_ep43   gd   b0.03      letter_X   40: improve +0.279; evals/step 125
+  nfd_residual_worldframe_noaug_ep43   gd   b0.03      letter_X   41: improve +0.284; evals/step 125
+  nfd_residual_worldframe_noaug_ep43   gd   b0.03      letter_X   42: improve +0.120; evals/step 127
+  nfd_residual_worldframe_noaug_ep43   gd   b0.03      letter_X   43: improve +0.237; evals/step 127
+  nfd_residual_worldframe_noaug_ep43   gd   b0.03      letter_Z   40: improve +0.242; evals/step 125
+  nfd_residual_worldframe_noaug_ep43   gd   b0.03      letter_Z   41: improve +0.160; evals/step 127
+  nfd_residual_worldframe_noaug_ep43   gd   b0.03      letter_Z   42: improve +0.121; evals/step 127
+  nfd_residual_worldframe_noaug_ep43   gd   b0.03      letter_Z   43: improve +0.183; evals/step 125
+chunk 1: step 1/24 (13s)
+chunk 1: step 2/24 (25s)
+chunk 1: step 3/24 (37s)
+chunk 1: step 4/24 (49s)
+chunk 1: step 5/24 (60s)
+chunk 1: step 6/24 (72s)
+chunk 1: step 7/24 (84s)
+chunk 1: step 8/24 (96s)
+chunk 1: step 9/24 (107s)
+chunk 1: step 10/24 (118s)
+pile-aware actions: swath holds 8.0 particles on average (min 2); 1/524288 draws could not reach min_swath=3
+chunk 1: step 11/24 (129s)
+chunk 1: step 12/24 (140s)
+chunk 1: step 13/24 (152s)
+chunk 1: step 14/24 (162s)
+chunk 1: step 15/24 (173s)
+pile-aware actions: swath holds 8.2 particles on average (min 2); 1/524288 draws could not reach min_swath=3
+chunk 1: step 16/24 (184s)
+chunk 1: step 17/24 (194s)
+chunk 1: step 18/24 (205s)
+chunk 1: step 19/24 (216s)
+chunk 1: step 20/24 (227s)
+chunk 1: step 21/24 (238s)
+chunk 1: step 22/24 (249s)
+chunk 1: step 23/24 (259s)
+chunk 1: step 24/24 (270s)
+chunk 1: step 24/24 (270s)
+  nfd_residual_worldframe_noaug_ep43   cem  b0.03      quadrant_0 40: improve +0.094; evals/step 1024
+  nfd_residual_worldframe_noaug_ep43   cem  b0.03      quadrant_0 41: improve +0.044; evals/step 1024
+  nfd_residual_worldframe_noaug_ep43   cem  b0.03      quadrant_0 42: improve +0.157; evals/step 1024
+  nfd_residual_worldframe_noaug_ep43   cem  b0.03      quadrant_0 43: improve +0.097; evals/step 1024
+  nfd_residual_worldframe_noaug_ep43   cem  b0.03      quadrant_3 40: improve +0.031; evals/step 1024
+  nfd_residual_worldframe_noaug_ep43   cem  b0.03      quadrant_3 41: improve +0.151; evals/step 1024
+  nfd_residual_worldframe_noaug_ep43   cem  b0.03      quadrant_3 42: improve +0.120; evals/step 1024
+  nfd_residual_worldframe_noaug_ep43   cem  b0.03      quadrant_3 43: improve +0.130; evals/step 1024
+  nfd_residual_worldframe_noaug_ep43   cem  b0.03      letter_O   40: improve +0.021; evals/step 1024
+  nfd_residual_worldframe_noaug_ep43   cem  b0.03      letter_O   41: improve +0.027; evals/step 1024
+  nfd_residual_worldframe_noaug_ep43   cem  b0.03      letter_O   42: improve +0.015; evals/step 1024
+  nfd_residual_worldframe_noaug_ep43   cem  b0.03      letter_O   43: improve +0.008; evals/step 1024
+  nfd_residual_worldframe_noaug_ep43   cem  b0.03      letter_T   40: improve +0.063; evals/step 1024
+  nfd_residual_worldframe_noaug_ep43   cem  b0.03      letter_T   41: improve +0.031; evals/step 1024
+  nfd_residual_worldframe_noaug_ep43   cem  b0.03      letter_T   42: improve +0.075; evals/step 1024
+  nfd_residual_worldframe_noaug_ep43   cem  b0.03      letter_T   43: improve +0.063; evals/step 1024
+  nfd_residual_worldframe_noaug_ep43   cem  b0.03      letter_S   40: improve +0.039; evals/step 1024
+  nfd_residual_worldframe_noaug_ep43   cem  b0.03      letter_S   41: improve +0.051; evals/step 1024
+  nfd_residual_worldframe_noaug_ep43   cem  b0.03      letter_S   42: improve +0.072; evals/step 1024
+  nfd_residual_worldframe_noaug_ep43   cem  b0.03      letter_S   43: improve +0.057; evals/step 1024
+  nfd_residual_worldframe_noaug_ep43   cem  b0.03      letter_L   40: improve +0.054; evals/step 1024
+  nfd_residual_worldframe_noaug_ep43   cem  b0.03      letter_L   41: improve +0.072; evals/step 1024
+  nfd_residual_worldframe_noaug_ep43   cem  b0.03      letter_L   42: improve +0.110; evals/step 1024
+  nfd_residual_worldframe_noaug_ep43   cem  b0.03      letter_L   43: improve +0.101; evals/step 1024
+  nfd_residual_worldframe_noaug_ep43   cem  b0.03      letter_X   40: improve +0.008; evals/step 1024
+  nfd_residual_worldframe_noaug_ep43   cem  b0.03      letter_X   41: improve +0.051; evals/step 1024
+  nfd_residual_worldframe_noaug_ep43   cem  b0.03      letter_X   42: improve +0.065; evals/step 1024
+  nfd_residual_worldframe_noaug_ep43   cem  b0.03      letter_X   43: improve +0.089; evals/step 1024
+  nfd_residual_worldframe_noaug_ep43   cem  b0.03      letter_Z   40: improve +0.065; evals/step 1024
+  nfd_residual_worldframe_noaug_ep43   cem  b0.03      letter_Z   41: improve -0.031; evals/step 1024
+  nfd_residual_worldframe_noaug_ep43   cem  b0.03      letter_Z   42: improve +0.042; evals/step 1024
+  nfd_residual_worldframe_noaug_ep43   cem  b0.03      letter_Z   43: improve +0.035; evals/step 1024
+chunk 2: step 1/24 (15s)
+chunk 2: step 2/24 (31s)
+chunk 2: step 3/24 (47s)
+chunk 2: step 4/24 (64s)
+chunk 2: step 5/24 (80s)
+chunk 2: step 6/24 (96s)
+chunk 2: step 7/24 (112s)
+chunk 2: step 8/24 (128s)
+chunk 2: step 9/24 (144s)
+chunk 2: step 10/24 (162s)
+chunk 2: step 11/24 (179s)
+chunk 2: step 12/24 (193s)
+chunk 2: step 13/24 (210s)
+chunk 2: step 14/24 (227s)
+chunk 2: step 15/24 (244s)
+chunk 2: step 16/24 (260s)
+chunk 2: step 17/24 (275s)
+chunk 2: step 18/24 (289s)
+chunk 2: step 19/24 (306s)
+chunk 2: step 20/24 (321s)
+chunk 2: step 21/24 (338s)
+chunk 2: step 22/24 (354s)
+chunk 2: step 23/24 (371s)
+chunk 2: step 24/24 (387s)
+chunk 2: step 24/24 (388s)
+  nfd_residual_worldframe_noaug_ep43   gd   b0.1       quadrant_0 40: improve +0.294; evals/step 345
+  nfd_residual_worldframe_noaug_ep43   gd   b0.1       quadrant_0 41: improve +0.266; evals/step 348
+  nfd_residual_worldframe_noaug_ep43   gd   b0.1       quadrant_0 42: improve +0.348; evals/step 349
+  nfd_residual_worldframe_noaug_ep43   gd   b0.1       quadrant_0 43: improve +0.277; evals/step 347
+  nfd_residual_worldframe_noaug_ep43   gd   b0.1       quadrant_3 40: improve +0.290; evals/step 348
+  nfd_residual_worldframe_noaug_ep43   gd   b0.1       quadrant_3 41: improve +0.307; evals/step 348
+  nfd_residual_worldframe_noaug_ep43   gd   b0.1       quadrant_3 42: improve +0.299; evals/step 347
+  nfd_residual_worldframe_noaug_ep43   gd   b0.1       quadrant_3 43: improve +0.328; evals/step 348
+  nfd_residual_worldframe_noaug_ep43   gd   b0.1       letter_O   40: improve +0.324; evals/step 348
+  nfd_residual_worldframe_noaug_ep43   gd   b0.1       letter_O   41: improve +0.261; evals/step 344
+  nfd_residual_worldframe_noaug_ep43   gd   b0.1       letter_O   42: improve +0.288; evals/step 348
+  nfd_residual_worldframe_noaug_ep43   gd   b0.1       letter_O   43: improve +0.286; evals/step 348
+  nfd_residual_worldframe_noaug_ep43   gd   b0.1       letter_T   40: improve +0.354; evals/step 352
+  nfd_residual_worldframe_noaug_ep43   gd   b0.1       letter_T   41: improve +0.278; evals/step 351
+  nfd_residual_worldframe_noaug_ep43   gd   b0.1       letter_T   42: improve +0.323; evals/step 349
+  nfd_residual_worldframe_noaug_ep43   gd   b0.1       letter_T   43: improve +0.353; evals/step 348
+  nfd_residual_worldframe_noaug_ep43   gd   b0.1       letter_S   40: improve +0.328; evals/step 347
+  nfd_residual_worldframe_noaug_ep43   gd   b0.1       letter_S   41: improve +0.239; evals/step 343
+  nfd_residual_worldframe_noaug_ep43   gd   b0.1       letter_S   42: improve +0.316; evals/step 341
+  nfd_residual_worldframe_noaug_ep43   gd   b0.1       letter_S   43: improve +0.327; evals/step 344
+  nfd_residual_worldframe_noaug_ep43   gd   b0.1       letter_L   40: improve +0.288; evals/step 345
+  nfd_residual_worldframe_noaug_ep43   gd   b0.1       letter_L   41: improve +0.273; evals/step 347
+  nfd_residual_worldframe_noaug_ep43   gd   b0.1       letter_L   42: improve +0.288; evals/step 348
+  nfd_residual_worldframe_noaug_ep43   gd   b0.1       letter_L   43: improve +0.321; evals/step 345
+  nfd_residual_worldframe_noaug_ep43   gd   b0.1       letter_X   40: improve +0.364; evals/step 348
+  nfd_residual_worldframe_noaug_ep43   gd   b0.1       letter_X   41: improve +0.319; evals/step 348
+  nfd_residual_worldframe_noaug_ep43   gd   b0.1       letter_X   42: improve +0.318; evals/step 347
+  nfd_residual_worldframe_noaug_ep43   gd   b0.1       letter_X   43: improve +0.372; evals/step 345
+  nfd_residual_worldframe_noaug_ep43   gd   b0.1       letter_Z   40: improve +0.382; evals/step 348
+  nfd_residual_worldframe_noaug_ep43   gd   b0.1       letter_Z   41: improve +0.277; evals/step 345
+  nfd_residual_worldframe_noaug_ep43   gd   b0.1       letter_Z   42: improve +0.265; evals/step 344
+  nfd_residual_worldframe_noaug_ep43   gd   b0.1       letter_Z   43: improve +0.358; evals/step 347
+chunk 3: step 1/24 (14s)
+chunk 3: step 2/24 (30s)
+chunk 3: step 3/24 (44s)
+chunk 3: step 4/24 (60s)
+chunk 3: step 5/24 (75s)
+chunk 3: step 6/24 (92s)
+chunk 3: step 7/24 (109s)
+chunk 3: step 8/24 (125s)
+chunk 3: step 9/24 (142s)
+chunk 3: step 10/24 (161s)
+chunk 3: step 11/24 (178s)
+chunk 3: step 12/24 (196s)
+chunk 3: step 13/24 (213s)
+chunk 3: step 14/24 (230s)
+chunk 3: step 15/24 (247s)
+chunk 3: step 16/24 (263s)
+chunk 3: step 17/24 (281s)
+chunk 3: step 18/24 (298s)
+chunk 3: step 19/24 (315s)
+chunk 3: step 20/24 (331s)
+chunk 3: step 21/24 (347s)
+chunk 3: step 22/24 (361s)
+chunk 3: step 23/24 (378s)
+chunk 3: step 24/24 (394s)
+chunk 3: step 24/24 (394s)
+  nfd_residual_worldframe_noaug_ep43   cem  b0.1       quadrant_0 40: improve +0.294; evals/step 2048
+  nfd_residual_worldframe_noaug_ep43   cem  b0.1       quadrant_0 41: improve +0.265; evals/step 2048
+  nfd_residual_worldframe_noaug_ep43   cem  b0.1       quadrant_0 42: improve +0.348; evals/step 2048
+  nfd_residual_worldframe_noaug_ep43   cem  b0.1       quadrant_0 43: improve +0.298; evals/step 2048
+  nfd_residual_worldframe_noaug_ep43   cem  b0.1       quadrant_3 40: improve +0.290; evals/step 2048
+  nfd_residual_worldframe_noaug_ep43   cem  b0.1       quadrant_3 41: improve +0.307; evals/step 2048
+  nfd_residual_worldframe_noaug_ep43   cem  b0.1       quadrant_3 42: improve +0.299; evals/step 2048
+  nfd_residual_worldframe_noaug_ep43   cem  b0.1       quadrant_3 43: improve +0.329; evals/step 2048
+  nfd_residual_worldframe_noaug_ep43   cem  b0.1       letter_O   40: improve +0.327; evals/step 2048
+  nfd_residual_worldframe_noaug_ep43   cem  b0.1       letter_O   41: improve +0.262; evals/step 2048
+  nfd_residual_worldframe_noaug_ep43   cem  b0.1       letter_O   42: improve +0.292; evals/step 2048
+  nfd_residual_worldframe_noaug_ep43   cem  b0.1       letter_O   43: improve +0.285; evals/step 2048
+  nfd_residual_worldframe_noaug_ep43   cem  b0.1       letter_T   40: improve +0.388; evals/step 2048
+  nfd_residual_worldframe_noaug_ep43   cem  b0.1       letter_T   41: improve +0.243; evals/step 2048
+  nfd_residual_worldframe_noaug_ep43   cem  b0.1       letter_T   42: improve +0.333; evals/step 2048
+  nfd_residual_worldframe_noaug_ep43   cem  b0.1       letter_T   43: improve +0.324; evals/step 2048
+  nfd_residual_worldframe_noaug_ep43   cem  b0.1       letter_S   40: improve +0.318; evals/step 2048
+  nfd_residual_worldframe_noaug_ep43   cem  b0.1       letter_S   41: improve +0.257; evals/step 2048
+  nfd_residual_worldframe_noaug_ep43   cem  b0.1       letter_S   42: improve +0.315; evals/step 2048
+  nfd_residual_worldframe_noaug_ep43   cem  b0.1       letter_S   43: improve +0.326; evals/step 2048
+  nfd_residual_worldframe_noaug_ep43   cem  b0.1       letter_L   40: improve +0.285; evals/step 2048
+  nfd_residual_worldframe_noaug_ep43   cem  b0.1       letter_L   41: improve +0.263; evals/step 2048
+  nfd_residual_worldframe_noaug_ep43   cem  b0.1       letter_L   42: improve +0.302; evals/step 2048
+  nfd_residual_worldframe_noaug_ep43   cem  b0.1       letter_L   43: improve +0.311; evals/step 2048
+  nfd_residual_worldframe_noaug_ep43   cem  b0.1       letter_X   40: improve +0.367; evals/step 2048
+  nfd_residual_worldframe_noaug_ep43   cem  b0.1       letter_X   41: improve +0.307; evals/step 2048
+  nfd_residual_worldframe_noaug_ep43   cem  b0.1       letter_X   42: improve +0.316; evals/step 2048
+  nfd_residual_worldframe_noaug_ep43   cem  b0.1       letter_X   43: improve +0.385; evals/step 2048
+  nfd_residual_worldframe_noaug_ep43   cem  b0.1       letter_Z   40: improve +0.358; evals/step 2048
+  nfd_residual_worldframe_noaug_ep43   cem  b0.1       letter_Z   41: improve +0.299; evals/step 2048
+  nfd_residual_worldframe_noaug_ep43   cem  b0.1       letter_Z   42: improve +0.262; evals/step 2048
+  nfd_residual_worldframe_noaug_ep43   cem  b0.1       letter_Z   43: improve +0.345; evals/step 2048
+chunk 4: step 1/24 (22s)
+chunk 4: step 2/24 (44s)
+chunk 4: step 3/24 (66s)
+chunk 4: step 4/24 (88s)
+chunk 4: step 5/24 (112s)
+chunk 4: step 6/24 (135s)
+chunk 4: step 7/24 (159s)
+chunk 4: step 8/24 (182s)
+chunk 4: step 9/24 (205s)
+chunk 4: step 10/24 (228s)
+chunk 4: step 11/24 (251s)
+chunk 4: step 12/24 (275s)
+chunk 4: step 13/24 (299s)
+chunk 4: step 14/24 (322s)
+chunk 4: step 15/24 (346s)
+chunk 4: step 16/24 (367s)
+chunk 4: step 17/24 (389s)
+chunk 4: step 18/24 (412s)
+chunk 4: step 19/24 (434s)
+chunk 4: step 20/24 (457s)
+chunk 4: step 21/24 (480s)
+chunk 4: step 22/24 (500s)
+chunk 4: step 23/24 (520s)
+chunk 4: step 24/24 (542s)
+chunk 4: step 24/24 (542s)
+  nfd_residual_worldframe_noaug_ep43   gd   b0.3       quadrant_0 40: improve +0.294; evals/step 989
+  nfd_residual_worldframe_noaug_ep43   gd   b0.3       quadrant_0 41: improve +0.266; evals/step 995
+  nfd_residual_worldframe_noaug_ep43   gd   b0.3       quadrant_0 42: improve +0.348; evals/step 996
+  nfd_residual_worldframe_noaug_ep43   gd   b0.3       quadrant_0 43: improve +0.298; evals/step 1000
+  nfd_residual_worldframe_noaug_ep43   gd   b0.3       quadrant_3 40: improve +0.290; evals/step 969
+  nfd_residual_worldframe_noaug_ep43   gd   b0.3       quadrant_3 41: improve +0.307; evals/step 972
+  nfd_residual_worldframe_noaug_ep43   gd   b0.3       quadrant_3 42: improve +0.299; evals/step 967
+  nfd_residual_worldframe_noaug_ep43   gd   b0.3       quadrant_3 43: improve +0.328; evals/step 965
+  nfd_residual_worldframe_noaug_ep43   gd   b0.3       letter_O   40: improve +0.327; evals/step 968
+  nfd_residual_worldframe_noaug_ep43   gd   b0.3       letter_O   41: improve +0.249; evals/step 972
+  nfd_residual_worldframe_noaug_ep43   gd   b0.3       letter_O   42: improve +0.297; evals/step 979
+  nfd_residual_worldframe_noaug_ep43   gd   b0.3       letter_O   43: improve +0.292; evals/step 967
+  nfd_residual_worldframe_noaug_ep43   gd   b0.3       letter_T   40: improve +0.393; evals/step 971
+  nfd_residual_worldframe_noaug_ep43   gd   b0.3       letter_T   41: improve +0.284; evals/step 976
+  nfd_residual_worldframe_noaug_ep43   gd   b0.3       letter_T   42: improve +0.333; evals/step 985
+  nfd_residual_worldframe_noaug_ep43   gd   b0.3       letter_T   43: improve +0.346; evals/step 987
+  nfd_residual_worldframe_noaug_ep43   gd   b0.3       letter_S   40: improve +0.336; evals/step 968
+  nfd_residual_worldframe_noaug_ep43   gd   b0.3       letter_S   41: improve +0.279; evals/step 969
+  nfd_residual_worldframe_noaug_ep43   gd   b0.3       letter_S   42: improve +0.315; evals/step 968
+  nfd_residual_worldframe_noaug_ep43   gd   b0.3       letter_S   43: improve +0.310; evals/step 967
+  nfd_residual_worldframe_noaug_ep43   gd   b0.3       letter_L   40: improve +0.288; evals/step 967
+  nfd_residual_worldframe_noaug_ep43   gd   b0.3       letter_L   41: improve +0.264; evals/step 975
+  nfd_residual_worldframe_noaug_ep43   gd   b0.3       letter_L   42: improve +0.295; evals/step 976
+  nfd_residual_worldframe_noaug_ep43   gd   b0.3       letter_L   43: improve +0.317; evals/step 977
+  nfd_residual_worldframe_noaug_ep43   gd   b0.3       letter_X   40: improve +0.369; evals/step 971
+  nfd_residual_worldframe_noaug_ep43   gd   b0.3       letter_X   41: improve +0.328; evals/step 976
+  nfd_residual_worldframe_noaug_ep43   gd   b0.3       letter_X   42: improve +0.308; evals/step 979
+  nfd_residual_worldframe_noaug_ep43   gd   b0.3       letter_X   43: improve +0.388; evals/step 981
+  nfd_residual_worldframe_noaug_ep43   gd   b0.3       letter_Z   40: improve +0.375; evals/step 981
+  nfd_residual_worldframe_noaug_ep43   gd   b0.3       letter_Z   41: improve +0.272; evals/step 976
+  nfd_residual_worldframe_noaug_ep43   gd   b0.3       letter_Z   42: improve +0.309; evals/step 967
+  nfd_residual_worldframe_noaug_ep43   gd   b0.3       letter_Z   43: improve +0.358; evals/step 973
+chunk 5: step 1/24 (21s)
+chunk 5: step 2/24 (42s)
+chunk 5: step 3/24 (64s)
+chunk 5: step 4/24 (85s)
+chunk 5: step 5/24 (108s)
+chunk 5: step 6/24 (131s)
+chunk 5: step 7/24 (154s)
+chunk 5: step 8/24 (178s)
+chunk 5: step 9/24 (201s)
+chunk 5: step 10/24 (224s)
+chunk 5: step 11/24 (248s)
+chunk 5: step 12/24 (270s)
+chunk 5: step 13/24 (292s)
+chunk 5: step 14/24 (314s)
+chunk 5: step 15/24 (337s)
+chunk 5: step 16/24 (360s)
+chunk 5: step 17/24 (382s)
+chunk 5: step 18/24 (405s)
+chunk 5: step 19/24 (427s)
+chunk 5: step 20/24 (450s)
+chunk 5: step 21/24 (471s)
+chunk 5: step 22/24 (493s)
+chunk 5: step 23/24 (516s)
+chunk 5: step 24/24 (538s)
+chunk 5: step 24/24 (538s)
+  nfd_residual_worldframe_noaug_ep43   cem  b0.3       quadrant_0 40: improve +0.294; evals/step 7893
+  nfd_residual_worldframe_noaug_ep43   cem  b0.3       quadrant_0 41: improve +0.266; evals/step 7808
+  nfd_residual_worldframe_noaug_ep43   cem  b0.3       quadrant_0 42: improve +0.348; evals/step 7424
+  nfd_residual_worldframe_noaug_ep43   cem  b0.3       quadrant_0 43: improve +0.298; evals/step 7211
+  nfd_residual_worldframe_noaug_ep43   cem  b0.3       quadrant_3 40: improve +0.290; evals/step 7680
+  nfd_residual_worldframe_noaug_ep43   cem  b0.3       quadrant_3 41: improve +0.307; evals/step 7637
+  nfd_residual_worldframe_noaug_ep43   cem  b0.3       quadrant_3 42: improve +0.298; evals/step 7296
+  nfd_residual_worldframe_noaug_ep43   cem  b0.3       quadrant_3 43: improve +0.329; evals/step 7467
+  nfd_residual_worldframe_noaug_ep43   cem  b0.3       letter_O   40: improve +0.315; evals/step 7467
+  nfd_residual_worldframe_noaug_ep43   cem  b0.3       letter_O   41: improve +0.249; evals/step 7637
+  nfd_residual_worldframe_noaug_ep43   cem  b0.3       letter_O   42: improve +0.299; evals/step 7296
+  nfd_residual_worldframe_noaug_ep43   cem  b0.3       letter_O   43: improve +0.273; evals/step 7467
+  nfd_residual_worldframe_noaug_ep43   cem  b0.3       letter_T   40: improve +0.373; evals/step 7680
+  nfd_residual_worldframe_noaug_ep43   cem  b0.3       letter_T   41: improve +0.273; evals/step 7509
+  nfd_residual_worldframe_noaug_ep43   cem  b0.3       letter_T   42: improve +0.316; evals/step 7253
+  nfd_residual_worldframe_noaug_ep43   cem  b0.3       letter_T   43: improve +0.358; evals/step 7552
+  nfd_residual_worldframe_noaug_ep43   cem  b0.3       letter_S   40: improve +0.338; evals/step 7637
+  nfd_residual_worldframe_noaug_ep43   cem  b0.3       letter_S   41: improve +0.276; evals/step 7381
+  nfd_residual_worldframe_noaug_ep43   cem  b0.3       letter_S   42: improve +0.313; evals/step 7467
+  nfd_residual_worldframe_noaug_ep43   cem  b0.3       letter_S   43: improve +0.324; evals/step 7680
+  nfd_residual_worldframe_noaug_ep43   cem  b0.3       letter_L   40: improve +0.282; evals/step 7424
+  nfd_residual_worldframe_noaug_ep43   cem  b0.3       letter_L   41: improve +0.272; evals/step 7339
+  nfd_residual_worldframe_noaug_ep43   cem  b0.3       letter_L   42: improve +0.297; evals/step 7381
+  nfd_residual_worldframe_noaug_ep43   cem  b0.3       letter_L   43: improve +0.302; evals/step 7595
+  nfd_residual_worldframe_noaug_ep43   cem  b0.3       letter_X   40: improve +0.358; evals/step 7467
+  nfd_residual_worldframe_noaug_ep43   cem  b0.3       letter_X   41: improve +0.311; evals/step 7296
+  nfd_residual_worldframe_noaug_ep43   cem  b0.3       letter_X   42: improve +0.317; evals/step 7381
+  nfd_residual_worldframe_noaug_ep43   cem  b0.3       letter_X   43: improve +0.384; evals/step 7296
+  nfd_residual_worldframe_noaug_ep43   cem  b0.3       letter_Z   40: improve +0.381; evals/step 7381
+  nfd_residual_worldframe_noaug_ep43   cem  b0.3       letter_Z   41: improve +0.278; evals/step 7296
+  nfd_residual_worldframe_noaug_ep43   cem  b0.3       letter_Z   42: improve +0.307; evals/step 7339
+  nfd_residual_worldframe_noaug_ep43   cem  b0.3       letter_Z   43: improve +0.365; evals/step 7296
+chunk 6: step 1/24 (44s)
+chunk 6: step 2/24 (89s)
+chunk 6: step 3/24 (133s)
+chunk 6: step 4/24 (177s)
+chunk 6: step 5/24 (223s)
+chunk 6: step 6/24 (269s)
+chunk 6: step 7/24 (315s)
+chunk 6: step 8/24 (360s)
+chunk 6: step 9/24 (406s)
+chunk 6: step 10/24 (452s)
+chunk 6: step 11/24 (498s)
+chunk 6: step 12/24 (545s)
+chunk 6: step 13/24 (590s)
+chunk 6: step 14/24 (636s)
+chunk 6: step 15/24 (682s)
+chunk 6: step 16/24 (728s)
+chunk 6: step 17/24 (773s)
+chunk 6: step 18/24 (820s)
+chunk 6: step 19/24 (866s)
+chunk 6: step 20/24 (911s)
+chunk 6: step 21/24 (954s)
+chunk 6: step 22/24 (999s)
+chunk 6: step 23/24 (1041s)
+chunk 6: step 24/24 (1085s)
+chunk 6: step 24/24 (1085s)
+  nfd_residual_worldframe_noaug_ep43   gd   b1.0       quadrant_0 40: improve +0.294; evals/step 3164
+  nfd_residual_worldframe_noaug_ep43   gd   b1.0       quadrant_0 41: improve +0.266; evals/step 3177
+  nfd_residual_worldframe_noaug_ep43   gd   b1.0       quadrant_0 42: improve +0.348; evals/step 3151
+  nfd_residual_worldframe_noaug_ep43   gd   b1.0       quadrant_0 43: improve +0.298; evals/step 3140
+  nfd_residual_worldframe_noaug_ep43   gd   b1.0       quadrant_3 40: improve +0.290; evals/step 3157
+  nfd_residual_worldframe_noaug_ep43   gd   b1.0       quadrant_3 41: improve +0.307; evals/step 3151
+  nfd_residual_worldframe_noaug_ep43   gd   b1.0       quadrant_3 42: improve +0.299; evals/step 3161
+  nfd_residual_worldframe_noaug_ep43   gd   b1.0       quadrant_3 43: improve +0.329; evals/step 3155
+  nfd_residual_worldframe_noaug_ep43   gd   b1.0       letter_O   40: improve +0.326; evals/step 3168
+  nfd_residual_worldframe_noaug_ep43   gd   b1.0       letter_O   41: improve +0.247; evals/step 3165
+  nfd_residual_worldframe_noaug_ep43   gd   b1.0       letter_O   42: improve +0.302; evals/step 3140
+  nfd_residual_worldframe_noaug_ep43   gd   b1.0       letter_O   43: improve +0.292; evals/step 3124
+  nfd_residual_worldframe_noaug_ep43   gd   b1.0       letter_T   40: improve +0.370; evals/step 3135
+  nfd_residual_worldframe_noaug_ep43   gd   b1.0       letter_T   41: improve +0.291; evals/step 3143
+  nfd_residual_worldframe_noaug_ep43   gd   b1.0       letter_T   42: improve +0.338; evals/step 3159
+  nfd_residual_worldframe_noaug_ep43   gd   b1.0       letter_T   43: improve +0.359; evals/step 3156
+  nfd_residual_worldframe_noaug_ep43   gd   b1.0       letter_S   40: improve +0.333; evals/step 3167
+  nfd_residual_worldframe_noaug_ep43   gd   b1.0       letter_S   41: improve +0.264; evals/step 3157
+  nfd_residual_worldframe_noaug_ep43   gd   b1.0       letter_S   42: improve +0.300; evals/step 3137
+  nfd_residual_worldframe_noaug_ep43   gd   b1.0       letter_S   43: improve +0.329; evals/step 3147
+  nfd_residual_worldframe_noaug_ep43   gd   b1.0       letter_L   40: improve +0.289; evals/step 3129
+  nfd_residual_worldframe_noaug_ep43   gd   b1.0       letter_L   41: improve +0.272; evals/step 3156
+  nfd_residual_worldframe_noaug_ep43   gd   b1.0       letter_L   42: improve +0.300; evals/step 3167
+  nfd_residual_worldframe_noaug_ep43   gd   b1.0       letter_L   43: improve +0.320; evals/step 3149
+  nfd_residual_worldframe_noaug_ep43   gd   b1.0       letter_X   40: improve +0.371; evals/step 3157
+  nfd_residual_worldframe_noaug_ep43   gd   b1.0       letter_X   41: improve +0.320; evals/step 3148
+  nfd_residual_worldframe_noaug_ep43   gd   b1.0       letter_X   42: improve +0.315; evals/step 3175
+  nfd_residual_worldframe_noaug_ep43   gd   b1.0       letter_X   43: improve +0.389; evals/step 3155
+  nfd_residual_worldframe_noaug_ep43   gd   b1.0       letter_Z   40: improve +0.377; evals/step 3161
+  nfd_residual_worldframe_noaug_ep43   gd   b1.0       letter_Z   41: improve +0.304; evals/step 3152
+  nfd_residual_worldframe_noaug_ep43   gd   b1.0       letter_Z   42: improve +0.307; evals/step 3144
+  nfd_residual_worldframe_noaug_ep43   gd   b1.0       letter_Z   43: improve +0.359; evals/step 3125
+chunk 7: step 1/24 (43s)
+chunk 7: step 2/24 (87s)
+chunk 7: step 3/24 (131s)
+chunk 7: step 4/24 (176s)
+chunk 7: step 5/24 (221s)
+chunk 7: step 6/24 (266s)
+chunk 7: step 7/24 (311s)
+chunk 7: step 8/24 (358s)
+chunk 7: step 9/24 (404s)
+chunk 7: step 10/24 (449s)
+chunk 7: step 11/24 (494s)
+chunk 7: step 12/24 (539s)
+chunk 7: step 13/24 (585s)
+chunk 7: step 14/24 (630s)
+chunk 7: step 15/24 (675s)
+chunk 7: step 16/24 (720s)
+chunk 7: step 17/24 (765s)
+chunk 7: step 18/24 (809s)
+chunk 7: step 19/24 (854s)
+chunk 7: step 20/24 (898s)
+chunk 7: step 21/24 (943s)
+chunk 7: step 22/24 (988s)
+chunk 7: step 23/24 (1033s)
+chunk 7: step 24/24 (1077s)
+chunk 7: step 24/24 (1078s)
+  nfd_residual_worldframe_noaug_ep43   cem  b1.0       quadrant_0 40: improve +0.294; evals/step 26581
+  nfd_residual_worldframe_noaug_ep43   cem  b1.0       quadrant_0 41: improve +0.265; evals/step 26581
+  nfd_residual_worldframe_noaug_ep43   cem  b1.0       quadrant_0 42: improve +0.348; evals/step 26581
+  nfd_residual_worldframe_noaug_ep43   cem  b1.0       quadrant_0 43: improve +0.297; evals/step 26581
+  nfd_residual_worldframe_noaug_ep43   cem  b1.0       quadrant_3 40: improve +0.290; evals/step 26539
+  nfd_residual_worldframe_noaug_ep43   cem  b1.0       quadrant_3 41: improve +0.307; evals/step 26581
+  nfd_residual_worldframe_noaug_ep43   cem  b1.0       quadrant_3 42: improve +0.299; evals/step 26539
+  nfd_residual_worldframe_noaug_ep43   cem  b1.0       quadrant_3 43: improve +0.274; evals/step 26624
+  nfd_residual_worldframe_noaug_ep43   cem  b1.0       letter_O   40: improve +0.315; evals/step 26624
+  nfd_residual_worldframe_noaug_ep43   cem  b1.0       letter_O   41: improve +0.245; evals/step 26624
+  nfd_residual_worldframe_noaug_ep43   cem  b1.0       letter_O   42: improve +0.284; evals/step 26624
+  nfd_residual_worldframe_noaug_ep43   cem  b1.0       letter_O   43: improve +0.290; evals/step 26496
+  nfd_residual_worldframe_noaug_ep43   cem  b1.0       letter_T   40: improve +0.378; evals/step 26581
+  nfd_residual_worldframe_noaug_ep43   cem  b1.0       letter_T   41: improve +0.291; evals/step 26539
+  nfd_residual_worldframe_noaug_ep43   cem  b1.0       letter_T   42: improve +0.341; evals/step 26624
+  nfd_residual_worldframe_noaug_ep43   cem  b1.0       letter_T   43: improve +0.352; evals/step 26496
+  nfd_residual_worldframe_noaug_ep43   cem  b1.0       letter_S   40: improve +0.319; evals/step 26411
+  nfd_residual_worldframe_noaug_ep43   cem  b1.0       letter_S   41: improve +0.272; evals/step 26496
+  nfd_residual_worldframe_noaug_ep43   cem  b1.0       letter_S   42: improve +0.312; evals/step 26581
+  nfd_residual_worldframe_noaug_ep43   cem  b1.0       letter_S   43: improve +0.320; evals/step 26581
+  nfd_residual_worldframe_noaug_ep43   cem  b1.0       letter_L   40: improve +0.286; evals/step 26624
+  nfd_residual_worldframe_noaug_ep43   cem  b1.0       letter_L   41: improve +0.272; evals/step 26624
+  nfd_residual_worldframe_noaug_ep43   cem  b1.0       letter_L   42: improve +0.292; evals/step 26624
+  nfd_residual_worldframe_noaug_ep43   cem  b1.0       letter_L   43: improve +0.317; evals/step 26539
+  nfd_residual_worldframe_noaug_ep43   cem  b1.0       letter_X   40: improve +0.366; evals/step 26581
+  nfd_residual_worldframe_noaug_ep43   cem  b1.0       letter_X   41: improve +0.328; evals/step 26539
+  nfd_residual_worldframe_noaug_ep43   cem  b1.0       letter_X   42: improve +0.307; evals/step 26581
+  nfd_residual_worldframe_noaug_ep43   cem  b1.0       letter_X   43: improve +0.377; evals/step 26539
+  nfd_residual_worldframe_noaug_ep43   cem  b1.0       letter_Z   40: improve +0.384; evals/step 26624
+  nfd_residual_worldframe_noaug_ep43   cem  b1.0       letter_Z   41: improve +0.281; evals/step 26581
+  nfd_residual_worldframe_noaug_ep43   cem  b1.0       letter_Z   42: improve +0.312; evals/step 26581
+  nfd_residual_worldframe_noaug_ep43   cem  b1.0       letter_Z   43: improve +0.365; evals/step 26539
+chunk 8: step 1/24 (12s)
+chunk 8: step 2/24 (24s)
+chunk 8: step 3/24 (37s)
+chunk 8: step 4/24 (49s)
+chunk 8: step 5/24 (60s)
+chunk 8: step 6/24 (73s)
+chunk 8: step 7/24 (85s)
+chunk 8: step 8/24 (97s)
+chunk 8: step 9/24 (108s)
+pile-aware actions: swath holds 10.7 particles on average (min 2); 1/524288 draws could not reach min_swath=3
+chunk 8: step 10/24 (119s)
+chunk 8: step 11/24 (132s)
+chunk 8: step 12/24 (143s)
+chunk 8: step 13/24 (155s)
+chunk 8: step 14/24 (167s)
+chunk 8: step 15/24 (180s)
+chunk 8: step 16/24 (193s)
+pile-aware actions: swath holds 12.3 particles on average (min 2); 1/524288 draws could not reach min_swath=3
+chunk 8: step 17/24 (206s)
+chunk 8: step 18/24 (216s)
+chunk 8: step 19/24 (229s)
+pile-aware actions: swath holds 12.9 particles on average (min 2); 1/524288 draws could not reach min_swath=3
+chunk 8: step 20/24 (241s)
+chunk 8: step 21/24 (252s)
+chunk 8: step 22/24 (263s)
+chunk 8: step 23/24 (275s)
+chunk 8: step 24/24 (288s)
+chunk 8: step 24/24 (288s)
+  linear_switched_soft                 gd   b0.03      quadrant_0 40: improve +0.230; evals/step 152
+  linear_switched_soft                 gd   b0.03      quadrant_0 41: improve +0.150; evals/step 159
+  linear_switched_soft                 gd   b0.03      quadrant_0 42: improve +0.215; evals/step 159
+  linear_switched_soft                 gd   b0.03      quadrant_0 43: improve +0.216; evals/step 159
+  linear_switched_soft                 gd   b0.03      quadrant_3 40: improve +0.193; evals/step 160
+  linear_switched_soft                 gd   b0.03      quadrant_3 41: improve +0.255; evals/step 157
+  linear_switched_soft                 gd   b0.03      quadrant_3 42: improve +0.225; evals/step 160
+  linear_switched_soft                 gd   b0.03      quadrant_3 43: improve +0.228; evals/step 159
+  linear_switched_soft                 gd   b0.03      letter_O   40: improve +0.236; evals/step 160
+  linear_switched_soft                 gd   b0.03      letter_O   41: improve +0.161; evals/step 160
+  linear_switched_soft                 gd   b0.03      letter_O   42: improve +0.213; evals/step 160
+  linear_switched_soft                 gd   b0.03      letter_O   43: improve +0.179; evals/step 159
+  linear_switched_soft                 gd   b0.03      letter_T   40: improve +0.315; evals/step 156
+  linear_switched_soft                 gd   b0.03      letter_T   41: improve +0.217; evals/step 157
+  linear_switched_soft                 gd   b0.03      letter_T   42: improve +0.216; evals/step 156
+  linear_switched_soft                 gd   b0.03      letter_T   43: improve +0.285; evals/step 159
+  linear_switched_soft                 gd   b0.03      letter_S   40: improve +0.266; evals/step 157
+  linear_switched_soft                 gd   b0.03      letter_S   41: improve +0.190; evals/step 157
+  linear_switched_soft                 gd   b0.03      letter_S   42: improve +0.177; evals/step 157
+  linear_switched_soft                 gd   b0.03      letter_S   43: improve +0.225; evals/step 156
+  linear_switched_soft                 gd   b0.03      letter_L   40: improve +0.179; evals/step 157
+  linear_switched_soft                 gd   b0.03      letter_L   41: improve +0.184; evals/step 157
+  linear_switched_soft                 gd   b0.03      letter_L   42: improve +0.194; evals/step 157
+  linear_switched_soft                 gd   b0.03      letter_L   43: improve +0.233; evals/step 156
+  linear_switched_soft                 gd   b0.03      letter_X   40: improve +0.305; evals/step 153
+  linear_switched_soft                 gd   b0.03      letter_X   41: improve +0.310; evals/step 157
+  linear_switched_soft                 gd   b0.03      letter_X   42: improve +0.204; evals/step 159
+  linear_switched_soft                 gd   b0.03      letter_X   43: improve +0.216; evals/step 157
+  linear_switched_soft                 gd   b0.03      letter_Z   40: improve +0.265; evals/step 159
+  linear_switched_soft                 gd   b0.03      letter_Z   41: improve +0.299; evals/step 157
+  linear_switched_soft                 gd   b0.03      letter_Z   42: improve +0.219; evals/step 157
+  linear_switched_soft                 gd   b0.03      letter_Z   43: improve +0.236; evals/step 156
+chunk 9: step 1/24 (13s)
+chunk 9: step 2/24 (27s)
+chunk 9: step 3/24 (41s)
+chunk 9: step 4/24 (55s)
+chunk 9: step 5/24 (70s)
+chunk 9: step 6/24 (84s)
+chunk 9: step 7/24 (99s)
+chunk 9: step 8/24 (113s)
+chunk 9: step 9/24 (128s)
+chunk 9: step 10/24 (143s)
+chunk 9: step 11/24 (156s)
+chunk 9: step 12/24 (170s)
+chunk 9: step 13/24 (185s)
+chunk 9: step 14/24 (200s)
+chunk 9: step 15/24 (212s)
+chunk 9: step 16/24 (224s)
+chunk 9: step 17/24 (238s)
+chunk 9: step 18/24 (252s)
+chunk 9: step 19/24 (265s)
+chunk 9: step 20/24 (278s)
+chunk 9: step 21/24 (290s)
+chunk 9: step 22/24 (302s)
+chunk 9: step 23/24 (318s)
+chunk 9: step 24/24 (332s)
+chunk 9: step 24/24 (332s)
+  linear_switched_soft                 cem  b0.03      quadrant_0 40: improve +0.256; evals/step 2048
+  linear_switched_soft                 cem  b0.03      quadrant_0 41: improve +0.232; evals/step 2048
+  linear_switched_soft                 cem  b0.03      quadrant_0 42: improve +0.348; evals/step 2048
+  linear_switched_soft                 cem  b0.03      quadrant_0 43: improve +0.262; evals/step 2048
+  linear_switched_soft                 cem  b0.03      quadrant_3 40: improve +0.252; evals/step 2048
+  linear_switched_soft                 cem  b0.03      quadrant_3 41: improve +0.307; evals/step 2048
+  linear_switched_soft                 cem  b0.03      quadrant_3 42: improve +0.216; evals/step 2048
+  linear_switched_soft                 cem  b0.03      quadrant_3 43: improve +0.297; evals/step 2048
+  linear_switched_soft                 cem  b0.03      letter_O   40: improve +0.224; evals/step 2048
+  linear_switched_soft                 cem  b0.03      letter_O   41: improve +0.213; evals/step 2048
+  linear_switched_soft                 cem  b0.03      letter_O   42: improve +0.281; evals/step 2048
+  linear_switched_soft                 cem  b0.03      letter_O   43: improve +0.275; evals/step 2048
+  linear_switched_soft                 cem  b0.03      letter_T   40: improve +0.363; evals/step 2048
+  linear_switched_soft                 cem  b0.03      letter_T   41: improve +0.256; evals/step 2048
+  linear_switched_soft                 cem  b0.03      letter_T   42: improve +0.333; evals/step 2048
+  linear_switched_soft                 cem  b0.03      letter_T   43: improve +0.327; evals/step 2048
+  linear_switched_soft                 cem  b0.03      letter_S   40: improve +0.329; evals/step 2048
+  linear_switched_soft                 cem  b0.03      letter_S   41: improve +0.270; evals/step 2048
+  linear_switched_soft                 cem  b0.03      letter_S   42: improve +0.303; evals/step 2048
+  linear_switched_soft                 cem  b0.03      letter_S   43: improve +0.328; evals/step 2048
+  linear_switched_soft                 cem  b0.03      letter_L   40: improve +0.272; evals/step 2048
+  linear_switched_soft                 cem  b0.03      letter_L   41: improve +0.272; evals/step 2048
+  linear_switched_soft                 cem  b0.03      letter_L   42: improve +0.288; evals/step 2048
+  linear_switched_soft                 cem  b0.03      letter_L   43: improve +0.296; evals/step 2048
+  linear_switched_soft                 cem  b0.03      letter_X   40: improve +0.352; evals/step 2048
+  linear_switched_soft                 cem  b0.03      letter_X   41: improve +0.308; evals/step 2048
+  linear_switched_soft                 cem  b0.03      letter_X   42: improve +0.311; evals/step 2048
+  linear_switched_soft                 cem  b0.03      letter_X   43: improve +0.366; evals/step 2048
+  linear_switched_soft                 cem  b0.03      letter_Z   40: improve +0.347; evals/step 2048
+  linear_switched_soft                 cem  b0.03      letter_Z   41: improve +0.295; evals/step 2048
+  linear_switched_soft                 cem  b0.03      letter_Z   42: improve +0.304; evals/step 2048
+  linear_switched_soft                 cem  b0.03      letter_Z   43: improve +0.355; evals/step 2048
+chunk 10: step 1/24 (15s)
+chunk 10: step 2/24 (31s)
+chunk 10: step 3/24 (45s)
+chunk 10: step 4/24 (61s)
+chunk 10: step 5/24 (77s)
+chunk 10: step 6/24 (93s)
+chunk 10: step 7/24 (110s)
+chunk 10: step 8/24 (126s)
+chunk 10: step 9/24 (143s)
+chunk 10: step 10/24 (162s)
+chunk 10: step 11/24 (179s)
+chunk 10: step 12/24 (195s)
+chunk 10: step 13/24 (208s)
+chunk 10: step 14/24 (228s)
+chunk 10: step 15/24 (245s)
+chunk 10: step 16/24 (262s)
+chunk 10: step 17/24 (277s)
+chunk 10: step 18/24 (292s)
+chunk 10: step 19/24 (306s)
+chunk 10: step 20/24 (323s)
+chunk 10: step 21/24 (340s)
+chunk 10: step 22/24 (354s)
+chunk 10: step 23/24 (372s)
+chunk 10: step 24/24 (387s)
+chunk 10: step 24/24 (387s)
+  linear_switched_soft                 gd   b0.1       quadrant_0 40: improve +0.257; evals/step 417
+  linear_switched_soft                 gd   b0.1       quadrant_0 41: improve +0.265; evals/step 428
+  linear_switched_soft                 gd   b0.1       quadrant_0 42: improve +0.348; evals/step 425
+  linear_switched_soft                 gd   b0.1       quadrant_0 43: improve +0.221; evals/step 424
+  linear_switched_soft                 gd   b0.1       quadrant_3 40: improve +0.290; evals/step 432
+  linear_switched_soft                 gd   b0.1       quadrant_3 41: improve +0.306; evals/step 431
+  linear_switched_soft                 gd   b0.1       quadrant_3 42: improve +0.260; evals/step 433
+  linear_switched_soft                 gd   b0.1       quadrant_3 43: improve +0.292; evals/step 431
+  linear_switched_soft                 gd   b0.1       letter_O   40: improve +0.324; evals/step 429
+  linear_switched_soft                 gd   b0.1       letter_O   41: improve +0.246; evals/step 431
+  linear_switched_soft                 gd   b0.1       letter_O   42: improve +0.286; evals/step 425
+  linear_switched_soft                 gd   b0.1       letter_O   43: improve +0.278; evals/step 427
+  linear_switched_soft                 gd   b0.1       letter_T   40: improve +0.387; evals/step 432
+  linear_switched_soft                 gd   b0.1       letter_T   41: improve +0.287; evals/step 431
+  linear_switched_soft                 gd   b0.1       letter_T   42: improve +0.338; evals/step 429
+  linear_switched_soft                 gd   b0.1       letter_T   43: improve +0.308; evals/step 432
+  linear_switched_soft                 gd   b0.1       letter_S   40: improve +0.325; evals/step 425
+  linear_switched_soft                 gd   b0.1       letter_S   41: improve +0.264; evals/step 431
+  linear_switched_soft                 gd   b0.1       letter_S   42: improve +0.311; evals/step 429
+  linear_switched_soft                 gd   b0.1       letter_S   43: improve +0.318; evals/step 429
+  linear_switched_soft                 gd   b0.1       letter_L   40: improve +0.283; evals/step 428
+  linear_switched_soft                 gd   b0.1       letter_L   41: improve +0.267; evals/step 424
+  linear_switched_soft                 gd   b0.1       letter_L   42: improve +0.301; evals/step 427
+  linear_switched_soft                 gd   b0.1       letter_L   43: improve +0.320; evals/step 424
+  linear_switched_soft                 gd   b0.1       letter_X   40: improve +0.364; evals/step 427
+  linear_switched_soft                 gd   b0.1       letter_X   41: improve +0.313; evals/step 427
+  linear_switched_soft                 gd   b0.1       letter_X   42: improve +0.302; evals/step 427
+  linear_switched_soft                 gd   b0.1       letter_X   43: improve +0.336; evals/step 433
+  linear_switched_soft                 gd   b0.1       letter_Z   40: improve +0.378; evals/step 432
+  linear_switched_soft                 gd   b0.1       letter_Z   41: improve +0.305; evals/step 432
+  linear_switched_soft                 gd   b0.1       letter_Z   42: improve +0.314; evals/step 425
+  linear_switched_soft                 gd   b0.1       letter_Z   43: improve +0.360; evals/step 424
+chunk 11: step 1/24 (15s)
+chunk 11: step 2/24 (30s)
+chunk 11: step 3/24 (46s)
+chunk 11: step 4/24 (62s)
+chunk 11: step 5/24 (78s)
+chunk 11: step 6/24 (93s)
+chunk 11: step 7/24 (108s)
+chunk 11: step 8/24 (126s)
+chunk 11: step 9/24 (144s)
+chunk 11: step 10/24 (163s)
+chunk 11: step 11/24 (178s)
+chunk 11: step 12/24 (192s)
+chunk 11: step 13/24 (209s)
+chunk 11: step 14/24 (222s)
+chunk 11: step 15/24 (236s)
+chunk 11: step 16/24 (249s)
+chunk 11: step 17/24 (265s)
+chunk 11: step 18/24 (279s)
+chunk 11: step 19/24 (298s)
+chunk 11: step 20/24 (315s)
+chunk 11: step 21/24 (335s)
+chunk 11: step 22/24 (351s)
+chunk 11: step 23/24 (366s)
+chunk 11: step 24/24 (381s)
+chunk 11: step 24/24 (381s)
+  linear_switched_soft                 cem  b0.1       quadrant_0 40: improve +0.294; evals/step 4096
+  linear_switched_soft                 cem  b0.1       quadrant_0 41: improve +0.266; evals/step 4096
+  linear_switched_soft                 cem  b0.1       quadrant_0 42: improve +0.320; evals/step 4096
+  linear_switched_soft                 cem  b0.1       quadrant_0 43: improve +0.260; evals/step 4096
+  linear_switched_soft                 cem  b0.1       quadrant_3 40: improve +0.290; evals/step 4096
+  linear_switched_soft                 cem  b0.1       quadrant_3 41: improve +0.307; evals/step 4096
+  linear_switched_soft                 cem  b0.1       quadrant_3 42: improve +0.294; evals/step 4096
+  linear_switched_soft                 cem  b0.1       quadrant_3 43: improve +0.329; evals/step 4096
+  linear_switched_soft                 cem  b0.1       letter_O   40: improve +0.314; evals/step 4096
+  linear_switched_soft                 cem  b0.1       letter_O   41: improve +0.268; evals/step 4096
+  linear_switched_soft                 cem  b0.1       letter_O   42: improve +0.281; evals/step 4096
+  linear_switched_soft                 cem  b0.1       letter_O   43: improve +0.270; evals/step 4096
+  linear_switched_soft                 cem  b0.1       letter_T   40: improve +0.368; evals/step 4096
+  linear_switched_soft                 cem  b0.1       letter_T   41: improve +0.278; evals/step 4139
+  linear_switched_soft                 cem  b0.1       letter_T   42: improve +0.314; evals/step 4096
+  linear_switched_soft                 cem  b0.1       letter_T   43: improve +0.350; evals/step 4139
+  linear_switched_soft                 cem  b0.1       letter_S   40: improve +0.325; evals/step 4096
+  linear_switched_soft                 cem  b0.1       letter_S   41: improve +0.268; evals/step 4096
+  linear_switched_soft                 cem  b0.1       letter_S   42: improve +0.309; evals/step 4096
+  linear_switched_soft                 cem  b0.1       letter_S   43: improve +0.323; evals/step 4096
+  linear_switched_soft                 cem  b0.1       letter_L   40: improve +0.282; evals/step 4096
+  linear_switched_soft                 cem  b0.1       letter_L   41: improve +0.268; evals/step 4096
+  linear_switched_soft                 cem  b0.1       letter_L   42: improve +0.299; evals/step 4096
+  linear_switched_soft                 cem  b0.1       letter_L   43: improve +0.319; evals/step 4096
+  linear_switched_soft                 cem  b0.1       letter_X   40: improve +0.355; evals/step 4096
+  linear_switched_soft                 cem  b0.1       letter_X   41: improve +0.313; evals/step 4096
+  linear_switched_soft                 cem  b0.1       letter_X   42: improve +0.304; evals/step 4096
+  linear_switched_soft                 cem  b0.1       letter_X   43: improve +0.371; evals/step 4096
+  linear_switched_soft                 cem  b0.1       letter_Z   40: improve +0.373; evals/step 4096
+  linear_switched_soft                 cem  b0.1       letter_Z   41: improve +0.301; evals/step 4096
+  linear_switched_soft                 cem  b0.1       letter_Z   42: improve +0.316; evals/step 4096
+  linear_switched_soft                 cem  b0.1       letter_Z   43: improve +0.360; evals/step 4096
+chunk 12: step 1/24 (22s)
+chunk 12: step 2/24 (44s)
+chunk 12: step 3/24 (66s)
+chunk 12: step 4/24 (88s)
+chunk 12: step 5/24 (112s)
+chunk 12: step 6/24 (136s)
+chunk 12: step 7/24 (160s)
+chunk 12: step 8/24 (184s)
+chunk 12: step 9/24 (207s)
+chunk 12: step 10/24 (230s)
+chunk 12: step 11/24 (254s)
+chunk 12: step 12/24 (275s)
+chunk 12: step 13/24 (296s)
+chunk 12: step 14/24 (316s)
+chunk 12: step 15/24 (337s)
+chunk 12: step 16/24 (359s)
+chunk 12: step 17/24 (381s)
+chunk 12: step 18/24 (403s)
+chunk 12: step 19/24 (426s)
+chunk 12: step 20/24 (449s)
+chunk 12: step 21/24 (472s)
+chunk 12: step 22/24 (493s)
+chunk 12: step 23/24 (513s)
+chunk 12: step 24/24 (534s)
+chunk 12: step 24/24 (534s)
+  linear_switched_soft                 gd   b0.3       quadrant_0 40: improve +0.294; evals/step 1180
+  linear_switched_soft                 gd   b0.3       quadrant_0 41: improve +0.265; evals/step 1191
+  linear_switched_soft                 gd   b0.3       quadrant_0 42: improve +0.348; evals/step 1199
+  linear_switched_soft                 gd   b0.3       quadrant_0 43: improve +0.298; evals/step 1201
+  linear_switched_soft                 gd   b0.3       quadrant_3 40: improve +0.290; evals/step 1201
+  linear_switched_soft                 gd   b0.3       quadrant_3 41: improve +0.306; evals/step 1208
+  linear_switched_soft                 gd   b0.3       quadrant_3 42: improve +0.299; evals/step 1204
+  linear_switched_soft                 gd   b0.3       quadrant_3 43: improve +0.329; evals/step 1209
+  linear_switched_soft                 gd   b0.3       letter_O   40: improve +0.326; evals/step 1203
+  linear_switched_soft                 gd   b0.3       letter_O   41: improve +0.261; evals/step 1211
+  linear_switched_soft                 gd   b0.3       letter_O   42: improve +0.297; evals/step 1208
+  linear_switched_soft                 gd   b0.3       letter_O   43: improve +0.285; evals/step 1200
+  linear_switched_soft                 gd   b0.3       letter_T   40: improve +0.387; evals/step 1212
+  linear_switched_soft                 gd   b0.3       letter_T   41: improve +0.281; evals/step 1208
+  linear_switched_soft                 gd   b0.3       letter_T   42: improve +0.333; evals/step 1203
+  linear_switched_soft                 gd   b0.3       letter_T   43: improve +0.358; evals/step 1196
+  linear_switched_soft                 gd   b0.3       letter_S   40: improve +0.331; evals/step 1207
+  linear_switched_soft                 gd   b0.3       letter_S   41: improve +0.274; evals/step 1201
+  linear_switched_soft                 gd   b0.3       letter_S   42: improve +0.310; evals/step 1200
+  linear_switched_soft                 gd   b0.3       letter_S   43: improve +0.327; evals/step 1200
+  linear_switched_soft                 gd   b0.3       letter_L   40: improve +0.282; evals/step 1199
+  linear_switched_soft                 gd   b0.3       letter_L   41: improve +0.268; evals/step 1201
+  linear_switched_soft                 gd   b0.3       letter_L   42: improve +0.301; evals/step 1193
+  linear_switched_soft                 gd   b0.3       letter_L   43: improve +0.315; evals/step 1205
+  linear_switched_soft                 gd   b0.3       letter_X   40: improve +0.366; evals/step 1196
+  linear_switched_soft                 gd   b0.3       letter_X   41: improve +0.323; evals/step 1193
+  linear_switched_soft                 gd   b0.3       letter_X   42: improve +0.303; evals/step 1193
+  linear_switched_soft                 gd   b0.3       letter_X   43: improve +0.377; evals/step 1199
+  linear_switched_soft                 gd   b0.3       letter_Z   40: improve +0.380; evals/step 1197
+  linear_switched_soft                 gd   b0.3       letter_Z   41: improve +0.296; evals/step 1195
+  linear_switched_soft                 gd   b0.3       letter_Z   42: improve +0.312; evals/step 1191
+  linear_switched_soft                 gd   b0.3       letter_Z   43: improve +0.363; evals/step 1181
+chunk 13: step 1/24 (21s)
+chunk 13: step 2/24 (43s)
+chunk 13: step 3/24 (65s)
+chunk 13: step 4/24 (88s)
+chunk 13: step 5/24 (111s)
+chunk 13: step 6/24 (137s)
+chunk 13: step 7/24 (160s)
+chunk 13: step 8/24 (180s)
+chunk 13: step 9/24 (202s)
+chunk 13: step 10/24 (222s)
+chunk 13: step 11/24 (243s)
+chunk 13: step 12/24 (260s)
+chunk 13: step 13/24 (282s)
+chunk 13: step 14/24 (301s)
+chunk 13: step 15/24 (324s)
+chunk 13: step 16/24 (343s)
+chunk 13: step 17/24 (364s)
+chunk 13: step 18/24 (383s)
+chunk 13: step 19/24 (401s)
+chunk 13: step 20/24 (419s)
+chunk 13: step 21/24 (437s)
+chunk 13: step 22/24 (455s)
+chunk 13: step 23/24 (473s)
+chunk 13: step 24/24 (491s)
+chunk 13: step 24/24 (491s)
+  linear_switched_soft                 cem  b0.3       quadrant_0 40: improve +0.294; evals/step 14123
+  linear_switched_soft                 cem  b0.3       quadrant_0 41: improve +0.265; evals/step 14165
+  linear_switched_soft                 cem  b0.3       quadrant_0 42: improve +0.316; evals/step 13909
+  linear_switched_soft                 cem  b0.3       quadrant_0 43: improve +0.298; evals/step 14080
+  linear_switched_soft                 cem  b0.3       quadrant_3 40: improve +0.290; evals/step 14251
+  linear_switched_soft                 cem  b0.3       quadrant_3 41: improve +0.307; evals/step 14251
+  linear_switched_soft                 cem  b0.3       quadrant_3 42: improve +0.299; evals/step 14080
+  linear_switched_soft                 cem  b0.3       quadrant_3 43: improve +0.297; evals/step 14037
+  linear_switched_soft                 cem  b0.3       letter_O   40: improve +0.324; evals/step 14080
+  linear_switched_soft                 cem  b0.3       letter_O   41: improve +0.229; evals/step 14208
+  linear_switched_soft                 cem  b0.3       letter_O   42: improve +0.256; evals/step 14293
+  linear_switched_soft                 cem  b0.3       letter_O   43: improve +0.278; evals/step 14293
+  linear_switched_soft                 cem  b0.3       letter_T   40: improve +0.382; evals/step 14293
+  linear_switched_soft                 cem  b0.3       letter_T   41: improve +0.287; evals/step 14293
+  linear_switched_soft                 cem  b0.3       letter_T   42: improve +0.313; evals/step 14293
+  linear_switched_soft                 cem  b0.3       letter_T   43: improve +0.360; evals/step 14293
+  linear_switched_soft                 cem  b0.3       letter_S   40: improve +0.328; evals/step 14251
+  linear_switched_soft                 cem  b0.3       letter_S   41: improve +0.271; evals/step 14208
+  linear_switched_soft                 cem  b0.3       letter_S   42: improve +0.308; evals/step 14123
+  linear_switched_soft                 cem  b0.3       letter_S   43: improve +0.322; evals/step 14123
+  linear_switched_soft                 cem  b0.3       letter_L   40: improve +0.278; evals/step 14080
+  linear_switched_soft                 cem  b0.3       letter_L   41: improve +0.263; evals/step 14080
+  linear_switched_soft                 cem  b0.3       letter_L   42: improve +0.294; evals/step 14123
+  linear_switched_soft                 cem  b0.3       letter_L   43: improve +0.317; evals/step 14165
+  linear_switched_soft                 cem  b0.3       letter_X   40: improve +0.367; evals/step 14123
+  linear_switched_soft                 cem  b0.3       letter_X   41: improve +0.290; evals/step 14165
+  linear_switched_soft                 cem  b0.3       letter_X   42: improve +0.307; evals/step 14251
+  linear_switched_soft                 cem  b0.3       letter_X   43: improve +0.368; evals/step 14208
+  linear_switched_soft                 cem  b0.3       letter_Z   40: improve +0.380; evals/step 14123
+  linear_switched_soft                 cem  b0.3       letter_Z   41: improve +0.299; evals/step 14251
+  linear_switched_soft                 cem  b0.3       letter_Z   42: improve +0.308; evals/step 14336
+  linear_switched_soft                 cem  b0.3       letter_Z   43: improve +0.364; evals/step 14293
+chunk 14: step 1/24 (44s)
+chunk 14: step 2/24 (89s)
+chunk 14: step 3/24 (134s)
+pile-aware actions: swath holds 10.9 particles on average (min 2); 1/524288 draws could not reach min_swath=3
+chunk 14: step 4/24 (179s)
+chunk 14: step 5/24 (226s)
+chunk 14: step 6/24 (273s)
+chunk 14: step 7/24 (322s)
+chunk 14: step 8/24 (369s)
+chunk 14: step 9/24 (416s)
+chunk 14: step 10/24 (461s)
+chunk 14: step 11/24 (507s)
+chunk 14: step 12/24 (552s)
+chunk 14: step 13/24 (596s)
+chunk 14: step 14/24 (642s)
+chunk 14: step 15/24 (685s)
+chunk 14: step 16/24 (729s)
+chunk 14: step 17/24 (772s)
+chunk 14: step 18/24 (817s)
+chunk 14: step 19/24 (862s)
+chunk 14: step 20/24 (907s)
+chunk 14: step 21/24 (952s)
+chunk 14: step 22/24 (995s)
+chunk 14: step 23/24 (1038s)
+chunk 14: step 24/24 (1080s)
+chunk 14: step 24/24 (1080s)
+  linear_switched_soft                 gd   b1.0       quadrant_0 40: improve +0.294; evals/step 3900
+  linear_switched_soft                 gd   b1.0       quadrant_0 41: improve +0.266; evals/step 3916
+  linear_switched_soft                 gd   b1.0       quadrant_0 42: improve +0.348; evals/step 3908
+  linear_switched_soft                 gd   b1.0       quadrant_0 43: improve +0.298; evals/step 3915
+  linear_switched_soft                 gd   b1.0       quadrant_3 40: improve +0.290; evals/step 3952
+  linear_switched_soft                 gd   b1.0       quadrant_3 41: improve +0.307; evals/step 3932
+  linear_switched_soft                 gd   b1.0       quadrant_3 42: improve +0.299; evals/step 3940
+  linear_switched_soft                 gd   b1.0       quadrant_3 43: improve +0.329; evals/step 3896
+  linear_switched_soft                 gd   b1.0       letter_O   40: improve +0.323; evals/step 3951
+  linear_switched_soft                 gd   b1.0       letter_O   41: improve +0.265; evals/step 3929
+  linear_switched_soft                 gd   b1.0       letter_O   42: improve +0.295; evals/step 3908
+  linear_switched_soft                 gd   b1.0       letter_O   43: improve +0.289; evals/step 3912
+  linear_switched_soft                 gd   b1.0       letter_T   40: improve +0.386; evals/step 3933
+  linear_switched_soft                 gd   b1.0       letter_T   41: improve +0.287; evals/step 3921
+  linear_switched_soft                 gd   b1.0       letter_T   42: improve +0.330; evals/step 3936
+  linear_switched_soft                 gd   b1.0       letter_T   43: improve +0.353; evals/step 3911
+  linear_switched_soft                 gd   b1.0       letter_S   40: improve +0.328; evals/step 3916
+  linear_switched_soft                 gd   b1.0       letter_S   41: improve +0.271; evals/step 3917
+  linear_switched_soft                 gd   b1.0       letter_S   42: improve +0.313; evals/step 3927
+  linear_switched_soft                 gd   b1.0       letter_S   43: improve +0.314; evals/step 3961
+  linear_switched_soft                 gd   b1.0       letter_L   40: improve +0.286; evals/step 3940
+  linear_switched_soft                 gd   b1.0       letter_L   41: improve +0.266; evals/step 3947
+  linear_switched_soft                 gd   b1.0       letter_L   42: improve +0.301; evals/step 3928
+  linear_switched_soft                 gd   b1.0       letter_L   43: improve +0.314; evals/step 3957
+  linear_switched_soft                 gd   b1.0       letter_X   40: improve +0.368; evals/step 3939
+  linear_switched_soft                 gd   b1.0       letter_X   41: improve +0.324; evals/step 3916
+  linear_switched_soft                 gd   b1.0       letter_X   42: improve +0.320; evals/step 3924
+  linear_switched_soft                 gd   b1.0       letter_X   43: improve +0.382; evals/step 3917
+  linear_switched_soft                 gd   b1.0       letter_Z   40: improve +0.377; evals/step 3955
+  linear_switched_soft                 gd   b1.0       letter_Z   41: improve +0.294; evals/step 3929
+  linear_switched_soft                 gd   b1.0       letter_Z   42: improve +0.308; evals/step 3940
+  linear_switched_soft                 gd   b1.0       letter_Z   43: improve +0.361; evals/step 3952
+chunk 15: step 1/24 (44s)
+chunk 15: step 2/24 (88s)
+chunk 15: step 3/24 (132s)
+chunk 15: step 4/24 (177s)
+chunk 15: step 5/24 (223s)
+chunk 15: step 6/24 (270s)
+chunk 15: step 7/24 (316s)
+chunk 15: step 8/24 (361s)
+chunk 15: step 9/24 (405s)
+chunk 15: step 10/24 (446s)
+chunk 15: step 11/24 (488s)
+chunk 15: step 12/24 (532s)
+chunk 15: step 13/24 (575s)
+chunk 15: step 14/24 (616s)
+chunk 15: step 15/24 (658s)
+chunk 15: step 16/24 (700s)
+chunk 15: step 17/24 (743s)
+chunk 15: step 18/24 (788s)
+chunk 15: step 19/24 (828s)
+chunk 15: step 20/24 (869s)
+chunk 15: step 21/24 (910s)
+chunk 15: step 22/24 (951s)
+chunk 15: step 23/24 (994s)
+chunk 15: step 24/24 (1035s)
+chunk 15: step 24/24 (1035s)
+  linear_switched_soft                 cem  b1.0       quadrant_0 40: improve +0.294; evals/step 48384
+  linear_switched_soft                 cem  b1.0       quadrant_0 41: improve +0.266; evals/step 48000
+  linear_switched_soft                 cem  b1.0       quadrant_0 42: improve +0.315; evals/step 48469
+  linear_switched_soft                 cem  b1.0       quadrant_0 43: improve +0.298; evals/step 48555
+  linear_switched_soft                 cem  b1.0       quadrant_3 40: improve +0.290; evals/step 48853
+  linear_switched_soft                 cem  b1.0       quadrant_3 41: improve +0.306; evals/step 48256
+  linear_switched_soft                 cem  b1.0       quadrant_3 42: improve +0.299; evals/step 48640
+  linear_switched_soft                 cem  b1.0       quadrant_3 43: improve +0.329; evals/step 48256
+  linear_switched_soft                 cem  b1.0       letter_O   40: improve +0.293; evals/step 48469
+  linear_switched_soft                 cem  b1.0       letter_O   41: improve +0.228; evals/step 48171
+  linear_switched_soft                 cem  b1.0       letter_O   42: improve +0.285; evals/step 48427
+  linear_switched_soft                 cem  b1.0       letter_O   43: improve +0.266; evals/step 48469
+  linear_switched_soft                 cem  b1.0       letter_T   40: improve +0.388; evals/step 48512
+  linear_switched_soft                 cem  b1.0       letter_T   41: improve +0.287; evals/step 48000
+  linear_switched_soft                 cem  b1.0       letter_T   42: improve +0.333; evals/step 48555
+  linear_switched_soft                 cem  b1.0       letter_T   43: improve +0.357; evals/step 48341
+  linear_switched_soft                 cem  b1.0       letter_S   40: improve +0.326; evals/step 48725
+  linear_switched_soft                 cem  b1.0       letter_S   41: improve +0.270; evals/step 48469
+  linear_switched_soft                 cem  b1.0       letter_S   42: improve +0.307; evals/step 48256
+  linear_switched_soft                 cem  b1.0       letter_S   43: improve +0.320; evals/step 48341
+  linear_switched_soft                 cem  b1.0       letter_L   40: improve +0.281; evals/step 48555
+  linear_switched_soft                 cem  b1.0       letter_L   41: improve +0.268; evals/step 48171
+  linear_switched_soft                 cem  b1.0       letter_L   42: improve +0.278; evals/step 48299
+  linear_switched_soft                 cem  b1.0       letter_L   43: improve +0.313; evals/step 48384
+  linear_switched_soft                 cem  b1.0       letter_X   40: improve +0.358; evals/step 48128
+  linear_switched_soft                 cem  b1.0       letter_X   41: improve +0.315; evals/step 48427
+  linear_switched_soft                 cem  b1.0       letter_X   42: improve +0.306; evals/step 48469
+  linear_switched_soft                 cem  b1.0       letter_X   43: improve +0.365; evals/step 48512
+  linear_switched_soft                 cem  b1.0       letter_Z   40: improve +0.378; evals/step 48384
+  linear_switched_soft                 cem  b1.0       letter_Z   41: improve +0.291; evals/step 48384
+  linear_switched_soft                 cem  b1.0       letter_Z   42: improve +0.314; evals/step 48341
+  linear_switched_soft                 cem  b1.0       letter_Z   43: improve +0.358; evals/step 48299
+[38;5;159m[Genesis] [00:09:36] [INFO] 💤 Exiting Genesis and caching compiled kernels...[0m
+wrote experiments/EXP-0045-decision-time-vs-actions/results/time_vs_actions.json

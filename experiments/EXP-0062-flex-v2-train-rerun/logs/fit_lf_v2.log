@@ -1,0 +1,21 @@
+FlexPileData(DS-0020, split=train, exclude_flagged=True): 17070 rows; flagged nan=0 escaped=1657 out_of_grid=109 null=245 -> kept 15093
+FlexPileData(DS-0020, split=val, exclude_flagged=True): 1900 rows; flagged nan=0 escaped=208 out_of_grid=10 null=17 -> kept 1665
+train 15093 rows / 1669 traj, val 1665 rows / 188 traj (12s); len train 0.032-9.412
+Gram matrices (1s)
+equal [0.0, 1.5685969591140747, 3.1371939182281494, 4.705790996551514, 6.274388313293457, 7.842985153198242, 9.411581993103027] train [1722, 3973, 4530, 3435, 1323, 110] val [177, 441, 472, 416, 143, 16]
+collection [0.9617000222206116, 2.4042000770568848, 3.8466999530792236, 5.2891998291015625, 6.7316999435424805, 8.174200057983398, 9.616700172424316] train [3712, 4057, 3940, 2630, 692, 62] val [409, 431, 399, 338, 79, 9]
+lambda       1: single 0.2438 | equal 0.2674 per-bin [0.009, 0.223, 0.301, 0.32, 0.334, 0.363] | collection 0.2604 per-bin [0.096, 0.262, 0.32, 0.321, 0.362, 0.38] (1s)
+lambda      10: single 0.2612 | equal 0.3476 per-bin [0.125, 0.313, 0.373, 0.397, 0.403, 0.37] | collection 0.3404 per-bin [0.196, 0.344, 0.391, 0.403, 0.396, 0.382] (1s)
+lambda      30: single 0.2708 | equal 0.3718 per-bin [0.163, 0.34, 0.395, 0.418, 0.426, 0.377] | collection 0.3646 per-bin [0.228, 0.369, 0.412, 0.425, 0.415, 0.382] (1s)
+lambda     100: single 0.2798 | equal 0.3866 per-bin [0.187, 0.357, 0.408, 0.43, 0.439, 0.38] | collection 0.3796 per-bin [0.249, 0.384, 0.424, 0.438, 0.427, 0.375] (1s)
+lambda     300: single 0.2847 | equal 0.3903 per-bin [0.196, 0.363, 0.412, 0.431, 0.439, 0.371] | collection 0.3833 per-bin [0.257, 0.389, 0.427, 0.44, 0.426, 0.353] (1s)
+lambda    1000: single 0.2852 | equal 0.3843 per-bin [0.195, 0.36, 0.408, 0.423, 0.427, 0.342] | collection 0.3773 per-bin [0.256, 0.384, 0.421, 0.43, 0.413, 0.313] (1s)
+lambda    3000: single 0.2806 | equal 0.3704 per-bin [0.186, 0.348, 0.395, 0.408, 0.405, 0.303] | collection 0.3635 per-bin [0.247, 0.372, 0.408, 0.412, 0.385, 0.267] (1s)
+lambda   10000: single 0.2699 | equal 0.3457 per-bin [0.167, 0.326, 0.373, 0.382, 0.366, 0.246] | collection 0.3389 per-bin [0.23, 0.351, 0.384, 0.383, 0.336, 0.201] (1s)
+  bin 0 [0.0,1568.6) mm: 1722 rows, fit ridge in 0.1s
+  bin 1 [1568.6,3137.2) mm: 3973 rows, fit ridge in 0.1s
+  bin 2 [3137.2,4705.8) mm: 4530 rows, fit ridge in 0.1s
+  bin 3 [4705.8,6274.4) mm: 3435 rows, fit ridge in 0.1s
+  bin 4 [6274.4,7843.0) mm: 1323 rows, fit ridge in 0.1s
+  bin 5 [7843.0,9411.6) mm: 110 rows, fit ridge in 0.1s
+chosen scheme equal lambda 300.0 (val 0.3903); single lambda 1000.0 (val 0.2852); fit_bins vs gram 9.06e-06; wrote weights/MODEL-0009-linear-foresight-flex-mask-v2/checkpoint.pt

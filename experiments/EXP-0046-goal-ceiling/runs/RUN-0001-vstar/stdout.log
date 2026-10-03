@@ -1,0 +1,31 @@
+letter_A     V*=0.0017 cap= 27 in=11 w=12.2mm massfrac=0.946 best_massfrac=0.946 signed=0.893
+letter_B     V*=0.0019 cap= 38 in=17 w=9.1mm massfrac=0.948 best_massfrac=0.948 signed=0.895
+letter_C     V*=0.0021 cap= 25 in=10 w=9.1mm massfrac=0.941 best_massfrac=0.941 signed=0.882
+letter_D     V*=0.0013 cap= 35 in=19 w=11.5mm massfrac=0.963 best_massfrac=0.963 signed=0.927
+letter_E     V*=0.0015 cap= 36 in=20 w=11.5mm massfrac=0.962 best_massfrac=0.962 signed=0.925
+letter_F     V*=0.0010 cap= 27 in=20 w=11.5mm massfrac=0.963 best_massfrac=0.963 signed=0.926
+letter_G     V*=0.0017 cap= 33 in=15 w=12.2mm massfrac=0.953 best_massfrac=0.953 signed=0.905
+letter_H     V*=0.0014 cap= 33 in=20 w=11.5mm massfrac=0.966 best_massfrac=0.966 signed=0.932
+letter_I     V*=0.0063 cap= 13 in= 4 w=8.1mm massfrac=0.817 best_massfrac=0.817 signed=0.634
+letter_J     V*=0.0023 cap= 18 in=16 w=9.1mm massfrac=0.918 best_massfrac=0.918 signed=0.837
+letter_K     V*=0.0023 cap= 28 in=16 w=12.2mm massfrac=0.943 best_massfrac=0.944 signed=0.886
+letter_L     V*=0.0022 cap= 20 in=18 w=9.1mm massfrac=0.918 best_massfrac=0.918 signed=0.837
+letter_M     V*=0.0019 cap= 47 in=16 w=12.2mm massfrac=0.957 best_massfrac=0.958 signed=0.914
+letter_N     V*=0.0015 cap= 36 in=18 w=12.8mm massfrac=0.962 best_massfrac=0.963 signed=0.925
+letter_O     V*=0.0017 cap= 32 in=16 w=9.1mm massfrac=0.955 best_massfrac=0.956 signed=0.910
+letter_P     V*=0.0010 cap= 30 in=19 w=11.5mm massfrac=0.965 best_massfrac=0.965 signed=0.929
+letter_Q     V*=0.0015 cap= 33 in=19 w=12.2mm massfrac=0.960 best_massfrac=0.960 signed=0.920
+letter_R     V*=0.0012 cap= 36 in=20 w=11.5mm massfrac=0.966 best_massfrac=0.966 signed=0.933
+letter_S     V*=0.0022 cap= 30 in=13 w=9.1mm massfrac=0.938 best_massfrac=0.938 signed=0.876
+letter_T     V*=0.0011 cap= 22 in=20 w=11.5mm massfrac=0.965 best_massfrac=0.965 signed=0.930
+letter_U     V*=0.0014 cap= 28 in=20 w=9.1mm massfrac=0.961 best_massfrac=0.961 signed=0.921
+letter_V     V*=0.0018 cap= 22 in=12 w=12.2mm massfrac=0.941 best_massfrac=0.941 signed=0.882
+letter_W     V*=0.0016 cap= 41 in=14 w=12.2mm massfrac=0.960 best_massfrac=0.960 signed=0.920
+letter_X     V*=0.0022 cap= 21 in=16 w=12.2mm massfrac=0.949 best_massfrac=0.949 signed=0.897
+letter_Y     V*=0.0021 cap= 16 in=15 w=11.5mm massfrac=0.932 best_massfrac=0.932 signed=0.865
+letter_Z     V*=0.0019 cap= 26 in=15 w=12.2mm massfrac=0.953 best_massfrac=0.953 signed=0.906
+quadrant_0   V*=0.0000 cap=144 in=20 w=65.0mm massfrac=1.000 best_massfrac=1.000 signed=1.000
+quadrant_1   V*=0.0000 cap=144 in=20 w=65.0mm massfrac=1.000 best_massfrac=1.000 signed=1.000
+quadrant_2   V*=0.0000 cap=144 in=20 w=65.0mm massfrac=1.000 best_massfrac=1.000 signed=1.000
+quadrant_3   V*=0.0000 cap=144 in=20 w=65.0mm massfrac=1.000 best_massfrac=1.000 signed=1.000
+two_squares  V*=0.0001 cap= 32 in=20 w=24.4mm massfrac=0.998 best_massfrac=0.998 signed=0.995

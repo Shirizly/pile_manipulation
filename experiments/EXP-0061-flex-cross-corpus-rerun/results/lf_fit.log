@@ -1,0 +1,14 @@
+FlexPileData(DS-0020, split=train, exclude_flagged=True): 18000 rows; flagged nan=2 escaped=49 out_of_grid=0 null=112 -> kept 17837
+FlexPileData(DS-0020, split=val, exclude_flagged=True): 2000 rows; flagged nan=0 escaped=0 out_of_grid=0 null=9 -> kept 1991
+train 17837 rows (len 0.037-13.210), val 1991 rows; edges [0.0, 2.202, 4.403, 6.605, 8.807, 11.009, 13.21]
+rows/bin train [2124, 4867, 5325, 3961, 1424, 136]  val [234, 565, 606, 433, 139, 14]  (D = 4096)
+lambda     0.1: val acc single 0.3189 switched 0.3008 (2s) per-bin switched [0.172, 0.233, 0.359, 0.284, 0.482, 0.495]
+lambda       1: val acc single 0.3198 switched 0.3595 (2s) per-bin switched [0.187, 0.304, 0.398, 0.393, 0.487, 0.496]
+lambda       3: val acc single 0.3216 switched 0.3948 (3s) per-bin switched [0.21, 0.349, 0.429, 0.438, 0.493, 0.496]
+lambda      10: val acc single 0.3263 switched 0.4306 (3s) per-bin switched [0.247, 0.392, 0.463, 0.476, 0.507, 0.497]
+lambda      30: val acc single 0.3340 switched 0.4565 (2s) per-bin switched [0.281, 0.422, 0.487, 0.501, 0.523, 0.499]
+lambda     100: val acc single 0.3442 switched 0.4751 (2s) per-bin switched [0.307, 0.442, 0.505, 0.518, 0.536, 0.5]
+lambda     300: val acc single 0.3513 switched 0.4824 (3s) per-bin switched [0.319, 0.452, 0.511, 0.524, 0.539, 0.494]
+lambda    1000: val acc single 0.3543 switched 0.4806 (3s) per-bin switched [0.32, 0.453, 0.51, 0.521, 0.532, 0.476]
+lambda    3000: val acc single 0.3521 switched 0.4717 (3s) per-bin switched [0.314, 0.447, 0.501, 0.51, 0.516, 0.449]
+chosen lambda switched 300.0 (val 0.4824), single 1000.0 (val 0.3543); fit_operator equivalence 0.00e+00; wrote weights/MODEL-0004-linear-foresight-flex-mask/operators.pt

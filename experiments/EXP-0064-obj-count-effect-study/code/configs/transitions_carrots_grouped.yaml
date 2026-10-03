@@ -1,0 +1,49 @@
+dataset:
+  folder: "data/true_action_transitions_carrots_grouped" # manifest + per-state/step data
+  init_pos: 'spread' # overridden per state to 'count_target' (see transitions.count_groups)
+  global_scale: 24
+  obj: "carrots"
+  particle_r: 0.125
+  cam_idx: 0
+  wkspc_w: 5.0
+  headless: True
+  cont_motion: False
+  robot_type: 'franka'
+  franka_urdf: 'env/assets/franka_panda_plate/panda_plate.urdf'
+  action_margin: 1.6
+
+# Sequential-rollout format (see collect_transitions.py), same as
+# transitions_carrots.yaml, EXCEPT initial-state sampling targets an exact
+# object-count range per state instead of rand_blob/rand_spread -- built for
+# testing how GNN accuracy/capture scales with object count (see
+# env/flex_env_multi.py's `count_target` init_pos branch for why
+# rand_blob/rand_spread can't hit these ranges directly: they produce only a
+# handful of discrete counts, none below ~45).
+#
+# 2000 states split into 4 equal contiguous blocks of 500 (state_idx // 500):
+#   block 0 (0-499):     10-30 objects
+#   block 1 (500-999):   50-70 objects
+#   block 2 (1000-1499): 100-150 objects
+#   block 3 (1500-1999): 400-500 objects
+# Per-state target count drawn uniformly within its block's range, seeded by
+# (seed, state_idx) -- see collect_transitions.py's resolve_count_group.
+transitions:
+  n_states: 2000
+  n_steps: 10
+  seed: 0
+  count_groups: [[10, 30], [50, 70], [100, 150], [400, 500]]
+  action_sampler: 'obj_biased'
+  max_retries: 20
+  max_reset_attempts: 2
+  bins:
+    # Informational only (push_length / bin recorded per transition, no
+    # per-step stratification) -- same edges as the other carrots datasets
+    # for cross-dataset comparability.
+    edges_abs: [0.9617, 2.4042, 3.8467, 5.2892, 6.7317, 8.1742, 9.6167]
+
+# n_envs is forced to 1 by collect_transitions.py regardless of this value.
+parallel:
+  n_envs: 1
+  tile_pitch_scale: 2
+  tile_seed: 12345
+  nan_check_every: 1

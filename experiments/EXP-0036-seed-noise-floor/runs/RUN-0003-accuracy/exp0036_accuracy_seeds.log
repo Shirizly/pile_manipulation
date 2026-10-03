@@ -1,0 +1,24 @@
+[randlen_test] loaded 10751 transitions (73.4s)
+[randlen_test / nfd_randlen] accuracy=0.4564  device=cpu  (15.2s)
+    averaged         lyapunov=+0.8939  mass_in_region=+0.8721  signed_mass=+0.8277  (30 goals)
+
+wrote experiments/EXP-0036-seed-noise-floor/results/randlen_test/seed0.json
+done seed0 Thu Sep 24 12:55:49 PM CEST 2026
+[randlen_test] loaded 10751 transitions (62.7s)
+[randlen_test / nfd_randlen] accuracy=0.4564  device=cpu  (15.0s)
+    averaged         lyapunov=+0.8939  mass_in_region=+0.8721  signed_mass=+0.8277  (30 goals)
+
+wrote experiments/EXP-0036-seed-noise-floor/results/randlen_test/seed1.json
+done seed1 Thu Sep 24 12:57:10 PM CEST 2026
+[randlen_test] loaded 10751 transitions (62.3s)
+[randlen_test / nfd_randlen] accuracy=0.4564  device=cpu  (15.7s)
+    averaged         lyapunov=+0.8939  mass_in_region=+0.8721  signed_mass=+0.8277  (30 goals)
+
+wrote experiments/EXP-0036-seed-noise-floor/results/randlen_test/seed2.json
+done seed2 Thu Sep 24 12:58:31 PM CEST 2026
+[randlen_test] loaded 10751 transitions (62.9s)
+[randlen_test / nfd_randlen] accuracy=0.4564  device=cpu  (15.5s)
+    averaged         lyapunov=+0.8939  mass_in_region=+0.8721  signed_mass=+0.8277  (30 goals)
+
+wrote experiments/EXP-0036-seed-noise-floor/results/randlen_test/seed3.json
+done seed3 Thu Sep 24 12:59:52 PM CEST 2026

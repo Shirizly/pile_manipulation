@@ -1,0 +1,36 @@
+# TEMPLATE (v2, 2026-10-02; = v1 flex_pile_instance.yaml + `cache_format` + `raw_dir`) -- resolved instance config for a FleX carrot-pile
+# corpus read by FlexData/dataset.py (FlexPileData / load_flex_cell).
+# Copy into datasets/DS-####-slug/config.yaml and resolve every field there;
+# record `template: configs/dataset/flex_pile_instance_v2.yaml@<git blob sha>`.
+# UNITS: native FleX workspace units (scene global_scale; NOT metres).
+# FRAME: table frame X = x_flex, Y = -z_flex (= the stored actions' frame);
+#        grid row (dim 0) = X, col (dim 1) = Y. See FlexData/dataset.py.
+id: DS-XXXX
+kind: trajectories        # trajectories (chains, row = (traj, push k)) | slates (same-state pools)
+units: flex
+cache_dir: datasets/DS-XXXX-slug/cache      # written by `python -u -m FlexData.build_cache ...`
+cache_format: chunks_v1  # trajectories only: chunks_v1 (fixed P, chunk_*.npz) | traj_manifest_v2 (variable P, v2_chunk_*.npz)
+raw_dir: null             # provenance: raw payload dir the cache was built from
+split_file: datasets/DS-XXXX-slug/splits.json
+scene:                    # provenance only; copied from the collector's run_config
+  global_scale: null
+  wkspc_w: null
+  action_margin: null
+  particle_r: null
+  cam_idx: null
+grid:
+  half_extent: null       # grid covers [-h, h]^2 in the table frame
+  resolution: 64          # H = W; to_pxl = resolution / (2 h) px per unit
+  footprint_radius_px: 1.0  # hard disk raster radius (pixels)
+occupancy:                # model-input occupancy source (scoring truth is ALWAYS particle soft splat)
+  source: particles       # particles (disk raster) | image_mask (precomputed, FlexData.dataset.ImageMaskSource)
+  mask_file: null         # image_mask only; default <cache_dir>/image_masks.npz
+plate:
+  width: null             # long side, perpendicular to the push (units)
+  thickness: null         # along the push; a RENDERING choice unless measured
+  height: null
+  sigma_px: 0.75          # draw_plate_soft edge softness (Genesis 64px value)
+flags:                    # rows dropped by exclude_flagged=True
+  null_disp: null         # max per-particle XZ displacement below this = null push
+  escape_abs: null        # any |coord| beyond this = particle escaped / solver blow-up
+  max_out_of_grid_frac: null  # fraction of particles outside the grid above this = drop
