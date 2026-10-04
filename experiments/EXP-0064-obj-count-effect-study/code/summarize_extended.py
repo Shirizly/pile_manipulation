@@ -132,6 +132,7 @@ def main():
                 row[f'slateN_{vf}'] = over_reps(lambda r: np.nanmean([capture(pm(r)[i], tm[i], HIB[vf], clean_idx) for i in cells]))
                 row[f'slateN_{vf}_Keq'] = over_reps(lambda r: np.nanmean([[capture(pm(r)[i], tm[i], HIB[vf], d) for i in cells] for d in eq_draws[:10]]))
             row['slateN_mean3'] = float(np.mean([row[f'slateN_{v}'] for v in HIB]))
+            row['accuracy_moved_nodes_clean_state'] = float(1 - np.sqrt(row['sqm_clean'] / row['sqpm_clean'])) if row['sqpm_clean'] > 0 else float('nan')
             row['slateN_mean3_Keq'] = float(np.mean([row[f'slateN_{v}_Keq'] for v in HIB]))
             per[m][s] = row
         # pool facts (model-independent)
@@ -172,7 +173,15 @@ def main():
                                            for m in models}
     # paired model - field baseline per group (same states)
     res['paired_vs_field'] = {}
+    res['paired_vs_field_orig'] = {}
     for m in models:
+        if 'field_orig' in models and m != 'field_orig':
+            res['paired_vs_field_orig'][m] = {}
+            for gi, gl in enumerate(GROUPS + ['overall']):
+                sel = [s for s in S if gi == 4 or groups_of[s] == gi]
+                if sel:
+                    res['paired_vs_field_orig'][m][gl] = {k: boot([per[m][s][k] - per['field_orig'][s][k] for s in sel])
+                                                          for k in ('cap_full_17g_clean', 'slateN_mean3', 'accuracy_moved_nodes_clean_state')}
         if m == 'field':
             continue
         res['paired_vs_field'][m] = {}
@@ -208,6 +217,11 @@ def main():
     L.append('\n## 400-500 minus 10-30 (unpaired, state bootstrap)\n\n| model | ' + ' | '.join(res['contrast_400-500_minus_10-30'][models[0]].keys()) + ' |\n|' + '---|' * 8)
     for m in models:
         L.append(f'| {m} | ' + ' | '.join(f(v) for v in res['contrast_400-500_minus_10-30'][m].values()) + ' |')
+    if res['paired_vs_field_orig']:
+        L.append('\n## model minus `field_orig` baseline (paired per state; field_orig = s0 + the ORIGINAL baseline action encoding, untrained)\n\n| model | group | capture 17 pt goals | slateN mask mean3 | per-state moved-node accuracy |\n|---|---|---|---|---|')
+        for m, d in res['paired_vs_field_orig'].items():
+            for gl, v in d.items():
+                L.append(f"| {m} | {gl} | {f(v['cap_full_17g_clean'])} | {f(v['slateN_mean3'])} | {f(v['accuracy_moved_nodes_clean_state'])} |")
     L.append('\n## model minus `field` baseline (paired per state)\n\n| model | group | capture 17 pt goals | slateN mask mean3 |\n|---|---|---|---|')
     for m, d in res['paired_vs_field'].items():
         for gl, v in d.items():

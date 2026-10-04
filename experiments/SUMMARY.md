@@ -107,7 +107,7 @@ are allowed for now (less likely to cause an acute failure); FleX data and tests
 | 0047 | Is there clean narrow-domain data? | live | No → collected DS-0008..13 (later dirty, X1) → DS-0015..18 |
 | 0053 | Narrow vs broad training (offline) | **exposed X1** (DS-0008/9 dirty) | Narrow better offline; clumps predicted better than scatter by every model |
 | 0061 → 0062 | FleX: does model ranking depend on pile type? | 0061 narrowed by 0062 | The GNN-vs-LF flip between blob/spread piles disappears with matched training data (one seed each) — coverage dominates; a smaller scene effect is not excluded |
-| 0064 | Object count / pile size (FleX) | live, one seed (as-run claim refuted) | The source study's "capture rises with object count" came from a z-mirrored action input (C-065 refuted). Corrected: accuracy falls with pile size, slateN is flat; the learned GNN beats an untrained heuristic on small piles and loses on large ones (C-068) — a model x pile-size interaction. Count is confounded with footprint and node budget |
+| 0064 | Object count / pile size (FleX) | live, one seed (as-run claim refuted) | The source study's "capture rises with object count" came from a z-mirrored action input (C-065 refuted). Corrected: accuracy falls with pile size, slateN is flat; the learned GNN adds ≤ ~0.02 slateN (point) over an untrained heuristic of its own action encoding at every size (C-071, 3 seeds + encoding + escape-filter variants); the encoding choice matters more than learning; the size trend of the GNN's edge flips with encoding (C-068 narrowed). Count is confounded with footprint and node budget |
 | 0065 | Are DS-0001/0006 legal? | live | No (X1) |
 
 ## 6. Model families, compared offline
@@ -179,8 +179,9 @@ tested (X7). The one regime where models clearly switch winner is the **time bud
 0.03 s the linear model beats the NFD by 0.20; C-043: the ensemble loses at matched time). Scene:
 clumps are easier to predict offline (0053) and the sampler matters more on clumps (0049), but both
 are exposed to X1. Per-state model choice fails (0035), but scene-REGIME switching (clump/scatter, n)
-has never been tested. On FleX (0064, one seed) the learned GNN's edge over an untrained push heuristic shrinks and reverses
-as piles grow (C-068), the first model x scene interaction that survived its own controls. The one apparent model × scene interaction (0061) was dominated by training coverage
+has never been tested. On FleX (0064) the learned GNN adds little over an untrained push heuristic built from its own action
+encoding at any pile size (C-071); whether its small edge shrinks or grows with pile size depends on the
+encoding (C-068 narrowed), so no robust model x pile-size interaction remains. The one apparent model × scene interaction (0061) was dominated by training coverage
 (0062). **No closed-loop run has used clump, n50, pile or FleX starts.**
 
 **Which model is best for MPC.** On the only closed-loop task measured, models are not separable
