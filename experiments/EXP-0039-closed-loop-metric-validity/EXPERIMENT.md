@@ -153,9 +153,9 @@ Added by the cross-experiment audit (summary: `experiments/SUMMARY.md`). Numbers
 - ISS-013: planner candidates / initialisations in this record came from the pre-fix pile-aware sampler (ISS-010 class, ~half illegal touchdowns in audited banks); executed pushes have not been audited for touchdown legality.
 - EXP-0065 RUN-0003 (C-067): executed closed-loop pushes include illegal touchdowns (blade on a cube); measured lower bounds per record in `experiments/EXP-0065-*/results/audit_closed_loop_actions.json` -- this record's episodes did not record states, so not measurable directly; sibling records show 16-53 %.
 
-## Pre-registered re-run (2026-10-04, RUN-0010): legal actions, headroom, across families
+## Pre-registered re-run (2026-10-04, RUN-0002): legal actions, headroom, across families
 
-Registered BEFORE any cell runs (committed first); design in `runs/RUN-0010-legal-headroom-rerun/DESIGN.md`
+Registered BEFORE any cell runs (committed first); design in `runs/RUN-0002-legal-headroom-rerun/DESIGN.md`
 (written by an advisor agent, reviewed by the coordinator). Why: this record's metric-validity result was measured
 on a saturated lyapunov task, 4 NFD-family-heavy models, mistuned planners, illegal touchdowns in both the offline
 pools and the executed pushes (EXP-0065, C-067). Re-run: 8 OCC models across families (narrow v2 NFD seeds 0/1/2,

@@ -91,7 +91,7 @@ Arm B: NFD/linear 8 x 64 x 16 ~ 0.4 s -> 55 min; retrieval 64 x 16 x 3.8 s ~ 65 
 every push (`.tmp` + `os.replace`) and resumes by tag, so a crash loses < 1 chunk-step. Run as a sequential
 queue (`legal_rerun_queue.sh` pattern), `python -u`, `.pid` files, GPU exclusive.
 
-## 9. Commands (EXP-0039 RUN-0010; `G="letter_O letter_T letter_S letter_L letter_X letter_Z letter_C letter_H"`)
+## 9. Commands (EXP-0039 RUN-0002; `G="letter_O letter_T letter_S letter_L letter_X letter_Z letter_C letter_H"`)
 ```
 # Arm A, one unit per model M
 python -u experiments/EXP-0043-batched-closed-loop/code/batched_closed_loop.py --tag hm_cem_$M \
