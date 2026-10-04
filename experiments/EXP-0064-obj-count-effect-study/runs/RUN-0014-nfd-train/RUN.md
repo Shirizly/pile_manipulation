@@ -15,6 +15,13 @@
   (RUN-0015 `score --models nfd14 --device cuda`) and re-runs RUN-0015 `analyze`.
 - commit 3373e65b, dirty.
 - run dir: `Baselines/NFD/runs/nfd_3ch_flex_mask_ds0021_seed0/`; log `artifacts/RUN-0014-nfd-train/exp0064_run0014_nfd_train.log`.
-- STATUS: see "Outcome" below (filled when the chain finishes).
+- STATUS: done (Outcome below).
 
 ## Outcome
+
+- 2026-10-04 05:36 CEST: chain saw `QUEUE DONE` (05:33:51) and started training; RTX 4070 Laptop alone, ~30 s/epoch.
+- Plateau stop at epoch 95 (20 epochs without > 0.5 % relative val improvement); best epoch 75, val MSE 0.007288;
+  Trainer test pass on DS-0022: hard IoU 0.677, changed-pixel MSE 0.191 (copy baseline 1.0).
+- Promoted 06:20 to `weights/MODEL-0014-nfd-flex-mask-countgroups-seed0/checkpoint.pth` (sha256 595030d3...),
+  scored (RUN-0015, cuda, 3 s) and analysed; chain `CHAIN DONE` 06:21. DS-0022 slateN_K overall 0.929 [0.924, 0.935],
+  accuracy 0.520 [0.510, 0.530].

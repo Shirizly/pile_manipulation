@@ -41,3 +41,17 @@ Not regenerable from this repo (PyFleX). Source command RECONSTRUCTED:
 `collect_true_action_results_parallel.py --config config/data_gen/slates_objbiased_carrots_grouped.yaml`.
 Log: EXP-0064 `artifacts/RUN-0002-collect-test/`. Identical copy remains in the source repo
 (`data/true_action_slates_objbiased_carrots_grouped`).
+
+## FlexData access (2026-10-04, EXP-0064 RUN-0013)
+
+Readable through `FlexData/dataset.py::FlexPileData` / `load_flex_cell` via `config.yaml` (grid/plate/flags
+IDENTICAL to DS-0019, but `occupancy.source: image_mask`). Built by
+`experiments/EXP-0064-obj-count-effect-study/code/build_flex_caches_ds0021_ds0022.sh`:
+`python -u -m FlexData.build_cache splits_ds0022 | paths_ds0022 | ds0022` and `python -u -m FlexData.image_mask ds0022`
+-> `cache/state_*.npz` (DS-0019 slate format), `cache/image_paths.json`, `cache/image_masks.npz` (200 initial +
+17,761 after-state masks). `splits.json`: all 200 states `test`, explicit slates (valid action_idx per state) and
+`count_group` per state. Loader flags: 17,761 valid rows -> escaped 375, out_of_grid 119, null 850 -> **16,417 kept**;
+clean pool per state min 50 (mean 85 / 85 / 83 / 75 by group).
+
+**Render check** (pytest-free, `EXP-0064 code/flex_cache_check.py`; `results/flex_cache_check.json`, figure
+`results/figures/data_check/image_mask_triples_DS-0022.png`): peak mask-vs-particle-raster IoU at shift [0, 0] (IoU 0.929); removed mask pixels inside the swept region 0.999 for actions as stored vs 0.553 with z negated (region = 0.123 of the grid); mean occupancy mask 0.0436 vs particle raster 0.0456 (n = 500 / 200 rows).

@@ -72,6 +72,7 @@ are allowed for now (less likely to cause an acute failure); FleX data and tests
 | 0059 (chaos floor) | Robustness of metrics to state perturbation | live, offline | slateN robust, accuracy collapses with 0.5-1 mm perturbation |
 | 0060 | Which cheap metric tracks slateN_tough? | **stale** (pre-ISS-010 data, pre-fix retrieval) | Target is itself offline; n = 6 |
 | 0064 | Particle accuracy vs slateN across pile sizes (FleX) | live, one seed | Corrected GNN: accuracy 0.48-0.58 vs an untrained push-field heuristic's 0.08-0.50, yet the heuristic ranks as well (point goals) or better (mask goals), increasingly on large piles. Another across-model accuracy/slateN dissociation (C-068) |
+| 0064 (RUN-0013..0015) | NFD vs LinearForesight vs GNN on the same program, image-mask truth | live, one seed each | NFD > switched LF > untrained push field > particle GNN in every group (C-069). Accuracy and slateN agree across models within a group (Kendall 0.71-0.93) and moderately per state (Spearman 0.48-0.60), but not consistently across pile-size groups within a model (C-070) |
 
 ## 3. Closed-loop MPC: planners, objectives, sampling
 

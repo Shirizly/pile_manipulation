@@ -6,6 +6,8 @@
     python -u -m FlexData.build_cache ds0019 [--workers 12]   # DS-0019 (do not rebuild casually: EXP-0061 test corpus)
     python -u -m FlexData.build_cache splits_ds0019 | paths_ds0019
     python -u -m FlexData.build_cache ds0020_v1               # ARCHIVED DS-0020 v1 (old_data/), chunk format
+    python -u -m FlexData.build_cache ds0021|splits_ds0021|paths_ds0021   # EXP-0064 count-group train (DS-0020 v2 layout)
+    python -u -m FlexData.build_cache ds0022|splits_ds0022|paths_ds0022   # EXP-0064 count-group test slates (DS-0019 layout)
 
 Reads the raw ported layout (see each dataset's DATASET.md) ONCE and writes:
 
@@ -65,6 +67,12 @@ DS0020_V1 = DS0020 / "old_data" / "_ported_v1"                       # v1 cache/
 V2_N_STEPS = 10
 V2_EXCLUDE = range(0, 100)    # near-copies of DS-0019's 100 test piles (same collector seed)
 DS0019 = REPO / "datasets" / "DS-0019-slates-flex-pile-varN"
+# EXP-0064 count-group corpora (raw true_action_* format, same layout as DS-0020 v2 / DS-0019,
+# but the slate manifest lives in data/). Same -z action frame (flex-action-frame-neg-z).
+DS0021 = REPO / "datasets" / "DS-0021-flex-carrots-countgroups-train"
+DS0021_RAW = DS0021 / "data"
+DS0022 = REPO / "datasets" / "DS-0022-flex-carrots-countgroups-test-slates"
+DS0021_GROUP_SIZE = 500       # count_group = state_idx // 500 (DS-0021), // 50 (DS-0022)
 CHUNK = 100
 HIST_EDGES = np.arange(-10.0, 10.0 + 1e-9, 0.1)
 
@@ -166,13 +174,14 @@ def build_ds0020_v1(workers: int) -> None:
 
 # ----------------------------------------------------------------- DS-0019
 def _load_state(args):
-    s, recs, init_pos = args
-    d = DS0019 / "data" / str(s)
+    s, recs, init_pos, data = args
+    data = Path(data)
+    d = data / str(s)
     init = _read_particles(d / "initial_particles.npy")
     st = np.load(d / "initial_state.npz")
     assert np.array_equal(st["positions"], init), f"state {s}: npz/npy mismatch"
     recs = sorted(recs, key=lambda r: r["action_idx"])
-    afters = [_read_particles(DS0019 / "data" / r["after_positions_path"]) for r in recs]
+    afters = [_read_particles(data / r["after_positions_path"]) for r in recs]
     assert all(a.shape == init.shape for a in afters), f"state {s}: particle count varies"
     A = np.stack(afters) if afters else np.zeros((0,) + init.shape, np.float32)
     stats = np.asarray([_disp_stats(init, a) for a in afters], dtype=np.float64).reshape(-1, 4)
@@ -195,16 +204,19 @@ def _load_state(args):
     )
 
 
-def build_ds0019(workers: int) -> None:
-    out = DS0019 / "cache"
+def build_ds0019(workers: int, ds: Path = DS0019, manifest: Path | None = None, tag: str = "ds0019") -> None:
+    """Slate corpus -> ``<ds>/cache/state_*.npz``. ``manifest`` defaults to ``<ds>/manifest.jsonl``
+    (DS-0022: ``<ds>/data/manifest.jsonl``); paths in it are relative to ``<ds>/data``."""
+    manifest = manifest or ds / "manifest.jsonl"
+    out = ds / "cache"
     out.mkdir(exist_ok=True)
     mpath = out / "manifest.json"
     man = json.loads(mpath.read_text()) if mpath.exists() else {
-        "format": "FlexData/build_cache.py ds0019", "states": {},
+        "format": f"FlexData/build_cache.py {tag}", "states": {},
         "hist_edges": [float(HIST_EDGES[0]), float(HIST_EDGES[-1]), 0.1],
         "hist_x": [0] * (len(HIST_EDGES) - 1), "hist_z": [0] * (len(HIST_EDGES) - 1),
     }
-    recs = [json.loads(l) for l in open(DS0019 / "manifest.jsonl")]
+    recs = [json.loads(l) for l in open(manifest)]
     inits = {r["state_idx"]: r for r in recs if r["type"] == "state_init"}
     by_state: dict[int, list] = {s: [] for s in inits}
     n_invalid = {s: 0 for s in inits}
@@ -214,7 +226,7 @@ def build_ds0019(workers: int) -> None:
                 by_state[r["state_idx"]].append(r)
             else:
                 n_invalid[r["state_idx"]] += 1
-    todo = [(s, by_state[s], inits[s].get("init_pos")) for s in sorted(inits)
+    todo = [(s, by_state[s], inits[s].get("init_pos"), str(ds / "data")) for s in sorted(inits)
             if f"state_{s:03d}.npz" not in man["states"]]
     with ProcessPoolExecutor(workers) as ex:
         for r in ex.map(_load_state, todo):
@@ -238,7 +250,7 @@ def build_ds0019(workers: int) -> None:
             )
             man["complete"] = len(man["states"]) == len(inits)
             _atomic_json(mpath, man)
-            print(f"[ds0019] {name} valid={len(r['action_idx'])} P={r['n_particles']} "
+            print(f"[{tag}] {name} valid={len(r['action_idx'])} P={r['n_particles']} "
                   f"rigids={r['n_rigids']}", flush=True)
 
 
@@ -272,12 +284,13 @@ def v2_complete_trajectories(man: dict) -> list[int]:
 
 
 def _load_traj_v2(args):
-    t, init, steps = args
-    d = DS0020_RAW / str(t)
-    init_p = _read_particles(DS0020_RAW / init["positions_path"])
+    t, init, steps, raw = args
+    raw = Path(raw)
+    d = raw / str(t)
+    init_p = _read_particles(raw / init["positions_path"])
     st = np.load(d / "initial_state.npz")
     init_match = bool(np.array_equal(st["positions"], init_p))
-    states = [init_p] + [_read_particles(DS0020_RAW / steps[k]["after_positions_path"]) for k in range(V2_N_STEPS)]
+    states = [init_p] + [_read_particles(raw / steps[k]["after_positions_path"]) for k in range(V2_N_STEPS)]
     P = init_p.shape[0]
     assert P == int(init["n_particles"]), f"traj {t}: n_particles {P} != manifest {init['n_particles']}"
     assert all(s.shape[0] == P for s in states), f"traj {t}: particle count varies"
@@ -305,16 +318,17 @@ def _load_traj_v2(args):
     )
 
 
-def build_ds0020(workers: int) -> None:
-    """DS-0020 v2 -> cache/v2_chunk_{c:03d}.npz + cache/manifest.json (atomic per chunk, resumable)."""
-    out = DS0020 / "cache"
+def build_ds0020(workers: int, ds: Path = DS0020, raw: Path = DS0020_RAW, tag: str = "ds0020 v2") -> None:
+    """DS-0020 v2 (or any trajectory corpus in its raw layout, e.g. DS-0021) ->
+    <ds>/cache/v2_chunk_{c:03d}.npz + cache/manifest.json (atomic per chunk, resumable)."""
+    out = ds / "cache"
     out.mkdir(exist_ok=True)
     mpath = out / "manifest.json"
-    vm = read_v2_manifest()
+    vm = read_v2_manifest(raw)
     keep = v2_complete_trajectories(vm)
     man = json.loads(mpath.read_text()) if mpath.exists() else {
-        "format": "FlexData/build_cache.py ds0020 (v2 trajectory-manifest payload)", "chunk_size": CHUNK,
-        "raw": str(DS0020_RAW.relative_to(REPO)), "chunks": {},
+        "format": f"FlexData/build_cache.py {tag} (v2 trajectory-manifest payload)", "chunk_size": CHUNK,
+        "raw": str(raw.relative_to(REPO)), "chunks": {},
         "n_state_init": len(vm["inits"]), "n_failed": len(vm["failed"]), "failed": sorted(vm["failed"]),
         "n_invalid_transitions": vm["n_invalid"], "n_duplicate_records": vm["n_dup"],
         "n_complete_trajectories": len(keep),
@@ -331,7 +345,7 @@ def build_ds0020(workers: int) -> None:
                 continue
             t0 = time.time()
             ids = [t for t in keep if c * CHUNK <= t < (c + 1) * CHUNK]
-            rs = list(ex.map(_load_traj_v2, [(t, vm["inits"][t], vm["steps"][t]) for t in ids]))
+            rs = list(ex.map(_load_traj_v2, [(t, vm["inits"][t], vm["steps"][t], str(raw)) for t in ids]))
             st = np.stack([r["stats"] for r in rs])          # (T, 10, 4)
             p_off = np.concatenate([[0], np.cumsum([r["P"] for r in rs])]).astype(np.int64)
             _atomic_npz(
@@ -359,31 +373,31 @@ def build_ds0020(workers: int) -> None:
             )
             man["complete"] = len(man["chunks"]) == n_chunks
             _atomic_json(mpath, man)
-            print(f"[ds0020 v2] {name} {len(ids)} traj, P {man['chunks'][name]['n_particles']} "
+            print(f"[{tag}] {name} {len(ids)} traj, P {man['chunks'][name]['n_particles']} "
                   f"{time.time() - t0:.1f}s", flush=True)
 
 
-def write_image_paths() -> None:
+def write_image_paths(ds: Path = DS0020, raw: Path = DS0020_RAW) -> None:
     """DS-0020 v2 ``cache/image_paths.json``: per (trajectory, state k) colour PNG path
     relative to the dataset dir (the cache dir's parent, as ``FlexGNNPredictor`` and
     ``FlexData.image_mask`` resolve it); state 0 = ``initial_color.png``, state k =
     ``<k-1>_after_color.png``. No depth PNGs in v2 (depth slot always null)."""
-    vm = read_v2_manifest()
+    vm = read_v2_manifest(raw)
     keep = v2_complete_trajectories(vm)
-    rel = DS0020_RAW.relative_to(DS0020)
+    rel = raw.relative_to(ds)
     trajs, missing = {}, 0
     for t in keep:
         cs = [vm["inits"][t]["color_path"]] + [vm["steps"][t][k]["after_color_path"] for k in range(V2_N_STEPS)]
         st = []
         for c in cs:
-            ok = (DS0020_RAW / c).exists(); missing += not ok
+            ok = (raw / c).exists(); missing += not ok
             st.append([str(rel / c) if ok else None, None])
         trajs[str(t)] = st
-    _atomic_json(DS0020 / "cache" / "image_paths.json", {
+    _atomic_json(ds / "cache" / "image_paths.json", {
         "layout": "trajectories[traj_id][state k] = [color_png, depth_png] (relative to dataset dir; "
                   "state 0 = initial, k = after push k-1; depth always null in v2; null = missing)",
         "n_missing": missing, "trajectories": trajs})
-    print(f"image paths: DS-0020 v2 {len(trajs)} traj, {missing} missing")
+    print(f"image paths: {ds.name} {len(trajs)} traj, {missing} missing")
 
 
 def write_image_paths_v1() -> None:
@@ -403,21 +417,21 @@ def write_image_paths_v1() -> None:
         "n_missing": missing, "trajectories": trajs})
 
 
-def write_image_paths_ds0019() -> None:
-    recs = [json.loads(l) for l in open(DS0019 / "manifest.jsonl")]
+def write_image_paths_ds0019(ds: Path = DS0019, manifest: Path | None = None) -> None:
+    recs = [json.loads(l) for l in open(manifest or ds / "manifest.jsonl")]
     states, miss19 = {}, 0
     for r in recs:
         if r["type"] == "state_init":
-            c = r["color_path"]; ok = (DS0019 / "data" / c).exists(); miss19 += not ok
+            c = r["color_path"]; ok = (ds / "data" / c).exists(); miss19 += not ok
             states.setdefault(str(r["state_idx"]), {"actions": {}})["initial_color"] = f"data/{c}" if ok else None
     for r in recs:
         if r["type"] == "action" and r["valid"]:
-            c = r["after_color_path"]; ok = (DS0019 / "data" / c).exists(); miss19 += not ok
+            c = r["after_color_path"]; ok = (ds / "data" / c).exists(); miss19 += not ok
             states[str(r["state_idx"])]["actions"][str(r["action_idx"])] = f"data/{c}" if ok else None
-    _atomic_json(DS0019 / "cache" / "image_paths.json", {
+    _atomic_json(ds / "cache" / "image_paths.json", {
         "layout": "states[state_idx] = {initial_color, actions{action_idx: after_color}} (valid actions only; no depth PNGs in this corpus)",
         "n_missing": miss19, "states": states})
-    print(f"image paths: DS-0019 {len(states)} states, {miss19} missing")
+    print(f"image paths: {ds.name} {len(states)} states, {miss19} missing")
 
 
 def write_splits(seed: int = 0, val_frac: float = 0.1) -> None:
@@ -452,6 +466,51 @@ def write_splits(seed: int = 0, val_frac: float = 0.1) -> None:
     print(f"splits: DS-0020 v2 train {len(train)} / val {len(val)} trajectories; excluded {len(excl)}")
 
 
+def write_splits_ds0021(val_frac: float = 0.1) -> None:
+    """DS-0021: train/val BY STATE (= trajectory), with EXP-0064's GroupedParticleDataset rule
+    EXACTLY (experiments/EXP-0064-*/code/dataset_grouped_particles.py): per count_group (from the
+    state_init record), the group's complete states sorted, first round(0.9 n) -> train, rest -> val.
+    So the val trajectories are the ones the GNN (MODEL-0011/0012) was validated on."""
+    vm = read_v2_manifest(DS0021_RAW)
+    keep = v2_complete_trajectories(vm)
+    by_g: dict[int, list] = {}
+    for t in keep:
+        by_g.setdefault(int(vm["inits"][t]["count_group"]), []).append(t)
+    train, val = [], []
+    for g in sorted(by_g):
+        st = sorted(by_g[g]); n_tr = int(round(len(st) * (1 - val_frac)))
+        train += st[:n_tr]; val += st[n_tr:]
+    _atomic_json(DS0021 / "splits.json", {
+        "unit": "trajectory id = manifest state_idx (datasets/DS-0021-*/data/<id>/)",
+        "method": "per count_group (state_init record): sorted complete states, first round(0.9 n) train, rest val "
+                  "(= EXP-0064 GroupedParticleDataset, train_valid_ratio 0.9)",
+        "made_by": "python -u -m FlexData.build_cache splits_ds0021",
+        "groups": {str(g): [min(v), max(v), len(v)] for g, v in sorted(by_g.items())},
+        "splits": {"train": sorted(train), "val": sorted(val), "test": []},
+    })
+    print(f"splits: DS-0021 train {len(train)} / val {len(val)} trajectories")
+
+
+def write_splits_ds0022() -> None:
+    """DS-0022: test-only, explicit slates (state_idx -> valid action_idx), like DS-0019."""
+    recs = [json.loads(l) for l in open(DS0022 / "data" / "manifest.jsonl")]
+    slates: dict[int, list] = {}
+    for r in recs:
+        if r["type"] == "action" and r["valid"]:
+            slates.setdefault(r["state_idx"], []).append(r["action_idx"])
+    inits = {r["state_idx"]: r for r in recs if r["type"] == "state_init"}
+    states = sorted(inits)
+    _atomic_json(DS0022 / "splits.json", {
+        "unit": "state_idx (one same-state slate per state)", "made_by": "python -u -m FlexData.build_cache splits_ds0022",
+        "splits": {"test": states, "train": [], "val": []},
+        "count_group": {str(s): int(inits[s]["count_group"]) for s in states},
+        "slates": {str(s): sorted(slates.get(s, [])) for s in states},
+        "note": "slates = valid action_idx per state BEFORE the loader's own flag filter "
+                "(nan/escaped/out_of_grid/null); FlexPileData.flags reports which of these it drops.",
+    })
+    print(f"splits: DS-0022 {len(states)} slates, {sum(len(v) for v in slates.values())} valid rows")
+
+
 def write_splits_ds0019() -> None:
     """DS-0019: test-only; records the explicit slate structure
     (state_idx -> sorted valid action_idx list) so slateN pools are explicit."""
@@ -475,11 +534,17 @@ def main() -> None:
     ap = argparse.ArgumentParser()
     cmds = {"ds0020": None, "ds0019": None, "ds0020_v1": None, "splits": write_splits,
             "paths": write_image_paths, "splits_ds0019": write_splits_ds0019,
-            "paths_ds0019": write_image_paths_ds0019, "paths_v1": write_image_paths_v1}
+            "paths_ds0019": write_image_paths_ds0019, "paths_v1": write_image_paths_v1,
+            "ds0021": None, "ds0022": None, "splits_ds0021": write_splits_ds0021,
+            "splits_ds0022": write_splits_ds0022,
+            "paths_ds0021": lambda: write_image_paths(DS0021, DS0021_RAW),
+            "paths_ds0022": lambda: write_image_paths_ds0019(DS0022, DS0022 / "data" / "manifest.jsonl")}
     ap.add_argument("which", choices=sorted(cmds))
     ap.add_argument("--workers", type=int, default=12)
     a = ap.parse_args()
-    builders = {"ds0020": build_ds0020, "ds0019": build_ds0019, "ds0020_v1": build_ds0020_v1}
+    builders = {"ds0020": build_ds0020, "ds0019": build_ds0019, "ds0020_v1": build_ds0020_v1,
+                "ds0021": lambda w: build_ds0020(w, DS0021, DS0021_RAW, "ds0021"),
+                "ds0022": lambda w: build_ds0019(w, DS0022, DS0022 / "data" / "manifest.jsonl", "ds0022")}
     if a.which in builders:
         builders[a.which](a.workers)
     else:

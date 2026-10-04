@@ -20,4 +20,4 @@
   `python scripts/run_probe.py --tag exp0064_run0015_score_cpu --threads 8 -- python experiments/EXP-0064-obj-count-effect-study/code/score_image_metrics.py score --self-check --models persistence,random,field,lf13_switched,lf13_single,gnn12,lf09_switched_ds0020,nfd08_ds0020`;
   `... --tag exp0064_run0015_score_truecap -- ... score --models gnn_truecap`; `... --tag exp0064_run0015_analyze_nonfd -- ... analyze`;
   nfd14 scored + re-analysed by `code/nfd_after_queue.sh` (tags exp0064_run0015_score_nfd14 / exp0064_run0015_analyze).
-- all models except nfd14 scored on CPU (8-24 s each); 2026-10-04 00:15-00:30 CEST; commit 3373e65b dirty.
+- all models except nfd14 scored on CPU (8-24 s each), 2026-10-04 00:15-00:30 CEST; nfd14 on cuda (3 s) 06:20 and the final analyze 06:21 (2000 boot reps); commit 3373e65b dirty.

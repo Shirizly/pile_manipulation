@@ -202,7 +202,8 @@ vs 47 / 55 % with z negated -- DS-0021/22 DATASET.md). Loader flags drop escaped
   lambda 300; val accuracy 0.360, single 0.266). CPU.
 - **NFD (MODEL-0014, RUN-0014)**: EXP-0062 `nfd_3ch_flex_mask_v2` recipe on DS-0021, seed 0, plateau stop. Gated on
   the overnight GNN queue (`QUEUE DONE`); runs via the detached chain `code/nfd_after_queue.sh`, which also scores it
-  and regenerates `results/nfd_lf_image_metrics.*`. **Its numbers are not in the table below unless stated** (see RUN-0014 Outcome).
+  and regenerates `results/nfd_lf_image_metrics.*`. Ran 05:36-06:20 CEST after `QUEUE DONE`; plateau-stopped at
+  epoch 95 (best epoch 75, val MSE 0.00729).
 - **GNN on the image (RUN-0015)**: MODEL-0012's node displacements (z sign -1, tube encoding, FPS rep 0) carried onto
   the input mask by nearest node (flex_predictor.render's rule); `gnn_truecap` = the same carry with the true node
   motion (renderer cap); `field` = EXP-0064's untrained push field through the same carry. Out-of-domain references:
@@ -216,6 +217,7 @@ slateN (K = 50) / accuracy, mean [95 % CI] in `results/nfd_lf_image_metrics.md`:
 
 | model | 10-30 | 50-70 | 100-150 | 400-500 | overall |
 |---|---|---|---|---|---|
+| **NFD MODEL-0014** | 0.908 / 0.496 | 0.927 / 0.520 | 0.943 / 0.531 | 0.940 / 0.525 | 0.929 [0.924, 0.935] / 0.520 [0.510, 0.530] |
 | LF switched MODEL-0013 | 0.830 / 0.338 | 0.866 / 0.386 | 0.899 / 0.417 | 0.883 / 0.424 | 0.869 [0.860, 0.879] / 0.396 |
 | LF single MODEL-0013 | 0.599 / 0.242 | 0.690 / 0.261 | 0.750 / 0.273 | 0.688 / 0.284 | 0.682 / 0.267 |
 | GNN MODEL-0012 on mask | 0.556 / -0.046 | 0.681 / 0.036 | 0.674 / 0.059 | 0.546 / 0.045 | 0.614 [0.592, 0.632] / 0.030 |
@@ -226,29 +228,33 @@ slateN (K = 50) / accuracy, mean [95 % CI] in `results/nfd_lf_image_metrics.md`:
 | persistence | 0 / 0 | 0 / 0 | 0 / 0 | 0 / 0 | 0 / 0 |
 | random | -0.019 / (noise) | 0.018 | -0.001 | -0.015 | -0.004 [-0.022, 0.014] |
 
-Paired, per state (K = 50 slateN): LF switched minus GNN +0.274 / +0.186 / +0.225 / +0.337 (all CIs > 0); GNN minus
+Paired, per state (K = 50 slateN): NFD minus LF switched +0.078 / +0.060 / +0.044 / +0.057 (all CIs > 0; overall
++0.060 [+0.053, +0.067]); NFD minus GNN +0.35 / +0.25 / +0.27 / +0.39; NFD minus field +0.17..+0.25; NFD MODEL-0014 minus
+out-of-domain MODEL-0008 +0.008 [+0.004, +0.012] overall (+0.014 at 10-30, +0.023 at 400-500, ~0 in between). LF switched minus GNN +0.274 / +0.186 / +0.225 / +0.337 (all CIs > 0); GNN minus
 field -0.104 / -0.048 / -0.096 / -0.202 (all CIs < 0); LF minus field +0.13..+0.17 (all > 0); MODEL-0013 minus
 MODEL-0009 +0.011 [+0.005, +0.017] overall (in-domain fit helps only the 10-30 group, +0.030). 400-500 minus 10-30
-(unpaired): LF switched +0.052 [+0.026, +0.079], GNN -0.011 [-0.064, +0.043], field +0.088, GNN cap -0.117.
+(unpaired): NFD +0.032 [+0.018, +0.046], LF switched +0.052 [+0.026, +0.079], GNN -0.011 [-0.064, +0.043], field +0.088, GNN cap -0.117.
 
 **Does accuracy correlate with slateN here?**
-- (a) Across models within a group: **yes**. 7 non-baseline models (incl. field and the GNN cap): Kendall tau
-  +0.90 / +0.81 / +0.62 / +0.81 by group (p 0.003 / 0.011 / 0.069 / 0.011), overall +0.71 (p 0.03); with persistence
-  and random (n = 9) tau 0.78-0.89, all p <= 0.002. The one discordance is the GNN render cap (top slateN, mid accuracy).
+- (a) Across models within a group: **yes**. 8 non-baseline models (NFD, LF switched/single, GNN, GNN cap, field,
+  MODEL-0008, MODEL-0009): Kendall tau +0.93 / +0.71 / +0.71 / +0.86 by group (p < 0.001 / 0.014 / 0.014 / 0.002),
+  overall +0.71 (p 0.014); with persistence and random (n = 10) tau 0.78-0.91, all p <= 0.001. The one discordance is the GNN render cap (top slateN, mid accuracy).
 - (b) Across groups within a model (n = 4, underpowered by construction): **not consistently**. Spearman +1.0 for
-  MODEL-0008 and the GNN cap, +0.8 for both switched LFs, +0.4 for LF single and field, 0.0 for the GNN. Accuracy
+  NFD MODEL-0014, MODEL-0008 and the GNN cap, +0.8 for both switched LFs, +0.4 for LF single and field, 0.0 for the GNN. Accuracy
   rises monotonically with group for every LF while slateN peaks at 100-150.
 - (c) Per state within a model: **yes, positively and moderately**. Spearman(state accuracy, state slateN_K) over 200
-  states: LF switched +0.60 [+0.49, +0.69], LF single +0.39 [+0.27, +0.51], GNN +0.50 [+0.38, +0.60], field +0.42
+  states: NFD +0.48 [+0.36, +0.58], LF switched +0.60 [+0.49, +0.69], LF single +0.39 [+0.27, +0.51], GNN +0.50 [+0.38, +0.60], field +0.42
   [+0.29, +0.54], MODEL-0008 +0.62, MODEL-0009 +0.73, GNN cap +0.75; random +0.05 [-0.10, +0.19]. Within single
   groups (n = 50) it is weaker and strongest in 400-500 (+0.51..+0.83); several 10-30 / 50-70 / 100-150 cells include 0.
   Caveat: per-state correlation also carries state difficulty common to both metrics (a state where pushes are easy to
   predict tends to be easy to rank), so it is not a within-state model-quality signal.
 
-Reading: on this program the image-based switched LF ranks pushes far better than the particle GNN read through the
+Reading: on this program NFD > switched LF > field > GNN-through-the-image in every group (paired CIs exclude 0), and
+the image-based switched LF ranks pushes far better than the particle GNN read through the
 image (the GNN is below even its own untrained push field on image-mask truth; with true node motion the same renderer
 reaches 0.93, so the gap is the GNN's dynamics, not the renderer, except at 400-500 where the 30-node cap itself
 drops to 0.85). Image slateN does not fall with pile size for the image models; it rises 10-30 -> 100-150 and stays.
 Image-mask slateN is NOT comparable with this record's particle-raster mask slateN (RUN-0006) or point-goal slateN.
 Threats: one seed per model (LF is deterministic); MODEL-0013 excludes escaped rows that the GNN trained on (I-2);
-the GNN on the image uses one FPS rep; NFD MODEL-0014 pending at the time of writing.
+the GNN on the image uses one FPS rep; NFD one seed (seed noise unmeasured; MODEL-0008's in/out-of-domain gap
+here is +0.008, smaller than typical seed gaps elsewhere, so "in-domain training helps NFD" is NOT claimed).

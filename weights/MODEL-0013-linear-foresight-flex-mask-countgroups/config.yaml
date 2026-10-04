@@ -1,0 +1,24 @@
+# Resolved config for MODEL-0013 (switched-linear visual foresight on FleX image masks, DS-0021, EXP-0064 RUN-0013)
+id: MODEL-0013
+kind: linear-foresight-switched     # + single (unswitched) operator in the same bundle
+payload: checkpoint.pt
+fit_script: experiments/EXP-0064-obj-count-effect-study/code/fit_lf_ds0021.py   # = EXP-0062 fit_lf_v2.py, corpus swapped
+template: weights/MODEL-0009-linear-foresight-flex-mask-v2/config.yaml (recipe)
+train_data: {instance: datasets/DS-0021-flex-carrots-countgroups-train/config.yaml, split: train, occ_source: image_mask, exclude_flagged: true, rows: 15193, trajectories: 1745}
+select_data: {instance: datasets/DS-0021-flex-carrots-countgroups-train/config.yaml, split: val, occ_source: image_mask, rows: 1741, trajectories: 198}   # EXP-0064 per-group 90/10 by state
+units: flex
+grid: {half_extent: 7.2, resolution: 64}
+res: 64
+crop: 1.0
+constraint: ridge
+n_bins: 6
+bin_scheme: equal
+bin_edges: [0.0, 1.5797, 3.1593, 4.7390, 6.3186, 7.8983, 9.4780]
+counts_train: [1649, 4081, 4669, 3461, 1244, 89]
+counts_val: [182, 476, 519, 385, 166, 13]
+min_rows_per_bin: 50
+ridge_switched: 300.0
+ridge_single: 300.0
+val_accuracy: {switched: 0.3596, single: 0.2660, collection_scheme_best: 0.3557}
+device: cpu
+commit: 3373e65b (dirty tree)

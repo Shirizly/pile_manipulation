@@ -49,3 +49,20 @@ RECONSTRUCTED): 2 shards of `collect_transitions.py --config
 config/data_gen/transitions_carrots_grouped.yaml` under `run_transitions_shard.sh`,
 then `collect_transitions.py --merge`. Logs: EXP-0064 `artifacts/RUN-0001-collect-train/`.
 The source repo still holds an identical copy at `data/true_action_transitions_carrots_grouped`.
+
+## FlexData access (2026-10-04, EXP-0064 RUN-0013)
+
+Readable through `FlexData/dataset.py::FlexPileData` (registered dataset type `flex`) via `config.yaml`
+(grid +-7.2 / 64 px / plate / flags IDENTICAL to DS-0020 v2; `occupancy.source: image_mask`).
+Built by `experiments/EXP-0064-obj-count-effect-study/code/build_flex_caches_ds0021_ds0022.sh`:
+`python -u -m FlexData.build_cache splits_ds0021 | paths_ds0021 | ds0021` and `python -u -m FlexData.image_mask ds0021`
+-> `cache/v2_chunk_*.npz` (particles, DS-0020 v2 format), `cache/image_paths.json`, `cache/image_masks.npz`
+(2000 traj x 11 states, binary colour-image masks; mean occupied fraction 0.066).
+**Split** `splits.json`: per count group, sorted states, first round(0.9 n) train, rest val -- EXP-0064's
+`GroupedParticleDataset` rule exactly, so val = the GNN's val states (1800 / 200 trajectories). Loader flags
+(rows dropped by default): train 18,000 rows -> escaped 1,401, out_of_grid 331, null 1,139 -> **15,193 kept**;
+val 2,000 -> 124 / 27 / 110 -> **1,741 kept**.
+
+**Render check** (pytest-free, `EXP-0064 code/flex_cache_check.py` = EXP-0061's `image_mask_cache_check.py`
+re-pointed; `results/flex_cache_check.json`, figure `results/figures/data_check/image_mask_triples_DS-0021.png`):
+peak mask-vs-particle-raster IoU at shift [0, 0] (IoU 0.892); removed mask pixels inside the swept region 0.997 for actions as stored vs 0.470 with z negated (region = 0.099 of the grid); mean occupancy mask 0.0639 vs particle raster 0.0694 (n = 500 / 200 rows). The plate sweeps the mask in the stored (x, -z) frame.

@@ -1,0 +1,61 @@
+model:
+  type: nfd-unet3ch
+  in_channels: 3
+  out_channels: 1
+  features:
+  - 4
+  - 8
+  - 16
+  kernel_size: 3
+  final_kernel_size: 1
+  activation: relu
+  residual: true
+  bottleneck_type: None
+  bottleneck_kwargs: {}
+  uses_physics: false
+dataset:
+  type: flex
+  instance: datasets/DS-0021-flex-carrots-countgroups-train/config.yaml
+  split_instances:
+    test:
+      instance: datasets/DS-0022-flex-carrots-countgroups-test-slates/config.yaml
+      split: all
+  occ_source: image_mask
+  channels: 3
+  exclude_flagged: true
+  include_physics: false
+  transforms:
+  - type: ensure_representation
+    representation: eulerian
+  - type: eulerian_aliases
+training:
+  epochs: 250
+  batch_size: 32
+  lr: 0.0001
+  lr_scheduler:
+    type: StepLR
+    step_size: 1000
+    gamma: 0.75
+  augmentation: true
+  patience: 20
+  patience_min_rel_delta: 0.005
+  mixed_precision: true
+  grad_clip_norm: 1.0
+  save_every_n_epochs: 10
+  num_workers: 4
+  save_full_state: true
+  full_state_every_min: 10
+  shuffle_seed: 0
+  loss:
+    type: eulerian_combined
+    mse: 1.0
+    mass: 0.0
+    dice: 0.0
+    bce: 0.0
+    sharpness: 0.0
+    tv: 0.0
+    add: 0.0
+    remove: 0.0
+output:
+  log_dir: Baselines/NFD/runs/nfd_3ch_flex_mask_ds0021_seed0
+_config_path: /home/alon/Code/pile_manipulation/Baselines/NFD/configs/nfd_3ch_flex_mask_ds0021.yaml

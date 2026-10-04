@@ -8,3 +8,4 @@
   `experiments/EXP-0062-flex-v2-train-rerun/results/timing_nfd.json`
 - three-family comparison on DS-0019 (NFD > LF switched > GNN, paired slateN; CUDA/CPU ms per slate side by side)
   -> EXP-0062 (record) -> `experiments/EXP-0062-flex-v2-train-rerun/results/combined_v2.{md,json}`, `figures/combined_v2.png`
+- DS-0022 (EXP-0064 count-group carrot piles; out of its training domain), per count group, image-mask truth: slateN K=50 0.894-0.948, accuracy 0.456-0.541 -> EXP-0064 / RUN-0015 -> `experiments/EXP-0064-*/results/nfd_lf_image_metrics.{json,md}`

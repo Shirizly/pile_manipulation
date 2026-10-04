@@ -1,0 +1,6 @@
+# written by scripts/run_probe.py before the run started
+# run_id exp0064_run0013_lf_fit-2026-10-04T00:05:15-1696455
+# exp     EXP-0064
+# commit  3373e65b dirty=True
+# log     experiments/EXP-0064-obj-count-effect-study/artifacts/RUN-0013-lf-fit/exp0064_run0013_lf_fit.log
+python -u experiments/EXP-0064-obj-count-effect-study/code/fit_lf_ds0021.py --device cpu --out weights/MODEL-0013-linear-foresight-flex-mask-countgroups/checkpoint.pt

@@ -63,6 +63,8 @@ DATASETS = {
     "ds0020": REPO / "datasets" / "DS-0020-training-data-flex-N864",          # v2 payload (2026-10-02)
     "ds0020_v1": REPO / "datasets" / "DS-0020-training-data-flex-N864" / "old_data" / "_ported_v1",  # ARCHIVED v1
     "ds0019": REPO / "datasets" / "DS-0019-slates-flex-pile-varN",
+    "ds0021": REPO / "datasets" / "DS-0021-flex-carrots-countgroups-train",   # EXP-0064 (trajectories)
+    "ds0022": REPO / "datasets" / "DS-0022-flex-carrots-countgroups-test-slates",  # EXP-0064 (slates)
 }
 THRESHOLD = 0.0          # occupied iff area fraction > THRESHOLD
 CHUNK = 100              # DS-0020 trajectories per part file

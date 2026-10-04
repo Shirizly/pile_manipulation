@@ -8,3 +8,4 @@
 - inference timing on DS-0019 slates (CUDA + CPU, warp/operator/unwarp breakdown) -> EXP-0062 / RUN-0002 -> `results/timing_lf.json`
 - three-family comparison on DS-0019 (NFD > LF switched > GNN, paired slateN; CUDA/CPU ms per slate side by side)
   -> EXP-0062 (record) -> `experiments/EXP-0062-flex-v2-train-rerun/results/combined_v2.{md,json}`, `figures/combined_v2.png`
+- DS-0022 (EXP-0064 count-group carrot piles; out of its training domain), per count group, image-mask truth: switched slateN K=50 0.800-0.899, accuracy 0.309-0.411; paired vs in-domain MODEL-0013 -> EXP-0064 / RUN-0015 -> `experiments/EXP-0064-*/results/nfd_lf_image_metrics.{json,md}`
