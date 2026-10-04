@@ -52,6 +52,9 @@ def main():
     ap.add_argument("--n-cand", type=int, default=64)
     ap.add_argument("--bank-per-env", type=int, default=16384)
     ap.add_argument("--record-states", action="store_true", help="store particle xyz after every push")
+    ap.add_argument("--starts-file", default=None,
+                    help="narrow pools file (e.g. Genesis/data/narrow_l20_n20/test_pools_v2/pools_0.pt): --starts are then POOL "
+                         "indices and each start is that pool's first row (DS-0016 has clump and scatter pools, field start_kind)")
     ap.add_argument("--legalize", action="store_true",
                     help="slide touchdown-illegal planned pushes back until the blade clears every cube "
                          "(Genesis.action_sampling.legalize_pushes; ISS-013, user rule 2026-10-03). Off = as before")
@@ -64,8 +67,12 @@ def main():
     done["episodes"] = [e for e in done["episodes"] if e.get("complete")]
     have = {(e["model"], e["planner"], e["goal"], e["start"], e["cell"]) for e in done["episodes"]}
     todo = [s for s in specs if (s["model"], s["planner"], s["goal"], s["start"], s["cell"]) not in have]
-    rows = BinnedSlateCorpus.load(str(REPO / a.corpus)).step(0)
-    starts = {s: rows.states[(rows.slate_idx == s).nonzero()[0, 0]].float() for s in a.starts}
+    if a.starts_file:
+        pf = torch.load(str(REPO / a.starts_file), map_location="cpu", weights_only=False)
+        starts = {s: pf["states"][(pf["pool_idx"] == s).nonzero()[0, 0]].float() for s in a.starts}
+    else:
+        rows = BinnedSlateCorpus.load(str(REPO / a.corpus)).step(0)
+        starts = {s: rows.states[(rows.slate_idx == s).nonzero()[0, 0]].float() for s in a.starts}
     cfg = oracle_config_with_physics(load_oracle_config(str(REPO / "simple_mpc/config/config_oracle.yaml")))
     cfg["dataset"]["record_transitions"] = False; cfg["mpc"]["n_envs"] = K
     env = GenesisOracleEnv(cfg, n_envs=K); apply_physics(env); sim = env._sim

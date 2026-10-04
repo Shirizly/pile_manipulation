@@ -211,3 +211,18 @@ Against the pre-registration:
   gaps; the broad models used the legalisation shift most (0.51-0.63) -- their CEM pushes land on cubes most often
   before projection. Offline metrics are on DS-0016 step-0 states, closed loop on DS-0006 scatter starts.
 
+## Pre-registered RUN-0003 (2026-10-04): does the start regime (clump vs scatter) change the closed-loop model order? (H-scene)
+
+Registered and committed BEFORE running. Same as RUN-0002's CEM arm (8 models, 8 letter goals, 20 mm legal pushes,
+16 pushes, CEM pop 1024 / elite 0.25, 0.5 s, score = in-goal mass / optimum over pushes 4-16), but start states from
+DS-0016 test pools (`Genesis/data/narrow_l20_n20/test_pools_v2/pools_0.pt`, legal, training physics): scatter pools
+0-7 and single-layer CLUMP pools 16-23 (8 starts each -> 64 paired episodes per model per regime). New driver option
+`--starts-file` (starts = pool indices).
+
+Prediction (pre-registered): **S1 (task difficulty)** the regime changes difficulty: the mean score over models differs
+between clump and scatter starts with a paired CI excluding 0 (direction not predicted). **S2 (model order, the
+H-scene switching claim)** is SUPPORTED if at least one pair of models that is Holm-resolved within one regime is
+resolved with the OPPOSITE sign in the other, or Kendall tau between the two regimes' model orders is <= 0.43;
+REFUTED if tau >= 0.71 and no resolved pair reverses. Expectation (not a test): S2 refuted -- broad models lead in
+both. The DS-0006-start RUN-0002 CEM arm is a third, larger-n scatter reference.
+
