@@ -226,3 +226,25 @@ resolved with the OPPOSITE sign in the other, or Kendall tau between the two reg
 REFUTED if tau >= 0.71 and no resolved pair reverses. Expectation (not a test): S2 refuted -- broad models lead in
 both. The DS-0006-start RUN-0002 CEM arm is a third, larger-n scatter reference.
 
+## RUN-0003 results (2026-10-04, 12:50-16:20 CEST; `results/run0003_analysis.{md,json}`)
+
+Ran as registered (8 units x 128 episodes, all complete). Score = in-goal mass / optimum over pushes 4-16.
+
+| model | scatter starts (pools 0-7) | clump starts (pools 16-23) |
+|---|---|---|
+| nfd_3ch_randlen | 0.355 | 0.554 |
+| linear_switched_soft | 0.348 | 0.516 |
+| narrow v2 seed 0 | 0.331 | 0.510 |
+| narrow v2 soft sigma 2 | 0.307 | 0.547 |
+| narrow v2 seed 2 | 0.272 | 0.499 |
+| narrow v2 seed 1 | 0.245 | 0.514 |
+| narrow v2 epoch 10 | 0.213 | 0.465 |
+| linear narrow v2 res64 | 0.211 | 0.471 |
+
+- **S1 supported**: clump starts are much easier -- clump minus scatter +0.224 [+0.187, +0.261] (mean over models).
+- **S2 inconclusive (by the registered rule)**: Kendall tau between the regimes' model orders +0.64 (between 0.43 and
+  0.71); Holm-resolved pairs 19 (scatter) vs 8 (clump); two pairs resolved in scatter flip sign in clump but are not
+  resolved there (narrow seed 0 vs seed 1; linear_switched_soft vs soft NFD); none reverses with resolution in both.
+  The broad nfd_3ch_randlen leads in both regimes; on clumps the gaps compress and the soft NFD rises from 4th to 2nd.
+- The scatter column reproduces RUN-0002's order on DS-0006 starts (nfd_3ch_randlen > linear_switched_soft > narrow).
+

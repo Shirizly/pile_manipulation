@@ -185,7 +185,9 @@ are exposed to X1. Per-state model choice fails (0035), but scene-REGIME switchi
 has never been tested. On FleX (0064) the learned GNN adds little over an untrained push heuristic built from its own action
 encoding at any pile size (C-071); whether its small edge shrinks or grows with pile size depends on the
 encoding (C-068 narrowed), so no robust model x pile-size interaction remains. The one apparent model × scene interaction (0061) was dominated by training coverage
-(0062). **No closed-loop run has used clump, n50, pile or FleX starts.**
+(0062). **EXP-0039 RUN-0003 (2026-10-04, pre-registered) put clump starts into closed loop:** clump starts are much
+easier (+0.22 in-goal mass / optimum), but the model order changes only modestly (Kendall 0.64, no resolved
+reversal; C-074) -- regime switching is neither shown nor excluded. n50, pile and FleX starts remain untested.
 
 **Which model is best for MPC.** On the only closed-loop task measured, models are not separable
 after planner tuning (0044), and planner, objective and time budget matter more (0042, 0045, 0052,
@@ -223,7 +225,7 @@ adversarial review of this file (`experiments/temp/2026-10-03-organize-and-summa
    confounded run picked for its accuracy, and it carries most resolved closed-loop pairs. It is also
    the model that executes the most illegal pushes (0054). Train two converged seeds of that recipe
    and re-enter the 0044 cells.
-5. **Closed loop has only ever seen n20 scatter starts.** Clump (0049 constructor) and n50 (DS-0007)
+5. **Partly done 2026-10-04 (EXP-0039 RUN-0003, C-074: clump much easier, order ~stable; n50 not yet).** Closed loop had only ever seen n20 scatter starts. Clump (0049 constructor) and n50 (DS-0007)
    starts, the same zoo, the legal sampler, scored by in-goal mass. If model order changes by start
    regime, regime switching (the founding H-scene idea) is back; if not, H-scene reduces to goal
    complexity and budget.
