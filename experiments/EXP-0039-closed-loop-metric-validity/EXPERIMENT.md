@@ -152,3 +152,24 @@ Added by the cross-experiment audit (summary: `experiments/SUMMARY.md`). Numbers
 - **Narrowed / superseded in its main reading:** EXP-0042 found the default GD settings used here far from optimum (gaps inflated); EXP-0044 (tuned planners, 12 goals x 8 starts, 768 episodes) erased most model differences (<= 0.016) and the CEM > GD ordering (tuned GD = CEM); EXP-0045/0046 showed lyapunov saturates near its ceiling by ~8-16 pushes and EXP-0051 that it misreports letter completion. The metric-agreement pattern (accuracy > slateN > spearman) persists in EXP-0044 but on seed-sized gaps (C-045 / C-046 narrowed 2026-10-03).
 - ISS-013: planner candidates / initialisations in this record came from the pre-fix pile-aware sampler (ISS-010 class, ~half illegal touchdowns in audited banks); executed pushes have not been audited for touchdown legality.
 - EXP-0065 RUN-0003 (C-067): executed closed-loop pushes include illegal touchdowns (blade on a cube); measured lower bounds per record in `experiments/EXP-0065-*/results/audit_closed_loop_actions.json` -- this record's episodes did not record states, so not measurable directly; sibling records show 16-53 %.
+
+## Pre-registered re-run (2026-10-04, RUN-0010): legal actions, headroom, across families
+
+Registered BEFORE any cell runs (committed first); design in `runs/RUN-0010-legal-headroom-rerun/DESIGN.md`
+(written by an advisor agent, reviewed by the coordinator). Why: this record's metric-validity result was measured
+on a saturated lyapunov task, 4 NFD-family-heavy models, mistuned planners, illegal touchdowns in both the offline
+pools and the executed pushes (EXP-0065, C-067). Re-run: 8 OCC models across families (narrow v2 NFD seeds 0/1/2,
+soft NFD sigma 2, linear narrow v2 res64, linear_switched_soft, nfd_3ch_randlen, a deliberately weak epoch-10 NFD),
+8 letter goals (O T S L X Z C H), DS-0006 starts 40-55, 20 mm pushes, `--legalize`, 16 pushes, plain lyapunov
+objective, SCORE = AUC over pushes 4-16 of in-goal mass / per-goal optimum (EXP-0046) -- the objective is not the score.
+Arm A: tuned CEM (pop 1024, elite 0.25), 0.5 s. Arm B: matched-evaluation rank-128 (`--budget 0.0`), starts 40-47.
+Offline metrics for every member on ONE legal corpus (DS-0016 test pools via EXP-0059 `test_v2.py`): accuracy_1,
+slateN, slateN_tough, within-pool Spearman, optimism at the pick, top-1 regret.
+
+Prediction (pre-registered): **P1** slateN_tough has the highest Spearman with the closed-loop score, rho >= 0.7, and
+agrees with >= 80 % of Holm-resolved closed-loop pairs; **P2** accuracy_1 agrees with < 70 % of them; **P3** optimism
+correlates negatively (rho <= -0.5). Refutation of P1: no metric reaches rho >= 0.5 / 70 % pair agreement.
+Uninformative-outcome guard: at least 8 of 28 pairs must be Holm-resolved, else the verdict is inconclusive.
+Retrieval (no OCC adapter yet) is excluded from this registration; it may be added to arm B later as an
+exploratory row.
+
