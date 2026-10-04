@@ -1,0 +1,9 @@
+n_models = 9: ['linear_narrow_l20_v2_res32', 'linear_narrow_l20_v2_res64', 'nfd_3ch_narrow_l20_v2', 'nfd_3ch_narrow_l20_v2_seed1', 'nfd_3ch_narrow_l20_v2_seed2', 'persistence', 'random', 'retrieval_k1_v2', 'retrieval_k5_cube_median_v2']
+metric                     n     tau  p(tau)     rho  p(rho)
+accuracy_1                 9  +0.222   0.477  +0.400   0.286
+accuracy_1_blur1           9  +0.222   0.477  +0.383   0.308
+accuracy_1_blur2           9  +0.333   0.260  +0.567   0.112
+occ_emd_swept              9  +0.500   0.075  +0.617   0.077
+mass_in_goal_mae           9  +0.833   0.001  +0.933   0.000
+mass_in_goal_mae_tough     9  +0.944   0.000  +0.983   0.000
+wrote experiments/EXP-0060-metric-correlation-study/results/correlations_clean_v2_hard_raster_models.json

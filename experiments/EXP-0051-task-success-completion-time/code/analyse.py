@@ -70,7 +70,8 @@ for g in sorted({r["goal"] for r in rows}):
                        achieved_k24=float(np.mean([r["achieved"][-1] for r in R])),
                        complete_09=float(np.mean([r["completion"]["0.9"]["pushes"] is not None for r in R])))
 out["per_goal"] = per_goal
-(HERE / "results/analysis.json").write_text(json.dumps(out, indent=1))
+_dst = HERE / ("results/analysis.json" if tag in ("success_states", "narrow_gd_w3") else f"results/analysis_{tag}.json")  # 2026-10-04: per-tag output so re-runs do not overwrite the original
+_dst.write_text(json.dumps(out, indent=1))
 for key, sm in out["summary"].items():
     print(f"\n== {key} (n={sm['n']}): start mass-in-goal {sm['k0_mass_frac']:.2f}")
     for k in (4, 8, 16, 24):

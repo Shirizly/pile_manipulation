@@ -148,3 +148,4 @@ loader, which was not checked). Now fixed with `--ckpt MODEL=PATH`
 Added by the cross-experiment audit (summary: `experiments/SUMMARY.md`). Numbers above are unchanged.
 
 - DS-0006 rows: EXP-0065 / ISS-013: 54 % of DS-0006's candidate pushes put the blade on a cube at touchdown (pre-fix pile-aware sampler); this record's pool numbers were not re-scored on legal-only candidates.
+- EXP-0065 RUN-0006: on LEGAL-only DS-0006 candidates the 4-seed slateN sd halves (0.019 -> 0.010 lyapunov, 0.025 -> 0.013 mass) -- about half of the DS-0006 seed floor was seeds disagreeing about illegal-touchdown outcomes. DS-0007 numbers (clean data) are unaffected.

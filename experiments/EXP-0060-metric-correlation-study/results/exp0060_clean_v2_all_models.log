@@ -1,0 +1,9 @@
+n_models = 15: ['linear_narrow_l20_v2_res32', 'linear_narrow_l20_v2_res64', 'nfd_3ch_narrow_l20_v2', 'nfd_3ch_narrow_l20_v2_seed1', 'nfd_3ch_narrow_l20_v2_seed2', 'nfd_3ch_narrow_l20_v2_sharp_w03', 'nfd_3ch_narrow_l20_v2_sharp_w07', 'nfd_3ch_narrow_l20_v2_soft_s1', 'nfd_3ch_narrow_l20_v2_soft_s2', 'nfd_v2_outblur1', 'nfd_v2_outblur2', 'persistence', 'random', 'retrieval_k1_v2', 'retrieval_k5_cube_median_v2']
+metric                     n     tau  p(tau)     rho  p(rho)
+accuracy_1                15  +0.029   0.923  +0.046   0.869
+accuracy_1_blur1          15  +0.010   1.000  +0.011   0.970
+accuracy_1_blur2          15  +0.181   0.379  +0.357   0.191
+occ_emd_swept             15  +0.295   0.139  +0.386   0.156
+mass_in_goal_mae          15  +0.676   0.000  +0.829   0.000
+mass_in_goal_mae_tough    15  +0.695   0.000  +0.836   0.000
+wrote experiments/EXP-0060-metric-correlation-study/results/correlations_clean_v2_all_models.json

@@ -1,0 +1,4 @@
+lyapunov all {'seed0': 0.745, 'seed1': 0.787, 'seed2': 0.78, 'seed3': 0.758} sd 0.0194
+lyapunov legal {'seed0': 0.8, 'seed1': 0.823, 'seed2': 0.816, 'seed3': 0.809} sd 0.0097
+mass_in_region all {'seed0': 0.716, 'seed1': 0.766, 'seed2': 0.77, 'seed3': 0.756} sd 0.025
+mass_in_region legal {'seed0': 0.762, 'seed1': 0.792, 'seed2': 0.786, 'seed3': 0.785} sd 0.0131

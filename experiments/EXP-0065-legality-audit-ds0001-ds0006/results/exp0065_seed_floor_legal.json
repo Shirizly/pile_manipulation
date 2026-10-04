@@ -1,0 +1,31 @@
+{
+  "run_id": "exp0065_seed_floor_legal-2026-10-04T06:26:29-2121653",
+  "event": "start",
+  "ts": "2026-10-04T06:26:29",
+  "tag": "exp0065_seed_floor_legal",
+  "exp": "EXP-0065",
+  "cmd": [
+    "python",
+    "-u",
+    "experiments/EXP-0065-legality-audit-ds0001-ds0006/code/seed_floor_legal.py"
+  ],
+  "out": null,
+  "log": "experiments/EXP-0065-legality-audit-ds0001-ds0006/results/exp0065_seed_floor_legal.log",
+  "commit": "55dced0c",
+  "dirty": true,
+  "status": "ok",
+  "returncode": 0,
+  "seconds": 1.8,
+  "provenance": {
+    "commit": "55dced0c",
+    "commit_full": "55dced0c3819ccfa578738f5471dd803db287b0d",
+    "dirty": true,
+    "dirty_files": [
+      "experiments/EXP-0060-metric-correlation-study/EXPERIMENT.md",
+      "experiments/REGISTER.md",
+      "experiments/SUMMARY.md",
+      "runs/COMMANDS.jsonl"
+    ],
+    "branch": "baselines/overnight"
+  }
+}

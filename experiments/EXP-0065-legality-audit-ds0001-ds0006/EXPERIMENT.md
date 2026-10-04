@@ -17,7 +17,7 @@ claim: >
 provenance:
   commit: d72bb304
   dirty: true
-  script: "code/audit_ds0001_ds0006.py (RUN-0001), code/rescore_ds0006_legal.py (RUN-0002, reads EXP-0030 artifacts/RUN-0001), code/audit_closed_loop_actions.py (RUN-0003, reads recorded episodes of EXP-0050..0057), code/onpolicy_optimism.py (RUN-0004), code/closed_loop_models_legal_rescore.py (RUN-0005)"
+  script: "code/audit_ds0001_ds0006.py (RUN-0001), code/rescore_ds0006_legal.py (RUN-0002, reads EXP-0030 artifacts/RUN-0001), code/audit_closed_loop_actions.py (RUN-0003, reads recorded episodes of EXP-0050..0057), code/onpolicy_optimism.py (RUN-0004), code/closed_loop_models_legal_rescore.py (RUN-0005), code/seed_floor_legal.py (RUN-0006)"
   data: [DS-0001, DS-0006]
   code_path: "EXP-0059 code/audit_tool_placement.py::_row_illegal (exact SAT, Baselines/common/cube_overlap.overlaps_rect_pairs, blade 40x2 mm vs 5 mm cubes, pre-push states, p_starts, angles); 0 mm and 1 mm margin"
   seed: "none (deterministic census)"
@@ -54,6 +54,8 @@ result: >
   states only (40-47, legal) 0/5; optimism at the pick (less optimistic = better) 4/5; accuracy (EXP-0044) 3/4.
   The 'slateN disagrees with closed loop' evidence was largely an illegal-push effect; nothing here
   separates the metrics with power (and the closed-loop reference itself executed illegal pushes, RUN-0003).
+  RUN-0006 (results/seed_floor_legal.json): EXP-0036's 4-seed NFD slateN floor on DS-0006 halves on
+  legal-only candidates -- sd 0.019 -> 0.010 (lyapunov), 0.025 -> 0.013 (mass_in_region).
 verdict: supported
 downgrades: [indirectness]   # overlap at touchdown is the geometric proxy ISS-010 used; the physical consequence per row (ejection vs harmless nudge) is not measured
 grade: moderate

@@ -115,3 +115,14 @@ Added by the cross-experiment audit (summary: `experiments/SUMMARY.md`). Numbers
 
 - ISS-013: planner candidates / initialisations in this record came from the pre-fix pile-aware sampler (ISS-010 class, ~half illegal touchdowns in audited banks); executed pushes have not been audited for touchdown legality.
 - EXP-0065 RUN-0003 (C-067): executed closed-loop pushes include illegal touchdowns (blade on a cube); measured lower bounds per record in `experiments/EXP-0065-*/results/audit_closed_loop_actions.json`.
+
+## Legal-action re-run (2026-10-04, ISS-013)
+
+Exact recorded command + `--legalize` (planned pushes translated to the nearest touchdown-legal pose before
+execution; `Genesis/action_sampling.py::legalize_pushes`). Results `results/success_states_legal.json`, analysis
+`results/analysis_success_states_legal.json` (same `code/analyse.py`, per-tag output). Pushes shifted: 16-23 %,
+median 3-6 mm; unfixable 0-8 %. Letters, in-goal mass at k24, legal minus original (paired, 12 episodes per cell):
+linear CEM -0.034 [-0.056, -0.015], linear GD +0.017 [-0.021, +0.059], worldframe NFD CEM -0.075 [-0.150, +0.009],
+worldframe GD -0.049 [-0.119, +0.032]. Overall letters 0.72 of optimum at k24 (orig 0.75); completion at 0.9x
+optimum still 0/48 letters; quadrants unchanged. **The record's conclusions hold with legal actions**; illegal
+touchdowns had helped letter filling slightly, more for the NFD (which used them ~2x as often, C-067).

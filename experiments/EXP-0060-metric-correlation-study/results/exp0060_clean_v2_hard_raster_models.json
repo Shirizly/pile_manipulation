@@ -1,0 +1,32 @@
+{
+  "run_id": "exp0060_clean_v2_hard_raster_models-2026-10-04T06:25:43-2120491",
+  "event": "start",
+  "ts": "2026-10-04T06:25:43",
+  "tag": "exp0060_clean_v2_hard_raster_models",
+  "exp": "EXP-0060",
+  "cmd": [
+    "python",
+    "-u",
+    "experiments/EXP-0060-metric-correlation-study/code/correlate.py",
+    "--sources",
+    "experiments/EXP-0060-metric-correlation-study/results/clean_v2_hard_raster_models.json",
+    "--out",
+    "experiments/EXP-0060-metric-correlation-study/results/correlations_clean_v2_hard_raster_models.json"
+  ],
+  "out": null,
+  "log": "experiments/EXP-0060-metric-correlation-study/results/exp0060_clean_v2_hard_raster_models.log",
+  "commit": "55dced0c",
+  "dirty": true,
+  "status": "ok",
+  "returncode": 0,
+  "seconds": 0.4,
+  "provenance": {
+    "commit": "55dced0c",
+    "commit_full": "55dced0c3819ccfa578738f5471dd803db287b0d",
+    "dirty": true,
+    "dirty_files": [
+      "runs/COMMANDS.jsonl"
+    ],
+    "branch": "baselines/overnight"
+  }
+}

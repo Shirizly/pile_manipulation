@@ -109,3 +109,13 @@ Added by the cross-experiment audit (summary: `experiments/SUMMARY.md`). Numbers
 - **ISS-010 caveat (added 2026-10-03; was missing here):** the narrow NFDs were trained on DS-0008 (+DS-0010), ~45 % illegal tool touchdowns, so the 'clean narrow domain' wording above is wrong. C-057 carries the caveat; no closed-loop re-run with clean-data (DS-0015-trained, EXP-0059 v2) NFDs exists.
 - ISS-013: planner candidates / initialisations in this record came from the pre-fix pile-aware sampler (ISS-010 class, ~half illegal touchdowns in audited banks); executed pushes have not been audited for touchdown legality.
 - EXP-0065 RUN-0003 (C-067): executed closed-loop pushes include illegal touchdowns (blade on a cube); measured lower bounds per record in `experiments/EXP-0065-*/results/audit_closed_loop_actions.json`.
+
+## Legal-action re-run (2026-10-04, ISS-013)
+
+Exact recorded command + `--legalize`. Results `results/narrow_gd_w3_legal.json`, analysis
+`results/analysis_narrow_gd_w3_legal.json`. Pushes shifted 47-64 %, median 2.5-4.5 mm, unfixable <= 2 %.
+Letters, in-goal mass at k24, original -> legal (paired, 24 episodes): narrow 0.437 -> 0.435 (-0.003
+[-0.035, +0.028]); narrow wide 0.524 -> 0.498 (-0.026 [-0.065, +0.009]); broad nfd_3ch 0.547 -> 0.610 (+0.063
+[+0.008, +0.117]); broad worldframe 0.548 -> 0.609 (+0.060 [+0.020, +0.102]). **The inversion holds and widens with
+legal actions**: broad models gain, narrow models do not (narrow-broad at k24 now -0.11..-0.18). The training-data
+caveat (DS-0008, ISS-010) still applies to the narrow models.

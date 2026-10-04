@@ -207,3 +207,28 @@ None.
 Added by the cross-experiment audit (summary: `experiments/SUMMARY.md`). Numbers above are unchanged.
 
 - **Stale inputs:** the correlated table is on DS-0009 (pre-ISS-010, ~46-56 % illegal touchdowns) and uses retrieval_1nn BEFORE EXP-0059's `_transfer_one` matching fix (0.172 / 0.413 here vs 0.337 / 0.759 after). Not re-run on the clean v2 population; the target (slateN_tough) is itself offline.
+
+## Clean re-run (2026-10-04)
+
+The table above is stale (pre-ISS-010 DS-0009, pre-fix retrieval). Re-run with the SAME `code/correlate.py`
+on the clean DS-0016 test tables: EXP-0059 `results/test_v2.json` (9 hard-raster models: 3 narrow v2 NFD seeds,
+linear v2 res32/res64, retrieval k1/k5 v2, persistence, random) and, separately, plus EXP-0063's soft / sharp /
+output-blur NFD arms (15 models; the soft arms' accuracy is against a hard target they were not trained for).
+Sources flattened to `results/clean_v2_{hard_raster,all}_models.json`; outputs
+`results/correlations_clean_v2_*.json`; logs `results/exp0060_clean_v2_*.log`.
+
+| candidate vs slateN_tough | 9 hard-raster models: Kendall tau (p), Spearman | 15 models incl. soft/sharp NFDs |
+|---|---|---|
+| accuracy_1 | +0.222 (0.48), +0.400 | +0.029 (0.92), +0.046 |
+| accuracy_1_blur2 | +0.333 (0.26), +0.567 | +0.181 (0.38), +0.357 |
+| occ_emd_swept (sign-flipped) | +0.500 (0.08), +0.617 | +0.295 (0.14), +0.386 |
+| mass_in_goal_mae (sign-flipped) | +0.833 (0.001), +0.933 | +0.676 (<0.001), +0.829 |
+| mass_in_goal_mae_tough (sign-flipped) | +0.944 (<0.001), +0.983 | +0.695 (<0.001), +0.836 |
+
+Reading: the stale record's "accuracy_1 tracks slateN_tough best" does NOT survive on clean data with the
+fixed retrieval models: across model types image accuracy is uncorrelated with ranking quality, while the error
+of the predicted in-goal mass (a goal-aware VALUE error) tracks it strongly. Caveats: both sides use the same
+goals (mass_in_goal_mae_tough and slateN_tough share the tough set), so this shows that value-prediction error,
+not image error, is what ranking depends on -- not yet that either predicts closed-loop performance; models are
+not independent (3 seeds of one recipe); offline only.
+

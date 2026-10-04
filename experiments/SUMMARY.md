@@ -34,13 +34,13 @@ are allowed for now (less likely to cause an acute failure); FleX data and tests
 | X3 | Benchmark physics ≠ training physics (DS-0001, slates_multistep). | 0001, 0002, 0006, 0008, 0010-0014, 0016, 0022, 0023, 0026-0029 | partly mitigated by EXP-0048 (20 mm scatter only) |
 | X4 | Mistuned planners (GD lr 1.5e-3 / CEM pop 64). | 0032, 0037, 0039, 0041 | superseded by 0042 → 0044 |
 | X5 | Lyapunov saturates near its ceiling by ~8-16 pushes and is ~identical across letters; it misreports letter completion. | every closed-loop study scored on lyapunov (0039, 0043-0045) | known since 0045/0046/0051; in-goal mass is now reported |
-| X6 | Power: slateN gaps < 0.03-0.04 are inside slate-sampling (0026) and training-seed (0036) noise; most model comparisons are one seed. | nearly every offline comparison | standing |
+| X6 | Power: slateN gaps < 0.03-0.04 are inside slate-sampling (0026) and training-seed (0036) noise; most model comparisons are one seed. On DS-0006 about half of that seed noise was illegal-push outcomes (legal-only sd 0.010 vs 0.019, EXP-0065 RUN-0006). | nearly every offline comparison | standing |
 | X7 | Closed loop only ever on **n20 scatter starts** (DS-0006 states 40-47), never more than 4 models on one task (~9 distinct models across all records), rank/GD/CEM planners. | all of 0039-0057 | standing; the main H-scene gap |
 | X8 | GNN node sampling seeded by batch row (broken tag). | GNN rows of 0001, 0002, 0026-0028, 0033 | open |
 | X9 | FleX corpora store actions as (x, −z). Now `holds` (pytest); EXP-0064's own adapter violated it. | 0064 as run (MODEL-0011) | fixed in 0064 (RUN-0005 retrain) |
 | X10 | Collector "valid" flags miss escaped particles (FleX). | DS-0019 (2.3 %), DS-0020, DS-0021 (3.5-14.6 % rising with pile size), DS-0022 | filtered in 0061/0062 loaders and 0064 re-score; DS-0021 training not filtered |
 | X11 | ISS-011: `train_nfd.py --override output.log_dir` silently resumed the ORIGINAL log_dir's checkpoint; which NFD trainings before 2026-09-28 used the override is unaudited. | none found (2026-10-04 audit of saved logs + ledger) | closed — fix in `train_nfd.py` |
-| X12 | **Closed-loop planners EXECUTE illegal touchdowns** (EXP-0065 RUN-0003, C-067): lower bounds 16-53 % of pushes, model-dependent (0054: the winning worldframe NFD 0.69 vs 0.46-0.51; 0051: NFD ~2x linear); even the perfect-model CEM (0057) does it. Closed-loop model comparisons partly compare how much each model's objective rewards illegal pushes. Decided 2026-10-03: not allowed in Genesis (see top of §0). | 0050-0057 measured; 0039-0045, 0056 (no states recorded) presumed | **open, high** |
+| X12 | **Closed-loop planners EXECUTE illegal touchdowns** (EXP-0065 RUN-0003, C-067): lower bounds 16-53 % of pushes, model-dependent (0054: the winning worldframe NFD 0.69 vs 0.46-0.51; 0051: NFD ~2x linear); even the perfect-model CEM (0057) does it. Closed-loop model comparisons partly compare how much each model's objective rewards illegal pushes. Decided 2026-10-03: not allowed in Genesis (see top of §0). | 0050-0057 measured; fix `legalize_pushes`; 0051 and 0054 re-run legally 2026-10-04 — conclusions hold (0054's inversion widens). Other closed-loop records still unrepeated 
 
 ---
 
@@ -70,7 +70,7 @@ are allowed for now (less likely to cause an acute failure); FleX data and tests
 | 0039 → 0044 | Which offline metric orders models like closed loop does? | 0039 narrowed by 0042/0044 | Accuracy was **not computed for the linear model**, so it was scored on NFD-only pairs: on the common cells accuracy 4/4 vs slateN 2/4 (0039) and 3/4 vs 1/4 (0044). Seed-sized gaps of a saturated task (X5, X7); slateN was scored on 54 %-illegal DS-0006 pools over 160 states, closed loop on 8 of them (X1); the decisive model (worldframe ep43) was itself picked for its accuracy (selection) |
 | 0054 | Narrow NFDs: more accurate and higher slateN offline — better closed loop? | live (X1: dirty training data) | **No — reversed.** Strongest evidence that both offline metrics can invert vs closed loop under a domain/action-space shift |
 | 0059 (chaos floor) | Robustness of metrics to state perturbation | live, offline | slateN robust, accuracy collapses with 0.5-1 mm perturbation |
-| 0060 | Which cheap metric tracks slateN_tough? | **stale** (pre-ISS-010 data, pre-fix retrieval) | Target is itself offline; n = 6 |
+| 0060 | Which cheap metric tracks slateN_tough? | live (clean re-run 2026-10-04) | On clean DS-0016 across NFD / linear / retrieval (9-15 models), accuracy_1 does NOT track slateN_tough (τ +0.03..+0.22); in-goal-mass prediction error does (τ +0.70..+0.94) (C-072). Target is itself offline |
 | 0064 | Particle accuracy vs slateN across pile sizes (FleX) | live, one seed | Corrected GNN: accuracy 0.48-0.58 vs an untrained push-field heuristic's 0.08-0.50, yet the heuristic ranks as well (point goals) or better (mask goals), increasingly on large piles. Another across-model accuracy/slateN dissociation (C-068) |
 | 0064 (RUN-0013..0015) | NFD vs LinearForesight vs GNN on the same program, image-mask truth | live, one seed each | NFD > switched LF > untrained push field > particle GNN in every group (C-069). Accuracy and slateN agree across models within a group (Kendall 0.71-0.93) and moderately per state (Spearman 0.48-0.60), but not consistently across pile-size groups within a model (C-070) |
 
@@ -244,7 +244,6 @@ adversarial review of this file (`experiments/temp/2026-10-03-organize-and-summa
   (issues.md I-2/I-3). Then use a matched design: count at fixed footprint, a node budget that scales
   with the pile, and clumped vs scattered at fixed count. That needs new FleX collection in the
   source repo.
-- **EXP-0060 re-run is nearly free** on the clean v2 tables of 0059/0063 *(review)*.
 - **Multi-step fine-tuning (0010, C-012)** never tried on clean narrow data or in closed loop
   *(review)*.
 - **Seed floors** (0036-style) for every family used in a headline comparison; only NFD is measured.
