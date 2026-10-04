@@ -169,8 +169,10 @@ from 1/5 to 4/5 (by tiny margins), and optimism also agrees 4/5; the lean toward
 Both metrics inverted in EXP-0054. Offline, accuracy and slateN disagree whenever model
 structure differs (0006, 0025, 0053, 0059, 0063). slateN is noisier across seeds (0036) but robust to
 state perturbation (0059). And closed-loop scores themselves are contaminated by executed illegal
-pushes (X12). **No offline metric has yet been validated against closed loop on a task with headroom,
-across model families, with legal actions.** That is the decisive missing experiment.
+pushes (X12). **EXP-0039 RUN-0002 (2026-10-04, pre-registered) ran that test:** legal actions, thin letters scored by in-goal
+mass, 8 models across families, CEM and rank. Image accuracy is at chance (pair agreement 0.50 / 0.57);
+goal-specific ranking metrics carry the signal (slateN_tough rho +0.60 / +0.57, top-1 regret +0.50 / +0.81;
+C-073). The planner changes the winner, and closed-loop seed spread is as large as many family gaps.
 
 **H-scene.** Goal complexity has a large, consistent effect: quadrants are easy, and letters are
 never completed by any planner, the simulator planner or the perfect-model CEM (0046, 0050, 0051,
@@ -211,7 +213,7 @@ adversarial review of this file (`experiments/temp/2026-10-03-organize-and-summa
    linear model, plus optimism and large-K top-1 regret; optimism is the error a planner exploits and
    has never been correlated with closed loop. Then recount agreement with the resolved closed-loop
    pairs. < 1 day.
-3. **A closed-loop metric-validity run with headroom, across families.** Score by in-goal mass /
+3. **DONE 2026-10-04 (EXP-0039 RUN-0002, C-073): accuracy at chance, slateN_tough / top-1 regret predictive; next: add retrieval (needs an OCC adapter) and clump starts.** Original plan: a closed-loop metric-validity run with headroom, across families. Score by in-goal mass /
    completion time at early k, letters separately from quadrants, with legal actions. Zoo: NFD seeds,
    ensemble, soft NFD (0063), retrieval k5 (0059), linear-switched, a weak model. Compute every
    offline metric for every member on ONE clean corpus (DS-0016) *(review)*. Free pre-step: re-analyse

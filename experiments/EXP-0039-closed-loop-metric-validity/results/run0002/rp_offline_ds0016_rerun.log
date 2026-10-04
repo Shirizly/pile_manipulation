@@ -1,0 +1,18 @@
+test_chains_v2 (acc): 986 rows
+test_chains_v2_clean (rollout): 896 rows
+test_pools_v2: 2048 rows, 32 pools
+/home/alon/anaconda3/envs/pme/lib/python3.10/site-packages/numpy/_core/fromnumeric.py:3860: RuntimeWarning: Mean of empty slice.
+  return _methods._mean(a, axis=axis, dtype=dtype,
+/home/alon/anaconda3/envs/pme/lib/python3.10/site-packages/numpy/_core/_methods.py:145: RuntimeWarning: invalid value encountered in scalar divide
+  ret = ret.dtype.type(ret / rcount)
+nfd_3ch_narrow_l20_v2_soft_s2    acc1=0.3963301181793213 slateN=0.763 slateN_tough=0.787 rollout4=0.320003867149353 (30.1s)
+nfd_3ch_randlen                  acc1=0.5700483918190002 slateN=0.720 slateN_tough=0.741 rollout4=0.44189053773880005 (31.0s)
+linear_switched_soft             acc1=0.49473220109939575 slateN=0.698 slateN_tough=0.722 rollout4=0.34869933128356934 (30.5s)
+nfd_3ch_narrow_l20_v2_epoch10    acc1=0.5451124906539917 slateN=0.722 slateN_tough=0.731 rollout4=0.35128891468048096 (32.0s)
+
+=== bootstrap CIs (slateN_tough, 32 test_pools_v2 pools as replication unit) ===
+  nfd_3ch_narrow_l20_v2_soft_s2    slateN_tough=0.7866  boot CI95=[0.7255,0.8514]
+  nfd_3ch_randlen                  slateN_tough=0.7412  boot CI95=[0.6542,0.8182]
+  linear_switched_soft             slateN_tough=0.7219  boot CI95=[0.6591,0.7825]
+  nfd_3ch_narrow_l20_v2_epoch10    slateN_tough=0.7312  boot CI95=[0.6607,0.8010]
+wrote /home/alon/Code/pile_manipulation/experiments/EXP-0039-closed-loop-metric-validity/results/run0002/offline_ds0016_scores.json

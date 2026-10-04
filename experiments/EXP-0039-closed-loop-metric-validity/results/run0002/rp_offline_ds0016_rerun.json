@@ -1,0 +1,36 @@
+{
+  "run_id": "rp_offline_ds0016_rerun-2026-10-04T12:37:36-2513673",
+  "event": "start",
+  "ts": "2026-10-04T12:37:36",
+  "tag": "rp_offline_ds0016_rerun",
+  "exp": "EXP-0039",
+  "cmd": [
+    "python",
+    "-u",
+    "experiments/EXP-0039-closed-loop-metric-validity/code/offline_ds0016.py",
+    "--models",
+    "nfd_3ch_narrow_l20_v2_soft_s2",
+    "nfd_3ch_randlen",
+    "linear_switched_soft",
+    "nfd_3ch_narrow_l20_v2_epoch10",
+    "--out",
+    "experiments/EXP-0039-closed-loop-metric-validity/results/run0002/offline_ds0016_scores.json"
+  ],
+  "out": null,
+  "log": "experiments/EXP-0039-closed-loop-metric-validity/results/run0002/rp_offline_ds0016_rerun.log",
+  "commit": "cc654308",
+  "dirty": true,
+  "status": "ok",
+  "returncode": 0,
+  "seconds": 128.8,
+  "provenance": {
+    "commit": "cc654308",
+    "commit_full": "cc654308d7afd6f0ae5d3f0260ac54dfc4859dc8",
+    "dirty": true,
+    "dirty_files": [
+      "experiments/EXP-0039-closed-loop-metric-validity/code/run0002_queue.sh",
+      "runs/COMMANDS.jsonl"
+    ],
+    "branch": "baselines/overnight"
+  }
+}

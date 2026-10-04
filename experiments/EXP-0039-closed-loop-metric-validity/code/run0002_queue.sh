@@ -14,8 +14,8 @@ if [ "${1:-pilot}" = pilot ]; then
       --cells '{"l20r": {"push_len": 0.02}}' --legalize --record-states
   echo "$(date) PILOT DONE" > $R/pilot.done
 else
-  PYTHONPATH=. python scripts/run_probe.py --tag offline_ds0016 --out-dir $R --exp EXP-0039 -- python $E/code/offline_ds0016.py \
-      --models nfd_3ch_narrow_l20_v2_soft_s2 nfd_3ch_randlen linear_switched_soft nfd_3ch_narrow_l20_v2_epoch10 --out $R/offline_ds0016.json
+  PYTHONPATH=. python scripts/run_probe.py --tag rp_offline_ds0016 --out-dir $R --exp EXP-0039 -- python $E/code/offline_ds0016.py \
+      --models nfd_3ch_narrow_l20_v2_soft_s2 nfd_3ch_randlen linear_switched_soft nfd_3ch_narrow_l20_v2_epoch10 --out $R/offline_ds0016_scores.json
   for M in $MODELS; do
     run hm_cem_$M --models $M --planners cem --goals $G --starts $(seq 40 55) --steps 16 --budget 0.5 --n-cand 1024 \
         --cells '{"l20": {"cem_pop": 1024, "cem_elite_frac": 0.25, "push_len": 0.02}}' --legalize --record-states

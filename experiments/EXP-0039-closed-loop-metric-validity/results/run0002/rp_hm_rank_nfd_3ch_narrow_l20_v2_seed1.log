@@ -1,0 +1,137 @@
+[38;5;159m[Genesis] [12:06:30] [INFO] [38;5;121m╭───────────────────────────────────────────────╮[0m[38;5;159m[0m
+[38;5;159m[Genesis] [12:06:30] [INFO] [38;5;121m│┈┉┈┉┈┉┈┉┈┉┈┉┈┉┈┉┈┉┈[0m[38;5;159m [38;5;121m[1m[3mGenesis[0m[38;5;159m [38;5;121m┈┉┈┉┈┉┈┉┈┉┈┉┈┉┈┉┈┉┈│[0m[38;5;159m[0m
+[38;5;159m[Genesis] [12:06:30] [INFO] [38;5;121m╰───────────────────────────────────────────────╯[0m[38;5;159m[0m
+[38;5;159m[Genesis] [12:06:30] [INFO] Running on [38;5;121m[4m[NVIDIA GeForce RTX 4070 Laptop GPU][0m[38;5;159m with backend [38;5;121m[4mgs.cuda[0m[38;5;159m. Device memory: [38;5;121m[4m7.62[0m[38;5;159m GB.[0m
+[38;5;159m[Genesis] [12:06:30] [INFO] 🚀 Genesis initialized. 🔖 version: [38;5;121m[4m1.3.3[0m[38;5;159m, 🎨 theme: [38;5;121m[4mdark[0m[38;5;159m, 🌱 seed: [38;5;121m[4mNone[0m[38;5;159m, 🐛 debug: [38;5;121m[4mFalse[0m[38;5;159m, 📏 precision: [38;5;121m[4m32[0m[38;5;159m, 🔥 performance: [38;5;121m[4mTrue[0m[38;5;159m, 💬 verbose: [38;5;121m[4mINFO[0m[38;5;159m[0m
+[38;5;159m[Genesis] [12:06:32] [INFO] Scene [38;5;121m[3m<1110eff>[0m[38;5;159m created.[0m
+[38;5;159m[Genesis] [12:06:32] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m0[0m[38;5;159m, uid: [38;5;121m[3m<67ac8a4>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Plane>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [12:06:32] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m1[0m[38;5;159m, uid: [38;5;121m[3m<78bc2da>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [12:06:32] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m2[0m[38;5;159m, uid: [38;5;121m[3m<a8d02fa>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [12:06:32] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m3[0m[38;5;159m, uid: [38;5;121m[3m<32ddf10>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [12:06:32] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m4[0m[38;5;159m, uid: [38;5;121m[3m<b580472>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [12:06:32] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m5[0m[38;5;159m, uid: [38;5;121m[3m<e6cdaf5>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [12:06:32] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m6[0m[38;5;159m, uid: [38;5;121m[3m<5f0485e>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [12:06:32] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m7[0m[38;5;159m, uid: [38;5;121m[3m<751abf5>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [12:06:32] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m8[0m[38;5;159m, uid: [38;5;121m[3m<a762409>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [12:06:32] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m9[0m[38;5;159m, uid: [38;5;121m[3m<0da34ba>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [12:06:32] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m10[0m[38;5;159m, uid: [38;5;121m[3m<fb9cb6b>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [12:06:32] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m11[0m[38;5;159m, uid: [38;5;121m[3m<9926254>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [12:06:32] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m12[0m[38;5;159m, uid: [38;5;121m[3m<0c9de28>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [12:06:32] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m13[0m[38;5;159m, uid: [38;5;121m[3m<d79d9ff>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [12:06:32] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m14[0m[38;5;159m, uid: [38;5;121m[3m<c720993>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [12:06:32] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m15[0m[38;5;159m, uid: [38;5;121m[3m<a4f6ff2>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [12:06:32] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m16[0m[38;5;159m, uid: [38;5;121m[3m<b937030>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [12:06:32] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m17[0m[38;5;159m, uid: [38;5;121m[3m<f8cbcbe>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [12:06:32] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m18[0m[38;5;159m, uid: [38;5;121m[3m<dbe3a8f>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [12:06:32] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m19[0m[38;5;159m, uid: [38;5;121m[3m<6afb585>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [12:06:32] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m20[0m[38;5;159m, uid: [38;5;121m[3m<718fde7>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [12:06:32] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m21[0m[38;5;159m, uid: [38;5;121m[3m<faa8f52>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [12:06:32] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m22[0m[38;5;159m, uid: [38;5;121m[3m<606d937>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [12:06:32] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m23[0m[38;5;159m, uid: [38;5;121m[3m<bbd81ff>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [12:06:32] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m24[0m[38;5;159m, uid: [38;5;121m[3m<db8a3c0>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [12:06:32] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m25[0m[38;5;159m, uid: [38;5;121m[3m<595862b>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [12:06:32] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m26[0m[38;5;159m, uid: [38;5;121m[3m<9693f5e>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+Generated 20 particles out of 20
+[38;5;159m[Genesis] [12:06:32] [INFO] Building scene [38;5;121m[3m<1110eff>[0m[38;5;159m...[0m
+[38;5;159m[Genesis] [12:06:35] [INFO] Compiling simulation kernels...[0m
+[38;5;159m[Genesis] [12:06:52] [INFO] Building visualizer...[0m
+chunk 0: step 1/16 (8s; cumulative sample_s 3, select_s 0, execute_s 5)
+chunk 0: step 2/16 (16s; cumulative sample_s 6, select_s 0, execute_s 9)
+chunk 0: step 3/16 (23s; cumulative sample_s 8, select_s 0, execute_s 14)
+chunk 0: step 4/16 (30s; cumulative sample_s 10, select_s 0, execute_s 18)
+chunk 0: step 5/16 (37s; cumulative sample_s 13, select_s 0, execute_s 23)
+chunk 0: step 6/16 (44s; cumulative sample_s 15, select_s 0, execute_s 27)
+chunk 0: step 7/16 (51s; cumulative sample_s 18, select_s 0, execute_s 31)
+chunk 0: step 8/16 (58s; cumulative sample_s 20, select_s 0, execute_s 35)
+chunk 0: step 9/16 (65s; cumulative sample_s 23, select_s 0, execute_s 40)
+chunk 0: step 10/16 (72s; cumulative sample_s 25, select_s 0, execute_s 44)
+chunk 0: step 11/16 (79s; cumulative sample_s 28, select_s 0, execute_s 48)
+chunk 0: step 12/16 (86s; cumulative sample_s 31, select_s 0, execute_s 52)
+chunk 0: step 13/16 (92s; cumulative sample_s 33, select_s 0, execute_s 56)
+chunk 0: step 14/16 (99s; cumulative sample_s 35, select_s 0, execute_s 60)
+chunk 0: step 15/16 (106s; cumulative sample_s 37, select_s 0, execute_s 64)
+chunk 0: step 16/16 (113s; cumulative sample_s 40, select_s 0, execute_s 69)
+chunk 0: step 16/16 (113s; cumulative sample_s 40, select_s 0, execute_s 69)
+  nfd_3ch_narrow_l20_v2_seed1          rank l20r       letter_O   40: improve +0.031; evals/step 128
+  nfd_3ch_narrow_l20_v2_seed1          rank l20r       letter_O   41: improve +0.031; evals/step 128
+  nfd_3ch_narrow_l20_v2_seed1          rank l20r       letter_O   42: improve -0.003; evals/step 128
+  nfd_3ch_narrow_l20_v2_seed1          rank l20r       letter_O   43: improve +0.017; evals/step 128
+  nfd_3ch_narrow_l20_v2_seed1          rank l20r       letter_O   44: improve +0.004; evals/step 128
+  nfd_3ch_narrow_l20_v2_seed1          rank l20r       letter_O   45: improve +0.037; evals/step 128
+  nfd_3ch_narrow_l20_v2_seed1          rank l20r       letter_O   46: improve +0.002; evals/step 128
+  nfd_3ch_narrow_l20_v2_seed1          rank l20r       letter_O   47: improve +0.041; evals/step 128
+  nfd_3ch_narrow_l20_v2_seed1          rank l20r       letter_T   40: improve +0.005; evals/step 128
+  nfd_3ch_narrow_l20_v2_seed1          rank l20r       letter_T   41: improve +0.029; evals/step 128
+  nfd_3ch_narrow_l20_v2_seed1          rank l20r       letter_T   42: improve +0.072; evals/step 128
+  nfd_3ch_narrow_l20_v2_seed1          rank l20r       letter_T   43: improve +0.053; evals/step 128
+  nfd_3ch_narrow_l20_v2_seed1          rank l20r       letter_T   44: improve +0.020; evals/step 128
+  nfd_3ch_narrow_l20_v2_seed1          rank l20r       letter_T   45: improve +0.050; evals/step 128
+  nfd_3ch_narrow_l20_v2_seed1          rank l20r       letter_T   46: improve +0.042; evals/step 128
+  nfd_3ch_narrow_l20_v2_seed1          rank l20r       letter_T   47: improve +0.061; evals/step 128
+  nfd_3ch_narrow_l20_v2_seed1          rank l20r       letter_S   40: improve +0.005; evals/step 128
+  nfd_3ch_narrow_l20_v2_seed1          rank l20r       letter_S   41: improve +0.021; evals/step 128
+  nfd_3ch_narrow_l20_v2_seed1          rank l20r       letter_S   42: improve +0.007; evals/step 128
+  nfd_3ch_narrow_l20_v2_seed1          rank l20r       letter_S   43: improve +0.033; evals/step 128
+  nfd_3ch_narrow_l20_v2_seed1          rank l20r       letter_S   44: improve +0.014; evals/step 128
+  nfd_3ch_narrow_l20_v2_seed1          rank l20r       letter_S   45: improve +0.024; evals/step 128
+  nfd_3ch_narrow_l20_v2_seed1          rank l20r       letter_S   46: improve +0.019; evals/step 128
+  nfd_3ch_narrow_l20_v2_seed1          rank l20r       letter_S   47: improve +0.036; evals/step 128
+  nfd_3ch_narrow_l20_v2_seed1          rank l20r       letter_L   40: improve +0.040; evals/step 128
+  nfd_3ch_narrow_l20_v2_seed1          rank l20r       letter_L   41: improve +0.037; evals/step 128
+  nfd_3ch_narrow_l20_v2_seed1          rank l20r       letter_L   42: improve +0.064; evals/step 128
+  nfd_3ch_narrow_l20_v2_seed1          rank l20r       letter_L   43: improve +0.069; evals/step 128
+  nfd_3ch_narrow_l20_v2_seed1          rank l20r       letter_L   44: improve +0.075; evals/step 128
+  nfd_3ch_narrow_l20_v2_seed1          rank l20r       letter_L   45: improve +0.060; evals/step 128
+  nfd_3ch_narrow_l20_v2_seed1          rank l20r       letter_L   46: improve +0.052; evals/step 128
+  nfd_3ch_narrow_l20_v2_seed1          rank l20r       letter_L   47: improve +0.089; evals/step 128
+chunk 1: step 1/16 (8s; cumulative sample_s 43, select_s 0, execute_s 73)
+chunk 1: step 2/16 (15s; cumulative sample_s 46, select_s 0, execute_s 77)
+chunk 1: step 3/16 (22s; cumulative sample_s 49, select_s 0, execute_s 82)
+chunk 1: step 4/16 (30s; cumulative sample_s 51, select_s 0, execute_s 86)
+chunk 1: step 5/16 (37s; cumulative sample_s 54, select_s 0, execute_s 91)
+chunk 1: step 6/16 (44s; cumulative sample_s 56, select_s 0, execute_s 95)
+chunk 1: step 7/16 (51s; cumulative sample_s 59, select_s 0, execute_s 99)
+chunk 1: step 8/16 (59s; cumulative sample_s 62, select_s 0, execute_s 104)
+chunk 1: step 9/16 (66s; cumulative sample_s 64, select_s 0, execute_s 108)
+chunk 1: step 10/16 (72s; cumulative sample_s 66, select_s 0, execute_s 112)
+chunk 1: step 11/16 (79s; cumulative sample_s 68, select_s 0, execute_s 116)
+chunk 1: step 12/16 (86s; cumulative sample_s 71, select_s 0, execute_s 121)
+chunk 1: step 13/16 (93s; cumulative sample_s 73, select_s 0, execute_s 125)
+chunk 1: step 14/16 (101s; cumulative sample_s 76, select_s 0, execute_s 130)
+chunk 1: step 15/16 (110s; cumulative sample_s 79, select_s 0, execute_s 135)
+chunk 1: step 16/16 (117s; cumulative sample_s 81, select_s 0, execute_s 140)
+chunk 1: step 16/16 (117s; cumulative sample_s 81, select_s 0, execute_s 140)
+  nfd_3ch_narrow_l20_v2_seed1          rank l20r       letter_X   40: improve +0.012; evals/step 128
+  nfd_3ch_narrow_l20_v2_seed1          rank l20r       letter_X   41: improve +0.025; evals/step 128
+  nfd_3ch_narrow_l20_v2_seed1          rank l20r       letter_X   42: improve +0.008; evals/step 128
+  nfd_3ch_narrow_l20_v2_seed1          rank l20r       letter_X   43: improve +0.047; evals/step 128
+  nfd_3ch_narrow_l20_v2_seed1          rank l20r       letter_X   44: improve +0.020; evals/step 128
+  nfd_3ch_narrow_l20_v2_seed1          rank l20r       letter_X   45: improve +0.030; evals/step 128
+  nfd_3ch_narrow_l20_v2_seed1          rank l20r       letter_X   46: improve +0.038; evals/step 128
+  nfd_3ch_narrow_l20_v2_seed1          rank l20r       letter_X   47: improve +0.032; evals/step 128
+  nfd_3ch_narrow_l20_v2_seed1          rank l20r       letter_Z   40: improve +0.032; evals/step 128
+  nfd_3ch_narrow_l20_v2_seed1          rank l20r       letter_Z   41: improve +0.034; evals/step 128
+  nfd_3ch_narrow_l20_v2_seed1          rank l20r       letter_Z   42: improve +0.008; evals/step 128
+  nfd_3ch_narrow_l20_v2_seed1          rank l20r       letter_Z   43: improve +0.042; evals/step 128
+  nfd_3ch_narrow_l20_v2_seed1          rank l20r       letter_Z   44: improve +0.014; evals/step 128
+  nfd_3ch_narrow_l20_v2_seed1          rank l20r       letter_Z   45: improve +0.024; evals/step 128
+  nfd_3ch_narrow_l20_v2_seed1          rank l20r       letter_Z   46: improve +0.032; evals/step 128
+  nfd_3ch_narrow_l20_v2_seed1          rank l20r       letter_Z   47: improve +0.010; evals/step 128
+  nfd_3ch_narrow_l20_v2_seed1          rank l20r       letter_C   40: improve +0.024; evals/step 128
+  nfd_3ch_narrow_l20_v2_seed1          rank l20r       letter_C   41: improve +0.025; evals/step 128
+  nfd_3ch_narrow_l20_v2_seed1          rank l20r       letter_C   42: improve +0.002; evals/step 128
+  nfd_3ch_narrow_l20_v2_seed1          rank l20r       letter_C   43: improve -0.005; evals/step 128
+  nfd_3ch_narrow_l20_v2_seed1          rank l20r       letter_C   44: improve -0.000; evals/step 128
+  nfd_3ch_narrow_l20_v2_seed1          rank l20r       letter_C   45: improve +0.021; evals/step 128
+  nfd_3ch_narrow_l20_v2_seed1          rank l20r       letter_C   46: improve +0.003; evals/step 128
+  nfd_3ch_narrow_l20_v2_seed1          rank l20r       letter_C   47: improve +0.052; evals/step 128
+  nfd_3ch_narrow_l20_v2_seed1          rank l20r       letter_H   40: improve +0.008; evals/step 128
+  nfd_3ch_narrow_l20_v2_seed1          rank l20r       letter_H   41: improve +0.012; evals/step 128
+  nfd_3ch_narrow_l20_v2_seed1          rank l20r       letter_H   42: improve +0.007; evals/step 128
+  nfd_3ch_narrow_l20_v2_seed1          rank l20r       letter_H   43: improve +0.011; evals/step 128
+  nfd_3ch_narrow_l20_v2_seed1          rank l20r       letter_H   44: improve +0.043; evals/step 128
+  nfd_3ch_narrow_l20_v2_seed1          rank l20r       letter_H   45: improve +0.057; evals/step 128
+  nfd_3ch_narrow_l20_v2_seed1          rank l20r       letter_H   46: improve +0.046; evals/step 128
+  nfd_3ch_narrow_l20_v2_seed1          rank l20r       letter_H   47: improve +0.038; evals/step 128
+[38;5;159m[Genesis] [12:10:48] [INFO] 💤 Exiting Genesis and caching compiled kernels...[0m
+wrote experiments/EXP-0039-closed-loop-metric-validity/results/run0002/hm_rank_nfd_3ch_narrow_l20_v2_seed1.json

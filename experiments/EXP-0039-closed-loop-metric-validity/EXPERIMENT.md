@@ -173,3 +173,41 @@ Uninformative-outcome guard: at least 8 of 28 pairs must be Holm-resolved, else 
 Retrieval (no OCC adapter yet) is excluded from this registration; it may be added to arm B later as an
 exploratory row.
 
+## RUN-0002 results (2026-10-04, run 08:30-12:36 CEST; analysis `results/run0002_analysis.{md,json}`)
+
+Ran exactly as registered (16 units, every episode complete; offline DS-0016 scores for the 4 models EXP-0059 had
+not scored in `results/run0002/offline_ds0016_scores.json`). Score = mean in-goal mass / optimum over pushes 4-16.
+
+| model | CEM score [CI] | rank score [CI] | accuracy_1 | slateN_tough | top-1 regret | CEM legal-shift rate |
+|---|---|---|---|---|---|---|
+| nfd_3ch_randlen (broad) | **0.357** [0.340, 0.375] | 0.190 | 0.570 | 0.741 | 0.0042 | 0.63 |
+| linear_switched_soft (broad) | 0.351 [0.336, 0.367] | 0.171 | 0.495 | 0.722 | 0.0048 | 0.51 |
+| narrow v2 soft sigma 2 | 0.292 | 0.186 | 0.396 | 0.787 | 0.0034 | 0.56 |
+| narrow v2 seed 0 | 0.286 | **0.198** | 0.557 | 0.731 | 0.0039 | 0.35 |
+| narrow v2 seed 2 | 0.253 | 0.175 | 0.570 | 0.700 | 0.0043 | 0.38 |
+| narrow v2 seed 1 | 0.233 | 0.145 | 0.561 | 0.708 | 0.0047 | 0.38 |
+| narrow v2 epoch 10 (weak) | 0.219 | 0.164 | 0.545 | 0.731 | 0.0044 | 0.23 |
+| linear narrow v2 res64 | 0.205 | 0.153 | 0.520 | 0.626 | 0.0062 | 0.55 |
+
+Holm-resolved pairs: 22 / 28 (CEM), 14 / 28 (rank) -- the uninformative-outcome guard (>= 8) is met.
+
+| offline metric | CEM: Spearman rho [episode-bootstrap CI], pair agreement | rank: rho, pair agreement |
+|---|---|---|
+| accuracy_1 | +0.10 [-0.07, +0.19], 0.50 of 22 | +0.17 [-0.12, +0.31], 0.57 of 14 |
+| slateN | +0.31 [+0.07, +0.36], 0.59 | +0.24 [+0.10, +0.48], 0.64 |
+| slateN_tough | **+0.60 [+0.40, +0.67], 0.73** | +0.57 [+0.43, +0.71], 0.86 |
+| within-pool Spearman | +0.14 [+0.02, +0.17], 0.55 | +0.52 [+0.29, +0.71], 0.79 |
+| optimism (flipped) | +0.14 [-0.07, +0.19], 0.45 | +0.26 [+0.00, +0.48], 0.64 |
+| top-1 regret (flipped) | +0.50 [+0.36, +0.52], 0.68 | **+0.81 [+0.60, +0.90], 0.93** |
+
+Against the pre-registration:
+- **P1 refuted as stated**: slateN_tough is the best metric under CEM but below the thresholds (rho 0.60 < 0.7, 73 %
+  < 80 %); under rank, top-1 regret is best (0.81, 93 %). The refutation-of-offline-selection criterion is NOT met:
+  goal-specific ranking metrics (slateN_tough, top-1 regret) carry real closed-loop signal.
+- **P2 supported**: accuracy_1 agrees with 50 % (CEM) / 57 % (rank) of resolved pairs -- chance level.
+- **P3 refuted**: optimism is not negatively correlated (+0.14 / +0.26).
+- Not registered, observed: the planner changes the winner (broad models lead under CEM, the narrow v2 NFD under
+  rank); the 3 narrow seeds span 0.233-0.286 under CEM, a closed-loop seed floor as large as many cross-family
+  gaps; the broad models used the legalisation shift most (0.51-0.63) -- their CEM pushes land on cubes most often
+  before projection. Offline metrics are on DS-0016 step-0 states, closed loop on DS-0006 scatter starts.
+

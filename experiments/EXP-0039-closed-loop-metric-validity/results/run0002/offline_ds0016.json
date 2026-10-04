@@ -1,0 +1,35 @@
+{
+  "run_id": "offline_ds0016-2026-10-04T08:29:46-2250841",
+  "event": "start",
+  "ts": "2026-10-04T08:29:46",
+  "tag": "offline_ds0016",
+  "exp": "EXP-0039",
+  "cmd": [
+    "python",
+    "-u",
+    "experiments/EXP-0039-closed-loop-metric-validity/code/offline_ds0016.py",
+    "--models",
+    "nfd_3ch_narrow_l20_v2_soft_s2",
+    "nfd_3ch_randlen",
+    "linear_switched_soft",
+    "nfd_3ch_narrow_l20_v2_epoch10",
+    "--out",
+    "experiments/EXP-0039-closed-loop-metric-validity/results/run0002/offline_ds0016.json"
+  ],
+  "out": null,
+  "log": "experiments/EXP-0039-closed-loop-metric-validity/results/run0002/offline_ds0016.log",
+  "commit": "cc654308",
+  "dirty": true,
+  "status": "failed",
+  "returncode": 1,
+  "seconds": 125.6,
+  "provenance": {
+    "commit": "cc654308",
+    "commit_full": "cc654308d7afd6f0ae5d3f0260ac54dfc4859dc8",
+    "dirty": true,
+    "dirty_files": [
+      "runs/COMMANDS.jsonl"
+    ],
+    "branch": "baselines/overnight"
+  }
+}
