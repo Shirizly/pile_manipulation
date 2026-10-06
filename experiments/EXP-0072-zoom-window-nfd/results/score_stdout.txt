@@ -1,0 +1,12 @@
+== ft100
+pasted                       acc1 +0.618 (scatter +0.594 clump +0.631)  slateN 0.746
+window                       acc1 +0.845 (scatter +0.853 clump +0.840)  slateN 0.949
+paste_oracle(true label pasted) acc1 +0.651 (scatter +0.630 clump +0.664)  slateN nan
+paste_persistence(state window pasted) acc1 +0.000 (scatter +0.000 clump +0.000)  slateN nan
+nfd_3ch_narrow_l20_v2        acc1 +0.559 (scatter +0.539 clump +0.570)  slateN 0.710
+== scratch100
+pasted                       acc1 +0.615 (scatter +0.594 clump +0.627)  slateN 0.761
+window                       acc1 +0.836 (scatter +0.843 clump +0.831)  slateN 0.925
+paste_oracle(true label pasted) acc1 +0.651 (scatter +0.630 clump +0.664)  slateN nan
+paste_persistence(state window pasted) acc1 +0.000 (scatter +0.000 clump +0.000)  slateN nan
+nfd_3ch_narrow_l20_v2        acc1 +0.559 (scatter +0.539 clump +0.570)  slateN 0.710

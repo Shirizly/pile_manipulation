@@ -1,0 +1,54 @@
+{
+ "pasted": {
+  "accuracy_1": 0.5910689830780029,
+  "accuracy_1_scatter": 0.5652161836624146,
+  "accuracy_1_clump": 0.6057894229888916,
+  "slateN": 0.7280969413935802,
+  "slateN_per_goal": {
+   "letter_O": 0.8717651683837175,
+   "letter_T": 0.7206802542787045,
+   "letter_F": 0.7620332427322865,
+   "letter_S": 0.751618831185624,
+   "letter_X": 0.749815113376826,
+   "letter_M": 0.7371424096636474,
+   "letter_W": 0.7153779114596546,
+   "letter_J": 0.8446242538047954,
+   "letter_L": 0.7390501357149333,
+   "letter_I": 0.6958420674782246,
+   "quadrant_0": 0.49322183557524113,
+   "quadrant_1": 0.5516968462315779,
+   "two_squares": 0.8323921682313085
+  }
+ },
+ "window": {
+  "accuracy_1": 0.8068299293518066,
+  "accuracy_1_scatter": 0.7939656376838684,
+  "accuracy_1_clump": 0.8153320550918579,
+  "slateN": 0.9050440422268515,
+  "slateN_per_goal": {
+   "letter_O": 0.8920601881109178,
+   "letter_T": 0.9232273837551475,
+   "letter_F": 0.877697710879147,
+   "letter_S": 0.8739164713770151,
+   "letter_X": 0.9107214286923409,
+   "letter_M": 0.8761093663051724,
+   "letter_W": 0.8973208274692297,
+   "letter_J": 0.9056209186092019,
+   "letter_L": 0.9321278557181358,
+   "letter_I": 0.9233608432114124,
+   "quadrant_0": 0.918581934645772,
+   "quadrant_1": 0.912594671931959,
+   "two_squares": 0.922232948243618
+  }
+ },
+ "paste_oracle(true label pasted)": {
+  "accuracy_1": 0.6513539552688599,
+  "accuracy_1_scatter": 0.6297495365142822,
+  "accuracy_1_clump": 0.6636431217193604
+ },
+ "paste_persistence(state window pasted)": {
+  "accuracy_1": 0.0,
+  "accuracy_1_scatter": 0.0,
+  "accuracy_1_clump": 0.0
+ }
+}

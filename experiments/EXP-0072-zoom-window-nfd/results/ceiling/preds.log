@@ -1,0 +1,7 @@
+nfd64 torch.Size([896, 64, 64]) torch.Size([2048, 64, 64])
+ft100 torch.Size([896, 64, 64]) torch.Size([2048, 64, 64])
+scratch100 torch.Size([896, 64, 64]) torch.Size([2048, 64, 64])
+ft300 torch.Size([896, 64, 64]) torch.Size([2048, 64, 64])
+zoom128 torch.Size([896, 64, 64]) torch.Size([2048, 64, 64])
+world128 torch.Size([896, 64, 64]) torch.Size([2048, 64, 64])
+world128_300 torch.Size([896, 64, 64]) torch.Size([2048, 64, 64])

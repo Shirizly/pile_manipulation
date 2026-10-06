@@ -1,0 +1,246 @@
+{
+ "source_legal_frac": 1.0,
+ "ops": {
+  "jitter_small": {
+   "success": 1.0,
+   "illegal_after": 0.0,
+   "mean_move_mm": 2.4903945922851562,
+   "max_move_mm": 5.221401214599609,
+   "frac_cubes_moved_gt2mm": 0.6037109374999999
+  },
+  "jitter_large": {
+   "success": 1.0,
+   "illegal_after": 0.0,
+   "mean_move_mm": 7.174638271331787,
+   "max_move_mm": 15.688247680664062,
+   "frac_cubes_moved_gt2mm": 0.936328125
+  },
+  "relocate3": {
+   "success": 1.0,
+   "illegal_after": 0.0,
+   "mean_move_mm": 9.384592056274414,
+   "max_move_mm": 87.49325561523438,
+   "frac_cubes_moved_gt2mm": 0.14960937499999996
+  },
+  "relocate6": {
+   "success": 1.0,
+   "illegal_after": 0.0,
+   "mean_move_mm": 18.439720153808594,
+   "max_move_mm": 99.38248443603516,
+   "frac_cubes_moved_gt2mm": 0.29960937499999996
+  },
+  "cluster_shift": {
+   "success": 1.0,
+   "illegal_after": 0.0,
+   "mean_move_mm": 1.2147082090377808,
+   "max_move_mm": 23.104825973510742,
+   "frac_cubes_moved_gt2mm": 0.05156250000000001
+  },
+  "rigid": {
+   "success": 1.0,
+   "illegal_after": 0.0,
+   "mean_move_mm": 51.02986145019531,
+   "max_move_mm": 84.6163101196289,
+   "frac_cubes_moved_gt2mm": 0.97421875
+  }
+ },
+ "stats_source": {
+  "mean_nn_dist_mm": [
+   16.52,
+   1.58
+  ],
+  "contacts": [
+   0.48,
+   0.84
+  ],
+  "min_wall_gap_mm": [
+   4.87,
+   1.29
+  ],
+  "bbox_area_cm2": [
+   121.61,
+   10.01
+  ]
+ },
+ "stats_perturbed_all_ops": {
+  "mean_nn_dist_mm": [
+   16.34,
+   1.67
+  ],
+  "contacts": [
+   0.47,
+   0.82
+  ],
+  "min_wall_gap_mm": [
+   4.97,
+   1.36
+  ],
+  "bbox_area_cm2": [
+   121.16,
+   10.6
+  ]
+ },
+ "stats_jitter_small": {
+  "mean_nn_dist_mm": [
+   16.54,
+   1.6
+  ],
+  "contacts": [
+   0.04,
+   0.18
+  ],
+  "min_wall_gap_mm": [
+   5.05,
+   1.33
+  ],
+  "bbox_area_cm2": [
+   120.9,
+   10.02
+  ]
+ },
+ "stats_jitter_large": {
+  "mean_nn_dist_mm": [
+   16.66,
+   1.54
+  ],
+  "contacts": [
+   0.02,
+   0.15
+  ],
+  "min_wall_gap_mm": [
+   5.09,
+   1.36
+  ],
+  "bbox_area_cm2": [
+   119.91,
+   10.42
+  ]
+ },
+ "stats_relocate3": {
+  "mean_nn_dist_mm": [
+   16.08,
+   1.79
+  ],
+  "contacts": [
+   0.73,
+   0.83
+  ],
+  "min_wall_gap_mm": [
+   5.03,
+   1.44
+  ],
+  "bbox_area_cm2": [
+   120.11,
+   10.73
+  ]
+ },
+ "stats_relocate6": {
+  "mean_nn_dist_mm": [
+   15.73,
+   1.76
+  ],
+  "contacts": [
+   1.09,
+   1.0
+  ],
+  "min_wall_gap_mm": [
+   5.26,
+   1.48
+  ],
+  "bbox_area_cm2": [
+   118.29,
+   10.45
+  ]
+ },
+ "stats_cluster_shift": {
+  "mean_nn_dist_mm": [
+   16.47,
+   1.56
+  ],
+  "contacts": [
+   0.5,
+   0.85
+  ],
+  "min_wall_gap_mm": [
+   4.93,
+   1.36
+  ],
+  "bbox_area_cm2": [
+   121.16,
+   10.42
+  ]
+ },
+ "stats_rigid": {
+  "mean_nn_dist_mm": [
+   16.52,
+   1.58
+  ],
+  "contacts": [
+   0.48,
+   0.84
+  ],
+  "min_wall_gap_mm": [
+   4.46,
+   1.0
+  ],
+  "bbox_area_cm2": [
+   126.57,
+   9.58
+  ]
+ },
+ "settle": {
+  "jitter_small": {
+   "layer0": 1.0,
+   "in_tray": 1.0,
+   "overlap": 0.0,
+   "drift_mm_max_mean": 0.3260503964253737,
+   "drift_mm_mean": 0.018110321728352974,
+   "seconds": 2.5
+  },
+  "jitter_large": {
+   "layer0": 0.96875,
+   "in_tray": 1.0,
+   "overlap": 0.0,
+   "drift_mm_max_mean": 0.4622805285892976,
+   "drift_mm_mean": 0.025040783084355492,
+   "seconds": 2.0
+  },
+  "relocate3": {
+   "layer0": 1.0,
+   "in_tray": 1.0,
+   "overlap": 0.0,
+   "drift_mm_max_mean": 0.1998598467312676,
+   "drift_mm_mean": 0.011585792980254184,
+   "seconds": 2.2
+  },
+  "relocate6": {
+   "layer0": 1.0,
+   "in_tray": 1.0,
+   "overlap": 0.0,
+   "drift_mm_max_mean": 0.3293263583754375,
+   "drift_mm_mean": 0.018550145932151783,
+   "seconds": 2.5
+  },
+  "cluster_shift": {
+   "layer0": 1.0,
+   "in_tray": 1.0,
+   "overlap": 0.0,
+   "drift_mm_max_mean": 0.5884832641505685,
+   "drift_mm_mean": 0.03162984587826117,
+   "seconds": 2.4
+  },
+  "rigid": {
+   "layer0": 1.0,
+   "in_tray": 1.0,
+   "overlap": 0.0,
+   "drift_mm_max_mean": 0.05984143676352898,
+   "drift_mm_mean": 0.004257664540203361,
+   "seconds": 2.3
+  }
+ },
+ "settle_unperturbed_source": {
+  "drift_mm_mean": 3.367721625512553e-05,
+  "drift_mm_max_mean": 0.00027080268771529324,
+  "layer0": 1.0
+ }
+}

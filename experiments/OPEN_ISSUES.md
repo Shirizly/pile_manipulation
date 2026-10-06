@@ -494,3 +494,27 @@ still owed: re-run the headline closed-loop cells with it (queued after the EXP-
 `_row_illegal`) and report rank changes; (b) audit executed closed-loop pushes from the recorded
 episode actions (EXP-0044/0051/0054/0055 artifacts) with the same SAT test; (c) recollect a legal
 DS-0006 successor with `pile_aware_action_batch` if (a) moves rankings.
+
+## ISS-014 — `legalize_pushes` ok=False pushes are executed unchanged by the closed-loop driver
+
+**status:** in-progress (fix under EXP-0066, another agent, 2026-10-04) · **found:** 2026-10-04 (EXP-0039 extended analysis) ·
+**severity:** medium (small rates; model orders unchanged without the affected episodes)
+
+`Genesis/action_sampling.py::legalize_pushes` returns `ok=False` and the push UNCHANGED when no legal offset along the push
+direction exists; `simple_mpc/learned_mpc.py::run_episodes_batched` records `legal_ok` but executes the returned push anyway,
+so a `--legalize` run still executes illegal touchdowns at the `ok=False` rate. Measured (`results/run0002_extended.json`,
+`results/run0003_noise_null.json` in EXP-0039): RUN-0002 CEM 350 / 16384 pushes = 2.1 % (per model 0.7-2.7 %, soft NFD sigma 2
+5.9 %), RUN-0002 rank-128 0 / 8192, RUN-0003 scatter 195 / 8192 = 2.4 % (soft_s2 6.3 %), clump 11 / 8192 = 0.1 %. The CEM
+planner (free refinement) produces them; the pile-aware rank candidates never do. Model orders are unchanged when each
+model's affected episodes are dropped (RUN-0002 CEM tau 1.00; RUN-0003 scatter 0.79, clump 0.93), so C-073 / C-074 stand
+with this caveat recorded. Exposure: EXP-0051 / EXP-0054 legal re-runs (2026-10-04) used the same path -- their `legal_ok`
+rates are unmeasured. **To close:** the driver must replace an `ok=False` push (resample / skip / fall back to the best
+legal candidate) rather than execute it; being done in EXP-0066. Then report the `ok=False` rate per record.
+
+## ISS-015 — pasted-frame accuracy and slateN of window models are capped by raster-style mismatch (box window raster pasted onto the disc-style world raster)
+
+**status:** open · **found:** 2026-10-06 (EXP-0072 ceiling study) · **severity:** medium for model comparisons among window/128 models, none for within-family comparisons
+
+Rendering the TRUE next state in the window raster style and pasting its change onto the world raster scores accuracy_1 0.651 (zoom64 window) / 0.681 (zoom128) / 0.633 (world128), not 1.0, and pasted slateN 0.778 / 0.824 (vs 0.896 for the true hard w64 raster against the soft splat truth).
+Zoom models (0.622/0.765, 0.640/0.809) sit within ~0.02 of these caps, so the pasted frame cannot resolve further improvements (pool sampling sd is 0.01-0.04). The cap differs per model type, so pasted numbers are not strictly comparable across frames.
+**To close:** score window models in-window or through the soft/true-style raster; see experiments/EXP-0072-zoom-window-nfd/results/ceiling/results.md.

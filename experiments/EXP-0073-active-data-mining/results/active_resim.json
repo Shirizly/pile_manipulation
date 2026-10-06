@@ -1,0 +1,155 @@
+{
+ "rho_e_aleat": 0.7475624717494918,
+ "mean_e_model": 4.457466125488281,
+ "mean_alea": 2.1388890743255615,
+ "proxy_ens3_var_sw": [
+  0.88,
+  0.767,
+  0.656
+ ],
+ "proxy_ens3_var_win": [
+  0.588,
+  0.476,
+  0.454
+ ],
+ "proxy_ens4_var_sw": [
+  0.834,
+  0.79,
+  0.544
+ ],
+ "proxy_ens4_var_win": [
+  0.349,
+  0.315,
+  0.238
+ ],
+ "proxy_ens3_chg_var_sw": [
+  0.88,
+  0.767,
+  0.656
+ ],
+ "proxy_ens3_maxstd": [
+  0.514,
+  0.532,
+  0.389
+ ],
+ "proxy_pred_mass": [
+  0.313,
+  0.116,
+  0.358
+ ],
+ "proxy_pred_mass_win": [
+  0.283,
+  0.105,
+  0.326
+ ],
+ "proxy_pred_entropy_sw": [
+  0.956,
+  0.792,
+  0.704
+ ],
+ "proxy_pred_grayness_sw": [
+  0.959,
+  0.787,
+  0.711
+ ],
+ "proxy_pert_act_var_sw": [
+  0.697,
+  0.742,
+  0.37
+ ],
+ "proxy_pert_act_var_win": [
+  -0.081,
+  0.054,
+  -0.171
+ ],
+ "proxy_pert_act_shift_sw": [
+  0.82,
+  0.8,
+  0.517
+ ],
+ "proxy_pert_inp_var_sw": [
+  0.72,
+  0.765,
+  0.373
+ ],
+ "proxy_pert_inp_var_win": [
+  -0.106,
+  0.069,
+  -0.198
+ ],
+ "proxy_pert_inp_shift_sw": [
+  0.861,
+  0.795,
+  0.57
+ ],
+ "proxy_pert_both_var_sw": [
+  0.721,
+  0.773,
+  0.376
+ ],
+ "proxy_pert_both_var_win": [
+  -0.118,
+  0.018,
+  -0.2
+ ],
+ "proxy_pert_both_shift_sw": [
+  0.843,
+  0.813,
+  0.532
+ ],
+ "proxy_grad_img": [
+  0.852,
+  0.699,
+  0.632
+ ],
+ "proxy_grad_plate": [
+  0.872,
+  0.737,
+  0.634
+ ],
+ "proxy_grad_all": [
+  0.861,
+  0.723,
+  0.629
+ ],
+ "proxy_heur_n_in_win": [
+  0.407,
+  0.265,
+  0.403
+ ],
+ "proxy_heur_n_swept": [
+  0.257,
+  0.078,
+  0.32
+ ],
+ "proxy_heur_n_contacts_win": [
+  0.359,
+  0.178,
+  0.426
+ ],
+ "proxy_heur_gap_first": [
+  -0.027,
+  0.119,
+  -0.122
+ ],
+ "proxy_heur_wall_min": [
+  0.179,
+  0.203,
+  0.064
+ ],
+ "proxy_heur_n_swept_contact": [
+  0.299,
+  0.099,
+  0.387
+ ],
+ "proxy_heur_chain_step": [
+  0.052,
+  0.195,
+  -0.118
+ ],
+ "proxy_heur_clump": [
+  0.144,
+  0.083,
+  0.13
+ ]
+}

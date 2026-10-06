@@ -1,0 +1,23 @@
+nfd64 slateN 0.71 acc_hard chains 0.559
+scratch100 slateN 0.761 acc_hard chains 0.615
+ft100 slateN 0.746 acc_hard chains 0.618
+ft300 slateN 0.765 acc_hard chains 0.622
+zoom128 slateN 0.809 acc_hard chains 0.64
+world128 slateN 0.726 acc_hard chains 0.581
+world128_300 slateN 0.728 acc_hard chains 0.591
+nfd_3ch_narrow_l20_v2_seed1 slateN 0.711 acc_hard chains 0.563
+nfd_3ch_narrow_l20_v2_seed2 slateN 0.695 acc_hard chains 0.572
+nfd_3ch_narrow_l20_v2_sharp_w03 slateN 0.68 acc_hard chains 0.569
+nfd_3ch_narrow_l20_v2_sharp_w07 slateN 0.67 acc_hard chains 0.54
+nfd_3ch_narrow_l20_v2_soft_s1 slateN 0.7 acc_hard chains 0.495
+nfd_3ch_narrow_l20_v2_soft_s2 slateN 0.587 acc_hard chains 0.397
+linear_narrow_l20_v2_res64 slateN 0.599 acc_hard chains 0.515
+linear_narrow_l20_v2_res32 slateN 0.641 acc_hard chains 0.473
+ceiling 0.01mm_r0 {'w64_native': 0.789, 'paste_zoom64': 0.639}
+ceiling 0.05mm_r0 {'w64_native': 0.76, 'paste_zoom64': 0.636}
+ceiling 0.25mm_r0 {'w64_native': 0.659, 'paste_zoom64': 0.622}
+ceiling 0.5mm_r0 {'w64_native': 0.579, 'paste_zoom64': 0.607}
+ceiling 0mm_r0 {'w64_native': 0.807, 'paste_zoom64': 0.641}
+ceiling 0mm_r1 {'w64_native': 0.804, 'paste_zoom64': 0.642}
+ceiling 1mm_r0 {'w64_native': 0.436, 'paste_zoom64': 0.561}
+done

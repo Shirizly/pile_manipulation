@@ -1,0 +1,12 @@
+# keep code, results, logs, small final weights (unet_best.pth); drop caches, big arrays, per-epoch/last weights
+artifacts/
+*.pt
+*.npz
+*.npy
+*.pid
+__pycache__/
+runs/**/unet_last.pth
+runs/**/unet_epoch_*.pth
+runs/**/events.out*
+runs/**/last_state.pt
+runs/active_pilot/
