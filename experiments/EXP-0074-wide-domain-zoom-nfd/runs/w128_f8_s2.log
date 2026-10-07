@@ -1,0 +1,2 @@
+train rows 80000 val rows 4800
+init val 0.17659

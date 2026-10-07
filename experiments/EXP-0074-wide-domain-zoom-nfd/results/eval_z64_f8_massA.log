@@ -1,13 +1,9 @@
-Traceback (most recent call last):
-  File "/home/alon/Code/pile_manipulation/experiments/EXP-0074-wide-domain-zoom-nfd/code/eval_wide.py", line 129, in <module>
-    if a.zoom: m = Zoom(make_net(a.zoom[1]), int(a.zoom[0]), thr=a.thr)
-  File "/home/alon/Code/pile_manipulation/experiments/EXP-0074-wide-domain-zoom-nfd/code/eval_wide.py", line 38, in make_net
-    "bottleneck_type": "None", "bottleneck_kwargs": {}}); n.load_state_dict(torch.load(path, map_location="cpu")); return n.to(dev).eval()
-  File "/home/alon/anaconda3/envs/pme/lib/python3.10/site-packages/torch/serialization.py", line 1530, in load
-    with _open_file_like(f, "rb") as opened_file:
-  File "/home/alon/anaconda3/envs/pme/lib/python3.10/site-packages/torch/serialization.py", line 795, in _open_file_like
-    return _open_file(name_or_buffer, mode)
-  File "/home/alon/anaconda3/envs/pme/lib/python3.10/site-packages/torch/serialization.py", line 776, in __init__
-    super().__init__(open(name, mode))  # noqa: SIM115
-FileNotFoundError: [Errno 2] No such file or directory: 'experiments/EXP-0074-wide-domain-zoom-nfd/runs/z64_f8_massA/unet_best.pth'
-
+scattered_n20 {'acc1': 0.5, 'acc1_L<30': 0.551, 'acc1_L30-50': 0.529, 'acc1_L>=50': 0.48, 'acc1_L<35': 0.544, 'acc1_L35-55': 0.51, 'acc1_L>=55': 0.48, 'roll_1': 0.492, 'roll_2': 0.438, 'roll_3': 0.382, 'roll_4': 0.339, 'slateN': 0.84, 'n_pools': 60}
+scattered_n50 {'acc1': 0.503, 'acc1_L<30': 0.541, 'acc1_L30-50': 0.522, 'acc1_L>=50': 0.484, 'acc1_L<35': 0.543, 'acc1_L35-55': 0.512, 'acc1_L>=55': 0.485, 'roll_1': 0.503, 'roll_2': 0.443, 'roll_3': 0.405, 'roll_4': 0.372, 'slateN': 0.891, 'n_pools': 60}
+scattered_n100 {'acc1': 0.497, 'acc1_L<30': 0.544, 'acc1_L30-50': 0.507, 'acc1_L>=50': 0.48, 'acc1_L<35': 0.538, 'acc1_L35-55': 0.5, 'acc1_L>=55': 0.474, 'roll_1': 0.499, 'roll_2': 0.461, 'roll_3': 0.435, 'roll_4': 0.416, 'slateN': 0.916, 'n_pools': 60}
+inbetween_n20 {'acc1': 0.561, 'acc1_L<30': None, 'acc1_L30-50': 0.567, 'acc1_L>=50': 0.54, 'acc1_L<35': 0.585, 'acc1_L35-55': 0.557, 'acc1_L>=55': 0.544, 'roll_1': 0.523, 'roll_2': 0.467, 'roll_3': 0.423, 'roll_4': 0.393, 'slateN': 0.926, 'n_pools': 60}
+inbetween_n50 {'acc1': 0.569, 'acc1_L<30': 0.578, 'acc1_L30-50': 0.583, 'acc1_L>=50': 0.538, 'acc1_L<35': 0.586, 'acc1_L35-55': 0.575, 'acc1_L>=55': 0.532, 'roll_1': 0.549, 'roll_2': 0.486, 'roll_3': 0.441, 'roll_4': 0.41, 'slateN': 0.917, 'n_pools': 60}
+inbetween_n100 {'acc1': 0.556, 'acc1_L<30': 0.574, 'acc1_L30-50': 0.575, 'acc1_L>=50': 0.54, 'acc1_L<35': 0.577, 'acc1_L35-55': 0.563, 'acc1_L>=55': 0.539, 'roll_1': 0.564, 'roll_2': 0.503, 'roll_3': 0.463, 'roll_4': 0.433, 'slateN': 0.946, 'n_pools': 60}
+piled_n20 {'acc1': 0.594, 'acc1_L<30': None, 'acc1_L30-50': 0.634, 'acc1_L>=50': 0.547, 'acc1_L<35': 0.641, 'acc1_L35-55': 0.614, 'acc1_L>=55': 0.537, 'roll_1': 0.561, 'roll_2': 0.482, 'roll_3': 0.427, 'roll_4': 0.415, 'slateN': 0.946, 'n_pools': 60}
+piled_n50 {'acc1': 0.598, 'acc1_L<30': 0.632, 'acc1_L30-50': 0.629, 'acc1_L>=50': 0.564, 'acc1_L<35': 0.636, 'acc1_L35-55': 0.614, 'acc1_L>=55': 0.555, 'roll_1': 0.601, 'roll_2': 0.511, 'roll_3': 0.451, 'roll_4': 0.425, 'slateN': 0.927, 'n_pools': 60}
+MEAN {'acc1': 0.547, 'slateN': 0.914, 'roll_1': 0.537, 'roll_2': 0.474, 'roll_3': 0.428, 'roll_4': 0.401}
