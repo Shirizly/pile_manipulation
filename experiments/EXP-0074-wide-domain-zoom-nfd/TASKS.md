@@ -41,7 +41,7 @@ the headline table at the TOP kept current). Narrow-pilot lessons to REUSE: fine
 - [ ] R5 timing on an IDLE GPU: `PYTHONPATH=. python code/time_wide.py --zoom64 CKPT 8,16,32 --zoom128 CKPT 8,16,32 --world64 CKPT 4,8,16 --world128 CKPT 8,16,32` (runs/z128_f8_ms4, w128_f8_ms4, z64_f8_ms4, w64_s0_ms4 unet_best.pth); code verified on a contended GPU only
 - [x] F1 DONE 07:50 (agent): val-tuned plain mass-balance post-hoc fix works for all four models (LOG 07:50; code/posthoc_fix.py). Remaining: integrate it into the predictor / MPC adapter and retrain WITH balance in the loop (zero-sum delta head) -- if mass loss helped little, test a zero-sum delta parameterisation.
 - [ ] (old F1) if mass loss helps: add it to ms_wide.py (T=4 unrolled) for z128_f8 / w128_f8 and re-evaluate; else adopt the post-hoc zero-sum delta (results/slateN_diagnosis.md) tuned on VAL pools (the agent tuned on test: redo on val before reporting)
-- [ ] F2 seed 2 for the 128 pipelines (both models) so the zoom-vs-vanilla gap (+.010-.017 acc1, +.011-.023 roll4) has 3-seed error bars
+- [x] F2 DONE 08:55 seed 2 for the 128 pipelines (both models) so the zoom-vs-vanilla gap (+.010-.017 acc1, +.011-.023 roll4) has 3-seed error bars
 - [ ] F3 'zoom as an extra channel' (the user's second approach): vanilla 128 world NFD + extra input channels carrying a high-res crop around the push start; or two-branch; compare to z128_f8_ms4 / w128_f8_ms4
 - [ ] F4 re-run the fallback probes (bins windows, n100-only / long-push specialists) CLEAN on the pinned split (earlier runs were contaminated: indicative 'no gain'); only if the zoom-vs-vanilla gap survives F2
 - [ ] F5 more chains / longer T: Sean chains are <=4 pushes; the narrow pilot used 8
