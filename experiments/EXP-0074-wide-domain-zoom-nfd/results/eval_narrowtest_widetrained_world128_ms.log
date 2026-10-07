@@ -1,0 +1,2 @@
+narrow {'acc1': 0.601, 'acc1_L<30': 0.601, 'acc1_L30-50': None, 'acc1_L>=50': None, 'acc1_L<35': 0.601, 'acc1_L35-55': None, 'acc1_L>=55': None, 'roll_1': 0.612, 'roll_2': 0.545, 'roll_3': 0.523, 'roll_4': 0.495, 'slateN': 0.726, 'n_pools': 32}
+MEAN {'acc1': 0.601, 'slateN': 0.726, 'roll_1': 0.612, 'roll_2': 0.545, 'roll_3': 0.523, 'roll_4': 0.495}

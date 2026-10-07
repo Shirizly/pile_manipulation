@@ -43,6 +43,6 @@ the headline table at the TOP kept current). Narrow-pilot lessons to REUSE: fine
 - [ ] (old F1) if mass loss helps: add it to ms_wide.py (T=4 unrolled) for z128_f8 / w128_f8 and re-evaluate; else adopt the post-hoc zero-sum delta (results/slateN_diagnosis.md) tuned on VAL pools (the agent tuned on test: redo on val before reporting)
 - [x] F2 DONE 08:55 seed 2 for the 128 pipelines (both models) so the zoom-vs-vanilla gap (+.010-.017 acc1, +.011-.023 roll4) has 3-seed error bars
 - [ ] F3 'zoom as an extra channel' (the user's second approach): vanilla 128 world NFD + extra input channels carrying a high-res crop around the push start; or two-branch; compare to z128_f8_ms4 / w128_f8_ms4
-- [ ] F4 re-run the fallback probes (bins windows, n100-only / long-push specialists) CLEAN on the pinned split (earlier runs were contaminated: indicative 'no gain'); only if the zoom-vs-vanilla gap survives F2
+- [x] F4 DONE 2026-10-07 (LOG 10:00, 13:00): domain-specialist probes clean on the pinned split; specialists lose to the generalist; zoom-factor ablation. (old F4:) re-run the fallback probes (bins windows, n100-only / long-push specialists) CLEAN on the pinned split (earlier runs were contaminated: indicative 'no gain'); only if the zoom-vs-vanilla gap survives F2
 - [ ] F5 more chains / longer T: Sean chains are <=4 pushes; the narrow pilot used 8
 - [ ] F6 write proper EXPERIMENT.md / register entries for EXP-0072/0073/0074 (experiment-log, register-validator skills) once exploration settles; add DS-0007 DATASET note (done) and a pinned-split note

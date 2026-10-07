@@ -7,6 +7,7 @@ from sean_data import *
 from model.zoom_nfd.window_var import window_batch_var
 from model.zoom_nfd.world_res import raster_res
 SHARDS = ["scattered_n20", "scattered_n50", "scattered_n100", "inbetween_n20", "inbetween_n50", "inbetween_n100", "piled_n20", "piled_n50"]
+ONLY = [x for x in os.environ.get("ONLY", "").split(",") if x]; LMAX = float(os.environ.get("LMAX", 1e9)) / 1000; LMIN = float(os.environ.get("LMIN", 0)) / 1000
 kind, res = sys.argv[1], int(sys.argv[2]); nper = int(sys.argv[3]) if len(sys.argv) > 3 else 10000
 
 
@@ -21,7 +22,8 @@ if __name__ == "__main__":
     for split, cap in (("train", nper), ("val", 600)):
         X, Y, M = [], [], []; D = load_split(split)
         for si, sh in enumerate(SHARDS):
-            t = rows_table(D[sh]); N = len(t["S"]); ix = np.sort(np.random.default_rng(si).permutation(N)[:cap]); n = t["S"].shape[1]; t0 = time.time()
+            if ONLY and sh not in ONLY: continue
+            t = rows_table(D[sh]); N = len(t["S"]); okL = np.nonzero((((t["P1"] - t["P0"]).norm(dim=1) <= LMAX) & ((t["P1"] - t["P0"]).norm(dim=1) >= LMIN)).numpy())[0]; ix = np.sort(np.random.default_rng(si).permutation(okL)[:cap]); n = t["S"].shape[1]; t0 = time.time()
             chunks = [(t["S"][c], t["S_"][c], t["P0"][c].numpy(), t["P1"][c].numpy(), n) for c in np.array_split(ix, 40)]
             with Pool(18) as p: r = p.map(work, chunks)
             X.append(torch.from_numpy(np.concatenate([a for a, _ in r]).astype(np.uint8))); Y.append(torch.from_numpy(np.concatenate([b for _, b in r]).astype(np.uint8)))

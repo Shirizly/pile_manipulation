@@ -2,7 +2,9 @@
 import json, glob, os
 R = "experiments/EXP-0074-wide-domain-zoom-nfd/results/"; rows = []
 for f in sorted(glob.glob(R + "eval_*.json")):
-    d = json.load(open(f)); n = os.path.basename(f)[5:-5]; m = d["MEAN"]
+    n = os.path.basename(f)[5:-5]
+    if n.startswith("narrowtest_") or n.startswith("dom_"): continue
+    d = json.load(open(f)); m = d["MEAN"]
     rows.append((n, m, d))
 L = ["| model | acc1 | slateN | roll1 | roll2 | roll3 | roll4 | acc1 n20 | acc1 n50 | acc1 n100 | roll4 n20 | roll4 n50 | roll4 n100 |", "|---|" + "---|" * 12]
 for n, m, d in rows:

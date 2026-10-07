@@ -82,9 +82,9 @@ class World:
         return out
 
 
-def run(model, sets, bs=128):
-    res = {}; Dist = {g: torch.from_numpy(dist_field_from_mask(goal_mask(g))).float() for g in GOALS}
-    for sh in SHARDS:
+def run(model, sets, bs=128, shards=None):
+    shards = shards or SHARDS; res = {}; Dist = {g: torch.from_numpy(dist_field_from_mask(goal_mask(g))).float() for g in GOALS}
+    for sh in shards:
         s = sets[sh]; t = s["t"]; r = {}
         # ---- one-step accuracy over rows
         P, T, O, R, Ls = [], [], [], [], []
@@ -117,16 +117,18 @@ def run(model, sets, bs=128):
         r["slateN"] = float(np.mean([np.mean(v) for v in caps.values() if v])); r["n_pools"] = len(s["pools"])
         res[sh] = r; print(sh, {k: (round(v, 3) if isinstance(v, float) else v) for k, v in r.items()}, flush=True)
     keys = ["acc1", "slateN", "roll_1", "roll_2", "roll_3", "roll_4"]
-    res["MEAN"] = {k: float(np.mean([res[sh][k] for sh in SHARDS if res[sh].get(k) is not None])) for k in keys}
-    for nb in (20, 50, 100): res[f"MEAN_n{nb}"] = {k: float(np.mean([res[sh][k] for sh in SHARDS if sh.endswith(f"_n{nb}") and res[sh].get(k) is not None])) for k in keys}
+    res["MEAN"] = {k: float(np.mean([res[sh][k] for sh in shards if res[sh].get(k) is not None])) for k in keys}
+    for nb in (20, 50, 100):
+        v = [sh for sh in shards if sh.endswith(f"_n{nb}")]
+        if v: res[f"MEAN_n{nb}"] = {k: float(np.mean([res[sh][k] for sh in v if res[sh].get(k) is not None])) for k in keys}
     return res
 
 
 if __name__ == "__main__":
     ap = argparse.ArgumentParser(); ap.add_argument("--zoom", nargs=2, metavar=("RES", "CKPT")); ap.add_argument("--world", nargs=2, metavar=("RES", "CKPT"))
-    ap.add_argument("--name", required=True); ap.add_argument("--thr", type=float, default=0.2); a = ap.parse_args()
-    sets = test_sets()
+    ap.add_argument("--name", required=True); ap.add_argument("--thr", type=float, default=0.2); ap.add_argument("--sets", default="wide"); ap.add_argument("--shards", default=""); a = ap.parse_args()
+    sets = test_sets() if a.sets == "wide" else torch.load("experiments/EXP-0074-wide-domain-zoom-nfd/artifacts/narrow_sets.pt", weights_only=False)
     if a.zoom: m = Zoom(make_net(a.zoom[1]), int(a.zoom[0]), thr=a.thr)
     else: m = World(make_net(a.world[1]), int(a.world[0]))
-    r = run(m, sets); json.dump(r, open(f"experiments/EXP-0074-wide-domain-zoom-nfd/results/eval_{a.name}.json", "w"), indent=1)
+    r = run(m, sets, shards=a.shards.split(",") if a.shards else (["narrow"] if a.sets == "narrow" else None)); json.dump(r, open(f"experiments/EXP-0074-wide-domain-zoom-nfd/results/eval_{a.name}.json", "w"), indent=1)
     print("MEAN", {k: round(v, 3) for k, v in r["MEAN"].items()})

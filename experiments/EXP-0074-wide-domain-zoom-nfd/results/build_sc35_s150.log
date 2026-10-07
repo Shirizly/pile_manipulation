@@ -1,0 +1,5 @@
+train scattered_n20 6773 7s
+train scattered_n50 9292 35s
+val scattered_n20 283 1s
+val scattered_n50 574 2s
+saved

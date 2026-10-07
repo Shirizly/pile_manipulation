@@ -16,12 +16,15 @@ BASE, EXTRA, PLATE_LEN, PLATE_T, SIGMA, BACK = 0.064, 0.044, 0.04, 0.002, 0.0015
 import os
 _BINS = [float(x) / 1000 for x in os.environ.get("ZSIDE_BINS", "").split(",") if x]     # e.g. ZSIDE_BINS=35,55 -> bins [0,35) [35,55) [55,70]
 _UP = _BINS + [0.070]
+_FIXED = float(os.environ["ZSIDE_FIXED"]) / 1000 if os.environ.get("ZSIDE_FIXED") else None   # constant window side (mm) for the zoom-factor ablation
 
 
 def side_for(L):
     """push length(s) in metres (tensor or float) -> window side(s) in metres.
     Default: continuous max(64 mm, L+44 mm). With env ZSIDE_BINS (length-bin edges in mm) the window is CONSTANT within a length bin:
     side = (bin's maximum sweep length) + 44 mm (fallback A/B of EXP-0074)."""
+    if _FIXED is not None:
+        return torch.full_like(L, _FIXED) if torch.is_tensor(L) else _FIXED
     if _BINS:
         up = torch.tensor(_UP, dtype=torch.float32)
         if torch.is_tensor(L): return (up.to(L.device)[torch.bucketize(L, torch.tensor(_BINS, dtype=L.dtype, device=L.device), right=True)] + EXTRA).clamp_min(BASE)
