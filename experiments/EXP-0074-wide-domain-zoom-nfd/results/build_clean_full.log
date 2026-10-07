@@ -1,0 +1,36 @@
+train scattered_n20 19406 7s
+train scattered_n50 21037 19s
+train scattered_n100 21664 36s
+train inbetween_n20 21120 9s
+train inbetween_n50 21749 20s
+train inbetween_n100 22055 39s
+train piled_n20 20697 9s
+train piled_n50 21616 21s
+val scattered_n20 600 1s
+val scattered_n50 600 1s
+val scattered_n100 600 2s
+val inbetween_n20 600 1s
+val inbetween_n50 600 1s
+val inbetween_n100 600 2s
+val piled_n20 600 1s
+val piled_n50 600 2s
+saved
+train scattered_n20 19406 5s
+train scattered_n50 21037 13s
+train scattered_n100 21664 26s
+train inbetween_n20 21120 6s
+train inbetween_n50 21749 13s
+train inbetween_n100 22055 26s
+train piled_n20 20697 6s
+train piled_n50 21616 13s
+val scattered_n20 600 1s
+val scattered_n50 600 1s
+val scattered_n100 600 2s
+val inbetween_n20 600 1s
+val inbetween_n50 600 1s
+val inbetween_n100 600 2s
+val piled_n20 600 1s
+val piled_n50 600 1s
+saved
+zoom_r64_full fraction of cached TEST rows (one-step set) also in the train cache per shard: [0.01 0.01 0.   0.   0.   0.   0.   0.  ] mean 0.003
+world_r64_full fraction of cached TEST rows (one-step set) also in the train cache per shard: [0.01 0.01 0.   0.   0.   0.   0.   0.  ] mean 0.003

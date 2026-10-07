@@ -6,6 +6,7 @@ sys.path.insert(0, "."); sys.path.insert(0, "experiments/EXP-0074-wide-domain-zo
 import Baselines.common.benchmark_time as bt
 from model.UNetModels_modular import UNet
 from model.zoom_nfd.window_var import *
+from model.zoom_nfd.window_var import _coords
 from model.zoom_nfd.world_res import plates_res
 from model.zoom_nfd.rollout import canvas_from_particles
 from eval_wide import down_world

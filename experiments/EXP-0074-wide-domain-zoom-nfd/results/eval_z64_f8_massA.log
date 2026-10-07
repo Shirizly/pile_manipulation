@@ -1,0 +1,13 @@
+Traceback (most recent call last):
+  File "/home/alon/Code/pile_manipulation/experiments/EXP-0074-wide-domain-zoom-nfd/code/eval_wide.py", line 129, in <module>
+    if a.zoom: m = Zoom(make_net(a.zoom[1]), int(a.zoom[0]), thr=a.thr)
+  File "/home/alon/Code/pile_manipulation/experiments/EXP-0074-wide-domain-zoom-nfd/code/eval_wide.py", line 38, in make_net
+    "bottleneck_type": "None", "bottleneck_kwargs": {}}); n.load_state_dict(torch.load(path, map_location="cpu")); return n.to(dev).eval()
+  File "/home/alon/anaconda3/envs/pme/lib/python3.10/site-packages/torch/serialization.py", line 1530, in load
+    with _open_file_like(f, "rb") as opened_file:
+  File "/home/alon/anaconda3/envs/pme/lib/python3.10/site-packages/torch/serialization.py", line 795, in _open_file_like
+    return _open_file(name_or_buffer, mode)
+  File "/home/alon/anaconda3/envs/pme/lib/python3.10/site-packages/torch/serialization.py", line 776, in __init__
+    super().__init__(open(name, mode))  # noqa: SIM115
+FileNotFoundError: [Errno 2] No such file or directory: 'experiments/EXP-0074-wide-domain-zoom-nfd/runs/z64_f8_massA/unet_best.pth'
+

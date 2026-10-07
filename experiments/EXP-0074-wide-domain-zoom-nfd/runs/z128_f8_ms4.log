@@ -1,27 +1,16 @@
-chains 15290 799
-init val per step [0.03031 0.03622 0.03875 0.04073]
-1 0.0318 [0.02964 0.03365 0.03508 0.03632] 159 s
-2 0.03135 [0.0296  0.03362 0.03503 0.03634] 338 s
-3 0.0312 [0.02973 0.03353 0.0349  0.03606] 514 s
-4 0.03113 [0.02968 0.0335  0.03469 0.03589] 708 s
-5 0.03103 [0.02973 0.03343 0.03468 0.03567] 914 s
-6 0.03094 [0.02961 0.03341 0.03475 0.03583] 1117 s
-7 0.03089 [0.02976 0.03336 0.03455 0.03554] 1336 s
-8 0.03085 [0.02988 0.03346 0.03464 0.03559] 1524 s
-9 0.03079 [0.02978 0.03338 0.03462 0.03558] 1738 s
-10 0.03075 [0.02945 0.03327 0.03451 0.03558] 1920 s
-11 0.03071 [0.02937 0.03328 0.03448 0.03549] 2084 s
-12 0.03068 [0.02939 0.03326 0.03447 0.0355 ] 2222 s
-13 0.03065 [0.02943 0.03325 0.03447 0.03549] 2358 s
-14 0.03064 [0.02964 0.03331 0.03451 0.03547] 2438 s
-15 0.03062 [0.02965 0.03335 0.03458 0.03559] 2507 s
-all(*args, **kwargs)
-  File "/home/alon/Code/pile_manipulation/./model/UNetModels_modular.py", line 390, in forward
-    cur = up(cur, skip)
-  File "/home/alon/anaconda3/envs/pme/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1779, in _wrapped_call_impl
-    return self._call_impl(*args, **kwargs)
-  File "/home/alon/anaconda3/envs/pme/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1790, in _call_impl
-    return forward_call(*args, **kwargs)
-  File "/home/alon/Code/pile_manipulation/./model/UNetModels_modular.py", line 82, in forward
-    x = torch.cat([skip, x], dim=1)
-torch.OutOfMemoryError: CUDA out of memory. Tried to allocate 20.00 MiB. GPU 0 has a total capacity of 7.62 GiB of which 19.25 MiB is free. Process 211641 has 744.00 MiB memory in use. Process 216792 has 840.00 MiB memory in use. Process 221764 has 1.32 GiB memory in use. Process 247735 has 1.04 GiB memory in use. Process 253637 has 886.00 MiB memory in use. Process 255700 has 884.00 MiB memory in use. Process 258694 has 1.04 GiB memory in use. Including non-PyTorch memory, this process has 900.00 MiB memory in use. Of the allocated memory 734.60 MiB is allocated by PyTorch, and 13.40 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://docs.pytorch.org/docs/stable/notes/cuda.html#optimizing-memory-usage-with-pytorch-cuda-alloc-conf)
+chains 15220 813
+init val per step [0.03117 0.03651 0.03919 0.04072]
+1 0.03197 [0.02993 0.03247 0.03362 0.03432] 156 s
+2 0.03149 [0.0298  0.0323  0.03347 0.03423] 342 s
+3 0.03134 [0.0298  0.03229 0.0334  0.03411] 614 s
+4 0.03123 [0.02976 0.03225 0.03342 0.03406] 867 s
+5 0.03114 [0.03042 0.03247 0.03347 0.03408] 1094 s
+6 0.03108 [0.02959 0.03213 0.03325 0.03402] 1315 s
+7 0.03102 [0.02967 0.03211 0.03317 0.03396] 1543 s
+8 0.03096 [0.03004 0.03225 0.03333 0.03393] 1762 s
+9 0.0309 [0.02975 0.03213 0.03324 0.03394] 1980 s
+10 0.03088 [0.02956 0.03204 0.03313 0.03385] 2199 s
+11 0.03083 [0.02984 0.03217 0.03327 0.03396] 2417 s
+12 0.03081 [0.02978 0.03215 0.03324 0.03393] 2625 s
+13 0.03079 [0.02977 0.03212 0.0332  0.03389] 2795 s
+14 0.03077 [0.0296  0.03203 0.03311 0.03383] 2964 s

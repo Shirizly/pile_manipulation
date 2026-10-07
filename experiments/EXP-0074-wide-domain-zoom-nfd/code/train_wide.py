@@ -10,7 +10,7 @@ SHARDS = ["scattered_n20", "scattered_n50", "scattered_n100", "inbetween_n20", "
 ap = argparse.ArgumentParser(); ap.add_argument("--kind", required=True); ap.add_argument("--res", type=int, required=True)
 ap.add_argument("--init", default=""); ap.add_argument("--features", default="4,8,16"); ap.add_argument("--epochs", type=int, default=60)
 ap.add_argument("--bs", type=int, default=64); ap.add_argument("--lr", type=float, default=3e-4); ap.add_argument("--out", required=True); ap.add_argument("--seed", type=int, default=0)
-ap.add_argument("--shards", default=""); ap.add_argument("--lmin", type=float, default=0); ap.add_argument("--lmax", type=float, default=1e9); ap.add_argument("--cache", default="")
+ap.add_argument("--mass", type=float, default=0.0); ap.add_argument("--shards", default=""); ap.add_argument("--lmin", type=float, default=0); ap.add_argument("--lmax", type=float, default=1e9); ap.add_argument("--cache", default="")
 torch.set_num_threads(4)
 a = ap.parse_args(); os.makedirs(a.out, exist_ok=True); torch.manual_seed(a.seed); np.random.seed(a.seed); dev = "cuda"
 D = torch.load(a.cache or f"experiments/EXP-0074-wide-domain-zoom-nfd/artifacts/{a.kind}_r{a.res}.pt")
@@ -47,7 +47,8 @@ pv, mv = val(); log = [dict(epoch=0, val=mv, per=pv.tolist())]; best = mv; print
 for ep in range(1, a.epochs + 1):
     net.train(); perm = torch.randperm(len(tr["x"])); tl = n = 0
     for i in range(0, len(perm) - a.bs + 1, a.bs):
-        x, y = batch(tr, perm[i:i + a.bs], True); loss = ((torch.sigmoid(net(x)).squeeze(1) - y) ** 2).mean()
+        x, y = batch(tr, perm[i:i + a.bs], True); pr = torch.sigmoid(net(x)).squeeze(1); loss = ((pr - y) ** 2).mean()
+        if a.mass > 0: loss = loss + a.mass * ((pr.sum((1, 2)) - y.sum((1, 2))).abs() / (y.sum((1, 2)) + 10.0)).mean()   # relative mass-conservation term
         opt.zero_grad(); loss.backward(); opt.step(); tl += loss.item(); n += 1
     sched.step(); pv, mv = val(); log.append(dict(epoch=ep, train=tl / n, val=mv, per=pv.tolist(), t=round(time.time() - t0)))
     if mv < best: best = mv; torch.save(net.state_dict(), f"{a.out}/unet_best.pth")

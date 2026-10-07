@@ -1,7 +1,7 @@
 """Sean corpus loader for EXP-0074 (canonical wide-domain training corpus): all `_k_data.pt` files, per-shard (spawn mode x object count),
 null rows dropped (max cube displacement < 1 mm), exact successor links (states_[i] == states[j] within the file, non-null rows only: a null
 push in between leaves the state unchanged, so the link skips it), chains, and a FILE-level split (test 10 % / val 5 % / train rest per shard)."""
-import glob, re, os, collections, numpy as np, torch
+import glob, re, os, json, collections, numpy as np, torch
 FILES = None
 
 
@@ -10,6 +10,11 @@ def shard_of(f):
 
 
 def split_files(seed=0):
+    """FIXED file-level split. The original version seeded numpy with python's per-process-salted hash(str) -> a DIFFERENT split in every process
+    (train caches overlapped the cached test sets, found 2026-10-07 04:00). The canonical split is now the explicit file->split map in
+    results/split_files.json (test = exactly the files behind artifacts/test_sets.pt; val ~5.5 % / train the rest, seed 0)."""
+    mp = "experiments/EXP-0074-wide-domain-zoom-nfd/results/split_files.json"
+    if os.path.exists(mp): return json.load(open(mp))
     fs = sorted(glob.glob("Genesis/data/Sean/**/_*_data.pt", recursive=True)); by = collections.defaultdict(list)
     for f in fs: by[shard_of(f)].append(f)
     sp = {}

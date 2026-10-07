@@ -25,3 +25,23 @@ the headline table at the TOP kept current). Narrow-pilot lessons to REUSE: fine
 - [ ] T4.1 complete models covering the whole wide domain, final eval table (accuracy, slateN, rollout k=1..5)
 - [ ] T4.2 extra seeds of the same
 - [ ] T4.3 timing of the final models (benchmark_time method)
+
+## RESET 2026-10-07 04:00 (data leak found, see LOG): all trained models invalid; clean re-run queue
+- [~] R1 caches rebuilt with the pinned split (results/split_files.json): zoom/world 128 single-step done (overlap with test 0.2 % = duplicate transitions in the corpus); ms caches + 64-res caches building
+- [~] R2 single-step: z128_f8, w128_f8 (+ seeds s1) training; then w64 (normal NFD baseline) and z64_f8
+- [ ] R3 unrolled T=4 fine-tunes from the single-step models (z128_f8_ms4, w128_f8_ms4, + w64/z64), evals via code/eval_wide.py (eval_when_done.sh)
+- [ ] R4 seeds: s1 (running), s2 if time; ms for the seeds
+- [ ] R5 timing with code/time_wide.py on an idle GPU (stop other jobs ~07:00)
+- [ ] R6 re-check the earlier conclusions on clean models: capacity (f4 vs f8), zoom vs vanilla gap, specialists/bins fallbacks (only if the main gap still looks small)
+- [ ] R7 summary at 07:50 (LOG headline table + results/table.md)
+
+## Status 2026-10-07 06:35 and follow-ups (add / tick here)
+- [x] R1 caches (pinned split); [x] R2 single-step z64_f8, w64_s0, z128_f8, w128_f8; [x] R3 ms4 for those four (results/table.md); [x] LF wide baseline (agent); [x] slateN diagnosis (agent): zoom pasted prediction gains spurious mass (grows with push length)
+- [~] R4 seed 1 pipelines (z128_f8_s1, w128_f8_s1 ms4 stage, eval ~07:25); [~] data scaling 168k rows (z64_f8_full, w64_f8_full; chain.sh evals + ms4); [~] mass-conservation loss fine-tune at 64 px vs no-mass control (z64_f8_massA/C, w64_s0_massA/C)
+- [ ] R5 timing on an IDLE GPU: `PYTHONPATH=. python code/time_wide.py --zoom64 CKPT 8,16,32 --zoom128 CKPT 8,16,32 --world64 CKPT 4,8,16 --world128 CKPT 8,16,32` (runs/z128_f8_ms4, w128_f8_ms4, z64_f8_ms4, w64_s0_ms4 unet_best.pth); code verified on a contended GPU only
+- [ ] F1 if mass loss helps: add it to ms_wide.py (T=4 unrolled) for z128_f8 / w128_f8 and re-evaluate; else adopt the post-hoc zero-sum delta (results/slateN_diagnosis.md) tuned on VAL pools (the agent tuned on test: redo on val before reporting)
+- [ ] F2 seed 2 for the 128 pipelines (both models) so the zoom-vs-vanilla gap (+.010-.017 acc1, +.011-.023 roll4) has 3-seed error bars
+- [ ] F3 'zoom as an extra channel' (the user's second approach): vanilla 128 world NFD + extra input channels carrying a high-res crop around the push start; or two-branch; compare to z128_f8_ms4 / w128_f8_ms4
+- [ ] F4 re-run the fallback probes (bins windows, n100-only / long-push specialists) CLEAN on the pinned split (earlier runs were contaminated: indicative 'no gain'); only if the zoom-vs-vanilla gap survives F2
+- [ ] F5 more chains / longer T: Sean chains are <=4 pushes; the narrow pilot used 8
+- [ ] F6 write proper EXPERIMENT.md / register entries for EXP-0072/0073/0074 (experiment-log, register-validator skills) once exploration settles; add DS-0007 DATASET note (done) and a pinned-split note
