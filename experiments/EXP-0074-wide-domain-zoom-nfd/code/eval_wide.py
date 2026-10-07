@@ -82,7 +82,7 @@ class World:
         return out
 
 
-def run(model, sets, bs=128, shards=None):
+def run(model, sets, bs=128, shards=None, rolls=True):
     shards = shards or SHARDS; res = {}; Dist = {g: torch.from_numpy(dist_field_from_mask(goal_mask(g))).float() for g in GOALS}
     for sh in shards:
         s = sets[sh]; t = s["t"]; r = {}
@@ -97,7 +97,7 @@ def run(model, sets, bs=128, shards=None):
             m = (Ls >= lo) & (Ls < hi); r["acc1_" + nm] = acc(P[m], T[m], O[m], R[m]) if m.sum() > 20 else None
         # ---- rollout on 4-push chains
         ch = torch.tensor(s["chains"])
-        if len(ch):
+        if len(ch) and rolls:
             preds = [[] for _ in range(4)]
             for i in range(0, len(ch), bs):
                 c = ch[i:i + bs]; o = model.rollout(t["S"][c[:, 0]], t["P0"][c], t["P1"][c], canv(sh, t, c[:, 0]))
@@ -116,7 +116,7 @@ def run(model, sets, bs=128, shards=None):
                 if den > 1e-9: caps[g].append(float((vt.mean() - vt[vp.argmin()]) / den))
         r["slateN"] = float(np.mean([np.mean(v) for v in caps.values() if v])); r["n_pools"] = len(s["pools"])
         res[sh] = r; print(sh, {k: (round(v, 3) if isinstance(v, float) else v) for k, v in r.items()}, flush=True)
-    keys = ["acc1", "slateN", "roll_1", "roll_2", "roll_3", "roll_4"]
+    keys = ["acc1", "slateN", "roll_1", "roll_2", "roll_3", "roll_4"] if rolls else ["acc1", "slateN"]
     res["MEAN"] = {k: float(np.mean([res[sh][k] for sh in shards if res[sh].get(k) is not None])) for k in keys}
     for nb in (20, 50, 100):
         v = [sh for sh in shards if sh.endswith(f"_n{nb}")]

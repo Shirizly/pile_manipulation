@@ -1,0 +1,28 @@
+always zoom                                    val J 1.546 | test acc1 0.613 slateN 0.937 roll4 0.482
+always vanilla                                 val J 1.545 | test acc1 0.595 slateN 0.955 roll4 0.475
+always lf                                      val J 1.422 | test acc1 0.537 slateN 0.898 roll4 0.407
+L<25: zoom else vanilla                        val J 1.545 | test acc1 0.596 slateN 0.953 roll4 0.476
+L<25: vanilla else zoom                        val J 1.544 | test acc1 0.611 slateN 0.935 roll4 0.481
+L<30: zoom else vanilla                        val J 1.547 | test acc1 0.597 slateN 0.955 roll4 0.477
+L<30: vanilla else zoom                        val J 1.545 | test acc1 0.610 slateN 0.937 roll4 0.480
+L<35: zoom else vanilla                        val J 1.546 | test acc1 0.599 slateN 0.954 roll4 0.478
+L<35: vanilla else zoom                        val J 1.542 | test acc1 0.608 slateN 0.938 roll4 0.479
+L<40: zoom else vanilla                        val J 1.549 | test acc1 0.601 slateN 0.952 roll4 0.479
+L<40: vanilla else zoom                        val J 1.542 | test acc1 0.606 slateN 0.940 roll4 0.478
+L<45: zoom else vanilla                        val J 1.548 | test acc1 0.603 slateN 0.949 roll4 0.480
+L<45: vanilla else zoom                        val J 1.544 | test acc1 0.604 slateN 0.942 roll4 0.477
+L<50: zoom else vanilla                        val J 1.547 | test acc1 0.605 slateN 0.947 roll4 0.480
+L<50: vanilla else zoom                        val J 1.545 | test acc1 0.602 slateN 0.945 roll4 0.477
+L<55: zoom else vanilla                        val J 1.545 | test acc1 0.607 slateN 0.944 roll4 0.481
+L<55: vanilla else zoom                        val J 1.546 | test acc1 0.601 slateN 0.947 roll4 0.476
+L<60: zoom else vanilla                        val J 1.544 | test acc1 0.608 slateN 0.942 roll4 0.481
+L<60: vanilla else zoom                        val J 1.548 | test acc1 0.599 slateN 0.950 roll4 0.476
+L<65: zoom else vanilla                        val J 1.543 | test acc1 0.610 slateN 0.939 roll4 0.481
+L<65: vanilla else zoom                        val J 1.546 | test acc1 0.597 slateN 0.953 roll4 0.476
+n<=20: zoom else vanilla                       val J 1.541 | test acc1 0.599 slateN 0.947 roll4 0.476
+n<=20: vanilla else zoom                       val J 1.550 | test acc1 0.608 slateN 0.945 roll4 0.481
+n<=50: zoom else vanilla                       val J 1.540 | test acc1 0.606 slateN 0.938 roll4 0.478
+n<=50: vanilla else zoom                       val J 1.551 | test acc1 0.601 slateN 0.954 roll4 0.479
+scene gate (val-best) {'scat': 'zoom', 'inb': 'zoom', 'pile': 'vanilla'} val J 1.551 | test acc1 0.612 slateN 0.943 roll4 0.481
+per-shard gate (val-best) ['vanilla', 'zoom', 'zoom', 'zoom', 'zoom', 'zoom', 'vanilla', 'vanilla'] val J 1.554 | test acc1 0.609 slateN 0.948 roll4 0.481
+per-(shard x push-length-bin) gate (val-best)  val J 1.554 | test acc1 0.608 slateN 0.945
