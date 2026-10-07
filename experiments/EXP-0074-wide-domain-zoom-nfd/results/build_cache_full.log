@@ -1,0 +1,17 @@
+train scattered_n20 19446 10s
+train scattered_n50 21041 23s
+train scattered_n100 21277 38s
+train inbetween_n20 21164 9s
+train inbetween_n50 21746 22s
+train inbetween_n100 21962 45s
+train piled_n20 20692 11s
+train piled_n50 21772 24s
+val scattered_n20 600 2s
+val scattered_n50 600 2s
+val scattered_n100 600 3s
+val inbetween_n20 600 2s
+val inbetween_n50 600 2s
+val inbetween_n100 600 3s
+val piled_n20 600 2s
+val piled_n50 600 2s
+saved

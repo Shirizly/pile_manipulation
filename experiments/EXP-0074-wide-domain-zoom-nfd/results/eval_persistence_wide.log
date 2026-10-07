@@ -1,0 +1,2 @@
+scattered_n20 {'acc1': 0.0, 'acc1_L<30': 0.0, 'acc1_L30-50': 0.0, 'acc1_L>=50': 0.0, 'acc1_L<35': 0.0, 'acc1_L35-55': 0.0, 'acc1_L>=55': 0.0, 'roll_1': 0.0, 'roll_2': 0.0, 'roll_3': 0.0, 'roll_4': 0.0, 'slateN': 0.288, 'n_pools': 60}
+scattered_n50 {'acc1': 0.0, 'acc1_L<30': 0.0, 'acc1_L30-50': 0.0, 'acc1_L>=50': 0.0, 'acc1_L<35': 0.0, 'acc1_L35-55': 0.0, 'acc1_L>=55': 0.0, 'roll_1': 0.0, 'roll_2': 0.0, 'roll_3': 0.0, 'roll_4': 0.0, 'slateN': 0.254, 'n_pools': 60}

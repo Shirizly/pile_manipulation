@@ -1,0 +1,8 @@
+inbetween_n100 files 270 test 125 val 8
+inbetween_n20 files 50 test 49 val 1
+inbetween_n50 files 135 test 99 val 2
+piled_n20 files 50 test 45 val 1
+piled_n50 files 425 test 126 val 16
+scattered_n100 files 150 test 70 val 4
+scattered_n20 files 50 test 32 val 1
+scattered_n50 files 50 test 38 val 1

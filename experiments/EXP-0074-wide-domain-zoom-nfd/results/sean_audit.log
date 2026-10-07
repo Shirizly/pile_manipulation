@@ -1,0 +1,4 @@
+inbetween_n100 {'files': 270, 'rows_per_file': 96, 'failed_files_in_dir': 270, 'frac_with_successor': 0.421875, 'chain_len_hist': {2: 115, 4: 31, 1: 240, 3: 58}, 'push_mm_pct': [30.0, 33.4, 50.0, 65.7, 69.8], 'max_z': 0.027268394827842712}
+inbetween_n20 {'files': 50, 'rows_per_file': 512, 'failed_files_in_dir': 50, 'frac_with_successor': 0.684326171875, 'chain_len_hist': {3: 149, 2: 168, 4: 779, 1: 198}, 'push_mm_pct': [20.0, 27.9, 55.1, 66.1, 70.0], 'max_z': 0.02240501157939434}
+inbetween_n50 {'files': 135, 'rows_per_file': 192, 'failed_files_in_dir': 135, 'frac_with_successor': 0.482421875, 'chain_len_hist': {4: 107, 3: 88, 1: 356, 2: 244}, 'push_mm_pct': [20.0, 22.5, 40.0, 62.2, 70.0], 'max_z': 0.02240351028740406}
+piled_n100 {'files': 50, 'rows_per_file': 16, 'failed_files_in_dir': 50, 'frac_with_successor': 0.75, 'chain_len_hist': {4: 32}, 'push_mm_pct': [20.2, 22.3, 50.1, 61.5, 69.6], 'max_z': 0.022461090236902237}

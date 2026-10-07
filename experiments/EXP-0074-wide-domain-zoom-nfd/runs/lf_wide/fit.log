@@ -1,0 +1,16 @@
+scattered_n20 [19406, 10000] 17s
+scattered_n50 [21037, 10000] 33s
+scattered_n100 [21664, 10000] 46s
+inbetween_n20 [21120, 10000] 59s
+inbetween_n50 [21749, 10000] 72s
+inbetween_n100 [22055, 10000] 86s
+piled_n20 [20697, 10000] 99s
+piled_n50 [21616, 10000] 112s
+bin counts [659, 6101, 19223, 18448, 18129, 17440] ['0-12mm', '12-23mm', '23-35mm', '35-47mm', '47-58mm', '58-70mm']
+lambda 0.1 val acc1 0.5179
+lambda 1.0 val acc1 0.5204
+lambda 10.0 val acc1 0.5271
+lambda 100.0 val acc1 0.5335
+lambda 1000.0 val acc1 0.5063
+lambda 10000.0 val acc1 0.3831
+best 100.0 0.533461220562458

@@ -1,0 +1,9 @@
+scattered_n20 {'acc1': 0.488, 'acc1_L<30': 0.546, 'acc1_L30-50': 0.53, 'acc1_L>=50': 0.462, 'roll_1': 0.48, 'roll_2': 0.434, 'roll_3': 0.402, 'roll_4': 0.383, 'slateN': 0.838, 'n_pools': 60}
+scattered_n50 {'acc1': 0.496, 'acc1_L<30': 0.523, 'acc1_L30-50': 0.527, 'acc1_L>=50': 0.468, 'roll_1': 0.498, 'roll_2': 0.459, 'roll_3': 0.427, 'roll_4': 0.404, 'slateN': 0.917, 'n_pools': 60}
+scattered_n100 {'acc1': 0.49, 'acc1_L<30': 0.535, 'acc1_L30-50': 0.509, 'acc1_L>=50': 0.468, 'roll_1': 0.489, 'roll_2': 0.465, 'roll_3': 0.444, 'roll_4': 0.435, 'slateN': 0.946, 'n_pools': 60}
+inbetween_n20 {'acc1': 0.584, 'acc1_L<30': None, 'acc1_L30-50': 0.587, 'acc1_L>=50': 0.572, 'roll_1': 0.546, 'roll_2': 0.486, 'roll_3': 0.442, 'roll_4': 0.416, 'slateN': 0.903, 'n_pools': 60}
+inbetween_n50 {'acc1': 0.58, 'acc1_L<30': 0.58, 'acc1_L30-50': 0.598, 'acc1_L>=50': 0.542, 'roll_1': 0.566, 'roll_2': 0.494, 'roll_3': 0.449, 'roll_4': 0.425, 'slateN': 0.895, 'n_pools': 60}
+inbetween_n100 {'acc1': 0.552, 'acc1_L<30': 0.572, 'acc1_L30-50': 0.583, 'acc1_L>=50': 0.53, 'roll_1': 0.574, 'roll_2': 0.505, 'roll_3': 0.474, 'roll_4': 0.456, 'slateN': 0.92, 'n_pools': 60}
+piled_n20 {'acc1': 0.615, 'acc1_L<30': None, 'acc1_L30-50': 0.656, 'acc1_L>=50': 0.566, 'roll_1': 0.587, 'roll_2': 0.505, 'roll_3': 0.452, 'roll_4': 0.45, 'slateN': 0.951, 'n_pools': 60}
+piled_n50 {'acc1': 0.605, 'acc1_L<30': 0.636, 'acc1_L30-50': 0.639, 'acc1_L>=50': 0.57, 'roll_1': 0.62, 'roll_2': 0.528, 'roll_3': 0.478, 'roll_4': 0.459, 'slateN': 0.924, 'n_pools': 60}
+MEAN {'acc1': 0.551, 'slateN': 0.912, 'roll_1': 0.545, 'roll_2': 0.484, 'roll_3': 0.446, 'roll_4': 0.429}

@@ -34,3 +34,11 @@ as overnight_randlen (the models' training corpus); tray 128 mm; 5 mm cubes.
 ## Format (the unified benchmark row format, see the data-collection skill)
 Flat rows: `states (R,n,7)`, `states_ (R,n,7)`, `p_starts (R,3)`, `p_stops (R,3)`,
 `angles (R,)`, `pool_idx (R,)` (= state id), `file_idx (R,)`, plus `files` (source list).
+
+## Update 2026-10-06 (user decision): the Sean corpus is now the CANONICAL wider-domain TRAINING dataset
+This DATASET.md describes the same-state-pool TEST extraction from Sean's files; as of 2026-10-06 the same source corpus
+(`Genesis/data/Sean/**/_*_data.pt`) is also the canonical training/validation corpus for wide-domain work (EXP-0074). Splits are
+FILE-level (per shard: 10 % test / 5 % val / rest train; `experiments/EXP-0074-wide-domain-zoom-nfd/code/sean_data.py::split_files`),
+so DS-0007 pools built from all files overlap the training files -- for any model trained on Sean, evaluate on the test-split files only
+(EXP-0074 `code/eval_wide.py` rebuilds pools from the test-split files). Rows within a file are chained (exact state match,
+chains of up to 4 pushes; null pushes <1 mm are dropped before linking).
