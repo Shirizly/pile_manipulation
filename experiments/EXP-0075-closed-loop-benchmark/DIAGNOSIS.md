@@ -49,3 +49,15 @@ Proposed fixes (not yet run): (a) cumulative / discounted objective sum_k gamma^
   The benchmark's 1280-evaluation CEM is far from the model's own optimum (-0.72 vs -1.03): a SEARCH failure, confirmed. The best plans (GD, greedy, beam) have pushes that each contribute and visibly sensible geometry (a long sweep from the right into the T stem, then side pushes, then a push from the top onto the bar).
   The 1280-evaluation plan has a weak first push (-0.114) and a final push worth -0.43 in the sequence but -0.23 alone. Caveats: (i) the predicted states are smeared (hedged) -- the model predicts streaks, not discrete cubes, and the objective counts smeared mass as in-goal mass; (ii) pushes in a sequence are predicted to be worth more
   than the sum of their stand-alone predictions for GD (-1.03 vs -0.75 summed alone), i.e. the optimum relies on compounding, which the earlier open-loop test showed to be ~10 % optimistic for 1280-evaluation plans and is untested for these plans (no simulation here by request); (iii) step-1 pushes are touchdown-legal against the true cubes, later pushes are not checked.
+
+## Simulator check of the intensive plans (code/diag_sim_intensive.py, figures/intensive_sim_*.png; letter_T_w20 start 40; each sequence executed open loop, pushes legalised, 5-6 replicas)
+| plan | predicted terminal value change | simulator (mean of replicas) | optimism (pred - sim; negative = model over-promised) |
+|---|---|---|---|
+| ref (benchmark CEM, 1,280 evals) | -0.716 | -0.544 | -0.172 |
+| random best of 40k | -0.644 | -0.544 | -0.100 |
+| CEM 10k x 20 | -0.919 | -0.875 | -0.044 |
+| greedy | -0.873 | -0.894 | +0.021 (model pessimistic) |
+| beam | -0.870 | -0.921 | +0.051 |
+| GD refinement | -1.028 | -1.037 | +0.009 |
+The stronger the optimisation, the BETTER the model's prediction matches the simulator: the weak-search plans are the over-promising ones, the intensively optimised ones are accurate (replica sd <= 0.02; legaliser shifts 0-3 mm, 0 illegal except greedy 5 of 20 pushes). There is no model exploitation here.
+For the same task and start, closed-loop H=1 (the benchmark planner) reaches a true value change of -0.785 after 4 pushes; the intensively optimised open-loop 4-push plans reach -0.894 (greedy), -0.921 (beam), -1.037 (GD), -0.875 (CEM 10k): a properly optimised H=4 plan is better than receding-horizon H=1 for this task, and the benchmark's H=4 result was a search failure.
