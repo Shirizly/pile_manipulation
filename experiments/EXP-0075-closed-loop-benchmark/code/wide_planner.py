@@ -114,7 +114,7 @@ class SeqObjective:
 
 
 @torch.no_grad()
-def plan_seq(obj, bank, kind, H, push_len=None, n_pool=256, pop=256, iters=4, elite_frac=0.125, warm=None, rank_n=1280, topk=0):
+def plan_seq(obj, bank, kind, H, push_len=None, n_pool=256, pop=256, iters=4, elite_frac=0.125, warm=None, rank_n=1280, topk=0, trace=None):
     """Returns dict(action (4,), seq (H,4), cost, n_evals, time_s). bank (M, 4) cpu: pile-aware candidates for the CURRENT state."""
     t0 = time.time(); lo, hi = (push_len, push_len) if push_len else (L_MIN, L_MAX)
     proj = lambda x: project_push(x, lo, hi)[0]
@@ -133,6 +133,7 @@ def plan_seq(obj, bank, kind, H, push_len=None, n_pool=256, pop=256, iters=4, el
     cost = obj.cost(pool); n_evals = n_pool; n_el = max(2, int(elite_frac * pop))
     allS, allC = [pool], [cost]
     best_i = int(cost.argmin()); best, best_c = pool[best_i].clone(), float(cost[best_i])
+    if trace is not None: trace.append((n_evals, best_c))
     elite = pool[cost.argsort()[:n_el]]; mean, std = elite.mean(0), elite.std(0).clamp_min(1e-3)
     for _ in range(iters):
         s = proj((mean + std * torch.randn(pop, H, 4, device=DEV)).reshape(-1, 4)).reshape(pop, H, 4)
@@ -140,6 +141,7 @@ def plan_seq(obj, bank, kind, H, push_len=None, n_pool=256, pop=256, iters=4, el
         if float(c[k]) < best_c:
             best, best_c = s[k].clone(), float(c[k])
         elite = s[c.argsort()[:n_el]]; mean, std = elite.mean(0), elite.std(0).clamp_min(1e-3)
+        if trace is not None: trace.append((n_evals, best_c))
     out = dict(action=best[0].cpu(), seq=best.cpu(), cost=best_c, n_evals=n_evals, time_s=time.time() - t0)
     if topk > 0:
         S_, C_ = torch.cat(allS), torch.cat(allC); i = C_.argsort()[:topk]; out["top_seqs"], out["top_costs"] = S_[i].cpu(), C_[i].cpu()

@@ -77,12 +77,14 @@ def main():
         print(f"{name:7s} terminal cost {cost:+.4f} | per-push sequential value {np.round(d['seq_value'], 3).tolist()} | each push alone from the start {np.round(d['solo_value'], 3).tolist()} | {t:.0f}s, {n_ev} evals", flush=True)
 
     # ref: the benchmark's CEM
-    torch.manual_seed(1); t0 = time.time(); o = wp.plan_seq(obj, first[:4096].cpu(), "cem", H); record("ref", o["seq"], o["cost"], time.time() - t0, o["n_evals"])
+    torch.manual_seed(1); t0 = time.time(); tr_ref = []; o = wp.plan_seq(obj, first[:4096].cpu(), "cem", H, trace=tr_ref); record("ref", o["seq"], o["cost"], time.time() - t0, o["n_evals"]); traces = {"ref": tr_ref}
     # random search: 40k sequences
-    t0 = time.time(); best, bc = None, 9
-    for _ in range(4):
-        seqs = torch.cat([first[torch.randint(0, len(first), (10000,), device=DEV)][:, None], rand_later(first, 10000, H)], 1); c = obj.cost(seqs); i = int(c.argmin())
+    t0 = time.time(); best, bc = None, 9; tr_rand = []
+    for blk in range(16):
+        seqs = torch.cat([first[torch.randint(0, len(first), (2500,), device=DEV)][:, None], rand_later(first, 2500, H)], 1); c = obj.cost(seqs); i = int(c.argmin())
         if float(c[i]) < bc: best, bc = seqs[i].cpu(), float(c[i])
+        tr_rand.append((2500 * (blk + 1), bc))
+    traces["random"] = tr_rand
     record("random", best, bc, time.time() - t0, 40000)
     # CEM 10k x 20
     torch.manual_seed(2); t0 = time.time(); pool = torch.cat([first[torch.randint(0, len(first), (10000,), device=DEV)][:, None], rand_later(first, 10000, H)], 1); cost = obj.cost(pool); n_el = 500
@@ -91,11 +93,11 @@ def main():
         s = proj((mean + std * torch.randn(10000, H, 4, device=DEV)).reshape(-1, 4)).reshape(10000, H, 4); c = obj.cost(s); k = int(c.argmin())
         if float(c[k]) < bc: best, bc = s[k].clone(), float(c[k])
         el = s[c.argsort()[:n_el]]; mean, std = el.mean(0), el.std(0).clamp_min(1e-3); allt.append(bc); keep.append((s, c))
-    res["cem10k_curve"] = allt; record("cem10k", best.cpu(), bc, time.time() - t0, 10000 * 21)
+    res["cem10k_curve"] = allt; traces["cem10k"] = [(10000 * (i + 1), v) for i, v in enumerate(allt)]; record("cem10k", best.cpu(), bc, time.time() - t0, 10000 * 21)
     S_all = torch.cat([k[0] for k in keep]); C_all = torch.cat([k[1] for k in keep]); top = S_all[C_all.argsort()[:16]]
 
     def beam(B, N, name):
-        t0 = time.time(); beams = torch.zeros(1, 0, 4, device=DEV); n_ev = 0
+        t0 = time.time(); beams = torch.zeros(1, 0, 4, device=DEV); n_ev = 0; steps_log = []; traces[name + "_steps"] = steps_log
         for j in range(H):
             cands = []
             for b in range(len(beams)):
@@ -107,18 +109,22 @@ def main():
                         cj = first[torch.randint(0, len(first), (N,), device=DEV)]
                 cands.append(torch.cat([beams[b:b + 1].expand(len(cj), -1, -1), cj[:, None]], 1))
             seqs = torch.cat(cands); c = obj.cost(seqs); n_ev += len(seqs); beams = seqs[c.argsort()[:B]]
-            print(f"  {name} step {j + 1}: best value after {j + 1} pushes {float(c.min()):+.4f} (candidates {len(seqs)})", flush=True)
+            print(f"  {name} step {j + 1}: best value after {j + 1} pushes {float(c.min()):+.4f} (candidates {len(seqs)})", flush=True); steps_log.append((n_ev, float(c.min()), j + 1))
         return beams, float(c.min()), time.time() - t0, n_ev
     torch.manual_seed(3); bm, bcst, tt, ne = beam(1, 10000, "greedy"); record("greedy", bm[0].cpu(), bcst, tt, ne)
     torch.manual_seed(4); bm, bcst, tt, ne = beam(8, 1250, "beam"); record("beam", bm[0].cpu(), bcst, tt, ne); beam_top = bm
     # gradient refinement of the best sequences
     t0 = time.time(); init = torch.cat([top, beam_top])[:24].clone(); x = init.clone().requires_grad_(True); opt = torch.optim.Adam([x], lr=2e-3)
+    tr_gd = []
     for it in range(150):
-        opt.zero_grad(); xp = proj(x.reshape(-1, 4)).reshape(-1, H, 4); pr = model._predict(xp[..., :2], xp[..., 2:], grad=True)[-1]; loss = obj._value(pr).sum(); loss.backward(); opt.step()
+        opt.zero_grad(); xp = proj(x.reshape(-1, 4)).reshape(-1, H, 4); pr = model._predict(xp[..., :2], xp[..., 2:], grad=True)[-1]; vv = obj._value(pr)
+        with torch.no_grad(): tr_gd.append((len(init) * (it + 1), float(obj.cost(xp.detach()).min())))   # validated (no-grad, balanced) cost of the best of the batch
+        loss = vv.sum(); loss.backward(); opt.step()
+    traces["gd"] = tr_gd
     with torch.no_grad():
         xp = proj(x.detach().reshape(-1, 4)).reshape(-1, H, 4); c = obj.cost(xp); i = int(c.argmin())
     record("gd", xp[i].cpu(), float(c[i]), time.time() - t0, 150 * len(init))
-    json.dump(res, open(OUT / "results/intensive.json", "w"), indent=1); np.savez_compressed(OUT / "results/intensive_arrays.npz", start=occ0.cpu().numpy(), **arrays)
+    res["traces"] = traces; json.dump(res, open(OUT / "results/intensive.json", "w"), indent=1); np.savez_compressed(OUT / "results/intensive_arrays.npz", start=occ0.cpu().numpy(), **arrays)
 
     # ------------------------------------------------------------------ figures
     F = OUT / "figures"; F.mkdir(exist_ok=True); EXT = [LO_ * 1000, HI_ * 1000] * 2; gm = goal_mask(GOAL).astype(float); cols = ["tab:red", "tab:orange", "tab:green", "tab:purple"]

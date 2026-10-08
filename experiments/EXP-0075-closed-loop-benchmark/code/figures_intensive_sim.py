@@ -26,13 +26,13 @@ def err(d):
 
 
 for n in ("ref", "greedy", "beam", "gd"):
-    i = NAMES.index(n); rep = int(np.nonzero(S["which"] == i)[0][0]); seq = np.array(res[n]["seq"]); tr = S["occs"][rep].astype(float); pr = A[n + "_pred"]; start = A["start"]
+    i = NAMES.index(n); rep = int(np.nonzero(S["which"] == i)[0][0]); seq = np.array(res[n]["seq"]); tr = S["occs"][rep].astype(float); hd = S["hard"][rep].astype(float); pr = A[n + "_pred"]; start = A["start"]
     fig, ax = plt.subplots(3, 5, figsize=(15, 9.4)); show(ax[0, 0], tr[0]); [arrow(ax[0, 0], seq[k], cols[k], k + 1) for k in range(4)]; ax[0, 0].set_title("TRUE start + the 4 pushes", fontsize=9); show(ax[1, 0], start); ax[1, 0].set_title("model input raster", fontsize=9); ax[2, 0].axis("off")
     tv = (S["vals"][rep] - S["vals"][rep][0])
     for k in range(4):
         show(ax[0, k + 1], tr[k + 1]); arrow(ax[0, k + 1], seq[k], cols[k], k + 1); ax[0, k + 1].set_title(f"TRUE (simulator) after push {k + 1}\nvalue change {tv[k + 1]:+.3f}", fontsize=8)
         show(ax[1, k + 1], pr[k]); arrow(ax[1, k + 1], seq[k], cols[k], k + 1); ax[1, k + 1].set_title(f"PREDICTED in sequence after push {k + 1}\nvalue change {res[n]['seq_value'][k]:+.3f}", fontsize=8)
-        ax[2, k + 1].imshow(err(((pr[k] - start) - (tr[k + 1] - tr[0])).T), origin="lower", extent=EXT, interpolation="nearest"); ax[2, k + 1].set_xlim(LO, HI); ax[2, k + 1].set_ylim(HI, LO); ax[2, k + 1].set_xticks([]); ax[2, k + 1].set_yticks([]); ax[2, k + 1].set_title("pred change - true change\n(red: model adds more mass)", fontsize=8)
+        ax[2, k + 1].imshow(err((pr[k] - hd[k + 1]).T), origin="lower", extent=EXT, interpolation="nearest"); ax[2, k + 1].set_xlim(LO, HI); ax[2, k + 1].set_ylim(HI, LO); ax[2, k + 1].set_xticks([]); ax[2, k + 1].set_yticks([]); ax[2, k + 1].set_title(f"PREDICTION ERROR after push {k + 1}: predicted - true\n(64x64 raster; red = model has mass the truth lacks; blue = reverse)", fontsize=8)
     fig.suptitle(f"letter_T_w20 start 40, '{n}': predicted terminal {res[n]['seq_value'][-1]:+.3f} vs simulator {np.mean(sim[n]['true_mean'][-1:]):+.3f} (mean of {sim[n]['n_replicas']} replicas)", fontsize=10); fig.tight_layout(); fig.savefig(F / f"intensive_sim_{n}.png", dpi=85); plt.close(fig)
 fig, ax = plt.subplots(1, 2, figsize=(12, 4.2))
 for n in NAMES:
