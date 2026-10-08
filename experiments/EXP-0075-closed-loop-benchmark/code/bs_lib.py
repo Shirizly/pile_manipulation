@@ -78,11 +78,16 @@ def pool_seqs(first, n, H):
     return torch.cat([f, rand_later(first, n, H)], 1) if H > 1 else f
 
 
-def cem_pool(obj, first, H, n_eval, random_only=False, prefix=None, iters=4):
+def _full(s, prefix=None, suffix=None):
+    parts = ([prefix[None].expand(len(s), -1, -1)] if prefix is not None and len(prefix) else []) + [s] + ([suffix[None].expand(len(s), -1, -1)] if suffix is not None and len(suffix) else [])
+    return torch.cat(parts, 1) if len(parts) > 1 else s
+
+
+def cem_pool(obj, first, H, n_eval, random_only=False, prefix=None, iters=4, suffix=None):
     """total n_eval evaluations: pool n0 + iters x pop n0 (n0 = n_eval/(iters+1)); random_only: n_eval random sequences, no refit. prefix (j,4): fixed pushes before the optimised H pushes (greedy open loop).
     Returns (seqs (M,H,4), costs (M,)) of everything sampled (sorted by cost, best first). costs are of the full prefix+sequence."""
     def cost(s):
-        full = s if prefix is None else torch.cat([prefix[None].expand(len(s), -1, -1), s], 1); return obj.cost(full)
+        return obj.cost(_full(s, prefix, suffix))
     if random_only:
         S = pool_seqs(first, n_eval, H); C = cost(S); i = C.argsort(); return S[i], C[i]
     n0 = max(8, n_eval // (iters + 1)); S = [pool_seqs(first, n0, H)]; C = [cost(S[0])]; n_el = max(2, n0 // 8); el = S[0][C[0].argsort()[:n_el]]
@@ -92,14 +97,14 @@ def cem_pool(obj, first, H, n_eval, random_only=False, prefix=None, iters=4):
     S, C = torch.cat(S), torch.cat(C); i = C.argsort(); return S[i], C[i]
 
 
-def gd_refine(obj, init, steps, lr, prefix=None):
+def gd_refine(obj, init, steps, lr, prefix=None, suffix=None):
     """Adam through the differentiable model on the (k,H,4) init (after prefix). Returns best (H,4), its cost."""
     x = init.clone().requires_grad_(True); opt = torch.optim.Adam([x], lr=lr); H = init.shape[1]
     for _ in range(steps):
-        opt.zero_grad(); xp = proj(x.reshape(-1, 4)).reshape(-1, H, 4); full = xp if prefix is None else torch.cat([prefix[None].expand(len(xp), -1, -1), xp], 1)
+        opt.zero_grad(); xp = proj(x.reshape(-1, 4)).reshape(-1, H, 4); full = _full(xp, prefix, suffix)
         pr = obj.model._predict(full[..., :2], full[..., 2:], grad=True)[-1]; obj._value(pr).sum().backward(); opt.step()
     with torch.no_grad():
-        xp = proj(x.detach().reshape(-1, 4)).reshape(-1, H, 4); c = obj.cost(xp if prefix is None else torch.cat([prefix[None].expand(len(xp), -1, -1), xp], 1)); i = int(c.argmin())
+        xp = proj(x.detach().reshape(-1, 4)).reshape(-1, H, 4); c = obj.cost(_full(xp, prefix, suffix)); i = int(c.argmin())
     return xp[i], float(c[i])
 
 
