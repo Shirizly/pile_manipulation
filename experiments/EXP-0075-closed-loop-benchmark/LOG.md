@@ -12,3 +12,6 @@
 
 - 2026-10-08 05:00 GD-BUDGET STUDY launched (code/gd_budget.py, 2 shards, 10 tasks; queue_gd_budget.sh then runs sim_gd_budget.py + analyse_gd_budget.py). First two tasks (T/40, O/41): GD from the 24 best of the 1,280-eval benchmark CEM already reaches -0.991 / -0.669 (predicted), better than full CEM (-0.921 / -0.633) and GD-after-full-CEM (-0.931 / -0.654).
   Figures remade at native 128 px (figures/intensive_sim128_*.png, code/fig128.py, figures_intensive_sim_128.py; truth = training-convention inflated raster). Skill `visualization` added.
+- 2026-10-08 05:35 GD-BUDGET STUDY (cheap variants only; full 210k CEM dropped on request; first two tasks T/40, O/41 also carry cem/gd_full fields from the aborted full run). 10 tasks, H=4. results/gd_budget_summary.md, gd_budget_sim.json.
+  Predicted terminal value (mean): ref (1,280 evals) -0.585 (9 tasks; NaN cost on S/46), GD after 1,280 evals -0.819, after 10,000 -0.783, after 20,000 -0.803 (all with 150-step GD, ~26 s, 24 sequences). GD gain over ref -0.24 in 9/9 tasks; sampling more before GD does not help (gd5/gd10 - gd_ref +0.036/+0.016, better in 1-2/10).
+  Simulator (open loop): ref -0.439, gd_ref -0.697, gd5 -0.676, gd10 -0.667; GD better than ref in 9-10/10; optimism (pred - sim) -0.12/-0.11/-0.14 for GD plans (sd .09-.18) vs -0.07 for ref. Whole study ~45 min.

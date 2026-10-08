@@ -11,7 +11,7 @@ from simple_mpc.learned_mpc import apply_physics, oracle_config_with_physics, ly
 from simple_mpc.adapters import occ_for_scoring
 from simple_mpc.oracle_mpc import load_oracle_config
 from transforms.functional import action_to_pose
-K = 32; OUT = REPO / "experiments/EXP-0075-closed-loop-benchmark/results"; PLANS = ["ref", "gd_ref", "gd5", "gd10", "cem", "gd_full"]
+K = 32; OUT = REPO / "experiments/EXP-0075-closed-loop-benchmark/results"; PLANS = ["ref", "gd_ref", "gd5", "gd10"]
 
 
 def main():

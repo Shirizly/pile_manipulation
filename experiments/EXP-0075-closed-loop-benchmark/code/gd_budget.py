@@ -44,7 +44,7 @@ def main():
         # full CEM
         n_el = 500; t_cem = time.time(); pool = torch.cat([first[torch.randint(0, len(first), (10000,), device=DEV)][:, None], rand_later(first, 10000, H)], 1); cost = obj.cost(pool)
         bi = int(cost.argmin()); best, bc = pool[bi].clone(), float(cost[bi]); el = pool[cost.argsort()[:n_el]]; mean, std = el.mean(0), el.std(0).clamp_min(1e-3); S_all, C_all, curve = [pool], [cost], [bc]; t_at = {}
-        for it in range(21):
+        for it in range(2):    # cheap variants only: first two CEM batches (full 210k-eval CEM dropped on request)
             if it > 0:
                 s_ = proj((mean + std * torch.randn(10000, H, 4, device=DEV)).reshape(-1, 4)).reshape(10000, H, 4); c_ = obj.cost(s_); k = int(c_.argmin())
                 if float(c_[k]) < bc: best, bc = s_[k].clone(), float(c_[k])
@@ -52,12 +52,9 @@ def main():
             if it in (0, 1):                                  # after 1 / 2 batches: 10,000 / 20,000 evals
                 name = "gd5" if it == 0 else "gd10"; SA, CA = torch.cat(S_all), torch.cat(C_all); t_cem_so_far = time.time() - t_cem
                 t0 = time.time(); s, c = gd(obj, SA[CA.argsort()[:24]]); print(name, round(c, 3), flush=True); res[name] = dict(seq=s.tolist(), cost=c, time_s=time.time() - t0, cem_time_s=t_cem_so_far, n_evals=10000 * (it + 1), cem_best_cost=bc, gd_steps=150 * 24)
-        t_cem_total = time.time() - t_cem
-        res["cem"] = dict(seq=best.cpu().tolist(), cost=bc, n_evals=210000, curve=curve)
-        SA, CA = torch.cat(S_all), torch.cat(C_all); t0 = time.time(); s, c = gd(obj, SA[CA.argsort()[:24]]); res["gd_full"] = dict(seq=s.tolist(), cost=c, time_s=time.time() - t0, n_evals=210000, gd_steps=150 * 24)
         res["task_time_s"] = time.time() - t_task
         json.dump(res, open(OUT / f"{goal}_{start}.tmp", "w")); os.replace(OUT / f"{goal}_{start}.tmp", OUT / f"{goal}_{start}.json")
-        print(goal, start, {k: round(res[k]["cost"], 3) for k in ("ref", "gd_ref", "gd5", "gd10", "cem", "gd_full")}, f"{res['task_time_s']:.0f}s", flush=True)
+        print(goal, start, {k: round(res[k]["cost"], 3) for k in ("ref", "gd_ref", "gd5", "gd10")}, f"{res['task_time_s']:.0f}s", flush=True)
 
 
 if __name__ == "__main__":
