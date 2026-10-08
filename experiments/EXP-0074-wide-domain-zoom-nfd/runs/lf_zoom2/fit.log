@@ -1,0 +1,22 @@
+scattered_n20 [19406, 19406] 54s
+scattered_n50 [21037, 20000] 131s
+scattered_n100 [21664, 20000] 239s
+inbetween_n20 [21120, 20000] 297s
+inbetween_n50 [21749, 20000] 374s
+inbetween_n100 [22055, 20000] 480s
+piled_n20 [20697, 20000] 533s
+piled_n50 [21616, 20000] 606s
+bin counts [1314, 12285, 38518, 36805, 35849, 34635]
+bin 0 res 64 G,C done 607s
+bin 1 res 68 G,C done 607s
+bin 2 res 80 G,C done 608s
+bin 3 res 92 G,C done 610s
+bin 4 res 104 G,C done 612s
+bin 5 res 114 G,C done 616s
+lambda 1.0 val acc1 per bin [0.317, 0.513, 0.499, 0.534, 0.481, 0.448] pooled 0.4855 682s
+lambda 10.0 val acc1 per bin [0.393, 0.531, 0.505, 0.54, 0.498, 0.469] pooled 0.4999 750s
+lambda 100.0 val acc1 per bin [0.384, 0.542, 0.517, 0.551, 0.519, 0.492] pooled 0.5176 823s
+lambda 1000.0 val acc1 per bin [0.296, 0.527, 0.518, 0.549, 0.521, 0.494] pooled 0.5183 895s
+lambda 10000.0 val acc1 per bin [0.113, 0.436, 0.48, 0.51, 0.482, 0.451] pooled 0.4766 967s
+per-bin lambda [10.0, 100.0, 1000.0, 100.0, 1000.0, 1000.0] val per bin [0.393, 0.542, 0.518, 0.551, 0.521, 0.494] pooled 0.5191
+best [10.0, 100.0, 1000.0, 100.0, 1000.0, 1000.0] 0.5191463232040405
