@@ -33,3 +33,19 @@ No code bug. The horizon deficit has three causes, in order of size: (1) procras
 (2) search failure -- sequence CEM over (H,4) with random later pushes does not reach even the greedy solution (D4); (3) model optimism on SELECTED sequences, growing with push index to ~10 % at 4 pushes (D4), while the model is accurate on executed paths (D2).
 Proposed fixes (not yet run): (a) cumulative / discounted objective sum_k gamma^k V(s_k) (or prefix-min + a push-count penalty) so early progress is rewarded -- this is the benchmark score itself; (b) later-push proposals that are pile-aware w.r.t. the PREDICTED state, or a nested search
 (top-k first pushes x best-of-n second pushes) instead of Gaussian refit over random later steps; (c) execute the first 2 pushes of a plan before re-planning; (d) do not discard the warm start after a legaliser shift (re-legalise the shifted plan instead).
+
+## Correction and addendum 2026-10-09 (user review)
+* Wording correction: with a TERMINAL objective, postponing progress is NOT free -- the terminal value needs every push to contribute, so a sequence whose pushes each make progress should beat one that idles for three pushes. The observed weak first pushes therefore indicate that the optimiser did not find such
+  sequences (combinatorial search problem), not that the objective is indifferent. The D3 numbers stand; the explanation is search quality (see intensive run).
+* INTENSIVE MULTISTEP OPTIMISATION (code/intensive.py; model only, no simulation; letter_T_w20, start 40, H = 4, terminal objective, occupancy-aware proposals; figures/intensive_*.png, results/intensive.json). Predicted terminal value change (lower = better) and predicted per-push value after each push:
+| method | evaluations | terminal | per-push sequential value | each push ALONE from the start |
+|---|---|---|---|---|
+| ref (benchmark CEM: pool 256, pop 256, 4 it) | 1,280 | -0.716 | -0.114, -0.232, -0.285, -0.716 | -0.114, -0.153, +0.010, -0.233 |
+| random best of 40k | 40,000 | -0.644 | -0.186, -0.267, -0.357, -0.644 | -0.186, -0.089, -0.119, -0.176 |
+| CEM pop 10k x 20 it | 210,000 | -0.919 | -0.177, -0.492, -0.492, -0.919 | -0.177, -0.325, -0.093, -0.229 |
+| greedy (10k candidates per step on the predicted state) | 40,000 | -0.873 | -0.383, -0.589, -0.742, -0.873 | -0.383, -0.215, -0.164, -0.149 |
+| beam 8 x 1250 per step | 31,250 | -0.870 | -0.251, -0.535, -0.734, -0.870 | -0.251, -0.150, -0.204, -0.153 |
+| GD (Adam, 150 steps) from the best 24 sequences of CEM + beam | 3,600 | -1.028 | -0.185, -0.569, -0.871, -1.028 | -0.185, -0.154, -0.258, -0.150 |
+  The benchmark's 1280-evaluation CEM is far from the model's own optimum (-0.72 vs -1.03): a SEARCH failure, confirmed. The best plans (GD, greedy, beam) have pushes that each contribute and visibly sensible geometry (a long sweep from the right into the T stem, then side pushes, then a push from the top onto the bar).
+  The 1280-evaluation plan has a weak first push (-0.114) and a final push worth -0.43 in the sequence but -0.23 alone. Caveats: (i) the predicted states are smeared (hedged) -- the model predicts streaks, not discrete cubes, and the objective counts smeared mass as in-goal mass; (ii) pushes in a sequence are predicted to be worth more
+  than the sum of their stand-alone predictions for GD (-1.03 vs -0.75 summed alone), i.e. the optimum relies on compounding, which the earlier open-loop test showed to be ~10 % optimistic for 1280-evaluation plans and is untested for these plans (no simulation here by request); (iii) step-1 pushes are touchdown-legal against the true cubes, later pushes are not checked.

@@ -1,0 +1,15 @@
+proposals at the start state: 34659 legal pile-aware pushes (130.3s)
+ref     terminal cost -0.7163 | per-push sequential value [-0.114, -0.232, -0.285, -0.716] | each push alone from the start [-0.114, -0.153, 0.01, -0.233] | 4s, 1280 evals
+random  terminal cost -0.6439 | per-push sequential value [-0.186, -0.267, -0.357, -0.644] | each push alone from the start [-0.186, -0.089, -0.119, -0.176] | 121s, 40000 evals
+cem10k  terminal cost -0.9193 | per-push sequential value [-0.177, -0.492, -0.492, -0.919] | each push alone from the start [-0.177, -0.325, -0.093, -0.229] | 643s, 210000 evals
+  greedy step 1: best value after 1 pushes -0.3828 (candidates 10000)
+  greedy step 2: best value after 2 pushes -0.5887 (candidates 10000)
+  greedy step 3: best value after 3 pushes -0.7422 (candidates 10000)
+  greedy step 4: best value after 4 pushes -0.8731 (candidates 10000)
+greedy  terminal cost -0.8731 | per-push sequential value [-0.383, -0.589, -0.742, -0.873] | each push alone from the start [-0.383, -0.215, -0.164, -0.149] | 76s, 40000 evals
+  beam step 1: best value after 1 pushes -0.3498 (candidates 1250)
+  beam step 2: best value after 2 pushes -0.5523 (candidates 10000)
+  beam step 3: best value after 3 pushes -0.7343 (candidates 10000)
+  beam step 4: best value after 4 pushes -0.8697 (candidates 10000)
+beam    terminal cost -0.8697 | per-push sequential value [-0.251, -0.535, -0.734, -0.87] | each push alone from the start [-0.251, -0.15, -0.204, -0.153] | 70s, 31250 evals
+gd      terminal cost -1.0279 | per-push sequential value [-0.185, -0.569, -0.871, -1.028] | each push alone from the start [-0.185, -0.154, -0.258, -0.15] | 19s, 3600 evals

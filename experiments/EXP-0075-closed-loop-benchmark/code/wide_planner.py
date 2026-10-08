@@ -43,8 +43,7 @@ class Member:
         else:
             self.st0 = raster_res(S0[None].float().cpu(), SIZES(n), self.res).to(DEV)
 
-    @torch.no_grad()
-    def rollout(self, P0, P1, occ0):           # P0, P1 (N, H, 2) on DEV; occ0 (1, 64, 64) -> list of H cumulative pasted predictions (N, 64, 64)
+    def _rollout(self, P0, P1, occ0):           # P0, P1 (N, H, 2) on DEV; occ0 (1, 64, 64) -> list of H cumulative pasted predictions (N, 64, 64)
         N, H = P0.shape[:2]; cur = occ0.expand(N, -1, -1).clone(); out = []
         if self.kind == "zoom":
             canvas = self.canvas0.expand(N, -1, -1)
@@ -62,6 +61,8 @@ class Member:
                 cur = (cur + ew.down_world(p - st, self.res)).clamp(0, 1); st = p; out.append(cur)
         return out
 
+    rollout = torch.no_grad()(_rollout)
+
 
 class WideEns:
     def __init__(self, members, balance=True, name="ens"):
@@ -72,9 +73,8 @@ class WideEns:
             m.begin(S0)
         self.occ0 = occ_from_particles(S0[None].float().cpu()).to(DEV)
 
-    @torch.no_grad()
-    def predict(self, P0, P1):
-        outs = [m.rollout(P0, P1, self.occ0) for m in self.members]; H = P0.shape[1]
+    def _predict(self, P0, P1, grad=False):
+        outs = [(m._rollout if grad else m.rollout)(P0, P1, self.occ0) for m in self.members]; H = P0.shape[1]
         raw = [torch.stack([o[k] for o in outs]).mean(0) for k in range(H)]
         if not self.balance:
             return raw
@@ -82,6 +82,8 @@ class WideEns:
         for r in raw:
             prev = (prev + fix_delta_balance(r - prev_raw)).clamp(0, 1); prev_raw = r; res.append(prev)
         return res
+
+    predict = torch.no_grad()(_predict)
 
 
 class SeqObjective:
