@@ -4,8 +4,8 @@ from bs_lib import *
 shard, nsh = int(sys.argv[1]), int(sys.argv[2])
 jobs = []
 for B in (1, 3, 10):
-    for key in MODELS:
-        for planner in ("cem", "cem_gd") + (("rand_gd",) if key in ("ens128", "vanilla64") else ()):
+    for key in (os.environ.get('BS_MODELS') or ','.join(k for k in MODELS if k != 'lf')).split(','):
+        for planner in ("cem", "cem_gd") + (("rand_gd",) if key in ("ens128", "vanilla64", "lf") else ()):
             for ti, (g, s) in enumerate(TASKS):
                 jobs.append((key, planner, B, ti, g, s))
 for ji, (key, planner, B, ti, g, s) in enumerate(jobs):

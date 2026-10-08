@@ -2,16 +2,17 @@
  eq   : per push budget B/4 (B = 1,3,10 s), planner cem_gd, models = all 5   (equal planning time per 4 pushes as one H=4 call)
  ceil : ens128, pool 1,280 / 10,000 + GD 150 x 24 per push (H=1 ceiling)
 usage: bs_closed.py eq|ceil [shard nshards]"""
-import sys
+import sys, os
 from bs_lib import *
 mode = sys.argv[1]; shard, nsh = (int(sys.argv[2]), int(sys.argv[3])) if len(sys.argv) > 3 else (0, 1)
-cfgs = [("ens128", f"pool{p}") for p in (1280, 10000)] if mode == "ceil" else [(k, B) for B in (1, 3, 10) for k in MODELS]
+MK = os.environ.get("BS_MODELS"); SUF = ("_" + MK) if MK else ""
+cfgs = [(MK or "ens128", f"pool{p}") for p in (1280, 10000)] if mode == "ceil" else [(k, B) for B in (1, 3, 10) for k in ((MK,) if MK else [m for m in MODELS if m != "lf"])]
 groups = [cfgs[i:i + 3] for i in range(0, len(cfgs), 3)] if mode == "eq" else [cfgs]
 sim = Sim(32)
 for gi, grp in enumerate(groups):
-    tag = f"closed_{mode}_{gi}"
+    tag = f"closed_{mode}{SUF}_{gi}"
     if gi % nsh != shard or (BS / f"replay_{tag}.json").exists(): continue
-    eps = [(c, ti, g, s) for c in grp for ti, (g, s) in enumerate(TASKS[:5] if c[1] == 'pool10000' else TASKS)]; n = len(eps); t0 = time.time()
+    eps = [(c, ti, g, s) for c in grp for ti, (g, s) in enumerate(TASKS[:5] if (c[1] == 'pool10000' and not MK) else TASKS)]; n = len(eps); t0 = time.time()
     p = sim.reset([START(s) for _, _, _, s in eps]); goals = [g for _, _, g, _ in eps] + [eps[0][2]] * (32 - n); vals = [true_value(p, goals)]; parts = [p.numpy()]; planned, legal, shifts, preds, ptimes = [], [], [], [], []
     for j in range(4):
         acts = torch.zeros(32, 4); pp, tt = [], []

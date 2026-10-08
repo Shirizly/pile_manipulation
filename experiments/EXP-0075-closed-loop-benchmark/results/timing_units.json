@@ -76,5 +76,16 @@
   "fwd_H4_chunk512_ms_per_seq": 0.2674259012565017,
   "gd_step_H1_ms_24seq": 5.021572113037109,
   "gd_step_H4_ms_24seq": 16.51612917582194
+ },
+ "LF (switched linear 64)": {
+  "fwd_H1_chunk128_ms_per_seq": 0.07554830517619848,
+  "fwd_H1_chunk256_ms_per_seq": 0.04766322672367096,
+  "fwd_H1_chunk512_ms_per_seq": 0.0274039339274168,
+  "fwd_H2_chunk128_ms_per_seq": 0.12200581841170788,
+  "fwd_H2_chunk256_ms_per_seq": 0.0725077698007226,
+  "fwd_H2_chunk512_ms_per_seq": 0.05471333861351013,
+  "fwd_H4_chunk128_ms_per_seq": 0.24450349155813456,
+  "fwd_H4_chunk256_ms_per_seq": 0.14930672477930784,
+  "fwd_H4_chunk512_ms_per_seq": 0.11441577225923538
  }
 }

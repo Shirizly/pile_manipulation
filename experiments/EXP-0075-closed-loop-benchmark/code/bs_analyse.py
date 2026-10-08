@@ -38,7 +38,7 @@ def paired(a, b, k="true_terminal"):
     ks = sorted(set(a) & set(b)); return ci([a[t][k] - b[t][k] for t in ks])
 
 
-MODS = ["ens128", "zoom128", "vanilla128", "zoom64", "vanilla64"]; BUD = [1, 3, 10]; out = ["# EXP-0075 budget study (H=4 plans, 4 pushes, simulator replay; 10 tasks, 95 % bootstrap CI over tasks)\n"]
+MODS = ["ens128", "zoom128", "vanilla128", "zoom64", "vanilla64", "lf"]; BUD = [1, 3, 10]; out = ["# EXP-0075 budget study (H=4 plans, 4 pushes, simulator replay; 10 tasks, 95 % bootstrap CI over tasks)\n"]
 out.append("Value = TRUE terminal value change after 4 pushes (lower = better). Budget B = planning time on an exclusive GPU, converted to evaluation counts with results/timing_units.md.\n")
 # 1 grid
 out.append("## 1. True value by model / planner / budget\n"); out.append("| model | planner | B=1 s | B=3 s | B=10 s |"); out.append("|---|---|---|---|---|")
@@ -59,6 +59,8 @@ out.append("\n## 3. Ceilings (ens128; same 10 tasks unless n says otherwise)\n")
 ceil = {}
 for name, d in (("H=4 CEM(1,280)+GD", sel("ens128", "h4_gd_ref")), ("H=4 CEM(10,000)+GD", sel("ens128", "h4_gd5")), ("H=4 CEM(20,000)+GD  <- H=4 ceiling", sel("ens128", "h4_gd10")),
                 ("H=1 greedy open loop, pool 1,280 + GD", sel("ens128", "greedy_pool1280")), ("H=1 greedy open loop, pool 10,000 + GD", sel("ens128", "greedy_pool10000")),
+                ("LF: H=1 greedy open loop, pool 1,280 + GD", sel("lf", "greedy_pool1280")), ("LF: H=1 greedy open loop, pool 10,000 + GD", sel("lf", "greedy_pool10000")),
+                ("LF: H=1 closed loop, pool 1,280 + GD", sel("lf", "h1_closed_ceil", pool="pool1280")), ("LF: H=1 closed loop, pool 10,000 + GD", sel("lf", "h1_closed_ceil", pool="pool10000")),
                 ("H=1 closed loop, pool 1,280 + GD", sel("ens128", "h1_closed_ceil", pool="pool1280")), ("H=1 closed loop, pool 10,000 + GD", sel("ens128", "h1_closed_ceil", pool="pool10000"))):
     if not d: continue
     ceil[name] = d; out.append(f"| {name} | {len(d)} | {fmt(ci(list(vals(d).values())))} | {fmt(ci([r['pred'] for r in d.values() if r['pred'] is not None]))} | {fmt(ci([r['pred'] - r['true_terminal'] for r in d.values() if r['pred'] is not None]))} |")
@@ -98,7 +100,7 @@ for m in MODS:
     out.append(f"| {m} | " + " | ".join(cells) + " | " + " / ".join(v1) + " |")
 open(R / "budget_study_summary.md", "w").write("\n".join(out)); print("\n".join(out))
 # figures
-fig, ax = plt.subplots(1, 3, figsize=(17, 4.6)); col = dict(zip(MODS, ["tab:red", "tab:orange", "tab:green", "tab:blue", "tab:purple"]))
+fig, ax = plt.subplots(1, 3, figsize=(17, 4.6)); col = dict(zip(MODS, ["tab:red", "tab:orange", "tab:green", "tab:blue", "tab:purple", "k"]))
 for m in MODS:
     for pl, ls in (("cem", ":"), ("cem_gd", "-")):
         xs, ys, lo, hi = [], [], [], []
