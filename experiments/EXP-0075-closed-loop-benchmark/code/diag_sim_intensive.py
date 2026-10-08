@@ -32,10 +32,10 @@ def main():
         st = sim._particle_state.detach().cpu().float()
         return legalize_pushes(acts, st[:, :, :2], yaw_from_quat(st[:, :, 3:7]), 0.0025, 0.02, 0.001, box=(OCC_BOUNDS["x_min"] + XY_MARGIN, OCC_BOUNDS["x_max"] - XY_MARGIN))
 
-    HARD = []
+    HARD, PARTS = [], []
 
     def value(parts):
-        occ = occ_for_scoring(parts[:, :, :3].float()).cpu(); f = occ.reshape(K, -1); HARD.append(occ_from_particles(parts[:, :, :3].float()).cpu().numpy().astype(np.float16)); return (lyap(occ, dist) - (f * mask.reshape(1, -1)).sum(1) / f.sum(1)).numpy(), occ.numpy()
+        occ = occ_for_scoring(parts[:, :, :3].float()).cpu(); f = occ.reshape(K, -1); PARTS.append(parts[:, :, :7].float().cpu().numpy()); HARD.append(occ_from_particles(parts[:, :, :3].float()).cpu().numpy().astype(np.float16)); return (lyap(occ, dist) - (f * mask.reshape(1, -1)).sum(1) / f.sum(1)).numpy(), occ.numpy()
 
     st = S0[None].expand(K, -1, -1).contiguous(); sim.set_particle_state(st[:, :, :3].to(gs.device), st[:, :, 3:7].to(gs.device)); sim.update_material_state()
     p = sim._particle_state[:, :, :7].detach().cpu().float().clone(); v, o = value(p); vals, occs, shifts, oks = [v], [o], [], []
@@ -51,7 +51,7 @@ def main():
         out[n] = dict(pred=pv.tolist(), true_mean=tv.mean(0).tolist(), true_sd=tv.std(0).tolist(), true_terminal_replicas=tv[:, -1].tolist(), optimism_terminal=float(pv[-1] - tv[:, -1].mean()), n_replicas=int(m.sum()),
                       shifted_pushes_mean=float((shifts[m] > 0).sum(1).mean()), shift_mm_mean=float(shifts[m].mean() * 1000), illegal_after_legalise=int((~oks[m]).sum()))
         print(n, json.dumps(out[n]), flush=True)
-    json.dump(out, open(OUT / "intensive_sim.json", "w"), indent=1); np.savez_compressed(OUT / "intensive_sim_arrays.npz", which=which, vals=vals, occs=occs, shifts=shifts, hard=np.stack(HARD, 1)); env.destroy()
+    json.dump(out, open(OUT / "intensive_sim.json", "w"), indent=1); np.savez_compressed(OUT / "intensive_sim_arrays.npz", which=which, vals=vals, occs=occs, shifts=shifts, hard=np.stack(HARD, 1), parts=np.stack(PARTS, 1)); env.destroy()
 
 
 if __name__ == "__main__":
