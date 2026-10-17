@@ -850,3 +850,61 @@ def legalize_pushes(acts: torch.Tensor, cube_xy: torch.Tensor, cube_yaw: torch.T
                 break
         ok[k] = found
     return acts, shift, ok
+
+
+def legalize_pushes_torch(acts: torch.Tensor, cube_xy: torch.Tensor, cube_yaw: torch.Tensor, cube_half,
+                          blade_half_length: float, blade_half_width: float,
+                          box: tuple[float, float] | None = None,
+                          step: float = 0.0005, max_back: float = 0.04, max_side: float = 0.015,
+                          chunk: int = 128):
+    """Batched (GPU-capable) `legalize_pushes`: same offset grid, same nearest-first search order,
+    same exact SAT test, vectorised over pushes x offsets x cubes instead of a per-push Python loop
+    (`legalize_pushes` costs ~2.2 ms per push on CPU, EXP-0075 timing_units.md, too slow to
+    legalise a planner's whole candidate population).
+
+    acts (K, 4) [sx, sy, ex, ey]; cube_xy (K, n, 2) or (1, n, 2) (one state shared by every push);
+    cube_yaw (K, n) or (1, n); cube_half scalar (square cubes). Runs on `acts.device`; float32, so a
+    push within ~1e-6 m of touching can resolve differently from the float64 CPU version.
+    Returns (acts', shift_m (K,), ok (K,)) on that device, with `legalize_pushes`' meaning."""
+    dev = acts.device
+    acts = acts.detach().float().clone()
+    K = acts.shape[0]
+    cxy = cube_xy.to(dev).float(); cyaw = cube_yaw.to(dev).float()
+    hc = float(cube_half); hl, hw = float(blade_half_length), float(blade_half_width)
+    import numpy as np                                                                     # offset grid exactly as legalize_pushes (numpy: immune to a
+    backs = np.arange(0.0, max_back + 1e-12, step)                                         # global torch default device, which Genesis sets to cuda)
+    pos = np.arange(4 * step, max_side + 1e-12, 4 * step)
+    B, S = np.meshgrid(backs, np.concatenate([[0.0], pos, -pos]), indexing="ij"); B, S = B.ravel(), S.ravel()
+    order = np.argsort(np.hypot(B, S), kind="stable")
+    B = torch.as_tensor(B[order], dtype=torch.float32, device=dev); S = torch.as_tensor(S[order], dtype=torch.float32, device=dev); HYP = torch.hypot(B, S)
+    c0 = torch.stack([torch.cos(cyaw), torch.sin(cyaw)], -1); c1 = torch.stack([-torch.sin(cyaw), torch.cos(cyaw)], -1)   # (Kc, n, 2)
+    shift = torch.zeros(K, device=dev); ok = torch.ones(K, dtype=torch.bool, device=dev)
+    for i in range(0, K, chunk):
+        a = acts[i:i + chunk]; m = a.shape[0]
+        s, d = a[:, :2], a[:, 2:] - a[:, :2]; L = d.norm(dim=-1)
+        u = d / L.clamp_min(1e-9)[:, None]; v = torch.stack([-u[:, 1], u[:, 0]], -1)
+        P = s[:, None] - B[None, :, None] * u[:, None] + S[None, :, None] * v[:, None]          # (m, M, 2) candidate starts
+        keep = torch.ones(P.shape[:2], dtype=torch.bool, device=dev)
+        if box is not None:
+            for Q in (P, P + d[:, None]):
+                keep &= ((Q >= box[0]) & (Q <= box[1])).all(-1)
+        xy = cxy if cxy.shape[0] == 1 else cxy[i:i + chunk]
+        C0 = c0 if c0.shape[0] == 1 else c0[i:i + chunk]; C1 = c1 if c1.shape[0] == 1 else c1[i:i + chunk]
+        D = xy[:, None, :, :] - P[:, :, None, :]                                               # (m, M, n, 2)
+        uu, vv = u[:, None, None, :], v[:, None, None, :]                                     # blade axes: v (length hl), u (width hw)
+        C0e, C1e = C0[:, None], C1[:, None]                                                    # (m|1, 1, n, 2)
+        dot = lambda x, y: (x * y).sum(-1)
+        sep = (dot(D, vv).abs() > hl + hc * (dot(C0e, vv).abs() + dot(C1e, vv).abs()))
+        sep |= (dot(D, uu).abs() > hw + hc * (dot(C0e, uu).abs() + dot(C1e, uu).abs()))
+        sep |= (dot(D, C0e).abs() > hc + hl * dot(vv, C0e).abs() + hw * dot(uu, C0e).abs())
+        sep |= (dot(D, C1e).abs() > hc + hl * dot(vv, C1e).abs() + hw * dot(uu, C1e).abs())
+        free = keep & sep.all(-1)                                                              # (m, M)
+        j = free.float().argmax(1); found = free.any(1)
+        Pj = P[torch.arange(m, device=dev), j]
+        new = torch.cat([Pj, Pj + d], -1)
+        degenerate = L < 1e-9
+        use = found & ~degenerate
+        acts[i:i + chunk] = torch.where(use[:, None], new, a)
+        shift[i:i + chunk] = torch.where(use, HYP[j], torch.zeros_like(L))
+        ok[i:i + chunk] = found | degenerate
+    return acts, shift, ok

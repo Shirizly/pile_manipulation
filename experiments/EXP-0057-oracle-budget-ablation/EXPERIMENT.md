@@ -72,10 +72,17 @@ noise_floor: "not yet measured for this exact cell; EXP-0043 repeat sd on relate
 depends_on: [score-occupancy-subpixel-stable, goal-mask-axis-convention-row-y-col-x]
 establishes: []
 result: >
-  QUEUED, NOT YET RUN: this record captures the pre-registration, throughput test, and launch;
-  the queues run detached (12h main + up to 48h extra) past this session's budget. No cell has
-  a completed result at the time of writing. See TODO.md "Oracle budget ablation (EXP-0057)"
-  for how to check progress and where results land once cells finish.
+  [written up 2026-10-15 from results/analysis.json (2026-09-26); queue PAUSED by the user
+  2026-09-26 12:54, never resumed] 3 of 5 (A) splits completed 20 pushes on all 16 tasks; 256x1
+  stopped at push 5 (not comparable); 16x16 and every (B) objective cell never ran. Fraction of
+  tasks reaching 0.9 x mass optimum: 64x4 0.125, 128x2 0.25, 32x8 0.375; censored mean pushes
+  19.0 / 18.5 / 18.0; final in-goal mass fraction 0.747 / 0.691 / 0.779 (learned NFD EXP-0055
+  lyap reference at k20: 0.770, n=32, not re-run). Paired vs 64x4: 32x8 -1.0 pushes
+  [-2.25, -0.19] and +0.032 mass fraction [+0.003, +0.063]; 128x2 -0.5 pushes [-1.88, +0.56],
+  -0.056 mass [-0.092, -0.018]. No letter goal was solved by 64x4 or 128x2; 32x8 solved X and I
+  in 1 of 2 starts each. The more-iteration split (32x8) beat the default at this budget, against
+  the record's title expectation; the pre-registered decisive cells (256x1 complete, objective
+  axis) are missing, so neither prediction branch is decided.
 verdict: inconclusive
 downgrades: [incomplete-design]
 grade: moderate
@@ -156,3 +163,13 @@ Added by the cross-experiment audit (summary: `experiments/SUMMARY.md`). Numbers
 - **Results exist and are not written up here:** `results/analysis.json` (2026-09-26); TODO.md: PAUSED by the user 2026-09-26 12:54. Fraction solved 64x4 0.125, 128x2 0.25, 32x8 0.375; final in-goal mass fraction 0.747 / 0.691 / 0.779 vs the learned NFD reference 0.770 (EXP-0055 lyap); 32x8 - default -1.0 pushes [-2.25, -0.19]; 256x1 stopped at push 5/20; 16x16 and all objective (B) cells never ran. C-060 note added.
 - ISS-013: CEM iteration 0 drew from the pre-fix pile-aware sampler.
 - EXP-0065 RUN-0003 (C-067): executed closed-loop pushes include illegal touchdowns (blade on a cube); measured lower bounds per record in `experiments/EXP-0065-*/results/audit_closed_loop_actions.json`.
+
+## Result write-up (2026-10-15)
+Source: `results/analysis.json` (written 2026-09-26 by `code/analyse.py`), cells `results/oracle_A_{default,128x2,32x8,256x1}.json`.
+Numbers are in the `result` field above. Verdict stays `inconclusive`: the pre-registered "supports" branch needs a complete
+256x1 cell and at least one objective (B) cell; neither exists (256x1 stopped at push 5, its paired delta in analysis.json is over
+a truncated episode and is not interpretable). The completed split cells show the iteration count matters at a fixed 256-sim budget
+(32x8 > 64x4 > 128x2 on final mass, 32x8 fewer pushes than 64x4 with CI excluding 0) -- 16 tasks, one seed stream, one physics regime.
+Caveat ISS-013 (iteration-0 draws from the pre-fix pile-aware sampler) and C-067 (executed pushes include illegal touchdowns,
+0.23-0.24 lower bound for this record) apply.
+

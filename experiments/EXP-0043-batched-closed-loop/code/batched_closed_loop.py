@@ -9,7 +9,7 @@ import argparse, json, os, sys, time
 from pathlib import Path
 import numpy as np, torch
 REPO = Path(__file__).resolve().parents[3]; sys.path.insert(0, str(REPO))
-from Baselines.common.goals import dist_field_from_mask, letter_mask, quadrant_mask, two_squares_mask
+from Baselines.common.goals import dist_field_from_mask, letter_goal_mask, quadrant_mask, two_squares_mask
 from Genesis.binned_slate_dataset import BinnedSlateCorpus
 from simple_mpc.adapters import make_occ_adapter, OCC_GRID
 from simple_mpc.genesis_oracle import GenesisOracleEnv
@@ -23,10 +23,13 @@ K = 32
 
 
 def goal_mask(name):
+    if name.startswith("disc_"):              # EXP-0075 T0b gather-to-disc goal (goals.named_goal_mask)
+        from Baselines.common.goals import named_goal_mask
+        return named_goal_mask(name, OCC_GRID, OCC_GRID)
     if name == "two_squares":
         return two_squares_mask(OCC_GRID, OCC_GRID)
     return quadrant_mask(OCC_GRID, OCC_GRID, int(name[-1])) if name.startswith("quadrant_") \
-        else letter_mask(name[-1], OCC_GRID, OCC_GRID)
+        else letter_goal_mask(name, OCC_GRID, OCC_GRID)  # EXP-0067: also letter_<L>_w<mm>
 
 
 def goal_dist(name):
@@ -52,12 +55,21 @@ def main():
     ap.add_argument("--n-cand", type=int, default=64)
     ap.add_argument("--bank-per-env", type=int, default=16384)
     ap.add_argument("--record-states", action="store_true", help="store particle xyz after every push")
+    ap.add_argument("--record-quats", action="store_true",
+                    help="with --record-states: also store the cube quaternions (`quats`) so visited states can be "
+                         "re-simulated (EXP-0068); the executor then hands 7-column states to run_episodes_batched")
     ap.add_argument("--starts-file", default=None,
                     help="narrow pools file (e.g. Genesis/data/narrow_l20_n20/test_pools_v2/pools_0.pt): --starts are then POOL "
                          "indices and each start is that pool's first row (DS-0016 has clump and scatter pools, field start_kind)")
     ap.add_argument("--legalize", action="store_true",
                     help="slide touchdown-illegal planned pushes back until the blade clears every cube "
                          "(Genesis.action_sampling.legalize_pushes; ISS-013, user rule 2026-10-03). Off = as before")
+    ap.add_argument("--legalize-fallback", action="store_true",
+                    help="with --legalize: a planned push legalize_pushes cannot make legal is REPLACED by the best legal "
+                         "candidate of that env's bank (never executes legal_ok False; EXP-0066). Off = as before")
+    ap.add_argument("--planner-seed", type=int, default=None,
+                    help="seed torch's global RNG per (seed, step, env) so CEM noise and Genesis candidate sampling "
+                         "replicate (EXP-0066; None = unseeded, as before)")
     a = ap.parse_args()
     res_p = (Path(a.results_dir) if a.results_dir else HERE / "results") / f"{a.tag}.json"; res_p.parent.mkdir(parents=True, exist_ok=True)
     cells = json.loads(a.cells)
@@ -92,7 +104,7 @@ def main():
         sim.execute_action(torch.stack([sx, sy, z], 1), torch.stack([ex, ey, z], 1), ang)
         sim.update_material_state()
         timing["execute_s"] += time.time() - t_ex
-        return sim._particle_state[:, :, :3].detach().cpu().float().clone()
+        return sim._particle_state[:, :, :(7 if a.record_quats else 3)].detach().cpu().float().clone()
 
     env_specs = []        # per-env (sampler, n_cand, goal) of the current chunk, set below
 
@@ -134,7 +146,7 @@ def main():
         st = torch.stack([starts[s["start"]] for s in padded])
         sim.set_particle_state(st[:, :, :3].to(gs.device), st[:, :, 3:7].to(gs.device))
         sim.update_material_state()
-        p0 = sim._particle_state[:, :, :3].detach().cpu().float().clone()
+        p0 = sim._particle_state[:, :, :(7 if a.record_quats else 3)].detach().cpu().float().clone()
         eps = []
         env_specs.clear()
         for s in padded:
@@ -158,19 +170,22 @@ def main():
             tmp = Path(str(res_p) + ".tmp"); tmp.write_text(json.dumps(done)); os.replace(tmp, res_p)
             print(f"chunk {c0 // K}: step {t + 1}/{a.steps} ({time.time() - t0:.0f}s; cumulative "
                   + ", ".join(f"{k} {v:.0f}" for k, v in timing.items()) + ")", flush=True)
-        def legalize(acts):
+        def legalize(acts, envs=None):
             from Genesis.action_sampling import legalize_pushes
             from model.retrieval.frame import yaw_from_quat
             from simple_mpc.adapters import OCC_BOUNDS
             from simple_mpc.learned_mpc import XY_MARGIN
             st = sim._particle_state.detach().cpu().float()
+            if envs is not None:                 # rows of `acts` belong to env envs[i] (legal_fallback)
+                st = st[envs]
             half = 0.02  # Genesis/configs/basic.yaml plate.size[0] / 2 (40 mm blade); 5 mm cubes below
             return legalize_pushes(acts, st[:, :, :2], yaw_from_quat(st[:, :, 3:7]), 0.0025, half, 0.001,
                                    box=(OCC_BOUNDS["x_min"] + XY_MARGIN, OCC_BOUNDS["x_max"] - XY_MARGIN))
         recs = run_episodes_batched(eps, p0, execute_batch, sample, a.steps, n_cand=a.n_cand,
                                     bank_per_env=a.bank_per_env, on_step=ckpt,
                                     record_states=a.record_states,
-                                    legalize=legalize if a.legalize else None)
+                                    legalize=legalize if a.legalize else None,
+                                    legalize_fallback=a.legalize_fallback, planner_seed=a.planner_seed)
         for e in live:
             e["complete"] = True
         ckpt(a.steps - 1, recs)

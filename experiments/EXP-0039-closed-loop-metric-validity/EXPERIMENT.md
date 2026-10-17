@@ -248,3 +248,34 @@ Ran as registered (8 units x 128 episodes, all complete). Score = in-goal mass /
   The broad nfd_3ch_randlen leads in both regimes; on clumps the gaps compress and the soft NFD rises from 4th to 2nd.
 - The scatter column reproduces RUN-0002's order on DS-0006 starts (nfd_3ch_randlen > linear_switched_soft > narrow).
 
+
+## Later evidence (2026-10-04 extended analysis of RUN-0002 / RUN-0003; zero simulation, exploratory)
+
+Scripts `code/analyse_run0002_extended.py` and `code/analyse_run0003_noise_null.py`; results
+`results/run0002_extended.{json,md}`, `results/run0003_noise_null.{json,md}`; details per run in
+`runs/RUN-0002-legal-headroom-rerun/RUN.md` and `runs/RUN-0003-start-regime/RUN.md`. Pre-registered numbers above are
+unchanged (recomputed exactly). What changes the reading:
+
+- **RUN-0002.** (i) Image metrics that were in the caches but not in the pre-registered list track the CEM order as well
+  as or better than the ranking metrics: mass_in_goal_mae rho +0.79 (exact permutation p 0.014), accuracy_1_blur2 +0.76
+  (0.018) vs slateN_tough +0.60 (0.066); raw hard-raster accuracy_1 stays at chance (+0.10 / +0.17). Under rank, top-1
+  regret +0.81 (0.011) remains the best metric. This holds with the within-seed resolved pairs excluded (CEM: 0.90 of 20
+  pairs for mass_in_goal_mae / blur2 vs 0.70 slateN_tough) and when slateN / regret are rescored on the 5 closed-loop
+  letters the caches cover (slateN_tough's goal set overlaps the closed-loop letters only 5/8). (ii) **Nothing survives
+  Holm correction** over the 6 pre-registered metrics (closest: top-1 regret under rank, 0.065): n = 8 models is too few
+  for metric-vs-metric claims. (iii) On-policy prediction error from the recorded pushes is the strongest single
+  predictor (on-policy MAE rho +0.79 under CEM; on-policy corr +0.88, p 0.004, 14/14 pairs under rank), and under CEM every
+  narrow model's on-policy corr(pred, true) is ~0 or negative while the two broad models are +0.6 -- consistent with CEM
+  exploiting the narrow models (mechanism not isolated). (iv) 2.1 % of CEM pushes (0.7-5.9 % per model) were
+  un-legalisable and executed unchanged (ISS-014); the model order is unchanged when those episodes are dropped per model
+  (tau 1.00).
+- **RUN-0003.** The between-regime tau +0.64 is indistinguishable from within-regime split-half noise with 8 starts per
+  regime (clump split-half tau mean +0.57, range +0.29..+0.79; episode bootstrap of the between-regime tau +0.59 [+0.36,
+  +0.79] spans both registered thresholds). Clump starts are +0.17..+0.27 easier for every model (CIs exclude 0) and
+  compress the gaps. 1.3 % of pushes un-legalisable and executed unchanged (scatter 2.4 %, clump 0.1 %); per-model drop
+  leaves the scatter order at tau +0.79 and the clump order at +0.93. The scatter order replicates RUN-0002 (tau +0.93).
+- Register: C-073 and C-074 reworded to this scope (2026-10-04); SUMMARY §10 / X12 / §11 updated.
+
+## Scope note (2026-10-05 policy)
+
+RUN-0002 and RUN-0003 (C-073, C-074) used the narrow-trained model zoo (nfd_3ch_narrow_l20_v2 seeds / epoch10 / soft_s2, linear_narrow_l20_v2_res64 and its bootstraps) with offline metrics scored on DS-0016. Under the 2026-10-05 user decision the narrow corpora and the models trained on them are pilot instruments for rapid R&D, not a training avenue, so these two runs are **pilot-grade**: the metric-validity and start-regime readings stand as recorded but are not project conclusions until replicated with broad-trained models (randlen / DS-0006 / DS-0007 recipes) on a broad test set under the same legal closed-loop protocol. RUN-0001 (broad models, DS-0006) is unaffected. Frontmatter unchanged.

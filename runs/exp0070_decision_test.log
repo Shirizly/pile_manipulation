@@ -1,0 +1,137 @@
+plan 0/270
+plan 50/270
+plan 100/270
+plan 150/270
+plan 200/270
+plan 250/270
+[38;5;159m[Genesis] [01:52:48] [INFO] [38;5;121m╭───────────────────────────────────────────────╮[0m[38;5;159m[0m
+[38;5;159m[Genesis] [01:52:48] [INFO] [38;5;121m│┈┉┈┉┈┉┈┉┈┉┈┉┈┉┈┉┈┉┈[0m[38;5;159m [38;5;121m[1m[3mGenesis[0m[38;5;159m [38;5;121m┈┉┈┉┈┉┈┉┈┉┈┉┈┉┈┉┈┉┈│[0m[38;5;159m[0m
+[38;5;159m[Genesis] [01:52:48] [INFO] [38;5;121m╰───────────────────────────────────────────────╯[0m[38;5;159m[0m
+[38;5;159m[Genesis] [01:52:48] [INFO] Running on [38;5;121m[4m[NVIDIA GeForce RTX 4070 Laptop GPU][0m[38;5;159m with backend [38;5;121m[4mgs.cuda[0m[38;5;159m. Device memory: [38;5;121m[4m7.62[0m[38;5;159m GB.[0m
+[38;5;159m[Genesis] [01:52:48] [INFO] 🚀 Genesis initialized. 🔖 version: [38;5;121m[4m1.3.3[0m[38;5;159m, 🎨 theme: [38;5;121m[4mdark[0m[38;5;159m, 🌱 seed: [38;5;121m[4mNone[0m[38;5;159m, 🐛 debug: [38;5;121m[4mFalse[0m[38;5;159m, 📏 precision: [38;5;121m[4m32[0m[38;5;159m, 🔥 performance: [38;5;121m[4mTrue[0m[38;5;159m, 💬 verbose: [38;5;121m[4mINFO[0m[38;5;159m[0m
+[38;5;159m[Genesis] [01:52:50] [INFO] Scene [38;5;121m[3m<b197e87>[0m[38;5;159m created.[0m
+[38;5;159m[Genesis] [01:52:50] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m0[0m[38;5;159m, uid: [38;5;121m[3m<dfdecb2>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Plane>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [01:52:51] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m1[0m[38;5;159m, uid: [38;5;121m[3m<a941202>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [01:52:51] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m2[0m[38;5;159m, uid: [38;5;121m[3m<6d2ac43>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [01:52:51] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m3[0m[38;5;159m, uid: [38;5;121m[3m<4b60716>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [01:52:51] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m4[0m[38;5;159m, uid: [38;5;121m[3m<a328fa2>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [01:52:51] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m5[0m[38;5;159m, uid: [38;5;121m[3m<9c11632>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [01:52:51] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m6[0m[38;5;159m, uid: [38;5;121m[3m<1bb46f9>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [01:52:51] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m7[0m[38;5;159m, uid: [38;5;121m[3m<c5f0caf>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [01:52:51] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m8[0m[38;5;159m, uid: [38;5;121m[3m<60cf571>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [01:52:51] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m9[0m[38;5;159m, uid: [38;5;121m[3m<f4dda3f>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [01:52:51] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m10[0m[38;5;159m, uid: [38;5;121m[3m<d34bad5>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [01:52:51] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m11[0m[38;5;159m, uid: [38;5;121m[3m<d9bee41>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [01:52:51] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m12[0m[38;5;159m, uid: [38;5;121m[3m<384ba42>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [01:52:51] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m13[0m[38;5;159m, uid: [38;5;121m[3m<26cd779>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [01:52:51] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m14[0m[38;5;159m, uid: [38;5;121m[3m<a502ffc>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [01:52:51] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m15[0m[38;5;159m, uid: [38;5;121m[3m<808ce80>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [01:52:51] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m16[0m[38;5;159m, uid: [38;5;121m[3m<48374f0>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [01:52:51] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m17[0m[38;5;159m, uid: [38;5;121m[3m<918166b>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [01:52:51] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m18[0m[38;5;159m, uid: [38;5;121m[3m<75c2115>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [01:52:51] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m19[0m[38;5;159m, uid: [38;5;121m[3m<37b6221>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [01:52:51] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m20[0m[38;5;159m, uid: [38;5;121m[3m<ec5f646>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [01:52:51] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m21[0m[38;5;159m, uid: [38;5;121m[3m<ae3d446>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [01:52:51] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m22[0m[38;5;159m, uid: [38;5;121m[3m<fb1b37a>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [01:52:51] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m23[0m[38;5;159m, uid: [38;5;121m[3m<56b7347>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [01:52:51] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m24[0m[38;5;159m, uid: [38;5;121m[3m<7b607f6>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [01:52:51] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m25[0m[38;5;159m, uid: [38;5;121m[3m<e55979d>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [01:52:51] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m26[0m[38;5;159m, uid: [38;5;121m[3m<263e1a2>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+Generated 20 particles out of 20
+[38;5;159m[Genesis] [01:52:51] [INFO] Building scene [38;5;121m[3m<b197e87>[0m[38;5;159m...[0m
+[38;5;159m[Genesis] [01:52:54] [INFO] Compiling simulation kernels...[0m
+[38;5;159m[Genesis] [01:53:12] [INFO] Building visualizer...[0m
+libEGL warning: egl: failed to create dri2 screen
+libEGL warning: egl: failed to create dri2 screen
+sim 32/727
+sim 64/727
+sim 96/727
+sim 128/727
+sim 160/727
+sim 192/727
+sim 224/727
+sim 256/727
+sim 288/727
+sim 320/727
+sim 352/727
+sim 384/727
+sim 416/727
+sim 448/727
+sim 480/727
+sim 512/727
+sim 544/727
+sim 576/727
+sim 608/727
+sim 640/727
+sim 672/727
+sim 704/727
+sim 727/727
+[38;5;159m[Genesis] [01:58:24] [INFO] 💤 Exiting Genesis and caching compiled kernels...[0m
+== ALL (n=270)
+  lyap                       trueJ -1.16s  true dV -0.0496 dmass +0.1033  rateV 0.0249 rateM 0.0519  t 1.49 L 60.9  same 1.00
+  J:lyap|mc                  trueJ -1.09s  true dV -0.0472 dmass +0.0988  rateV 0.0246 rateM 0.0514  t 1.42 L 56.1  same 0.53  stall 0.43
+  J:lyap|mc+off              trueJ -1.10s  true dV -0.0473 dmass +0.0995  rateV 0.0246 rateM 0.0517  t 1.43 L 56.3  same 0.56  stall 0.14
+  blend:lyap|mc+off:0.25     trueJ -1.18s  true dV -0.0495 dmass +0.1035  rateV 0.0251 rateM 0.0525  t 1.47 L 59.9  same 0.89
+  blend:lyap|mc+off:0.5      trueJ -1.13s  true dV -0.0485 dmass +0.1031  rateV 0.0248 rateM 0.0527  t 1.46 L 58.8  same 0.80
+  blend:lyap|mc+off:0.75     trueJ -1.09s  true dV -0.0476 dmass +0.0998  rateV 0.0246 rateM 0.0515  t 1.44 L 57.3  same 0.66
+  J:lyap|td                  trueJ -1.09s  true dV -0.0472 dmass +0.1000  rateV 0.0244 rateM 0.0518  t 1.43 L 56.9  same 0.59  stall 0.31
+  J:lyap|td+off              trueJ -1.08s  true dV -0.0472 dmass +0.0998  rateV 0.0243 rateM 0.0515  t 1.44 L 57.4  same 0.62  stall 0.07
+  blend:lyap|td+off:0.25     trueJ -1.18s  true dV -0.0494 dmass +0.1029  rateV 0.0250 rateM 0.0521  t 1.47 L 59.9  same 0.89
+  blend:lyap|td+off:0.5      trueJ -1.14s  true dV -0.0488 dmass +0.1039  rateV 0.0249 rateM 0.0530  t 1.46 L 58.9  same 0.82
+  blend:lyap|td+off:0.75     trueJ -1.12s  true dV -0.0481 dmass +0.1019  rateV 0.0247 rateM 0.0522  t 1.45 L 58.2  same 0.75
+  J:gap|td                   trueJ -1.16s  true dV -0.0494 dmass +0.1316  rateV 0.0253 rateM 0.0675  t 1.45 L 59.4  same 0.17  stall 0.22
+  J:gap|td+off               trueJ -1.16s  true dV -0.0494 dmass +0.1311  rateV 0.0254 rateM 0.0675  t 1.44 L 59.1  same 0.16  stall 0.19
+  blend:gap|td+off:0.25      trueJ -1.16s  true dV -0.0497 dmass +0.1056  rateV 0.0251 rateM 0.0534  t 1.48 L 60.3  same 0.80
+  blend:gap|td+off:0.5       trueJ -1.15s  true dV -0.0496 dmass +0.1124  rateV 0.0252 rateM 0.0571  t 1.47 L 59.6  same 0.60
+  blend:gap|td+off:0.75      trueJ -1.16s  true dV -0.0499 dmass +0.1262  rateV 0.0255 rateM 0.0644  t 1.46 L 59.2  same 0.32
+== quad_V<0.08 (n=35)
+  lyap                       trueJ -1.14s  true dV -0.0199 dmass +0.0773  rateV 0.0101 rateM 0.0393  t 1.47 L 54.5  same 1.00
+  J:lyap|mc                  trueJ -0.87s  true dV -0.0168 dmass +0.0780  rateV 0.0090 rateM 0.0417  t 1.37 L 48.0  same 0.29  stall 0.97
+  J:lyap|mc+off              trueJ -1.00s  true dV -0.0177 dmass +0.0814  rateV 0.0094 rateM 0.0430  t 1.39 L 48.4  same 0.40  stall 0.20
+  blend:lyap|mc+off:0.25     trueJ -1.16s  true dV -0.0199 dmass +0.0773  rateV 0.0102 rateM 0.0395  t 1.45 L 53.6  same 0.91
+  blend:lyap|mc+off:0.5      trueJ -1.00s  true dV -0.0183 dmass +0.0800  rateV 0.0095 rateM 0.0417  t 1.42 L 51.8  same 0.77
+  blend:lyap|mc+off:0.75     trueJ -0.99s  true dV -0.0177 dmass +0.0794  rateV 0.0093 rateM 0.0419  t 1.40 L 48.8  same 0.57
+  J:lyap|td                  trueJ -1.02s  true dV -0.0178 dmass +0.0817  rateV 0.0095 rateM 0.0436  t 1.38 L 48.1  same 0.40  stall 0.86
+  J:lyap|td+off              trueJ -1.00s  true dV -0.0178 dmass +0.0805  rateV 0.0094 rateM 0.0423  t 1.41 L 50.2  same 0.54  stall 0.06
+  blend:lyap|td+off:0.25     trueJ -1.16s  true dV -0.0199 dmass +0.0773  rateV 0.0102 rateM 0.0395  t 1.45 L 53.6  same 0.91
+  blend:lyap|td+off:0.5      trueJ -1.01s  true dV -0.0183 dmass +0.0801  rateV 0.0095 rateM 0.0417  t 1.42 L 51.9  same 0.77
+  blend:lyap|td+off:0.75     trueJ -0.99s  true dV -0.0178 dmass +0.0795  rateV 0.0093 rateM 0.0417  t 1.41 L 50.3  same 0.69
+  J:gap|td                   trueJ -1.03s  true dV -0.0188 dmass +0.0858  rateV 0.0098 rateM 0.0447  t 1.42 L 54.9  same 0.14  stall 0.51
+  J:gap|td+off               trueJ -0.98s  true dV -0.0182 dmass +0.0828  rateV 0.0097 rateM 0.0440  t 1.38 L 52.9  same 0.06  stall 0.34
+  blend:gap|td+off:0.25      trueJ -1.09s  true dV -0.0203 dmass +0.0802  rateV 0.0105 rateM 0.0414  t 1.44 L 52.6  same 0.74
+  blend:gap|td+off:0.5       trueJ -0.93s  true dV -0.0181 dmass +0.0787  rateV 0.0094 rateM 0.0409  t 1.42 L 52.3  same 0.57
+  blend:gap|td+off:0.75      trueJ -0.92s  true dV -0.0180 dmass +0.0812  rateV 0.0094 rateM 0.0426  t 1.40 L 50.0  same 0.31
+== quad_V>=0.08 (n=145)
+  lyap                       trueJ -0.37s  true dV -0.0584 dmass +0.1336  rateV 0.0289 rateM 0.0659  t 1.53 L 65.2  same 1.00
+  J:lyap|mc                  trueJ -0.30s  true dV -0.0548 dmass +0.1255  rateV 0.0277 rateM 0.0635  t 1.48 L 61.8  same 0.50  stall 0.46
+  J:lyap|mc+off              trueJ -0.30s  true dV -0.0547 dmass +0.1260  rateV 0.0276 rateM 0.0636  t 1.48 L 62.0  same 0.52  stall 0.20
+  blend:lyap|mc+off:0.25     trueJ -0.38s  true dV -0.0580 dmass +0.1330  rateV 0.0288 rateM 0.0659  t 1.52 L 64.6  same 0.87
+  blend:lyap|mc+off:0.5      trueJ -0.36s  true dV -0.0570 dmass +0.1331  rateV 0.0284 rateM 0.0663  t 1.51 L 64.0  same 0.79
+  blend:lyap|mc+off:0.75     trueJ -0.32s  true dV -0.0558 dmass +0.1284  rateV 0.0280 rateM 0.0644  t 1.49 L 62.9  same 0.64
+  J:lyap|td                  trueJ -0.30s  true dV -0.0550 dmass +0.1280  rateV 0.0277 rateM 0.0645  t 1.49 L 62.3  same 0.54  stall 0.32
+  J:lyap|td+off              trueJ -0.30s  true dV -0.0550 dmass +0.1282  rateV 0.0277 rateM 0.0645  t 1.49 L 62.4  same 0.56  stall 0.10
+  blend:lyap|td+off:0.25     trueJ -0.37s  true dV -0.0576 dmass +0.1319  rateV 0.0286 rateM 0.0655  t 1.51 L 64.5  same 0.86
+  blend:lyap|td+off:0.5      trueJ -0.36s  true dV -0.0573 dmass +0.1335  rateV 0.0285 rateM 0.0664  t 1.51 L 64.2  same 0.80
+  blend:lyap|td+off:0.75     trueJ -0.34s  true dV -0.0565 dmass +0.1313  rateV 0.0283 rateM 0.0656  t 1.50 L 63.3  same 0.73
+  J:gap|td                   trueJ -0.44s  true dV -0.0596 dmass +0.1627  rateV 0.0297 rateM 0.0811  t 1.51 L 64.7  same 0.19  stall 0.25
+  J:gap|td+off               trueJ -0.44s  true dV -0.0596 dmass +0.1626  rateV 0.0298 rateM 0.0812  t 1.50 L 64.6  same 0.19  stall 0.21
+  blend:gap|td+off:0.25      trueJ -0.38s  true dV -0.0584 dmass +0.1357  rateV 0.0289 rateM 0.0670  t 1.52 L 65.1  same 0.86
+  blend:gap|td+off:0.5       trueJ -0.38s  true dV -0.0586 dmass +0.1429  rateV 0.0290 rateM 0.0708  t 1.52 L 64.5  same 0.63
+  blend:gap|td+off:0.75      trueJ -0.45s  true dV -0.0602 dmass +0.1578  rateV 0.0299 rateM 0.0784  t 1.51 L 64.9  same 0.37
+== letter+two (n=90)
+  lyap                       trueJ -2.43s  true dV -0.0469 dmass +0.0645  rateV 0.0242 rateM 0.0334  t 1.44 L 56.5  same 1.00
+  J:lyap|mc                  trueJ -2.45s  true dV -0.0469 dmass +0.0640  rateV 0.0253 rateM 0.0345  t 1.35 L 50.2  same 0.67  stall 0.18
+  J:lyap|mc+off              trueJ -2.44s  true dV -0.0468 dmass +0.0640  rateV 0.0253 rateM 0.0345  t 1.35 L 50.3  same 0.68  stall 0.02
+  blend:lyap|mc+off:0.25     trueJ -2.48s  true dV -0.0473 dmass +0.0662  rateV 0.0248 rateM 0.0347  t 1.41 L 54.7  same 0.91
+  blend:lyap|mc+off:0.5      trueJ -2.41s  true dV -0.0465 dmass +0.0638  rateV 0.0246 rateM 0.0337  t 1.39 L 53.2  same 0.82
+  blend:lyap|mc+off:0.75     trueJ -2.38s  true dV -0.0459 dmass +0.0618  rateV 0.0246 rateM 0.0331  t 1.37 L 51.6  same 0.73
+  J:lyap|td                  trueJ -2.38s  true dV -0.0460 dmass +0.0620  rateV 0.0246 rateM 0.0332  t 1.37 L 51.6  same 0.72  stall 0.09
+  J:lyap|td+off              trueJ -2.38s  true dV -0.0460 dmass +0.0614  rateV 0.0246 rateM 0.0328  t 1.37 L 52.1  same 0.76  stall 0.02
+  blend:lyap|td+off:0.25     trueJ -2.50s  true dV -0.0476 dmass +0.0661  rateV 0.0249 rateM 0.0345  t 1.41 L 54.9  same 0.92
+  blend:lyap|td+off:0.5      trueJ -2.45s  true dV -0.0470 dmass +0.0656  rateV 0.0248 rateM 0.0346  t 1.39 L 53.3  same 0.87
+  blend:lyap|td+off:0.75     trueJ -2.41s  true dV -0.0465 dmass +0.0634  rateV 0.0246 rateM 0.0335  t 1.39 L 53.0  same 0.81
+  J:gap|td                   trueJ -2.37s  true dV -0.0450 dmass +0.0993  rateV 0.0241 rateM 0.0531  t 1.37 L 52.7  same 0.14  stall 0.06
+  J:gap|td+off               trueJ -2.37s  true dV -0.0450 dmass +0.0993  rateV 0.0241 rateM 0.0531  t 1.37 L 52.7  same 0.14  stall 0.10
+  blend:gap|td+off:0.25      trueJ -2.44s  true dV -0.0471 dmass +0.0670  rateV 0.0245 rateM 0.0349  t 1.42 L 55.4  same 0.74
+  blend:gap|td+off:0.5       trueJ -2.49s  true dV -0.0473 dmass +0.0762  rateV 0.0248 rateM 0.0399  t 1.41 L 54.6  same 0.57
+  blend:gap|td+off:0.75      trueJ -2.38s  true dV -0.0457 dmass +0.0927  rateV 0.0242 rateM 0.0491  t 1.39 L 53.6  same 0.24

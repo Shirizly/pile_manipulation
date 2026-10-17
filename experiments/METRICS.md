@@ -478,6 +478,19 @@ completion_time = sum_{j<=k*} t_j + t_act k*. Episodes that never complete are c
 K (1 s + t_act) when averaged (`mean_time_tact2_censored`: t_act = 2 s, K = 20 -> 60 s).
 Lower is better. Code: EXP-0051 / EXP-0055 `code/analyse.py`.
 
+## `task_time_physical` (added 2026-10-05, EXP-0070)
+`completion_time` with the flat t_act replaced by the PHYSICAL time of each executed push
+(`experiments/EXP-0070-*/code/action_time.py::action_time`): for push j with action
+[sx, sy, ex, ey] and plate pose p_{j-1} (end of push j-1; HOME = tray centre at safe height before
+push 1), t_j = T(h) [lift, omitted for j = 1] + T(|(sx, sy) - p_{j-1}|) [transit] + T(h) [descent]
++ T(|(ex, ey) - (sx, sy)|) [sweep], T(d) = rest-to-rest trapezoid at plate.speed 0.125 m/s and
+plate.acceleration 2 m/s^2 (d/v + v/a for d >= v^2/a, else 2 sqrt(d/a)), h = 10 mm (the simulator's
+clearance height). No lift after the last push. task_time_physical = sum_{j<=k*} (plan_time_j + t_j),
+k* the completion push (in-goal mass / EXP-0046 optimum >= theta; theta = 0.9 for quadrants and
+two_squares, 0.7 for letters unless stated); never-completed episodes are censored at K pushes (the
+sum over all K pushes). Lower is better. Checked against Genesis (EXP-0070 RUN-0001): sweeps and free-air
+transits reach 1 mm of target 34-35 ms before T(d). Code: `experiments/EXP-0070-*/code/analyse_pilot.py`.
+
 ## `coverage_emd`, `covered_frac` (added 2026-09-25, EXP-0055)
 Uniform-coverage metrics for "the material should match the shape", on SCORING images
 (`occ_for_scoring`), code `simple_mpc/value_functions.py::coverage_metrics`:
@@ -512,3 +525,12 @@ For particle/node models scored in particle space (no occupancy image). Units: F
 |---|---|---|
 | `node_accuracy` | `1 − sqrt(Σ‖pred − true‖²) / sqrt(Σ‖s0 − true‖²)`, sums over every (state, candidate, tracked node, xyz) of a group; tracked nodes = the model's own ≤30 FPS-sampled particles | Same form as `accuracy` but over **all tracked nodes, not a swept region**, so static nodes enter both terms; not comparable with image `accuracy`. `node_accuracy_moved` restricts the sums to nodes whose true xz displacement > 0.1 FleX units. |
 | `slateN_point_goal` | slateN (this file's formula, cost sense) with value `V = mean_i ‖p_i − g‖` over xz positions, goal point `g ~ U(±wkspc_w)²` seeded per state (`RandomState(state_idx)` for goal 0; `RandomState(10000 + 100·state_idx + k)` for extra goals) | **nodes** variant: truth and prediction on the tracked nodes (EXP-0064 as run). **full** variant: truth on ALL true after-particles; prediction carries each particle by its nearest tracked node's predicted displacement. Model ties at its best are broken in expectation (mean truth over the tied set), so `persistence` scores 0 exactly. |
+
+## `skeleton_coverage_r5` (added 2026-10-11, EXP-0075 planner-fix cells)
+"Is the letter drawn": fraction of the goal mask's SKELETON pixels (64 px grid, `skimage.morphology.skeletonize` of
+`letter_goal_mask`, pixel centres in world coordinates with `mask[x_px, y_px]` indexing) that have a cube CENTRE within
+r = 5 mm (Euclidean). Higher is better; 1.0 = every point of the stroke centre-line has a cube within one cube width.
+Code `experiments/EXP-0075-closed-loop-benchmark/code/analyse_fixes.py::coverage`. Why: w20 letters hold 82-106 cubes
+for 20, so in-goal mass (rel) can be 1.0 with all cubes in one stroke (a stem-only T); area metrics (`covered_frac`)
+cannot be satisfied by 20 cubes at w20. Skeleton lengths at w20: O 168, T 102, S 188, X 130 mm, i.e. coverable by 20 cubes
+at r = 5 mm (10 mm of centre-line each). Reported at push 10 and as episodes with coverage >= 0.8.

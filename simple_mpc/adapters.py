@@ -936,6 +936,61 @@ class SwitchedLinearGradientAdapter(OccupancyGradientAdapter):
                   self.res, (H, W), self.scale)
 
 
+class GatedEnsembleAdapter(OccupancyGradientAdapter):
+    """Per-pixel learned convex mixture of occupancy members (EXP-0071, MODEL-0015).
+
+    A small CNN reads [occ0, member predictions..., swept-region mask] and outputs a softmax over members at every
+    pixel; the prediction is the gate-weighted sum of the members' predictions (a soft blend, so mass-preserving to
+    the extent the members are). Member predictions are computed under `torch.no_grad()` unless grad is on -- the
+    gate and members are differentiable w.r.t. the action except the swept-region channel, which is a hard mask."""
+
+    GATE_HID = 24
+
+    def __init__(self, name, member_ids, ckpt_path, device="cuda", goal_shape="corner"):
+        super().__init__(name, device, goal_shape)
+        import torch.nn as nn
+        ck = torch.load(ckpt_path, map_location="cpu", weights_only=False)
+        assert list(ck["members"]) == list(member_ids), (ck["members"], member_ids)
+        self.members = [make_occ_adapter(m, device, goal_shape) for m in member_ids]
+        h, n = int(ck["hid"]), len(member_ids)
+        self.gate = nn.Sequential(nn.Conv2d(n + 2, h, 5, padding=2), nn.ReLU(), nn.Conv2d(h, h, 5, padding=2),
+                                  nn.ReLU(), nn.Conv2d(h, n, 3, padding=1)).to(self.device)
+        self.gate.load_state_dict(ck["state_dict"]); self.gate.eval()
+        for p_ in self.gate.parameters():
+            p_.requires_grad_(False)
+
+    @staticmethod
+    def swept_mask(act, device):
+        """Batched twin of EXP-0053 `eval_narrow.swept_region`: plate rectangle (+-24 mm lateral, 20 mm pad behind,
+        full push) rasterised with `occ_from_particles`. act: (B,4) metres."""
+        s, e = act[:, :2], act[:, 2:]
+        d = e - s; L = d.norm(dim=1, keepdim=True).clamp_min(1e-6); u = d / L; n = torch.stack([-u[:, 1], u[:, 0]], 1)
+        al = torch.cat([torch.linspace(-0.020, 0.0, 6), torch.linspace(0.0, 1.0, 21)]).to(act.device)
+        lat = torch.linspace(-0.024, 0.024, 25).to(act.device)
+        A_ = torch.where(al[None] < 0, al[None], al[None] * L)                      # (B,27)
+        P = s[:, None, None] + A_[:, :, None, None] * u[:, None, None] + lat[None, None, :, None] * n[:, None, None]
+        P = P.reshape(len(act), -1, 2)
+        parts = torch.cat([P, torch.full((len(act), P.shape[1], 1), 0.0125, device=act.device)], 2)
+        return occ_from_particles(parts, device) > 0
+
+    def predict_step(self, occ, act):
+        mem = torch.stack([m.predict_step(occ, act).to(occ.device) for m in self.members], 1)     # (B,n,H,W)
+        reg = self.swept_mask(act.detach(), self.device).float()[:, None]
+        w = torch.softmax(self.gate(torch.cat([occ[:, None], mem, reg], 1)), 1)
+        return (w * mem).sum(1)
+
+
+class MeanBlendAdapter(OccupancyGradientAdapter):
+    """Equal-weight pixel mean of member predictions (EXP-0071 control: what a plain seed ensemble buys, no gate)."""
+
+    def __init__(self, name, member_ids, device="cuda", goal_shape="corner"):
+        super().__init__(name, device, goal_shape)
+        self.members = [make_occ_adapter(m, device, goal_shape) for m in member_ids]
+
+    def predict_step(self, occ, act):
+        return torch.stack([m.predict_step(occ, act).to(occ.device) for m in self.members], 0).mean(0)
+
+
 # ── registry: adding a model is ONE entry here ───────────────────────────────
 
 def _nfd(ckpt, channels=3, features=None):
@@ -1048,6 +1103,12 @@ for _res in (32, 64):
     _ck = f"Baselines/LinearForesight/runs/operator_narrow_l20_v2_res{_res}.pt"
     if _os.path.exists(_ck):
         OCC_ADAPTERS[f"linear_narrow_l20_v2_res{_res}"] = _switched(_ck, res=_res)
+# EXP-0066: data-bootstrap replicates of linear_narrow_l20_v2_res64 (fit_switched.py --bootstrap-seed k),
+# the linear family's analogue of the NFD training seeds below.
+for _k in (1, 2):
+    _ck = f"Baselines/LinearForesight/runs/operator_narrow_l20_v2_res64_boot{_k}.pt"
+    if _os.path.exists(_ck):
+        OCC_ADAPTERS[f"linear_narrow_l20_v2_res64_boot{_k}"] = _switched(_ck, res=64)
 # Two more training seeds of the v2 NFD (coordinator, 2026-09-28), same recipe/config as
 # nfd_3ch_narrow_l20_v2 (seed 0 == the original unseeded run), for a 3-seed training-noise floor
 # on the clean corpus -- mirrors the nfd_3ch_randlen_seed{1,2,3} pattern above.
@@ -1082,6 +1143,15 @@ if _os.path.exists(_RETRIEVAL_NFD_NOREF_CK):
     # comparison could not isolate (random-donor's noisy-but-present channels
     # may simply hurt, which is not the same claim as "reference helps").
     OCC_ADAPTERS["retrieval_nfd_noref"] = _retrieval_nfd_ref(_RETRIEVAL_NFD_NOREF_CK, zero_ref=True)
+
+# EXP-0071: gated ensemble of the narrow-v2 occupancy members (3 NFD seeds, sharp_w03, linear res64); gate = MODEL-0015
+_GATE_MEMBERS = ["nfd_3ch_narrow_l20_v2", "nfd_3ch_narrow_l20_v2_seed1", "nfd_3ch_narrow_l20_v2_seed2",
+                 "nfd_3ch_narrow_l20_v2_sharp_w03", "linear_narrow_l20_v2_res64"]
+OCC_ADAPTERS["nfd3_meanblend_narrow_v2"] = lambda device, goal_shape: MeanBlendAdapter(
+    "x", _GATE_MEMBERS[:3], device, goal_shape)
+if _os.path.exists("weights/MODEL-0015-gated-ensemble-narrow-v2/checkpoint.pt"):
+    OCC_ADAPTERS["gated_ens_narrow_v2"] = lambda device, goal_shape: GatedEnsembleAdapter(
+        "x", _GATE_MEMBERS, "weights/MODEL-0015-gated-ensemble-narrow-v2/checkpoint.pt", device, goal_shape)
 
 
 def make_occ_adapter(model_id: str, device: str = "cuda", goal_shape: str = "corner"):

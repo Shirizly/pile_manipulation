@@ -1,0 +1,8 @@
+per-state: CEM-on-J pick vs CEM-on-dV (lyap) pick, by state value V (fam: quadrant / letter+two_squares)
+quadrant V 0.00-0.03 n 10 | cemJ: L 27.4mm transit 43.9 t 0.98 dv +0.0066 J +1.78 (J>0 1.00) | cemV: L 59.6 t 1.52 dv +0.0008 J +1.91 | etc slope   161 s/V | cemV better on J: raw 0.40, bias-corrected 0.50 | bank dv<-1e-3 frac 0.002
+quadrant V 0.03-0.08 n 25 | cemJ: L 35.0mm transit 56.6 t 1.14 dv -0.0105 J +0.60 (J>0 0.96) | cemV: L 55.7 t 1.49 dv -0.0163 J +0.64 | etc slope    51 s/V | cemV better on J: raw 0.36, bias-corrected 0.52 | bank dv<-1e-3 frac 0.017
+quadrant V 0.08-0.15 n 61 | cemJ: L 50.0mm transit 57.9 t 1.27 dv -0.0341 J +0.07 (J>0 0.59) | cemV: L 64.4 t 1.53 dv -0.0409 J +0.09 | etc slope    31 s/V | cemV better on J: raw 0.36, bias-corrected 0.39 | bank dv<-1e-3 frac 0.068
+quadrant V 0.15-1.00 n 84 | cemJ: L 51.6mm transit 49.7 t 1.22 dv -0.0556 J -0.16 (J>0 0.38) | cemV: L 66.4 t 1.53 dv -0.0683 J -0.12 | etc slope    22 s/V | cemV better on J: raw 0.42, bias-corrected 0.43 | bank dv<-1e-3 frac 0.205
+other    V 0.08-0.15 n 20 | cemJ: L 40.4mm transit 52.9 t 1.16 dv -0.0152 J -0.44 (J>0 0.25) | cemV: L 48.4 t 1.32 dv -0.0158 J -0.33 | etc slope   102 s/V | cemV better on J: raw 0.35, bias-corrected 0.40 | bank dv<-1e-3 frac 0.011
+other    V 0.15-1.00 n 67 | cemJ: L 53.7mm transit 65.0 t 1.36 dv -0.0498 J -2.34 (J>0 0.00) | cemV: L 58.2 t 1.46 dv -0.0507 J -2.31 | etc slope    73 s/V | cemV better on J: raw 0.46, bias-corrected 0.46 | bank dv<-1e-3 frac 0.099
+calibrated additive bias by V bin: {'0.0-0.03': np.float64(0.0211), '0.03-0.08': np.float64(0.0168), '0.08-0.15': np.float64(0.0147), '0.15-1.0': np.float64(0.0093)}

@@ -1058,3 +1058,7 @@ Added by the cross-experiment audit (summary: `experiments/SUMMARY.md`). Numbers
 
 - ISS-012 (2026-10-03): DS-0017 val has three near-tie quadrant_0 cells that move val slateN_tough by up to ~0.16; k = 5 was selected on that val set -- the selection was not re-checked.
 - EXP-0063: the sigma-2 soft-occupancy NFD reaches 3-push slateN_tough 0.819 vs retrieval 0.821 on the same DS-0018 pools (one seed, cross-record) -- narrows C-061 to hard-raster NFDs.
+
+## Scope note (2026-10-05 policy)
+
+The retrieval bank (DS-0015) and every comparator (narrow v2 NFD seeds, narrow linear) are narrow pilot instruments (policy 2026-10-05); C-061 is **pilot-grade**. Promotion: a bank built from a broad corpus (randlen / DS-0006 / DS-0007), compared against broad-trained NFD / linear models on a broad test set, with the ISS-012 k re-selection done there. Frontmatter unchanged.

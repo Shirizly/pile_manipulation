@@ -383,7 +383,13 @@ simple_mpc/
                         OCC_ADAPTERS models; progress scored with soft truth
                         (occ_for_scoring); project_push = the 20-70 mm / 4 mm
                         legality projection (EXP-0023's). Executor-agnostic
-                        (`execute` callable), per-step checkpoint hook. TODO G1b
+                        (`execute` callable), per-step checkpoint hook. TODO G1b.
+                        run_episodes_batched: K envs side by side; optional
+                        touchdown legalisation (`legalize=`), and with
+                        `legalize_fallback=True` a push that cannot be
+                        legalised is replaced by the best legal bank candidate
+                        (never executes an illegal push; EXP-0066); `planner_seed=`
+                        makes CEM noise + candidate sampling replicable
   value_functions.py    capacity-aware MPC value functions (sliced EMD to the
                         uniform goal target, linearised-EMD distance field,
                         over-capacity repulsion) + coverage metrics/ceiling;
@@ -759,6 +765,15 @@ Baselines/common/
                         pile; placing it in a workspace is the caller's job.
                         Backs datasets/DS-0003-synthetic-states/ (2026-09-17
                         rewrite, replacing sample_synthetic_state above).
+  goals.py              goal-region masks (convention A: row = world x) and value
+                        functions. Goal NAMES resolve through named_goal_mask:
+                        letter_<L>[_w<mm>] (EXP-0067 widened letters),
+                        quadrant_<q>, two_squares (EXP-0046), and the
+                        gather-to-disc goal disc_n<N> / disc_r<mm> (EXP-0075 T0b,
+                        2026-10-15): a FIXED disc at the workspace centre whose
+                        area holds N 5 mm cubes at packing 0.7 (disc_n20: r =
+                        15.1 mm, 172 px); V* in EXP-0075 results/vstar_disc.json
+                        (EXP-0046 solver via EXP-0067 vstar_width.solve_goal).
   paired_stats.py       paired, state-resampled model comparison for every
                         benchmark: variance_components, friedman,
                         paired_comparison (bootstrap CI + sign-flip p + Holm),

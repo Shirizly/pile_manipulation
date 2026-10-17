@@ -1,0 +1,105 @@
+== 01:20:00 gd_lf rep 0 1.27 1.80 1.69
+lf 0 gdlong_step_H1_n8 11.1073
+lf 0 gdlong_step_H2_n8 25.8037
+lf 0 gdlong_step_H4_n8 43.3347
+== 01:20:16 gd_vanilla64 rep 0 1.26 1.76 1.68
+vanilla64 0 gdlong_step_H1_n8 4.9734
+vanilla64 0 gdlong_step_H2_n8 8.2975
+vanilla64 0 gdlong_step_H4_n8 14.8566
+== 01:20:26 gd_zoom64 rep 0 1.45 1.79 1.69
+zoom64 0 gdlong_step_H1_n8 6.0627
+zoom64 0 gdlong_step_H2_n8 11.0929
+zoom64 0 gdlong_step_H4_n8 21.0407
+== 01:20:36 gd_vanilla128 rep 0 1.62 1.81 1.70
+vanilla128 0 gdlong_step_H1_n8 4.7577
+vanilla128 0 gdlong_step_H2_n8 8.5699
+vanilla128 0 gdlong_step_H4_n8 16.1256
+== 01:20:47 gd_zoom128 rep 0 1.60 1.80 1.70
+zoom128 0 gdlong_step_H1_n8 7.4758
+zoom128 0 gdlong_step_H2_n8 12.0991
+zoom128 0 gdlong_step_H4_n8 24.5854
+== 01:20:59 gd_ens128 rep 0 1.74 1.82 1.71
+ens128 0 gdlong_step_H1_n8 9.5361
+ens128 0 gdlong_step_H2_n8 19.3089
+ens128 0 gdlong_step_H4_n8 38.6715
+== 01:21:13 overhead rep 1 1.73 1.82 1.71
+overhead 1 fetch_candidates 0.598
+overhead 1 ot_candidates 0.558
+overhead 1 legal_scorer_1280 26.899
+overhead 1 plan_seq_vanilla64_H1_base 40.675
+overhead 1 plan_seq_vanilla64_H1_fl 66.451
+overhead 1 plan_seq_vanilla64_H1_ot 67.846
+overhead 1 plan_seq_vanilla64_H2_base 80.607
+overhead 1 plan_seq_vanilla64_H2_fl 105.831
+overhead 1 plan_seq_vanilla64_H2_ot 106.965
+overhead 1 plan_seq_ens128_H1_base 936.492
+overhead 1 plan_seq_ens128_H1_fl 963.915
+overhead 1 plan_seq_ens128_H1_ot 966.526
+overhead 1 plan_seq_ens128_H2_base 1879.428
+overhead 1 plan_seq_ens128_H2_fl 1910.218
+overhead 1 plan_seq_ens128_H2_ot 1917.728
+== 01:22:32 gd_lf rep 1 1.96 1.80 1.71
+lf 1 gdlong_step_H1_n8 13.3749
+lf 1 gdlong_step_H2_n8 22.8234
+lf 1 gdlong_step_H4_n8 55.1393
+== 01:22:52 gd_vanilla64 rep 1 2.23 1.86 1.73
+vanilla64 1 gdlong_step_H1_n8 5.1313
+vanilla64 1 gdlong_step_H2_n8 8.2487
+vanilla64 1 gdlong_step_H4_n8 15.9746
+== 01:23:03 gd_zoom64 rep 1 2.11 1.85 1.73
+zoom64 1 gdlong_step_H1_n8 7.324
+zoom64 1 gdlong_step_H2_n8 14.5544
+zoom64 1 gdlong_step_H4_n8 24.0579
+== 01:23:16 gd_vanilla128 rep 1 2.47 1.94 1.76
+vanilla128 1 gdlong_step_H1_n8 5.2245
+vanilla128 1 gdlong_step_H2_n8 8.6326
+vanilla128 1 gdlong_step_H4_n8 16.9809
+== 01:23:28 gd_zoom128 rep 1 3.10 2.09 1.81
+zoom128 1 gdlong_step_H1_n8 8.1798
+zoom128 1 gdlong_step_H2_n8 14.5884
+zoom128 1 gdlong_step_H4_n8 25.6919
+== 01:23:43 gd_ens128 rep 1 2.85 2.09 1.82
+ens128 1 gdlong_step_H1_n8 12.6804
+ens128 1 gdlong_step_H2_n8 22.2354
+ens128 1 gdlong_step_H4_n8 41.5073
+== 01:24:01 overhead rep 2 2.94 2.15 1.84
+overhead 2 fetch_candidates 0.733
+overhead 2 ot_candidates 0.639
+overhead 2 legal_scorer_1280 29.612
+overhead 2 plan_seq_vanilla64_H1_base 41.405
+overhead 2 plan_seq_vanilla64_H1_fl 67.428
+overhead 2 plan_seq_vanilla64_H1_ot 68.843
+overhead 2 plan_seq_vanilla64_H2_base 80.58
+overhead 2 plan_seq_vanilla64_H2_fl 107.03
+overhead 2 plan_seq_vanilla64_H2_ot 108.433
+overhead 2 plan_seq_ens128_H1_base 938.873
+overhead 2 plan_seq_ens128_H1_fl 967.875
+overhead 2 plan_seq_ens128_H1_ot 969.015
+overhead 2 plan_seq_ens128_H2_base 1889.268
+overhead 2 plan_seq_ens128_H2_fl 1912.651
+overhead 2 plan_seq_ens128_H2_ot 1910.007
+== 01:25:21 gd_lf rep 2 2.92 2.39 1.96
+lf 2 gdlong_step_H1_n8 15.5906
+lf 2 gdlong_step_H2_n8 28.2816
+lf 2 gdlong_step_H4_n8 46.7297
+== 01:25:37 gd_vanilla64 rep 2 2.74 2.37 1.96
+vanilla64 2 gdlong_step_H1_n8 5.0379
+vanilla64 2 gdlong_step_H2_n8 8.1457
+vanilla64 2 gdlong_step_H4_n8 14.6541
+== 01:25:47 gd_zoom64 rep 2 2.47 2.33 1.95
+zoom64 2 gdlong_step_H1_n8 6.1493
+zoom64 2 gdlong_step_H2_n8 10.9837
+zoom64 2 gdlong_step_H4_n8 20.4167
+== 01:25:58 gd_vanilla128 rep 2 2.24 2.28 1.94
+vanilla128 2 gdlong_step_H1_n8 5.3316
+vanilla128 2 gdlong_step_H2_n8 8.5616
+vanilla128 2 gdlong_step_H4_n8 16.0991
+== 01:26:07 gd_zoom128 rep 2 2.05 2.24 1.93
+zoom128 2 gdlong_step_H1_n8 6.1359
+zoom128 2 gdlong_step_H2_n8 11.817
+zoom128 2 gdlong_step_H4_n8 23.7351
+== 01:26:19 gd_ens128 rep 2 2.18 2.26 1.94
+ens128 2 gdlong_step_H1_n8 9.6484
+ens128 2 gdlong_step_H2_n8 19.2811
+ens128 2 gdlong_step_H4_n8 38.9243
+== DONE 01:26:33 1.99 2.22 1.93

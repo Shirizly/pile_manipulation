@@ -1,0 +1,179 @@
+== 01:07:44 lf rep 0 2.20 2.19 1.42
+lf 0 fwd_harness_H1 0.069
+lf 0 fwd_bs_H1 0.0427
+lf 0 gd_step_H1_n8 14.1185
+lf 0 fwd_harness_H2 0.1235
+lf 0 fwd_bs_H2 0.0805
+lf 0 gd_step_H2_n8 24.1542
+lf 0 fwd_harness_H4 0.2485
+lf 0 fwd_bs_H4 0.1512
+lf 0 gd_step_H4_n8 54.0049
+== 01:07:59 zoom64 rep 0 2.22 2.20 1.44
+zoom64 0 fwd_harness_H1 0.234
+zoom64 0 fwd_bs_H1 0.2086
+zoom64 0 gd_step_H1_n8 7.1556
+zoom64 0 fwd_harness_H2 0.3974
+zoom64 0 fwd_bs_H2 0.4149
+zoom64 0 gd_step_H2_n8 12.1166
+zoom64 0 fwd_harness_H4 0.7826
+zoom64 0 fwd_bs_H4 0.8316
+zoom64 0 gd_step_H4_n8 22.7501
+== 01:08:24 vanilla128 rep 0 2.03 2.16 1.45
+vanilla128 0 fwd_harness_H1 0.2582
+vanilla128 0 fwd_bs_H1 0.2719
+vanilla128 0 gd_step_H1_n8 8.8293
+vanilla128 0 fwd_harness_H2 0.519
+vanilla128 0 fwd_bs_H2 0.5537
+vanilla128 0 gd_step_H2_n8 10.0878
+vanilla128 0 fwd_harness_H4 1.0572
+vanilla128 0 fwd_bs_H4 1.1097
+vanilla128 0 gd_step_H4_n8 16.9655
+== 01:08:54 zoom128 rep 0 2.87 2.38 1.54
+zoom128 0 fwd_harness_H1 0.4674
+zoom128 0 fwd_bs_H1 0.4796
+zoom128 0 gd_step_H1_n8 7.1422
+zoom128 0 fwd_harness_H2 0.9409
+zoom128 0 fwd_bs_H2 0.9616
+zoom128 0 gd_step_H2_n8 13.4766
+zoom128 0 fwd_harness_H4 1.8968
+zoom128 0 fwd_bs_H4 1.9383
+zoom128 0 gd_step_H4_n8 35.2303
+== 01:09:40 ens128 rep 0 3.07 2.45 1.60
+ens128 0 fwd_harness_H1 0.7289
+ens128 0 fwd_bs_H1 0.7562
+ens128 0 gd_step_H1_n8 9.7486
+ens128 0 fwd_harness_H2 1.4679
+ens128 0 fwd_bs_H2 1.525
+ens128 0 gd_step_H2_n8 21.2094
+ens128 0 fwd_harness_H4 2.9556
+ens128 0 fwd_bs_H4 3.0648
+ens128 0 gd_step_H4_n8 42.0988
+== 01:10:51 legal rep 1 1.92 2.24 1.60
+legal 1 256 0.0228
+legal 1 1280 0.019
+legal cpu 1 2.452
+== 01:10:59 lf rep 1 1.92 2.23 1.60
+lf 1 fwd_harness_H1 0.0769
+lf 1 fwd_bs_H1 0.0373
+lf 1 gd_step_H1_n8 14.5161
+lf 1 fwd_harness_H2 0.1581
+lf 1 fwd_bs_H2 0.0868
+lf 1 gd_step_H2_n8 33.3145
+lf 1 fwd_harness_H4 0.26
+lf 1 fwd_bs_H4 0.1531
+lf 1 gd_step_H4_n8 59.7153
+== 01:11:13 vanilla64 rep 1 2.24 2.29 1.63
+vanilla64 1 fwd_harness_H1 0.0386
+vanilla64 1 fwd_bs_H1 0.0322
+vanilla64 1 gd_step_H1_n8 6.4247
+vanilla64 1 fwd_harness_H2 0.0579
+vanilla64 1 fwd_bs_H2 0.064
+vanilla64 1 gd_step_H2_n8 9.1269
+vanilla64 1 fwd_harness_H4 0.1218
+vanilla64 1 fwd_bs_H4 0.1324
+vanilla64 1 gd_step_H4_n8 20.7713
+== 01:11:24 zoom64 rep 1 2.36 2.31 1.64
+zoom64 1 fwd_harness_H1 0.2345
+zoom64 1 fwd_bs_H1 0.2114
+zoom64 1 gd_step_H1_n8 7.0573
+zoom64 1 fwd_harness_H2 0.4193
+zoom64 1 fwd_bs_H2 0.4181
+zoom64 1 gd_step_H2_n8 10.8073
+zoom64 1 fwd_harness_H4 0.7896
+zoom64 1 fwd_bs_H4 0.8357
+zoom64 1 gd_step_H4_n8 20.2739
+== 01:11:49 vanilla128 rep 1 2.29 2.30 1.66
+vanilla128 1 fwd_harness_H1 0.2587
+vanilla128 1 fwd_bs_H1 0.2783
+vanilla128 1 gd_step_H1_n8 6.8139
+vanilla128 1 fwd_harness_H2 0.5575
+vanilla128 1 fwd_bs_H2 0.5551
+vanilla128 1 gd_step_H2_n8 8.4187
+vanilla128 1 fwd_harness_H4 1.0576
+vanilla128 1 fwd_bs_H4 1.1136
+vanilla128 1 gd_step_H4_n8 16.0613
+== 01:12:18 zoom128 rep 1 1.99 2.22 1.65
+zoom128 1 fwd_harness_H1 0.4674
+zoom128 1 fwd_bs_H1 0.481
+zoom128 1 gd_step_H1_n8 7.1281
+zoom128 1 fwd_harness_H2 0.9405
+zoom128 1 fwd_bs_H2 0.9636
+zoom128 1 gd_step_H2_n8 12.7257
+zoom128 1 fwd_harness_H4 1.8904
+zoom128 1 fwd_bs_H4 1.9369
+zoom128 1 gd_step_H4_n8 23.4014
+== 01:13:04 ens128 rep 1 1.57 2.08 1.63
+ens128 1 fwd_harness_H1 0.7279
+ens128 1 fwd_bs_H1 0.76
+ens128 1 gd_step_H1_n8 9.2623
+ens128 1 fwd_harness_H2 1.4719
+ens128 1 fwd_bs_H2 1.5213
+ens128 1 gd_step_H2_n8 19.1909
+ens128 1 fwd_harness_H4 2.9563
+ens128 1 fwd_bs_H4 3.0498
+ens128 1 gd_step_H4_n8 38.3327
+== 01:14:11 legal rep 2 1.93 2.04 1.65
+legal 2 256 0.0227
+legal 2 1280 0.0195
+legal cpu 2 2.149
+== 01:14:18 lf rep 2 1.85 2.03 1.64
+lf 2 fwd_harness_H1 0.0769
+lf 2 fwd_bs_H1 0.0377
+lf 2 gd_step_H1_n8 10.9843
+lf 2 fwd_harness_H2 0.1207
+lf 2 fwd_bs_H2 0.0726
+lf 2 gd_step_H2_n8 23.3014
+lf 2 fwd_harness_H4 0.2375
+lf 2 fwd_bs_H4 0.1449
+lf 2 gd_step_H4_n8 47.2105
+== 01:14:30 vanilla64 rep 2 1.72 1.99 1.64
+vanilla64 2 fwd_harness_H1 0.0385
+vanilla64 2 fwd_bs_H1 0.0313
+vanilla64 2 gd_step_H1_n8 4.9459
+vanilla64 2 fwd_harness_H2 0.0528
+vanilla64 2 fwd_bs_H2 0.064
+vanilla64 2 gd_step_H2_n8 8.2555
+vanilla64 2 fwd_harness_H4 0.1202
+vanilla64 2 fwd_bs_H4 0.1326
+vanilla64 2 gd_step_H4_n8 14.4807
+== 01:14:40 zoom64 rep 2 1.76 1.99 1.64
+zoom64 2 fwd_harness_H1 0.2337
+zoom64 2 fwd_bs_H1 0.2092
+zoom64 2 gd_step_H1_n8 6.0443
+zoom64 2 fwd_harness_H2 0.3924
+zoom64 2 fwd_bs_H2 0.4168
+zoom64 2 gd_step_H2_n8 10.7686
+zoom64 2 fwd_harness_H4 0.7899
+zoom64 2 fwd_bs_H4 0.8361
+zoom64 2 gd_step_H4_n8 20.5033
+== 01:15:03 vanilla128 rep 2 1.82 1.99 1.65
+vanilla128 2 fwd_harness_H1 0.2578
+vanilla128 2 fwd_bs_H1 0.2751
+vanilla128 2 gd_step_H1_n8 5.0232
+vanilla128 2 fwd_harness_H2 0.5199
+vanilla128 2 fwd_bs_H2 0.5545
+vanilla128 2 gd_step_H2_n8 8.7032
+vanilla128 2 fwd_harness_H4 1.0659
+vanilla128 2 fwd_bs_H4 1.1048
+vanilla128 2 gd_step_H4_n8 18.295
+== 01:15:33 zoom128 rep 2 2.63 2.14 1.71
+zoom128 2 fwd_harness_H1 0.4759
+zoom128 2 fwd_bs_H1 0.4921
+zoom128 2 gd_step_H1_n8 9.2549
+zoom128 2 fwd_harness_H2 0.9458
+zoom128 2 fwd_bs_H2 0.9665
+zoom128 2 gd_step_H2_n8 12.3416
+zoom128 2 fwd_harness_H4 1.8917
+zoom128 2 fwd_bs_H4 1.9419
+zoom128 2 gd_step_H4_n8 24.0675
+== 01:16:19 ens128 rep 2 3.08 2.31 1.79
+ens128 2 fwd_harness_H1 0.7355
+ens128 2 fwd_bs_H1 0.765
+ens128 2 gd_step_H1_n8 9.6054
+ens128 2 fwd_harness_H2 1.4725
+ens128 2 fwd_bs_H2 1.5211
+ens128 2 gd_step_H2_n8 19.0677
+ens128 2 fwd_harness_H4 2.9569
+ens128 2 fwd_bs_H4 3.0482
+ens128 2 gd_step_H4_n8 38.5313
+== DONE 01:17:27 1.91 2.15 1.77

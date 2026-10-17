@@ -38,6 +38,28 @@ from Baselines.common.goals import dist_field_from_mask, mass_in_region  # noqa:
 from simple_mpc.value_functions import SlicedEMD  # noqa: E402
 
 D = EN.D
+
+# ISS-012 fix (2026-10-15): a (pool, goal) cell whose TRUE dv spread (mean - min) is below DEGEN_FRAC x the
+# median spread over all cells of the same split and goal set is near-degenerate -- its capture is unbounded
+# below and one wrong pick there scored -1.3 to -40 (DS-0017 val quadrant_0 pools 17/22/27). Same rule and
+# fraction as EXP-0063 code/summarize.py::drop_degenerate. The old guard (absolute den > 1e-9) kept them.
+DEGEN_FRAC = 0.05
+
+
+def caps_from_raw(raw, frac=DEGEN_FRAC):
+    """{goal: [{"vt", "vp", ...}, ...]} -> ({goal: [capture, ...]}, threshold). Drops cells with
+    true spread < frac x median spread (pooled over every goal in `raw`) and any den <= 1e-9."""
+    dens = [float(np.mean(r["vt"]) - np.min(r["vt"])) for rows in raw.values() for r in rows]
+    thr = max(frac * float(np.median(dens)), 1e-9) if dens else 1e-9
+    caps = {}
+    for g, rows in raw.items():
+        caps[g] = []
+        for r in rows:
+            vt, vp = np.asarray(r["vt"]), np.asarray(r["vp"])
+            den = vt.mean() - vt.min()
+            if den >= thr and den > 1e-9:
+                caps[g].append(float((vt.mean() - vt[vp.argmin()]) / den))
+    return caps, thr
 GOALS_13 = EN.GOALS
 GOALS_TOUGH = ["letter_O", "letter_T", "letter_S", "letter_X", "letter_L", "letter_I",
               "two_squares", "quadrant_0"]
@@ -71,14 +93,15 @@ def blurred_acc(pred, truth, prev, region, sigma):
                  gaussian_blur_occ(prev, sigma), region)
 
 
-def slate_capture(po, o0, truth_occ, t0, Dist, blur_sigma=0.0):
+def slate_capture(po, o0, truth_occ, t0, Dist, blur_sigma=0.0, den_thr=1e-9):
     """One pool's slateN capture per goal, optionally blurring the MODEL'S OWN
     prediction (po, o0) before ranking -- truth_occ/t0 (which define what
     IS best) are never blurred, so this isolates whether blur changes the
     RANKING DECISION, not whether it changes the scored ground truth.
     po, o0: (n_candidates, 64, 64) / (1, 64, 64). Returns {goal: capture or
-    None} (None -> degenerate pool, den<=1e-9, matching the existing
-    skip-if-degenerate convention elsewhere in this file)."""
+    None} (None -> degenerate pool: den <= den_thr; pass den_thr = DEGEN_FRAC x the split's median
+    true spread to apply the ISS-012 relative threshold used by caps_from_raw -- a single pool
+    has no split context, so the default stays the absolute 1e-9 floor)."""
     if blur_sigma > 0:
         po = gaussian_blur_occ(po, blur_sigma)
         o0 = gaussian_blur_occ(o0, blur_sigma)
@@ -87,7 +110,7 @@ def slate_capture(po, o0, truth_occ, t0, Dist, blur_sigma=0.0):
         vt = (lyap(truth_occ, Dist[g]) - lyap(t0, Dist[g])).numpy()
         vp = (lyap(po, Dist[g]) - lyap(o0.cpu() if o0.is_cuda else o0, Dist[g])).numpy()
         den = vt.mean() - vt.min()
-        out[g] = float((vt.mean() - vt[vp.argmin()]) / den) if den > 1e-9 else None
+        out[g] = float((vt.mean() - vt[vp.argmin()]) / den) if (den > den_thr and den > 1e-9) else None
     return out
 
 
@@ -261,12 +284,11 @@ def eval_occ_model(model_id, dev, ch, pools, Dist13, DistTough, Masks13, MasksTo
                 for g in Dist:
                     vt = (lyap(truth_occ, Dist[g]) - lyap(t0, Dist[g])).numpy()
                     vp = (lyap(po, Dist[g]) - lyap(o0.cpu(), Dist[g])).numpy()
-                    den = vt.mean() - vt.min()
-                    if den > 1e-9:
-                        caps[g].append(float((vt.mean() - vt[vp.argmin()]) / den))
                     raw[g].append({"pool": int(pi), "vt": vt.tolist(), "vp": vp.tolist()})
                     m_true = mass_in_region(truth_occ, Masks[g]); m_pred = mass_in_region(po, Masks[g])
                     mass_err[g].append(float((m_pred - m_true).abs().mean()))
+    caps13, thr13 = caps_from_raw(raw13); capsT, thrT = caps_from_raw(rawT)   # ISS-012: relative degeneracy threshold
+    r["degen_threshold"] = {"slateN": thr13, "slateN_tough": thrT, "frac": DEGEN_FRAC}
     r["slateN_per_goal"] = {g: float(np.mean(v)) for g, v in caps13.items() if v}
     r["slateN"] = float(np.mean([np.mean(v) for v in caps13.values() if v]))
     r["slateN_tough_per_goal"] = {g: float(np.mean(v)) for g, v in capsT.items() if v}
@@ -386,12 +408,11 @@ def eval_particle_model(name, bank, ch, pools, Dist13, DistTough, Masks13, Masks
                 for g in Dist:
                     vt = (lyap(truth_occ, Dist[g]) - lyap(t0, Dist[g])).numpy()
                     vp = (lyap(po, Dist[g]) - lyap(o0.cpu(), Dist[g])).numpy()
-                    den = vt.mean() - vt.min()
-                    if den > 1e-9:
-                        caps[g].append(float((vt.mean() - vt[vp.argmin()]) / den))
                     raw[g].append({"pool": int(pi), "vt": vt.tolist(), "vp": vp.tolist()})
                     m_true = mass_in_region(truth_occ, Masks[g]); m_pred = mass_in_region(po, Masks[g])
                     mass_err[g].append(float((m_pred - m_true).abs().mean()))
+    caps13, thr13 = caps_from_raw(raw13); capsT, thrT = caps_from_raw(rawT)   # ISS-012: relative degeneracy threshold
+    r["degen_threshold"] = {"slateN": thr13, "slateN_tough": thrT, "frac": DEGEN_FRAC}
     r["slateN_per_goal"] = {g: float(np.mean(v)) for g, v in caps13.items() if v}
     r["slateN"] = float(np.mean([np.mean(v) for v in caps13.values() if v]))
     r["slateN_tough_per_goal"] = {g: float(np.mean(v)) for g, v in capsT.items() if v}

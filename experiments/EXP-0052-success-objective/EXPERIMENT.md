@@ -50,7 +50,7 @@ result: >
   w3 CEM 0.70 vs 0.66 (+0.035). Completion at 0.8 x optimum rises (e.g. w1 CEM 0.58 vs 0.25,
   w3 GD 0.67 vs 0.42); at 0.9 x optimum 1/48 letter episodes (w1 CEM) vs 0/24 control. Lyapunov
   achieved drops 0.00-0.05. two_squares (n = 2 per cell) mixed, w3 GD worse.
-verdict: refuted                # O1 met only by w3 GD (w1 misses +0.05 on both planners), O2 barely, O3 met except w3 CEM
+verdict: refuted                # 2026-10-15 corrected: pre-registered w=1 cells: GD meets O1 (+0.056 >= 0.05, CI [-0.002, +0.115] incl. 0) and O3 (drop 0.006) but fails O2 (0/12); CEM fails O1 (+0.033) and O3 (drop 0.0302 > 0.03), meets O2 (1/12). No w=1 planner meets O1-O3 together -> refuted stands (results/analysis.json)
 downgrades: [imprecision, provenance]
 grade: low
 supersedes: []
@@ -97,3 +97,11 @@ Added by the cross-experiment audit (summary: `experiments/SUMMARY.md`). Numbers
 
 - ISS-013: planner candidates / initialisations in this record came from the pre-fix pile-aware sampler (ISS-010 class, ~half illegal touchdowns in audited banks); executed pushes have not been audited for touchdown legality.
 - EXP-0065 RUN-0003 (C-067): executed closed-loop pushes include illegal touchdowns (blade on a cube); measured lower bounds per record in `experiments/EXP-0065-*/results/audit_closed_loop_actions.json`.
+
+## Verdict check (2026-10-15)
+Re-checked against DESIGN.md O1-O3 (pre-registered for w = 1) and `results/analysis.json`. The old verdict comment said w = 1 missed
++0.05 on both planners; that was wrong for GD (+0.056, point estimate; 95% CI [-0.002, +0.115] includes 0). Per planner at w = 1:
+GD O1 met / O2 not met (0/12 at 0.9 x optimum) / O3 met (achieved 0.939 -> 0.933); CEM O1 not met (+0.033) / O2 met (1/12) /
+O3 not met (0.947 -> 0.916, drop 0.030 just over 0.03). The prediction is a conjunction and no w = 1 planner satisfies it, so the
+verdict stays `refuted`; only the comment was corrected. w = 3 GD was not pre-registered (O1-O3 name w = 1).
+

@@ -1,0 +1,137 @@
+[38;5;159m[Genesis] [05:30:13] [INFO] [38;5;121m╭───────────────────────────────────────────────╮[0m[38;5;159m[0m
+[38;5;159m[Genesis] [05:30:13] [INFO] [38;5;121m│┈┉┈┉┈┉┈┉┈┉┈┉┈┉┈┉┈┉┈[0m[38;5;159m [38;5;121m[1m[3mGenesis[0m[38;5;159m [38;5;121m┈┉┈┉┈┉┈┉┈┉┈┉┈┉┈┉┈┉┈│[0m[38;5;159m[0m
+[38;5;159m[Genesis] [05:30:13] [INFO] [38;5;121m╰───────────────────────────────────────────────╯[0m[38;5;159m[0m
+[38;5;159m[Genesis] [05:30:14] [INFO] Running on [38;5;121m[4m[NVIDIA GeForce RTX 4070 Laptop GPU][0m[38;5;159m with backend [38;5;121m[4mgs.cuda[0m[38;5;159m. Device memory: [38;5;121m[4m7.62[0m[38;5;159m GB.[0m
+[38;5;159m[Genesis] [05:30:14] [INFO] 🚀 Genesis initialized. 🔖 version: [38;5;121m[4m1.3.3[0m[38;5;159m, 🎨 theme: [38;5;121m[4mdark[0m[38;5;159m, 🌱 seed: [38;5;121m[4mNone[0m[38;5;159m, 🐛 debug: [38;5;121m[4mFalse[0m[38;5;159m, 📏 precision: [38;5;121m[4m32[0m[38;5;159m, 🔥 performance: [38;5;121m[4mTrue[0m[38;5;159m, 💬 verbose: [38;5;121m[4mINFO[0m[38;5;159m[0m
+[38;5;159m[Genesis] [05:30:16] [INFO] Scene [38;5;121m[3m<9edb821>[0m[38;5;159m created.[0m
+[38;5;159m[Genesis] [05:30:16] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m0[0m[38;5;159m, uid: [38;5;121m[3m<2f276d6>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Plane>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [05:30:16] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m1[0m[38;5;159m, uid: [38;5;121m[3m<e47e6a2>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [05:30:16] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m2[0m[38;5;159m, uid: [38;5;121m[3m<cfc40fc>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [05:30:16] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m3[0m[38;5;159m, uid: [38;5;121m[3m<a6549f4>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [05:30:16] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m4[0m[38;5;159m, uid: [38;5;121m[3m<1d77b22>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [05:30:16] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m5[0m[38;5;159m, uid: [38;5;121m[3m<25f0a65>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [05:30:16] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m6[0m[38;5;159m, uid: [38;5;121m[3m<543967c>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [05:30:16] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m7[0m[38;5;159m, uid: [38;5;121m[3m<cf08d9d>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [05:30:16] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m8[0m[38;5;159m, uid: [38;5;121m[3m<791d68a>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [05:30:16] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m9[0m[38;5;159m, uid: [38;5;121m[3m<bdf0d76>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [05:30:16] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m10[0m[38;5;159m, uid: [38;5;121m[3m<ec86910>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [05:30:16] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m11[0m[38;5;159m, uid: [38;5;121m[3m<f8f0c58>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [05:30:16] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m12[0m[38;5;159m, uid: [38;5;121m[3m<47ca9cf>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [05:30:16] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m13[0m[38;5;159m, uid: [38;5;121m[3m<04f3e33>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [05:30:16] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m14[0m[38;5;159m, uid: [38;5;121m[3m<37c1ada>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [05:30:16] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m15[0m[38;5;159m, uid: [38;5;121m[3m<eac66fa>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [05:30:16] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m16[0m[38;5;159m, uid: [38;5;121m[3m<5a5d822>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [05:30:16] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m17[0m[38;5;159m, uid: [38;5;121m[3m<5335368>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [05:30:16] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m18[0m[38;5;159m, uid: [38;5;121m[3m<cec2882>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [05:30:16] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m19[0m[38;5;159m, uid: [38;5;121m[3m<b6f3b06>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [05:30:16] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m20[0m[38;5;159m, uid: [38;5;121m[3m<e9e6d1f>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [05:30:16] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m21[0m[38;5;159m, uid: [38;5;121m[3m<b9183a7>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [05:30:16] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m22[0m[38;5;159m, uid: [38;5;121m[3m<3db8f2b>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [05:30:16] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m23[0m[38;5;159m, uid: [38;5;121m[3m<aa8a595>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [05:30:16] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m24[0m[38;5;159m, uid: [38;5;121m[3m<c9d8c41>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [05:30:16] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m25[0m[38;5;159m, uid: [38;5;121m[3m<ea12686>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [05:30:16] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m26[0m[38;5;159m, uid: [38;5;121m[3m<5c794eb>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+Generated 20 particles out of 20
+[38;5;159m[Genesis] [05:30:16] [INFO] Building scene [38;5;121m[3m<9edb821>[0m[38;5;159m...[0m
+[38;5;159m[Genesis] [05:30:19] [INFO] Compiling simulation kernels...[0m
+[38;5;159m[Genesis] [05:30:36] [INFO] Building visualizer...[0m
+libEGL warning: egl: failed to create dri2 screen
+libEGL warning: egl: failed to create dri2 screen
+state 1/96 letter_O_w20/40 k=2: strays 11, fetch 789; best true bank -0.048 all -0.212; model pick bank -0.043 all -0.211 (fetch_top); spearman +0.93; 26s
+state 2/96 letter_O_w20/41 k=2: strays 10, fetch 665; best true bank -0.033 all -0.241; model pick bank -0.020 all -0.241 (fetch_top); spearman +0.94; 25s
+state 3/96 letter_O_w20/42 k=2: strays 8, fetch 567; best true bank -0.058 all -0.202; model pick bank -0.058 all -0.175 (fetch_top); spearman +0.92; 24s
+state 4/96 letter_O_w20/43 k=2: strays 11, fetch 750; best true bank -0.212 all -0.212; model pick bank -0.181 all -0.181 (bank_top); spearman +0.88; 23s
+state 5/96 letter_O_w20/44 k=2: strays 13, fetch 734; best true bank -0.149 all -0.196; model pick bank -0.141 all -0.196 (fetch_top); spearman +0.92; 27s
+state 6/96 letter_O_w20/45 k=2: strays 6, fetch 404; best true bank -0.068 all -0.158; model pick bank -0.007 all -0.158 (fetch_top); spearman +0.92; 26s
+state 7/96 letter_O_w20/46 k=2: strays 11, fetch 682; best true bank -0.100 all -0.215; model pick bank -0.083 all -0.215 (fetch_top); spearman +0.86; 28s
+state 8/96 letter_O_w20/47 k=2: strays 8, fetch 536; best true bank -0.057 all -0.279; model pick bank -0.057 all -0.206 (fetch_top); spearman +0.95; 23s
+state 9/96 letter_T_w20/40 k=2: strays 12, fetch 826; best true bank -0.049 all -0.201; model pick bank -0.033 all -0.135 (fetch_top); spearman +0.90; 24s
+state 10/96 letter_T_w20/41 k=2: strays 10, fetch 695; best true bank -0.111 all -0.179; model pick bank -0.110 all -0.174 (fetch_top); spearman +0.88; 26s
+state 11/96 letter_T_w20/42 k=2: strays 8, fetch 542; best true bank -0.046 all -0.180; model pick bank -0.046 all -0.172 (fetch_top); spearman +0.92; 28s
+state 12/96 letter_T_w20/43 k=2: strays 10, fetch 633; best true bank -0.070 all -0.248; model pick bank -0.063 all -0.240 (fetch_top); spearman +0.97; 25s
+state 13/96 letter_T_w20/44 k=2: strays 11, fetch 618; best true bank -0.081 all -0.201; model pick bank -0.078 all -0.201 (fetch_top); spearman +0.94; 23s
+state 14/96 letter_T_w20/45 k=2: strays 5, fetch 340; best true bank -0.055 all -0.120; model pick bank -0.049 all -0.108 (fetch_top); spearman +0.90; 26s
+state 15/96 letter_T_w20/46 k=2: strays 10, fetch 642; best true bank -0.095 all -0.169; model pick bank -0.090 all -0.128 (fetch_top); spearman +0.98; 23s
+state 16/96 letter_T_w20/47 k=2: strays 8, fetch 555; best true bank -0.077 all -0.163; model pick bank -0.067 all -0.155 (fetch_top); spearman +0.93; 26s
+state 17/96 letter_S_w20/40 k=2: strays 11, fetch 777; best true bank -0.100 all -0.228; model pick bank -0.091 all -0.198 (fetch_top); spearman +0.83; 27s
+state 18/96 letter_S_w20/41 k=2: strays 8, fetch 546; best true bank -0.058 all -0.182; model pick bank -0.036 all -0.181 (fetch_top); spearman +0.93; 25s
+state 19/96 letter_S_w20/42 k=2: strays 8, fetch 543; best true bank -0.060 all -0.216; model pick bank -0.060 all -0.175 (fetch_top); spearman +0.94; 26s
+state 20/96 letter_S_w20/43 k=2: strays 10, fetch 625; best true bank -0.061 all -0.293; model pick bank -0.061 all -0.286 (fetch_top); spearman +0.91; 25s
+state 21/96 letter_S_w20/44 k=2: strays 10, fetch 532; best true bank -0.005 all -0.143; model pick bank +0.009 all -0.139 (fetch_top); spearman +0.72; 23s
+state 22/96 letter_S_w20/45 k=2: strays 7, fetch 460; best true bank -0.099 all -0.135; model pick bank -0.067 all -0.130 (fetch_top); spearman +0.94; 28s
+state 23/96 letter_S_w20/46 k=2: strays 9, fetch 549; best true bank -0.076 all -0.219; model pick bank -0.005 all -0.215 (fetch_top); spearman +0.88; 26s
+state 24/96 letter_S_w20/47 k=2: strays 7, fetch 496; best true bank -0.059 all -0.144; model pick bank -0.059 all -0.144 (fetch_top); spearman +0.95; 24s
+state 25/96 letter_X_w20/40 k=2: strays 8, fetch 565; best true bank -0.056 all -0.210; model pick bank -0.054 all -0.205 (fetch_top); spearman +0.95; 24s
+state 26/96 letter_X_w20/41 k=2: strays 9, fetch 609; best true bank -0.064 all -0.168; model pick bank -0.064 all -0.168 (fetch_top); spearman +0.95; 23s
+state 27/96 letter_X_w20/42 k=2: strays 7, fetch 498; best true bank -0.008 all -0.195; model pick bank -0.003 all -0.192 (fetch_top); spearman +0.86; 25s
+state 28/96 letter_X_w20/43 k=2: strays 10, fetch 662; best true bank -0.081 all -0.186; model pick bank -0.081 all -0.173 (fetch_top); spearman +0.94; 27s
+state 29/96 letter_X_w20/44 k=2: strays 9, fetch 553; best true bank -0.032 all -0.155; model pick bank -0.017 all -0.140 (fetch_top); spearman +0.89; 25s
+state 30/96 letter_X_w20/45 k=2: strays 5, fetch 328; best true bank -0.054 all -0.075; model pick bank -0.052 all -0.073 (fetch_top); spearman +0.90; 25s
+state 31/96 letter_X_w20/46 k=2: strays 8, fetch 486; best true bank -0.065 all -0.136; model pick bank -0.065 all -0.135 (fetch_top); spearman +0.95; 26s
+state 32/96 letter_X_w20/47 k=2: strays 6, fetch 420; best true bank -0.080 all -0.130; model pick bank -0.005 all -0.085 (fetch_top); spearman +0.87; 28s
+state 33/96 letter_O_w20/40 k=5: strays 4, fetch 288; best true bank -0.025 all -0.132; model pick bank +0.004 all -0.120 (fetch_top); spearman +0.87; 26s
+state 34/96 letter_O_w20/41 k=5: strays 5, fetch 335; best true bank -0.022 all -0.106; model pick bank -0.021 all -0.106 (fetch_top); spearman +0.93; 24s
+state 35/96 letter_O_w20/42 k=5: strays 2, fetch 138; best true bank -0.000 all -0.065; model pick bank -0.000 all -0.065 (fetch_top); spearman +0.95; 24s
+state 36/96 letter_O_w20/43 k=5: strays 3, fetch 174; best true bank -0.037 all -0.082; model pick bank -0.027 all -0.071 (fetch_top); spearman +0.90; 23s
+state 37/96 letter_O_w20/44 k=5: strays 9, fetch 446; best true bank -0.002 all -0.161; model pick bank +0.000 all -0.150 (fetch_top); spearman +0.86; 25s
+state 38/96 letter_O_w20/45 k=5: strays 3, fetch 188; best true bank -0.005 all -0.091; model pick bank -0.005 all -0.091 (fetch_top); spearman +0.93; 28s
+state 39/96 letter_O_w20/46 k=5: strays 7, fetch 399; best true bank -0.015 all -0.215; model pick bank -0.015 all -0.212 (fetch_top); spearman +0.79; 26s
+state 40/96 letter_O_w20/47 k=5: strays 5, fetch 326; best true bank -0.019 all -0.157; model pick bank -0.015 all -0.135 (fetch_top); spearman +0.95; 26s
+state 41/96 letter_T_w20/40 k=5: strays 6, fetch 432; best true bank -0.064 all -0.120; model pick bank -0.063 all -0.120 (fetch_top); spearman +0.95; 28s
+state 42/96 letter_T_w20/41 k=5: strays 3, fetch 210; best true bank -0.045 all -0.163; model pick bank -0.034 all -0.153 (fetch_top); spearman +0.89; 25s
+state 43/96 letter_T_w20/42 k=5: strays 4, fetch 254; best true bank -0.040 all -0.093; model pick bank -0.035 all -0.087 (fetch_top); spearman +0.88; 27s
+state 44/96 letter_T_w20/43 k=5: strays 5, fetch 303; best true bank -0.026 all -0.137; model pick bank -0.025 all -0.134 (fetch_top); spearman +0.88; 27s
+state 45/96 letter_T_w20/44 k=5: strays 5, fetch 192; best true bank -0.001 all -0.145; model pick bank -0.001 all -0.144 (fetch_top); spearman +0.91; 29s
+state 46/96 letter_T_w20/45 k=5: strays 1, fetch 72; best true bank -0.008 all -0.060; model pick bank -0.006 all -0.059 (fetch_top); spearman +0.93; 25s
+state 47/96 letter_T_w20/46 k=5: strays 5, fetch 282; best true bank -0.036 all -0.117; model pick bank -0.035 all -0.117 (fetch_top); spearman +0.93; 23s
+state 48/96 letter_T_w20/47 k=5: strays 4, fetch 282; best true bank -0.077 all -0.123; model pick bank -0.073 all -0.120 (fetch_top); spearman +0.95; 27s
+state 49/96 letter_S_w20/40 k=5: strays 4, fetch 288; best true bank -0.045 all -0.111; model pick bank -0.034 all -0.087 (fetch_top); spearman +0.92; 26s
+state 50/96 letter_S_w20/41 k=5: strays 3, fetch 198; best true bank -0.014 all -0.085; model pick bank -0.002 all -0.085 (fetch_top); spearman +0.91; 26s
+state 51/96 letter_S_w20/42 k=5: strays 2, fetch 114; best true bank -0.033 all -0.068; model pick bank -0.002 all -0.067 (fetch_top); spearman +0.94; 29s
+state 52/96 letter_S_w20/43 k=5: strays 6, fetch 351; best true bank -0.014 all -0.285; model pick bank -0.008 all -0.231 (fetch_top); spearman +0.88; 27s
+state 53/96 letter_S_w20/44 k=5: strays 8, fetch 388; best true bank -0.010 all -0.150; model pick bank -0.009 all -0.144 (fetch_top); spearman +0.94; 26s
+state 54/96 letter_S_w20/45 k=5: strays 3, fetch 216; best true bank -0.035 all -0.071; model pick bank -0.022 all -0.056 (fetch_top); spearman +0.91; 27s
+state 55/96 letter_S_w20/46 k=5: strays 2, fetch 72; best true bank -0.033 all -0.067; model pick bank -0.002 all -0.067 (fetch_top); spearman +0.92; 29s
+state 56/96 letter_S_w20/47 k=5: strays 2, fetch 144; best true bank -0.065 all -0.065; model pick bank -0.063 all -0.062 (fetch_top); spearman +0.89; 26s
+state 57/96 letter_X_w20/40 k=5: strays 1, fetch 67; best true bank -0.018 all -0.077; model pick bank -0.018 all -0.077 (fetch_top); spearman +0.95; 27s
+state 58/96 letter_X_w20/41 k=5: strays 2, fetch 120; best true bank -0.002 all -0.068; model pick bank -0.002 all -0.062 (fetch_top); spearman +0.92; 28s
+state 59/96 letter_X_w20/42 k=5: strays 2, fetch 144; best true bank -0.000 all -0.150; model pick bank -0.000 all -0.150 (fetch_top); spearman +0.88; 25s
+state 60/96 letter_X_w20/43 k=5: strays 2, fetch 119; best true bank -0.047 all -0.047; model pick bank -0.046 all -0.028 (fetch_top); spearman +0.92; 27s
+state 61/96 letter_X_w20/44 k=5: strays 6, fetch 337; best true bank -0.084 all -0.161; model pick bank -0.084 all -0.157 (fetch_top); spearman +0.82; 28s
+state 62/96 letter_X_w20/45 k=5: strays 1, fetch 72; best true bank -0.002 all -0.054; model pick bank +0.013 all -0.053 (fetch_top); spearman +0.93; 21s
+state 63/96 letter_X_w20/46 k=5: strays 4, fetch 210; best true bank -0.050 all -0.115; model pick bank -0.043 all -0.109 (fetch_top); spearman +0.86; 30s
+state 64/96 letter_X_w20/47 k=5: strays 2, fetch 144; best true bank -0.002 all -0.113; model pick bank -0.002 all -0.111 (fetch_top); spearman +0.94; 26s
+state 65/96 letter_O_w20/40 k=8: strays 2, fetch 144; best true bank -0.000 all -0.086; model pick bank +0.000 all -0.049 (fetch_top); spearman +0.94; 26s
+state 66/96 letter_O_w20/41 k=8: strays 3, fetch 191; best true bank -0.000 all -0.103; model pick bank -0.000 all -0.103 (fetch_top); spearman +0.95; 22s
+state 67/96 letter_O_w20/42 k=8: strays 1, fetch 66; best true bank -0.000 all -0.066; model pick bank -0.000 all -0.066 (fetch_top); spearman +0.97; 24s
+state 68/96 letter_O_w20/43 k=8: strays 2, fetch 108; best true bank +0.000 all -0.090; model pick bank +0.000 all -0.077 (fetch_top); spearman +0.91; 26s
+state 69/96 letter_O_w20/44 k=8: strays 9, fetch 492; best true bank -0.077 all -0.150; model pick bank -0.076 all -0.131 (fetch_top); spearman +0.92; 26s
+state 70/96 letter_O_w20/45 k=8: strays 3, fetch 188; best true bank -0.001 all -0.091; model pick bank -0.001 all -0.091 (fetch_top); spearman +0.89; 26s
+state 71/96 letter_O_w20/46 k=8: strays 6, fetch 327; best true bank -0.017 all -0.212; model pick bank +0.000 all -0.211 (fetch_top); spearman +0.92; 24s
+state 72/96 letter_O_w20/47 k=8: strays 5, fetch 326; best true bank -0.007 all -0.157; model pick bank -0.001 all -0.135 (fetch_top); spearman +0.91; 24s
+state 73/96 letter_T_w20/40 k=8: strays 2, fetch 144; best true bank -0.045 all -0.105; model pick bank -0.026 all -0.105 (fetch_top); spearman +0.90; 24s
+state 74/96 letter_T_w20/41 k=8: strays 2, fetch 138; best true bank -0.036 all -0.162; model pick bank -0.036 all -0.156 (fetch_top); spearman +0.97; 23s
+state 75/96 letter_T_w20/42 k=8: strays 1, fetch 38; best true bank -0.002 all -0.065; model pick bank +0.003 all -0.063 (fetch_top); spearman +0.93; 25s
+state 76/96 letter_T_w20/43 k=8: strays 2, fetch 142; best true bank +0.000 all -0.131; model pick bank +0.001 all -0.128 (fetch_top); spearman +0.97; 27s
+state 77/96 letter_T_w20/44 k=8: strays 5, fetch 192; best true bank -0.001 all -0.145; model pick bank -0.000 all -0.145 (fetch_top); spearman +0.91; 28s
+state 78/96 letter_T_w20/45 k=8: strays 0, fetch 0; best true bank -0.006 all -0.006; model pick bank +0.005 all +0.005 (bank_top); spearman +0.63; 20s
+state 79/96 letter_T_w20/46 k=8: strays 2, fetch 66; best true bank -0.025 all -0.067; model pick bank -0.024 all -0.067 (fetch_top); spearman +0.93; 27s
+state 80/96 letter_T_w20/47 k=8: strays 2, fetch 144; best true bank -0.030 all -0.073; model pick bank -0.030 all -0.070 (fetch_top); spearman +0.93; 25s
+state 81/96 letter_S_w20/40 k=8: strays 4, fetch 288; best true bank -0.040 all -0.113; model pick bank -0.040 all -0.104 (fetch_top); spearman +0.94; 22s
+state 82/96 letter_S_w20/41 k=8: strays 1, fetch 54; best true bank +0.000 all -0.085; model pick bank +0.000 all -0.085 (fetch_top); spearman +0.96; 27s
+state 83/96 letter_S_w20/42 k=8: strays 0, fetch 0; best true bank -0.015 all -0.015; model pick bank +0.004 all +0.004 (bank_top); spearman +0.67; 27s
+state 84/96 letter_S_w20/43 k=8: strays 4, fetch 255; best true bank -0.014 all -0.286; model pick bank -0.013 all -0.233 (fetch_top); spearman +0.94; 25s
+state 85/96 letter_S_w20/44 k=8: strays 3, fetch 68; best true bank -0.036 all -0.149; model pick bank -0.034 all -0.149 (fetch_top); spearman +0.95; 25s
+state 86/96 letter_S_w20/45 k=8: strays 4, fetch 288; best true bank -0.137 all -0.159; model pick bank -0.113 all -0.159 (fetch_top); spearman +0.81; 29s
+state 87/96 letter_S_w20/46 k=8: strays 1, fetch 0; best true bank -0.006 all -0.006; model pick bank +0.009 all +0.009 (bank_top); spearman +0.57; 23s
+state 88/96 letter_S_w20/47 k=8: strays 0, fetch 0; best true bank -0.015 all -0.015; model pick bank -0.014 all -0.014 (bank_top); spearman +0.83; 23s
+state 89/96 letter_X_w20/40 k=8: strays 0, fetch 0; best true bank +0.000 all +0.000; model pick bank +0.005 all +0.005 (bank_top); spearman +0.52; 23s
+state 90/96 letter_X_w20/41 k=8: strays 1, fetch 72; best true bank -0.001 all -0.068; model pick bank -0.000 all -0.065 (fetch_top); spearman +0.92; 30s
+state 91/96 letter_X_w20/42 k=8: strays 0, fetch 0; best true bank -0.030 all -0.030; model pick bank -0.009 all -0.009 (bank_top); spearman +0.50; 23s
+state 92/96 letter_X_w20/43 k=8: strays 0, fetch 0; best true bank -0.001 all -0.001; model pick bank +0.005 all +0.005 (bank_top); spearman +0.58; 22s
+state 93/96 letter_X_w20/44 k=8: strays 4, fetch 216; best true bank -0.100 all -0.100; model pick bank -0.050 all -0.050 (bank_top); spearman +0.85; 27s
+state 94/96 letter_X_w20/45 k=8: strays 1, fetch 72; best true bank -0.001 all -0.054; model pick bank +0.026 all -0.054 (fetch_top); spearman +0.90; 25s
+state 95/96 letter_X_w20/46 k=8: strays 1, fetch 0; best true bank -0.004 all -0.004; model pick bank -0.000 all -0.000 (bank_top); spearman +0.65; 20s
+state 96/96 letter_X_w20/47 k=8: strays 0, fetch 0; best true bank -0.013 all -0.013; model pick bank -0.001 all -0.001 (bank_top); spearman +0.61; 22s
+[38;5;159m[Genesis] [06:11:18] [INFO] 💤 Exiting Genesis and caching compiled kernels...[0m
+wrote /home/alon/Code/pile_manipulation/experiments/EXP-0075-closed-loop-benchmark/results/regret_base1F.json

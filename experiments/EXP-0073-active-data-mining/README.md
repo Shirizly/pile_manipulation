@@ -1,7 +1,7 @@
 # EXP-0073 active data mining (retrospective + proposed live loop)
 
 Status: **PAUSED by user 2026-10-06**. Exploration mode, **pilot-grade** (narrow n20 exact-20 mm task, DS-0015/DS-0016/DS-0017, zoom-64 NFD,
-3 retrain seeds, one scoring ensemble, one selection draw). There is deliberately **no EXPERIMENT.md and no REGISTER entry** yet; a proper record is
+3 retrain seeds, one scoring ensemble, one selection draw). [2026-10-15: EXPERIMENT.md + REGISTER C-085 now written from results/.] Originally there was deliberately **no EXPERIMENT.md and no REGISTER entry**; a proper record is
 written later (see experiments/TODO.md, MID, "EXP-0073 active data mining: next validation steps"). Split out of EXP-0072 on 2026-10-06.
 
 What it is: can hard-example mining pick better new training rows than random ones for the zoom-window NFD? Done at zero sim cost as a *retrospective*

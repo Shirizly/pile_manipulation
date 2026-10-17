@@ -119,3 +119,7 @@ Letters, in-goal mass at k24, original -> legal (paired, 24 episodes): narrow 0.
 [+0.008, +0.117]); broad worldframe 0.548 -> 0.609 (+0.060 [+0.020, +0.102]). **The inversion holds and widens with
 legal actions**: broad models gain, narrow models do not (narrow-broad at k24 now -0.11..-0.18). The training-data
 caveat (DS-0008, ISS-010) still applies to the narrow models.
+
+## Scope note (2026-10-05 policy)
+
+The narrow arms are pilot-instrument models (DS-0008/0010-trained; policy 2026-10-05). C-057's content -- offline accuracy and slateN inverting against closed loop under a domain / action-space shift -- is **pilot-grade**: a warning about the metrics, not a finding about narrow training, which is not a research axis. Promotion means reproducing a metric inversion with broad-trained models under a comparable shift on a broad test set; a re-run with DS-0015-trained narrow NFDs would not promote it. Frontmatter unchanged.

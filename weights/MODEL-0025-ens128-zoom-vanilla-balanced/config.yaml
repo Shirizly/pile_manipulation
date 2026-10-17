@@ -1,0 +1,7 @@
+# Composite model MODEL-0025: no payload of its own
+id: MODEL-0025
+kind: ensemble-mean-pasted-frame
+members: [MODEL-0021, MODEL-0018]   # zoom128 s0 (z128_f8_ms4), vanilla128 s0 (w128_f8_ms4)
+combine: mean of members' pasted 64x64 predictions; each member rolls its own state
+mass_balance: true                  # per-step 'balance' fix (EXP-0074 posthoc_fix, val-selected) on the ensemble's predicted change
+implementation: experiments/EXP-0075-closed-loop-benchmark/code/wide_planner.py::WideEns(members, balance=True)

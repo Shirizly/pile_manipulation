@@ -1,0 +1,11 @@
+{
+ "best_cell": "blend1.0",
+ "equal_time_12_16": [
+  0.04996625830729803,
+  0.04042185026974905
+ ],
+ "cond_a": true,
+ "bellman_mean_on_new": 0.5692486666973745,
+ "cond_b": false,
+ "lam2": 0.5
+}

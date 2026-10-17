@@ -1,6 +1,6 @@
 # EXP-0072 zoom-window NFD (higher-resolution inputs)
 
-Status: **ACTIVE**, exploration mode, pilot-grade (narrow n20 exact-20 mm data only). There is deliberately **no EXPERIMENT.md and no REGISTER entry** yet;
+Status: **ACTIVE**, exploration mode, pilot-grade (narrow n20 exact-20 mm data only). [2026-10-15: EXPERIMENT.md + REGISTER C-084 now written from NOTES.md.] Originally there was deliberately **no EXPERIMENT.md and no REGISTER entry**;
 the proper record comes later (experiments/TODO.md, MID, EXP-0073 item (h)).
 
 What it is: NFD whose input is a high-resolution zoom window around the push (64 / 128 px windows, soft/hard thresholds, pasted back to the world for slateN) instead of the 1 mm/px world raster.

@@ -1,0 +1,16 @@
+letter_S_w20 42 ref -0.576 gd_ref -0.83
+gd5 -0.859
+gd10 -0.826
+letter_S_w20 42 {'ref': -0.576, 'gd_ref': -0.83, 'gd5': -0.859, 'gd10': -0.826} 245s
+letter_T_w20 44 ref -0.606 gd_ref -0.867
+gd5 -0.763
+gd10 -0.85
+letter_T_w20 44 {'ref': -0.606, 'gd_ref': -0.867, 'gd5': -0.763, 'gd10': -0.85} 228s
+letter_S_w20 46 ref nan gd_ref -0.744
+gd5 -0.664
+gd10 -0.722
+letter_S_w20 46 {'ref': nan, 'gd_ref': -0.744, 'gd5': -0.664, 'gd10': -0.722} 223s
+letter_O_w20 40 ref -0.673 gd_ref -0.969
+gd5 -0.903
+gd10 -0.895
+letter_O_w20 40 {'ref': -0.673, 'gd_ref': -0.969, 'gd5': -0.903, 'gd10': -0.895} 218s

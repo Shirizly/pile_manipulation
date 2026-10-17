@@ -9,19 +9,17 @@ def shard_of(f):
     m = re.search(r"/(scattered|piled|inbetween)-.*?/cube/n(\d+)/", f); return f"{m.group(1)}_n{m.group(2)}"
 
 
+SPLIT_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "results", "split_files.json")
+
+
 def split_files(seed=0):
-    """FIXED file-level split. The original version seeded numpy with python's per-process-salted hash(str) -> a DIFFERENT split in every process
-    (train caches overlapped the cached test sets, found 2026-10-07 04:00). The canonical split is now the explicit file->split map in
-    results/split_files.json (test = exactly the files behind artifacts/test_sets.pt; val ~5.5 % / train the rest, seed 0)."""
-    mp = "experiments/EXP-0074-wide-domain-zoom-nfd/results/split_files.json"
-    if os.path.exists(mp): return json.load(open(mp))
-    fs = sorted(glob.glob("Genesis/data/Sean/**/_*_data.pt", recursive=True)); by = collections.defaultdict(list)
-    for f in fs: by[shard_of(f)].append(f)
-    sp = {}
-    for k, ff in sorted(by.items()):
-        r = np.random.default_rng(seed + hash(k) % 1000); p = r.permutation(len(ff)); nt = max(1, round(0.10 * len(ff))); nv = max(1, round(0.05 * len(ff)))
-        for j, i in enumerate(p): sp[ff[i]] = "test" if j < nt else ("val" if j < nt + nv else "train")
-    return sp
+    """FIXED file-level split: the explicit file->split map in results/split_files.json (test = exactly the files behind
+    artifacts/test_sets.pt; val ~5.5 % / train the rest, seed 0). The original version seeded numpy with python's per-process-salted
+    hash(str) -> a DIFFERENT split in every process (train caches overlapped the cached test sets, found 2026-10-07 04:00). That
+    fallback was removed 2026-10-15: a missing map is an error, never a silently regenerated split. `seed` is ignored (kept for callers)."""
+    if not os.path.exists(SPLIT_FILE):
+        raise FileNotFoundError(f"EXP-0074 pinned split map missing: {SPLIT_FILE} -- do not regenerate it; restore it from git")
+    return json.load(open(SPLIT_FILE))
 
 
 def load_file(f, split, shard):

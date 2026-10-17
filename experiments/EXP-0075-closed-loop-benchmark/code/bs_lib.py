@@ -19,27 +19,7 @@ MODELS = {   # key -> (timing key, members)
     "lf": ("LF (switched linear 64)", lambda: [LFMember()]),
     "vanilla64": ("vanilla64 (f4)", lambda: [wp.Member("world", 64, R74 + "w64_s0_ms4/unet_best.pth", feats=(4, 8, 16))]),
 }
-class LFMember:
-    """Switched-linear foresight (Suh & Tedrake; Baselines/LinearForesight) wide-fit operators as a planner model: hard length gate (the fitted model), own prediction fed back, on the 64x64 occupancy (EXP-0074 eval_lf_wide.LF)."""
-    kind = "lf"
-
-    def __init__(self, ck="experiments/EXP-0074-wide-domain-zoom-nfd/runs/lf_wide/operators.pt"):
-        from Baselines.LinearForesight.model import predict_switched, push_length_m
-        from fit_linear_foresight import actions_to_pixels
-        from simple_mpc.adapters import OCC_BOUNDS
-        c = torch.load(ck, map_location="cpu", weights_only=False); self.res = c["res"]; self.edges = c["bin_edges"].to(DEV); self.ops = [o.to(DEV).float() for o in c["operators"]]
-        self.lo = torch.tensor([OCC_BOUNDS["x_min"], OCC_BOUNDS["y_min"]]); self.hi = torch.tensor([OCC_BOUNDS["x_max"], OCC_BOUNDS["y_max"]]); self._ps, self._pl, self._ap = predict_switched, push_length_m, actions_to_pixels
-
-    def begin(self, S0):
-        pass
-
-    def _rollout(self, P0, P1, occ0):
-        N, H = P0.shape[:2]; cur = occ0.expand(N, -1, -1).clone(); out = []
-        for k in range(H):
-            act = torch.cat([P0[:, k], P1[:, k]], 1).float(); s, e = self._ap(act, self.lo, self.hi, tuple(cur.shape[-2:])); cur = self._ps(self.edges, self.ops, cur, s, e, self._pl(act), self.res, tuple(cur.shape[-2:])); out.append(cur)
-        return out
-
-    rollout = torch.no_grad()(_rollout)
+LFMember = wp.LFMember   # moved to wide_planner.py (2026-10-15, T0b): one copy shared with closed_loop.MODELS
 
 
 _T1, _T2 = json.load(open(RES / "timing_units.json")), json.load(open(RES / "timing_units2.json"))

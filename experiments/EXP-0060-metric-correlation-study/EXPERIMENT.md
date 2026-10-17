@@ -232,3 +232,7 @@ goals (mass_in_goal_mae_tough and slateN_tough share the tough set), so this sho
 not image error, is what ranking depends on -- not yet that either predicts closed-loop performance; models are
 not independent (3 seeds of one recipe); offline only.
 
+
+## Scope note (2026-10-05 policy)
+
+The clean re-run and its whole model zoo are narrow (DS-0016; narrow v2 NFD / linear / retrieval; policy 2026-10-05), so C-072 is **pilot-grade**. Promotion: the same metric-correlation table on broad-trained models over a broad test set (legal-only DS-0006 pools or DS-0007). Frontmatter unchanged.

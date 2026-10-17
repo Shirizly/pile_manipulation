@@ -1,0 +1,195 @@
+{
+ "_note": "ISS-012 fix check 2026-10-15: eval_extended.caps_from_raw (frac 0.05 of split median true spread) vs the old absolute 1e-9 guard (frac=0), on EXP-0063 results/pilot_eval.json DS-0017 val_pools_v2 slateN_tough_raw",
+ "models": {
+  "persistence": {
+   "old_abs_guard": 0.04077733596501608,
+   "relative_guard": 0.05134416573074055,
+   "threshold": 0.0008709849906153978,
+   "dropped_cells": [
+    [
+     "quadrant_0",
+     17
+    ],
+    [
+     "quadrant_0",
+     22
+    ],
+    [
+     "quadrant_0",
+     27
+    ]
+   ]
+  },
+  "nfd_3ch_narrow_l20_v2": {
+   "old_abs_guard": 0.7214734870940835,
+   "relative_guard": 0.718280036077887,
+   "threshold": 0.0008709849906153978,
+   "dropped_cells": [
+    [
+     "quadrant_0",
+     17
+    ],
+    [
+     "quadrant_0",
+     22
+    ],
+    [
+     "quadrant_0",
+     27
+    ]
+   ]
+  },
+  "nfd_3ch_narrow_l20_v2_seed1": {
+   "old_abs_guard": 0.6996212197608451,
+   "relative_guard": 0.705843120670218,
+   "threshold": 0.0008709849906153978,
+   "dropped_cells": [
+    [
+     "quadrant_0",
+     17
+    ],
+    [
+     "quadrant_0",
+     22
+    ],
+    [
+     "quadrant_0",
+     27
+    ]
+   ]
+  },
+  "nfd_3ch_narrow_l20_v2_seed2": {
+   "old_abs_guard": 0.5669581675620675,
+   "relative_guard": 0.7128532613280933,
+   "threshold": 0.0008709849906153978,
+   "dropped_cells": [
+    [
+     "quadrant_0",
+     17
+    ],
+    [
+     "quadrant_0",
+     22
+    ],
+    [
+     "quadrant_0",
+     27
+    ]
+   ]
+  },
+  "nfd_v2_outblur1": {
+   "old_abs_guard": 0.7370648015610703,
+   "relative_guard": 0.7338713505448738,
+   "threshold": 0.0008709849906153978,
+   "dropped_cells": [
+    [
+     "quadrant_0",
+     17
+    ],
+    [
+     "quadrant_0",
+     22
+    ],
+    [
+     "quadrant_0",
+     27
+    ]
+   ]
+  },
+  "nfd_v2_outblur2": {
+   "old_abs_guard": 0.7319423464566455,
+   "relative_guard": 0.7288203537685025,
+   "threshold": 0.0008709849906153978,
+   "dropped_cells": [
+    [
+     "quadrant_0",
+     17
+    ],
+    [
+     "quadrant_0",
+     22
+    ],
+    [
+     "quadrant_0",
+     27
+    ]
+   ]
+  },
+  "nfd_3ch_narrow_l20_v2_soft_s1": {
+   "old_abs_guard": 0.6387569048528754,
+   "relative_guard": 0.7978424571718717,
+   "threshold": 0.0008709849906153978,
+   "dropped_cells": [
+    [
+     "quadrant_0",
+     17
+    ],
+    [
+     "quadrant_0",
+     22
+    ],
+    [
+     "quadrant_0",
+     27
+    ]
+   ]
+  },
+  "nfd_3ch_narrow_l20_v2_soft_s2": {
+   "old_abs_guard": 0.8182692136711337,
+   "relative_guard": 0.8237118700825632,
+   "threshold": 0.0008709849906153978,
+   "dropped_cells": [
+    [
+     "quadrant_0",
+     17
+    ],
+    [
+     "quadrant_0",
+     22
+    ],
+    [
+     "quadrant_0",
+     27
+    ]
+   ]
+  },
+  "nfd_3ch_narrow_l20_v2_sharp_w03": {
+   "old_abs_guard": 0.666458707077312,
+   "relative_guard": 0.6620738854247834,
+   "threshold": 0.0008709849906153978,
+   "dropped_cells": [
+    [
+     "quadrant_0",
+     17
+    ],
+    [
+     "quadrant_0",
+     22
+    ],
+    [
+     "quadrant_0",
+     27
+    ]
+   ]
+  },
+  "nfd_3ch_narrow_l20_v2_sharp_w07": {
+   "old_abs_guard": 0.6156752028960233,
+   "relative_guard": 0.6113061347254443,
+   "threshold": 0.0008709849906153978,
+   "dropped_cells": [
+    [
+     "quadrant_0",
+     17
+    ],
+    [
+     "quadrant_0",
+     22
+    ],
+    [
+     "quadrant_0",
+     27
+    ]
+   ]
+  }
+ }
+}

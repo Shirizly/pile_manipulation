@@ -30,3 +30,24 @@ def test_illegal_push_is_slid_back_and_legal_push_untouched():
     good = torch.tensor([[-0.02, 0.0, 0.0, 0.0]])                 # blade 20 mm behind the cube centre
     out2, shift2, ok2 = legalize_pushes(good, cubes, yaw, CH, HL, HW)
     assert ok2[0] and shift2[0] == 0 and torch.equal(out2, good)
+
+
+def test_torch_legalizer_matches_cpu_on_random_scatter():
+    """legalize_pushes_torch (batched) reproduces legalize_pushes push for push (shared-state broadcast)."""
+    from Genesis.action_sampling import legalize_pushes_torch
+    g = torch.Generator().manual_seed(0)
+    box = (-0.064 + 0.005, 0.064 - 0.005)
+    agree = total = 0
+    for _ in range(4):
+        cubes = (torch.rand(1, 20, 2, generator=g) - 0.5) * 0.08
+        yaw = torch.rand(1, 20, generator=g) * math.pi
+        s = (torch.rand(200, 2, generator=g) - 0.5) * 0.09
+        ang = torch.rand(200, generator=g) * 2 * math.pi; L = 0.02 + 0.05 * torch.rand(200, generator=g)
+        acts = torch.cat([s, s + L[:, None] * torch.stack([ang.cos(), ang.sin()], -1)], -1)
+        a1, s1, o1 = legalize_pushes(acts, cubes.expand(200, -1, -1), yaw.expand(200, -1), CH, HL, HW, box=box)
+        a2, s2, o2 = legalize_pushes_torch(acts, cubes, yaw, CH, HL, HW, box=box)
+        same = (o1 == o2) & ((a1 - a2).abs().max(1).values < 1e-6) & ((s1 - s2).abs() < 1e-6)
+        agree += int(same.sum()); total += len(same)
+        for k in torch.nonzero(o2).flatten().tolist():           # every push it calls legal is legal (exact SAT)
+            assert not _illegal(a2[k], cubes[0], yaw[0])
+    assert agree / total >= 0.99, agree / total

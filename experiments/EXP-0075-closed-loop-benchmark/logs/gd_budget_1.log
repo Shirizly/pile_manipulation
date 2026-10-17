@@ -1,0 +1,16 @@
+letter_X_w20 43 ref -0.635 gd_ref -0.967
+gd5 -0.949
+gd10 -0.961
+letter_X_w20 43 {'ref': -0.635, 'gd_ref': -0.967, 'gd5': -0.949, 'gd10': -0.961} 246s
+letter_O_w20 45 ref -0.452 gd_ref -0.611
+gd5 -0.606
+gd10 -0.629
+letter_O_w20 45 {'ref': -0.452, 'gd_ref': -0.611, 'gd5': -0.606, 'gd10': -0.629} 229s
+letter_X_w20 47 ref -0.701 gd_ref -0.855
+gd5 -0.841
+gd10 -0.851
+letter_X_w20 47 {'ref': -0.701, 'gd_ref': -0.855, 'gd5': -0.841, 'gd10': -0.851} 223s
+letter_X_w20 41 ref -0.45 gd_ref -0.685
+gd5 -0.674
+gd10 -0.639
+letter_X_w20 41 {'ref': -0.45, 'gd_ref': -0.685, 'gd5': -0.674, 'gd10': -0.639} 218s

@@ -1,0 +1,46 @@
+{
+  "provenance": {
+    "commit": "a5ccb680",
+    "commit_full": "a5ccb680d729af6a4f75494d7f38a60d5e1b6c94",
+    "dirty": true,
+    "dirty_files": [
+      "Baselines/LinearForesight/fit_switched.py",
+      "experiments/COMMANDS.jsonl",
+      "experiments/EXP-0039-closed-loop-metric-validity/EXPERIMENT.md",
+      "experiments/EXP-0043-batched-closed-loop/code/batched_closed_loop.py",
+      "experiments/OPEN_ISSUES.md",
+      "experiments/REGISTER.md",
+      "experiments/SUMMARY.md",
+      "simple_mpc/adapters.py",
+      "simple_mpc/learned_mpc.py",
+      "tests/test_learned_mpc.py"
+    ],
+    "branch": "baselines/overnight"
+  },
+  "train_cfg": "configs/dataset/genesis_narrow_l20_train_v2.yaml",
+  "test_cfg": "configs/dataset/genesis_narrow_l20_test_chains_v2.yaml",
+  "n_bins": 1,
+  "res": 64,
+  "constraint": "ridge",
+  "counts_per_bin": [
+    11659
+  ],
+  "bin_edges_mm": [
+    0.0,
+    20.000003278255463
+  ],
+  "accuracy": {
+    "persistence": 0.0,
+    "mean-delta": 0.16185897588729858,
+    "linear-single": 0.27860140800476074,
+    "linear-switched": 0.27860140800476074
+  },
+  "per_bin_accuracy": {
+    "0": {
+      "persistence": 0.0,
+      "mean-delta": 0.16185897588729858,
+      "linear-single": 0.27860140800476074,
+      "linear-switched": 0.27860140800476074
+    }
+  }
+}

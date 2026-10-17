@@ -1,0 +1,12 @@
+Mon Oct  5 09:07:47 AM CEST 2026 START w10
+Mon Oct  5 09:36:31 AM CEST 2026 END w10 rc=0
+Mon Oct  5 09:36:31 AM CEST 2026 START w15
+Mon Oct  5 10:04:12 AM CEST 2026 END w15 rc=0
+Mon Oct  5 10:04:13 AM CEST 2026 START w20
+Mon Oct  5 10:33:19 AM CEST 2026 END w20 rc=0
+Mon Oct  5 10:33:19 AM CEST 2026 START oracle_w15
+Mon Oct  5 12:11:08 PM CEST 2026 END oracle_w15 rc=0
+Mon Oct  5 12:11:08 PM CEST 2026 START oracle_w10
+Mon Oct  5 02:03:02 PM CEST 2026 END oracle_w10 rc=0
+1
+experiments/EXP-0067-letter-stroke-width-sweep/code/queue.sh: line 46: 0: command not found

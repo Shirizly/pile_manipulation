@@ -447,6 +447,16 @@ degeneracy threshold (EXP-0063 `summarize.py::drop_degenerate` uses 5% of the sp
 or per-cell clipping, decided once and applied to every harness. **Exposure:** every
 val_pools_v2 slateN/slateN_tough number (EXP-0059 val selection, EXP-0063 val column).
 
+**Fix 2026-10-15 (EXP-0059 harness only; status: partially fixed):** `experiments/EXP-0059-*/code/eval_extended.py` now scores
+slateN / slateN_tough from the per-cell raw arrays through `caps_from_raw` (drop a cell when its true spread < `DEGEN_FRAC` = 0.05 x
+the split's median spread, the EXP-0063 `drop_degenerate` rule; results also carry `degen_threshold`); `slate_capture` takes an
+optional `den_thr`. Check on EXP-0063 `results/pilot_eval.json` (DS-0017 val): it drops exactly quadrant_0 pools 17 / 22 / 27 and
+reproduces the numbers above (seed2 0.567 -> 0.713, soft_s1 0.639 -> 0.798) -> `experiments/EXP-0059-*/results/iss012_fix_check.json`;
+test `tests/test_iss012_degenerate_capture.py`. No stored result was regenerated. **Still owed:** the same absolute `den > 1e-9`
+guard remains in EXP-0059 `multistep_eval.py`, `eval_retrieval.py`, `neighbour_rank_curve.py`, `reeval_ds0009.py`, EXP-0053
+`eval_narrow.py`, EXP-0042 `one_step.py`, EXP-0064 `score_image_metrics.py`, EXP-0068 `analyse.py`, EXP-0073 `active_common.py`,
+EXP-0039 `analyse_run0002_extended.py`; and re-scoring the exposed val numbers.
+
 ## ISS-013 — DS-0001 / DS-0006 (and pre-fix planner candidate banks) carry the ISS-010 illegal-touchdown defect
 
 **status:** open · **found:** 2026-10-03 (EXP-0065, prompted by the 2026-10-03 experiment-summary audit) ·
@@ -497,7 +507,7 @@ DS-0006 successor with `pile_aware_action_batch` if (a) moves rankings.
 
 ## ISS-014 — `legalize_pushes` ok=False pushes are executed unchanged by the closed-loop driver
 
-**status:** in-progress (fix under EXP-0066, another agent, 2026-10-04) · **found:** 2026-10-04 (EXP-0039 extended analysis) ·
+**status:** closed 2026-10-15 (fixed by EXP-0066; see Closure below) · **found:** 2026-10-04 (EXP-0039 extended analysis) ·
 **severity:** medium (small rates; model orders unchanged without the affected episodes)
 
 `Genesis/action_sampling.py::legalize_pushes` returns `ok=False` and the push UNCHANGED when no legal offset along the push
@@ -510,6 +520,14 @@ model's affected episodes are dropped (RUN-0002 CEM tau 1.00; RUN-0003 scatter 0
 with this caveat recorded. Exposure: EXP-0051 / EXP-0054 legal re-runs (2026-10-04) used the same path -- their `legal_ok`
 rates are unmeasured. **To close:** the driver must replace an `ok=False` push (resample / skip / fall back to the best
 legal candidate) rather than execute it; being done in EXP-0066. Then report the `ok=False` rate per record.
+
+**Closure (2026-10-15, verified):** `simple_mpc/learned_mpc.py::legal_fallback` + `run_episodes_batched(..., legalize_fallback=True)`
+re-score the env's bank and execute the best candidate `legalize` can make legal, or raise if none exists (never execute an
+`ok=False` push); per-step `legal_fallback` is recorded. Evidence: `tests/test_learned_mpc.py::test_legalize_fallback_never_executes_an_illegal_push`
+passes (12/12 in the file, 2026-10-15); EXP-0066 (C-073 power study) ran with it: executed illegal 0 / 24,576 pushes, fallback fired
+in 0.4-5.9 % of steps per model (EXP-0066 EXPERIMENT.md result / Legality). Caveat: the fix is still UNCOMMITTED in the working tree
+(`git diff simple_mpc/learned_mpc.py`, 2026-10-15) -- commit it. Not done: back-measuring `legal_ok` rates for the EXP-0051 / EXP-0054
+legal re-runs (exposure above stays as recorded).
 
 ## ISS-015 — pasted-frame accuracy and slateN of window models are capped by raster-style mismatch (box window raster pasted onto the disc-style world raster)
 

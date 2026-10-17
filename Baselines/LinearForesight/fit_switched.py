@@ -174,6 +174,9 @@ def main():
                           "overwrites the --res 64 bundle.")
     ap.add_argument("--max-samples", type=int, default=None,
                      help="subsample the TRAIN split for a quick smoke test")
+    ap.add_argument("--bootstrap-seed", type=int, default=None,
+                    help="resample the TRAIN rows with replacement (same count) under this seed before fitting: "
+                         "a data-bootstrap replicate of the operator (EXP-0066 linear-family instances)")
     ap.add_argument("--device", default="cuda" if torch.cuda.is_available() else "cpu")
     args = ap.parse_args()
     if args.out is None:
@@ -195,6 +198,15 @@ def main():
         for f in ("occ0", "occ1", "actions", "run_idx"):
             setattr(data, f, getattr(data, f)[idx])
         print(f"  subsampled to {args.max_samples} rows (--max-samples)")
+
+    if args.bootstrap_seed is not None:
+        N = data.occ0.shape[0]
+        g = torch.Generator().manual_seed(int(args.bootstrap_seed))
+        idx = torch.randint(0, N, (N,), generator=g)
+        for f in ("occ0", "occ1", "actions", "run_idx"):
+            setattr(data, f, getattr(data, f)[idx])
+        print(f"  bootstrap resample of the {N} train rows with replacement (seed {args.bootstrap_seed}, "
+              f"{idx.unique().numel()} distinct rows)")
 
     H, W = data.H, data.W
     lengths_m = push_length_m(data.actions)
@@ -235,7 +247,7 @@ def main():
         "operators": operators, "bin_edges": bin_edges, "counts": counts,
         "single_operator": A_single, "mean_delta": bmd,
         "res": args.res, "crop": args.crop, "constraint": args.constraint,
-        "ridge": args.ridge, "n_bins": args.n_bins,
+        "ridge": args.ridge, "n_bins": args.n_bins, "bootstrap_seed": args.bootstrap_seed,
         "train_cfg": args.train_cfg, "provenance": git_provenance(),
     }
     torch.save(ckpt, args.out)

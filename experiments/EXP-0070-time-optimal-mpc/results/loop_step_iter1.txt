@@ -1,0 +1,31 @@
+goal         map              c     p  cv MC R2 cv bellman    mae
+quadrant_0   lyap|mc       18.2  0.30     -0.10      -0.63   1.61
+quadrant_0   lyap|td       27.1  0.35     -0.71      -0.06   1.87
+quadrant_0   gap|mc        15.3  0.35     -0.05      -0.63   1.80
+quadrant_0   gap|td        22.3  0.60     -0.31      -0.17   2.01
+quadrant_3   lyap|mc       29.8  0.65      0.34      -0.02   1.06
+quadrant_3   lyap|td       23.7  0.45      0.01      +0.01   1.12
+quadrant_3   gap|mc        13.3  0.35      0.07      -0.24   1.22
+quadrant_3   gap|td        15.0  0.35     -0.12      -0.07   1.31
+two_squares  lyap|mc       46.5  0.35      0.52      -0.73   1.58
+two_squares  lyap|td       63.2  0.35     -0.18      -0.29   1.96
+two_squares  gap|mc        32.6  0.40      0.48      -0.90   1.72
+two_squares  gap|td        55.1  0.30     -2.09      -0.37   2.32
+letter_O     lyap|mc       52.7  0.65      0.53      -0.62   1.09
+letter_O     lyap|td       77.3  0.60     -0.73      -0.16   1.38
+letter_O     gap|mc        29.7  0.60      0.48      -0.70   1.35
+letter_O     gap|td        48.3  0.50     -1.36      -0.20   1.82
+letter_T     lyap|mc       43.4  0.50      0.46      -0.79   1.16
+letter_T     lyap|td       72.7  0.50     -0.76      -0.29   1.40
+letter_T     gap|mc        29.3  0.50      0.50      -0.85   1.41
+letter_T     gap|td        52.8  0.45     -1.56      -0.37   1.91
+letter_S     lyap|mc       43.7  0.50      0.37      -0.77   1.18
+letter_S     lyap|td       71.8  0.45     -1.29      -0.29   1.53
+letter_S     gap|mc        29.1  0.50      0.34      -0.88   1.60
+letter_S     gap|td        52.1  0.30     -4.71      -0.52   2.11
+letter_X     lyap|mc       37.8  0.55      0.43      -0.77   1.07
+letter_X     lyap|td       64.7  0.55     -0.83      -0.19   1.29
+letter_X     gap|mc        27.1  0.55      0.45      -0.78   1.33
+letter_X     gap|td        47.3  0.50     -1.17      -0.23   1.82
+{"best_cell": "blend1.0", "equal_time_12_16": [0.04996625830729803, 0.04042185026974905], "cond_a": true, "bellman_mean_on_new": 0.5692486666973745, "cond_b": false, "lam2": 0.5}
+LAM2 0.5

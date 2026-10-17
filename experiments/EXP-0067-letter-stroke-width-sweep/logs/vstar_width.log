@@ -1,0 +1,20 @@
+letter_O       cap= 32 in=16 w_med=8.1 w_max=9.1 px=340 best_massfrac=0.9562
+letter_T       cap= 22 in=20 w_med=8.1 w_max=11.5 px=216 best_massfrac=0.9650
+letter_S       cap= 30 in=13 w_med=8.1 w_max=9.1 px=306 best_massfrac=0.9382
+letter_X       cap= 21 in=16 w_med=8.6 w_max=12.2 px=278 best_massfrac=0.9489
+letter_O_w10   cap= 43 in=20 w_med=10.3 w_max=12.2 px=445 best_massfrac=0.9896
+letter_T_w10   cap= 34 in=20 w_med=12.2 w_max=12.8 px=276 best_massfrac=0.9850
+letter_S_w10   cap= 38 in=20 w_med=9.1 w_max=12.2 px=412 best_massfrac=0.9863
+letter_X_w10   cap= 27 in=20 w_med=11.5 w_max=16.3 px=366 best_massfrac=0.9890
+letter_O_w15   cap= 70 in=20 w_med=14.7 w_max=16.8 px=640 best_massfrac=0.9997
+letter_T_w15   cap= 57 in=20 w_med=16.3 w_max=18.2 px=397 best_massfrac=0.9994
+letter_S_w15   cap= 68 in=20 w_med=14.7 w_max=16.8 px=617 best_massfrac=0.9997
+letter_X_w15   cap= 57 in=20 w_med=14.7 w_max=20.7 px=540 best_massfrac=0.9997
+letter_O_w20   cap=106 in=20 w_med=20.3 w_max=20.7 px=853 best_massfrac=1.0000
+letter_T_w20   cap= 82 in=20 w_med=20.3 w_max=24.4 px=548 best_massfrac=1.0000
+letter_S_w20   cap=105 in=20 w_med=18.2 w_max=20.3 px=836 best_massfrac=1.0000
+letter_X_w20   cap= 87 in=20 w_med=20.3 w_max=25.7 px=729 best_massfrac=1.0000
+identity check letter_O: here 0.95625 vs EXP-0046 0.95625
+identity check letter_T: here 0.96500 vs EXP-0046 0.96500
+identity check letter_S: here 0.93824 vs EXP-0046 0.93824
+identity check letter_X: here 0.94891 vs EXP-0046 0.94891

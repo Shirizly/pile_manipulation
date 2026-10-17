@@ -1,0 +1,12 @@
+# Resolved config for MODEL-0018 (reconstructed from EXP-0074 code/chain.sh + LOG.md 2026-10-07 04:20; no run_config was written by train_wide.py/ms_wide.py)
+id: MODEL-0018
+kind: nfd-unet-world            # world = whole 128x128 mm tray rasterised at res px; zoom = push-aligned window (side = max(64 mm, L+44 mm), model/zoom_nfd/window_var.py) at res px, pasted into the 64x64 world frame for scoring
+res: 128
+features: [8,16,32]
+seed: 0
+train_data: Sean wide corpus (EXP-0074 code/sean_data.py), pinned file split results/split_files.json (8 shards: scattered/inbetween/piled x n20/n50/n100, piled_n100 excluded), 10k random non-null train rows/shard (80k)
+stage1: {script: experiments/EXP-0074-wide-domain-zoom-nfd/code/train_wide.py, run: w128_f8, note: "single-step cut at epoch 20 (best-val ckpt)", bs: 64, lr: 3.0e-4}
+stage2: {script: experiments/EXP-0074-wide-domain-zoom-nfd/code/ms_wide.py, run: w128_f8_ms4, unroll_T: 4, epochs: 14, bs: 16, lr: 1.0e-4, init: runs/w128_f8/unet_ss_best.pth}
+source_checkpoint: experiments/EXP-0074-wide-domain-zoom-nfd/runs/w128_f8_ms4/unet_best.pth
+sha256: 4a570a9894309e19a2828cbae7e453ac6490077d3bb4e6e923a145024626b55b
+mass_balance_at_inference: false   # the val-selected post-hoc 'balance' fix (EXP-0074 08:54) is a predictor-side option (wide_planner.WideEns(balance=True)), not part of these weights

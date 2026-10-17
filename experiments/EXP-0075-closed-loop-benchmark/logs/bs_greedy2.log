@@ -1,0 +1,27 @@
+Traceback (most recent call last):
+  File "/home/alon/Code/pile_manipulation/experiments/EXP-0075-closed-loop-benchmark/code/bs_greedy.py", line 8, in <module>
+    r = greedy_open_loop("ens128", START(s), g, pool, seed=2000 + ti); r.update(goal=g, start=s, B=None); json.dump(r, open(str(f) + ".tmp", "w")); os.replace(str(f) + ".tmp", f)
+  File "/home/alon/Code/pile_manipulation/experiments/EXP-0075-closed-loop-benchmark/code/bs_lib.py", line 107, in greedy_open_loop
+    s, c = gd_refine(obj, S[:k], steps_gd, lr, prefix=prefix)
+  File "/home/alon/Code/pile_manipulation/experiments/EXP-0075-closed-loop-benchmark/code/bs_lib.py", line 76, in gd_refine
+    pr = obj.model._predict(full[..., :2], full[..., 2:], grad=True)[-1]; obj._value(pr).sum().backward(); opt.step()
+  File "/home/alon/Code/pile_manipulation/experiments/EXP-0075-closed-loop-benchmark/code/wide_planner.py", line 77, in _predict
+    outs = [(m._rollout if grad else m.rollout)(P0, P1, self.occ0) for m in self.members]; H = P0.shape[1]
+  File "/home/alon/Code/pile_manipulation/experiments/EXP-0075-closed-loop-benchmark/code/wide_planner.py", line 77, in <listcomp>
+    outs = [(m._rollout if grad else m.rollout)(P0, P1, self.occ0) for m in self.members]; H = P0.shape[1]
+  File "/home/alon/Code/pile_manipulation/experiments/EXP-0075-closed-loop-benchmark/code/wide_planner.py", line 60, in _rollout
+    p = torch.sigmoid(self.net(torch.cat([st[:, None], plates_res(p0, p1, self.res)], 1))).squeeze(1)
+  File "/home/alon/anaconda3/envs/pme/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1779, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/home/alon/anaconda3/envs/pme/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1790, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/home/alon/Code/pile_manipulation/model/UNetModels_modular.py", line 390, in forward
+    cur = up(cur, skip)
+  File "/home/alon/anaconda3/envs/pme/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1779, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/home/alon/anaconda3/envs/pme/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1790, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/home/alon/Code/pile_manipulation/model/UNetModels_modular.py", line 82, in forward
+    x = torch.cat([skip, x], dim=1)
+torch.OutOfMemoryError: CUDA out of memory. Tried to allocate 24.00 MiB. GPU 0 has a total capacity of 7.62 GiB of which 20.69 MiB is free. Process 2115199 has 1.02 GiB memory in use. Process 2115198 has 2.12 GiB memory in use. Process 2123225 has 1.02 GiB memory in use. Including non-PyTorch memory, this process has 1.93 GiB memory in use. Process 2125327 has 1.48 GiB memory in use. Of the allocated memory 1.74 GiB is allocated by PyTorch, and 33.42 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://docs.pytorch.org/docs/stable/notes/cuda.html#optimizing-memory-usage-with-pytorch-cuda-alloc-conf)
+

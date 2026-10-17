@@ -1,0 +1,2 @@
+CUDA_VISIBLE_DEVICES= OMP_NUM_THREADS=4 PYTHONPATH=. /home/alon/anaconda3/envs/pme/bin/python -u experiments/EXP-0069-letter-T-diagnosis/code/diagnose_T.py  # commit a5ccb680, dirty tree
+CUDA_VISIBLE_DEVICES= OMP_NUM_THREADS=4 PYTHONPATH=. /home/alon/anaconda3/envs/pme/bin/python -u experiments/EXP-0069-letter-T-diagnosis/code/mechanism_8letters.py  # commit a5ccb680, dirty tree

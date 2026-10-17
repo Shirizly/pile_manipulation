@@ -1,0 +1,87 @@
+[38;5;159m[Genesis] [04:01:29] [INFO] [38;5;121m╭───────────────────────────────────────────────╮[0m[38;5;159m[0m
+[38;5;159m[Genesis] [04:01:29] [INFO] [38;5;121m│┈┉┈┉┈┉┈┉┈┉┈┉┈┉┈┉┈┉┈[0m[38;5;159m [38;5;121m[1m[3mGenesis[0m[38;5;159m [38;5;121m┈┉┈┉┈┉┈┉┈┉┈┉┈┉┈┉┈┉┈│[0m[38;5;159m[0m
+[38;5;159m[Genesis] [04:01:29] [INFO] [38;5;121m╰───────────────────────────────────────────────╯[0m[38;5;159m[0m
+[38;5;159m[Genesis] [04:01:30] [INFO] Running on [38;5;121m[4m[NVIDIA GeForce RTX 4070 Laptop GPU][0m[38;5;159m with backend [38;5;121m[4mgs.cuda[0m[38;5;159m. Device memory: [38;5;121m[4m7.62[0m[38;5;159m GB.[0m
+[38;5;159m[Genesis] [04:01:30] [INFO] 🚀 Genesis initialized. 🔖 version: [38;5;121m[4m1.3.3[0m[38;5;159m, 🎨 theme: [38;5;121m[4mdark[0m[38;5;159m, 🌱 seed: [38;5;121m[4mNone[0m[38;5;159m, 🐛 debug: [38;5;121m[4mFalse[0m[38;5;159m, 📏 precision: [38;5;121m[4m32[0m[38;5;159m, 🔥 performance: [38;5;121m[4mTrue[0m[38;5;159m, 💬 verbose: [38;5;121m[4mINFO[0m[38;5;159m[0m
+[38;5;159m[Genesis] [04:01:32] [INFO] Scene [38;5;121m[3m<bbcee12>[0m[38;5;159m created.[0m
+[38;5;159m[Genesis] [04:01:32] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m0[0m[38;5;159m, uid: [38;5;121m[3m<a79ea83>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Plane>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [04:01:32] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m1[0m[38;5;159m, uid: [38;5;121m[3m<e372166>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [04:01:32] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m2[0m[38;5;159m, uid: [38;5;121m[3m<46b420c>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [04:01:32] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m3[0m[38;5;159m, uid: [38;5;121m[3m<34f9d8d>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [04:01:32] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m4[0m[38;5;159m, uid: [38;5;121m[3m<b455f01>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [04:01:32] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m5[0m[38;5;159m, uid: [38;5;121m[3m<ca0c9fd>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [04:01:32] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m6[0m[38;5;159m, uid: [38;5;121m[3m<8423eb5>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [04:01:32] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m7[0m[38;5;159m, uid: [38;5;121m[3m<afe350b>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [04:01:32] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m8[0m[38;5;159m, uid: [38;5;121m[3m<12f27e6>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [04:01:32] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m9[0m[38;5;159m, uid: [38;5;121m[3m<aa30e65>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [04:01:32] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m10[0m[38;5;159m, uid: [38;5;121m[3m<ab5e902>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [04:01:32] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m11[0m[38;5;159m, uid: [38;5;121m[3m<1df20ce>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [04:01:32] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m12[0m[38;5;159m, uid: [38;5;121m[3m<987171e>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [04:01:32] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m13[0m[38;5;159m, uid: [38;5;121m[3m<fb0ebdd>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [04:01:32] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m14[0m[38;5;159m, uid: [38;5;121m[3m<1981348>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [04:01:32] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m15[0m[38;5;159m, uid: [38;5;121m[3m<d448e65>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [04:01:32] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m16[0m[38;5;159m, uid: [38;5;121m[3m<a8ea04d>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [04:01:32] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m17[0m[38;5;159m, uid: [38;5;121m[3m<57da161>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [04:01:32] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m18[0m[38;5;159m, uid: [38;5;121m[3m<2be85bb>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [04:01:32] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m19[0m[38;5;159m, uid: [38;5;121m[3m<a1564a6>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [04:01:32] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m20[0m[38;5;159m, uid: [38;5;121m[3m<58a0c99>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [04:01:32] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m21[0m[38;5;159m, uid: [38;5;121m[3m<fbd6fbc>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [04:01:32] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m22[0m[38;5;159m, uid: [38;5;121m[3m<88270f6>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [04:01:32] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m23[0m[38;5;159m, uid: [38;5;121m[3m<136373b>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [04:01:32] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m24[0m[38;5;159m, uid: [38;5;121m[3m<44e994f>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [04:01:32] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m25[0m[38;5;159m, uid: [38;5;121m[3m<67b381a>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [04:01:32] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m26[0m[38;5;159m, uid: [38;5;121m[3m<c9d2d12>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+Generated 20 particles out of 20
+[38;5;159m[Genesis] [04:01:32] [INFO] Building scene [38;5;121m[3m<bbcee12>[0m[38;5;159m...[0m
+[38;5;159m[Genesis] [04:01:36] [INFO] Compiling simulation kernels...[0m
+[38;5;159m[Genesis] [04:01:56] [INFO] Building visualizer...[0m
+libEGL warning: egl: failed to create dri2 screen
+libEGL warning: egl: failed to create dri2 screen
+1/96 w15/letter_O_w15/40 k=4: tail 8, ncand 96; exec +3.55 (replay vs rec +3.43), pick +3.62, best-in-set +3.81, best all +3.84 (refine); 112s
+2/96 w15/letter_O_w15/40 k=8: tail 4, ncand 96; exec -0.00 (replay vs rec -0.00), pick +0.01, best-in-set +0.63, best all +0.63 (refined_bank); 118s
+3/96 w15/letter_O_w15/40 k=12: tail 4, ncand 96; exec -0.07 (replay vs rec -0.08), pick -0.00, best-in-set +0.28, best all +0.39 (refine); 101s
+6/96 w10/letter_O_w10/40 k=12: tail 2, ncand 96; exec +0.00 (replay vs rec +0.00), pick +0.00, best-in-set +1.37, best all +1.43 (refine); 117s
+7/96 w15/letter_T_w15/40 k=4: tail 7, ncand 96; exec +2.12 (replay vs rec +2.11), pick +1.19, best-in-set +2.14, best all +2.14 (fetch); 110s
+8/96 w15/letter_T_w15/40 k=8: tail 1, ncand 96; exec +0.11 (replay vs rec +0.10), pick +0.00, best-in-set +0.41, best all +0.67 (refine); 109s
+9/96 w15/letter_T_w15/40 k=12: tail 2, ncand 96; exec -0.00 (replay vs rec -0.00), pick -0.00, best-in-set +0.32, best all +0.32 (refine); 151s
+10/96 w10/letter_T_w10/40 k=4: tail 6, ncand 96; exec +2.38 (replay vs rec +2.33), pick +1.27, best-in-set +2.06, best all +2.38 (exec); 131s
+11/96 w10/letter_T_w10/40 k=8: tail 1, ncand 96; exec +0.42 (replay vs rec +0.43), pick +0.32, best-in-set +0.44, best all +0.44 (refine); 148s
+12/96 w10/letter_T_w10/40 k=12: tail 1, ncand 96; exec +0.00 (replay vs rec +0.00), pick +0.00, best-in-set +0.00, best all +0.00 (exec); 99s
+13/96 w15/letter_S_w15/40 k=4: tail 7, ncand 96; exec +1.28 (replay vs rec +1.04), pick +1.71, best-in-set +1.86, best all +1.90 (refine); 129s
+14/96 w15/letter_S_w15/40 k=8: tail 6, ncand 96; exec +0.00 (replay vs rec +0.00), pick +0.00, best-in-set +0.55, best all +0.72 (refine); 174s
+15/96 w15/letter_S_w15/40 k=12: tail 5, ncand 96; exec +0.00 (replay vs rec +0.00), pick +0.18, best-in-set +0.18, best all +0.19 (refine); 152s
+16/96 w10/letter_S_w10/40 k=4: tail 8, ncand 96; exec +1.62 (replay vs rec +1.61), pick +1.74, best-in-set +1.80, best all +1.80 (refined_fetch); 128s
+17/96 w10/letter_S_w10/40 k=8: tail 3, ncand 96; exec +0.48 (replay vs rec +0.45), pick +0.51, best-in-set +0.66, best all +0.66 (refined_bank); 97s
+18/96 w10/letter_S_w10/40 k=12: tail 2, ncand 96; exec +0.17 (replay vs rec +0.17), pick +0.02, best-in-set +0.14, best all +0.39 (refine); 113s
+19/96 w15/letter_X_w15/40 k=4: tail 7, ncand 96; exec +1.46 (replay vs rec +1.41), pick +1.48, best-in-set +1.51, best all +1.51 (refined_fetch); 127s
+20/96 w15/letter_X_w15/40 k=8: tail 4, ncand 96; exec +0.82 (replay vs rec +0.82), pick +0.86, best-in-set +1.39, best all +1.61 (refine); 118s
+21/96 w15/letter_X_w15/40 k=12: tail 1, ncand 96; exec +0.00 (replay vs rec +0.00), pick +0.02, best-in-set +0.02, best all +0.26 (refine); 115s
+22/96 w10/letter_X_w10/40 k=4: tail 9, ncand 94; exec +1.83 (replay vs rec +1.69), pick +1.85, best-in-set +1.89, best all +1.89 (fetch); 120s
+23/96 w10/letter_X_w10/40 k=8: tail 7, ncand 96; exec -0.00 (replay vs rec -0.00), pick -0.00, best-in-set +0.01, best all +0.02 (refine); 143s
+24/96 w10/letter_X_w10/40 k=12: tail 7, ncand 96; exec +0.00 (replay vs rec +0.00), pick +0.00, best-in-set +0.02, best all +0.11 (refine); 116s
+25/96 w15/letter_O_w15/42 k=4: tail 8, ncand 96; exec +0.74 (replay vs rec +0.78), pick +0.92, best-in-set +2.12, best all +2.40 (refine); 135s
+26/96 w15/letter_O_w15/42 k=8: tail 5, ncand 96; exec +0.85 (replay vs rec +0.84), pick +0.76, best-in-set +1.06, best all +1.23 (refine); 175s
+27/96 w15/letter_O_w15/42 k=12: tail 4, ncand 96; exec +0.00 (replay vs rec +0.00), pick +0.00, best-in-set +1.09, best all +1.09 (refined_bank); 210s
+28/96 w10/letter_O_w10/42 k=4: tail 8, ncand 96; exec +0.82 (replay vs rec +0.84), pick +0.89, best-in-set +2.21, best all +2.64 (refine); 172s
+29/96 w10/letter_O_w10/42 k=8: tail 4, ncand 96; exec +0.41 (replay vs rec +0.40), pick +0.22, best-in-set +0.78, best all +0.91 (refine); 157s
+30/96 w10/letter_O_w10/42 k=12: tail 3, ncand 96; exec -0.00 (replay vs rec -0.00), pick +0.00, best-in-set +1.59, best all +1.59 (ot); 167s
+31/96 w15/letter_T_w15/42 k=4: tail 8, ncand 94; exec +2.90 (replay vs rec +2.86), pick +2.71, best-in-set +2.94, best all +2.94 (fetch); 175s
+32/96 w15/letter_T_w15/42 k=8: tail 3, ncand 96; exec +1.42 (replay vs rec +1.45), pick -0.13, best-in-set +1.07, best all +2.26 (refine); 175s
+33/96 w15/letter_T_w15/42 k=12: tail 3, ncand 96; exec +0.18 (replay vs rec +0.16), pick +0.23, best-in-set +0.34, best all +0.34 (refined_bank); 180s
+34/96 w10/letter_T_w10/42 k=4: tail 7, ncand 96; exec +2.70 (replay vs rec +2.73), pick +2.72, best-in-set +2.97, best all +2.99 (refine); 141s
+35/96 w10/letter_T_w10/42 k=8: tail 5, ncand 96; exec -0.02 (replay vs rec -0.07), pick +1.30, best-in-set +2.42, best all +2.44 (refine); 130s
+36/96 w10/letter_T_w10/42 k=12: tail 4, ncand 95; exec +0.28 (replay vs rec +0.18), pick +0.13, best-in-set +0.82, best all +0.90 (refine); 139s
+37/96 w15/letter_S_w15/42 k=4: tail 7, ncand 96; exec +1.72 (replay vs rec +1.72), pick +1.68, best-in-set +1.81, best all +1.82 (refine); 131s
+38/96 w15/letter_S_w15/42 k=8: tail 4, ncand 96; exec -0.00 (replay vs rec -0.00), pick -0.00, best-in-set +0.63, best all +0.81 (refine); 128s
+39/96 w15/letter_S_w15/42 k=12: tail 4, ncand 96; exec +0.00 (replay vs rec +0.00), pick +0.00, best-in-set +0.61, best all +0.79 (refine); 119s
+40/96 w10/letter_S_w10/42 k=4: tail 6, ncand 96; exec -0.03 (replay vs rec -0.03), pick +0.04, best-in-set +1.86, best all +1.87 (refine); 159s
+41/96 w10/letter_S_w10/42 k=8: tail 4, ncand 96; exec +0.00 (replay vs rec +0.00), pick +1.26, best-in-set +1.26, best all +1.26 (fetch); 145s
+42/96 w10/letter_S_w10/42 k=12: tail 4, ncand 96; exec -0.68 (replay vs rec -0.40), pick -0.01, best-in-set +1.17, best all +1.17 (fetch); 161s
+43/96 w15/letter_X_w15/42 k=4: tail 8, ncand 96; exec +1.90 (replay vs rec +1.96), pick +1.80, best-in-set +2.01, best all +2.01 (refined_fetch); 143s
+44/96 w15/letter_X_w15/42 k=8: tail 4, ncand 96; exec +0.36 (replay vs rec +0.41), pick +0.51, best-in-set +0.51, best all +1.05 (refine); 124s
+45/96 w15/letter_X_w15/42 k=12: tail 5, ncand 96; exec -0.00 (replay vs rec -0.00), pick -0.00, best-in-set +0.03, best all +0.10 (refine); 153s
+46/96 w10/letter_X_w10/42 k=4: tail 7, ncand 96; exec +1.96 (replay vs rec +2.13), pick +2.18, best-in-set +2.21, best all +2.31 (refine); 149s
+47/96 w10/letter_X_w10/42 k=8: tail 4, ncand 96; exec +0.00 (replay vs rec +0.00), pick +0.02, best-in-set +1.13, best all +1.27 (refine); 142s
+48/96 w10/letter_X_w10/42 k=12: tail 4, ncand 96; exec +0.00 (replay vs rec +0.00), pick +0.00, best-in-set +0.30, best all +0.43 (refine); 54s
+49/96 w15/letter_O_w15/44 k=4: tail 10, ncand 96; exec +1.74 (replay vs rec +1.69), pick +1.64, best-in-set +2.42, best all +2.57 (refine); 39s
+50/96 w15/letter_O_w15/44 k=8: tail 4, ncand 96; exec +0.09 (replay vs rec +0.09), pick +0.31, best-in-set +0.70, best all +0.83 (refine); 98s

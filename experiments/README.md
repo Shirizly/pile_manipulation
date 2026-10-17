@@ -28,6 +28,11 @@ computation, the invariant xfail pattern) is `register-validator`. Start
 there rather than copying an existing record, which may predate a rule
 change.
 
+## Standing policies
+
+**Narrow corpora and narrow-trained models are pilot instruments (user decision 2026-10-05).** The exact-20 mm n20 narrow-domain corpora (DS-0008..0013, DS-0015..0018; DS-0016 is the clean narrow benchmark) and every model trained on them (`nfd_3ch_narrow_l20_v2` and its seed / epoch10 / soft_s2 variants, `linear_narrow_l20_v2_res64` and its bootstraps, EXP-0053's narrow models, EXP-0059's retrieval banks, EXP-0063's soft NFDs) exist as a cheaper pilot task for rapid R&D, not as a separate avenue for training models. Any claim established only on them is **pilot-grade**: it must be replicated on broad training data (randlen, DS-0006, DS-0007) and a broad test set before it is treated as a project conclusion. Narrow-vs-broad training is NOT a research axis of this project.
+Affected records carry a "Scope note (2026-10-05 policy)"; affected `REGISTER.md` rows carry a bracketed pilot-grade note; `SUMMARY.md` §0 and `TODO.md`'s standing rules restate it.
+
 ## 2026-09-13 — consolidated from `docs/experiments/` and restructured
 
 Previously this evidence layer lived at `docs/experiments/` as flat

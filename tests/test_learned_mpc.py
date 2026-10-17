@@ -114,3 +114,84 @@ def test_batched_runner_matches_per_env_bookkeeping():
     for r in recs:
         assert len(r["values"]) == 3 and len(r["actions"]) == 2
         assert abs(sum(r["true_dv"]) - (r["values"][-1] - r["values"][0])) < 1e-6
+
+
+def _batched_toy(legalize_fallback, planner_seed=None, planner="cem", n_steps=2, K=2):
+    """Toy batched run (EXP-0066): a push is 'illegal' when its START has x > 0; legalize cannot
+    fix any of them (ok False, unchanged). The bank always holds legal rows (x <= 0)."""
+    from simple_mpc.learned_mpc import run_episodes_batched
+    parts0 = torch.stack([_state(s) for s in range(K)])
+    seen = []
+
+    def sample(m):
+        c = (torch.rand(K, m, 4) - 0.5) * 0.08
+        c[:, : m // 2, 0] = c[:, : m // 2, 0].abs() + 0.001        # first half illegal (x > 0)
+        c[:, m // 2:, 0] = -c[:, m // 2:, 0].abs() - 0.001        # second half legal (x < 0)
+        c[:, :, 2] = c[:, :, 0] + 0.02; c[:, :, 3] = c[:, :, 1]   # 20 mm pushes along +x
+        return c
+
+    def execute(a):
+        seen.append(a.clone())
+        return parts0
+
+    def legalize(acts, envs=None):
+        ok = acts[:, 0] <= 0
+        return acts.clone(), torch.zeros(len(acts)), ok
+
+    class BiasedToy(ToyAdapter):                                   # illegal (x > 0) starts look best:
+        def predict_step(self, occ, act):                          # they 'move' mass to the goal corner
+            a = act.clone(); ill = act[:, 0] > 0
+            a[ill, 2] = -0.064; a[ill, 3] = -0.064
+            return super().predict_step(occ, a)
+    eps = [dict(adapter=BiasedToy(), dist=_goal(), planner=planner, budget_s=0.03, plan_kw=dict(push_len=0.02))
+           for _ in range(K)]
+    recs = run_episodes_batched(eps, parts0, execute, sample, n_steps=n_steps, n_cand=16, bank_per_env=64,
+                                legalize=legalize, legalize_fallback=legalize_fallback, planner_seed=planner_seed)
+    return recs, seen
+
+
+def test_legalize_fallback_never_executes_an_illegal_push():
+    recs, seen = _batched_toy(legalize_fallback=False, planner_seed=0)
+    executed_illegal = sum(int(a[0] > 0) for step in seen for a in step)
+    assert executed_illegal > 0                                    # the old path executes ok=False pushes
+    assert any(not o for r in recs for o in r["legal_ok"])
+    recs, seen = _batched_toy(legalize_fallback=True, planner_seed=0)
+    assert all(a[0] <= 0 for step in seen for a in step)          # every EXECUTED push is legal
+    assert all(o for r in recs for o in r["legal_ok"])
+    assert sum(f for r in recs for f in r["legal_fallback"]) > 0  # and the fallback is what did it
+    for r in recs:                                                 # records agree with what ran
+        for t, a in enumerate(r["actions"]):
+            assert torch.allclose(torch.tensor(a), seen[t][recs.index(r)])
+            assert abs((a[2] - a[0]) ** 2 + (a[3] - a[1]) ** 2 - 0.02 ** 2) < 1e-6   # push_len kept
+
+
+def test_planner_seed_replicates_and_separates():
+    a0, _ = _batched_toy(legalize_fallback=True, planner_seed=7)
+    a1, _ = _batched_toy(legalize_fallback=True, planner_seed=7)
+    a2, _ = _batched_toy(legalize_fallback=True, planner_seed=8)
+    acts = lambda recs: torch.tensor([r["actions"] for r in recs])
+    assert torch.equal(acts(a0), acts(a1))
+    assert not torch.equal(acts(a0), acts(a2))
+
+
+def test_topk_and_quats_are_recorded(tmp_path=None):
+    """EXP-0068: plan(topk=k) returns the k best-predicted evaluated candidates (the chosen action
+    among them, dv sorted); run_episodes_batched records them per step and, when the executor
+    returns 7-column states, the quaternions beside `states` (old 3-column executors: no `quats`)."""
+    from simple_mpc.learned_mpc import run_episodes_batched
+    obj = ModelObjective(ToyAdapter(), _state(), _goal())
+    out = plan(obj, (torch.rand(32, 4) - 0.5) * 0.08, "cem", 0.03, topk=5)
+    assert out["topk_actions"].shape == (5, 4) and out["topk_dv"].shape == (5,)
+    assert torch.all(out["topk_dv"][1:] >= out["topk_dv"][:-1])
+    assert abs(float(out["topk_dv"][0]) - out["pred_dv"]) < 1e-6
+    K = 2
+    parts0 = torch.stack([_state(s) for s in range(K)]); parts0[:, :, 3] = 1.0      # unit quaternions
+    sample = lambda m: (torch.rand(K, m, 4) - 0.5) * 0.08
+    eps = [dict(adapter=ToyAdapter(), dist=_goal(), planner="cem", budget_s=0.02, plan_kw=dict(topk=3)) for _ in range(K)]
+    recs = run_episodes_batched(eps, parts0, lambda a: parts0, sample, n_steps=2, n_cand=8, bank_per_env=16,
+                                record_states=True)
+    assert len(recs[0]["topk_actions"]) == 2 and len(recs[0]["topk_actions"][0]) == 3
+    assert len(recs[0]["quats"]) == 3 and len(recs[0]["quats"][0][0]) == 4 and len(recs[0]["states"][0][0]) == 3
+    recs3 = run_episodes_batched(eps, parts0[:, :, :3], lambda a: parts0[:, :, :3], sample, n_steps=1, n_cand=8,
+                                 bank_per_env=16, record_states=True)
+    assert "quats" not in recs3[0]

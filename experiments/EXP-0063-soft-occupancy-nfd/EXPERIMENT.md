@@ -155,3 +155,7 @@ and by the smoke eval reproducing EXP-0059's baseline 0.731 exactly.
   val mean by up to ~0.16. This already explains EXP-0059's seed-2 val value (0.567; 0.713 with
   those cells dropped). It affects every val_pools_v2 number. A relative degeneracy threshold, or
   reporting per-cell medians, would fix it; not changed here.
+
+## Scope note (2026-10-05 policy)
+
+All arms are the nfd_3ch_narrow_l20_v2 recipe on DS-0015 / DS-0016 / DS-0018 (policy 2026-10-05), so C-064 is **pilot-grade**. Promotion: train the blurred-occupancy variant on the broad randlen recipe and compare against the hard-raster broad NFD on a broad test set, then in closed loop. Frontmatter unchanged.

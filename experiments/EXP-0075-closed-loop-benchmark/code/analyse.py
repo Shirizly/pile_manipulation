@@ -6,10 +6,12 @@ import json, sys
 from pathlib import Path
 import numpy as np, torch
 REPO = Path(__file__).resolve().parents[3]; sys.path.insert(0, str(REPO))
-from Baselines.common.goals import letter_goal_mask, mass_in_region
+from Baselines.common.goals import named_goal_mask as letter_goal_mask, mass_in_region   # named_goal_mask == letter_goal_mask on letter names; also disc_* (T0b)
 from simple_mpc.adapters import OCC_GRID, occ_for_scoring
 HERE = REPO / "experiments/EXP-0075-closed-loop-benchmark"
 VS = json.loads((REPO / "experiments/EXP-0046-goal-ceiling/results/vstar.json").read_text()); VS.update(json.loads((REPO / "experiments/EXP-0067-letter-stroke-width-sweep/results/vstar_width.json").read_text()))
+_VD = REPO / "experiments/EXP-0075-closed-loop-benchmark/results/vstar_disc.json"     # gather-to-disc optimum (code/vstar_disc.py, EXP-0046 solver), T0b
+if _VD.exists(): VS.update(json.loads(_VD.read_text()))
 MASK = {}
 DIST = {}
 
@@ -21,15 +23,34 @@ def rel_curve(states, goal):
     return (mass_in_region(occ, MASK[goal]) / occ.reshape(len(S), -1).sum(1)).numpy() / VS[goal]["mass_frac_best_placement"]
 
 
-def value_curve(states, goal):
-    """planner's objective value (lyapunov - 1.0 * in-goal fraction) of the TRUE (soft-truth) state after each push."""
-    from Baselines.common.goals import dist_field_from_mask
+def transition_diag(states, dist, mask, mass_weight=1.0):
+    """ONE implementation of the per-push outcome diagnostics, shared by the harness (wide_planner.run_seq_episodes logs it per executed push, T0b 2026-10-15)
+    and the post-hoc analysis (value_curve, analyse_fixes). states (T+1, n, >=3) world (list / array / tensor), dist / mask (64, 64).
+    value = lyapunov - mass_weight * in-goal fraction of the TRUE soft-truth occupancy (occ_for_scoring) -- the planner objective's value function evaluated on
+    the true state; true_dv (T,) = its change per push (optimism of a push = predicted cost - true_dv). inside (T+1, n) = cube centre's 64x64 pixel in the mask
+    (np.rint, mask[x_px, y_px]); entering / leaving (T,) = cubes that crossed into / out of the goal per push."""
+    from simple_mpc.adapters import OCC_BOUNDS
     from simple_mpc.learned_mpc import lyap
+    S = torch.as_tensor(np.asarray(states, dtype=np.float32) if not torch.is_tensor(states) else states).float()
+    occ = occ_for_scoring(S[..., :3]); f = occ.reshape(len(occ), -1); m = torch.as_tensor(mask).to(occ.device)   # occ follows torch's default device (cuda inside Genesis)
+    value = (lyap(occ, torch.as_tensor(dist).float().to(occ.device)) - mass_weight * (f * m.reshape(1, -1).float()).sum(1) / f.sum(1)).cpu().numpy()
+    lo = np.array([OCC_BOUNDS["x_min"], OCC_BOUNDS["y_min"]]); hi = np.array([OCC_BOUNDS["x_max"], OCC_BOUNDS["y_max"]]); mb = m.cpu().numpy().astype(bool)
+    xy = states.detach().cpu().double().numpy()[..., :2] if torch.is_tensor(states) else np.asarray(states, dtype=np.float64)[..., :2]   # float64 as analyse_fixes.inside always used
+    uv = np.rint((xy - lo) / (hi - lo) * (OCC_GRID - 1)).astype(int).clip(0, OCC_GRID - 1); ins = mb[uv[..., 0], uv[..., 1]]
+    return dict(value=value, true_dv=np.diff(value), inside=ins, entering=(ins[1:] & ~ins[:-1]).sum(1), leaving=(ins[:-1] & ~ins[1:]).sum(1))
+
+
+def _goal_tensors(goal):
+    from Baselines.common.goals import dist_field_from_mask
     if goal not in DIST:
         DIST[goal] = torch.from_numpy(dist_field_from_mask(letter_goal_mask(goal, OCC_GRID, OCC_GRID))).float()
         MASK.setdefault(goal, torch.from_numpy(letter_goal_mask(goal, OCC_GRID, OCC_GRID)))
-    occ = occ_for_scoring(torch.tensor(states).float()); f = occ.reshape(len(occ), -1)
-    return (lyap(occ, DIST[goal]) - (f * MASK[goal].reshape(1, -1).float()).sum(1) / f.sum(1)).numpy()
+    return DIST[goal], MASK[goal]
+
+
+def value_curve(states, goal):
+    """planner's objective value (lyapunov - 1.0 * in-goal fraction) of the TRUE (soft-truth) state after each push."""
+    return transition_diag(states, *_goal_tensors(goal))["value"]
 
 
 def wilson(x, n, z=1.96):

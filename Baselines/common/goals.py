@@ -149,6 +149,100 @@ def letter_mask(name: str, H: int, W: int, font_name: str = LETTER_FONT) -> np.n
     return np.ascontiguousarray((goal <= 0.5).T)
 
 
+# EXP-0067: width-parameterised letter goals. The glyph asset is a chamfer distance
+# field (0 on the ink, cv2 DIST_L2 5x5 values outside; `letter_mask` thresholds it at
+# 0.5 after an INTER_AREA resize), so dilating the ink by d asset pixels is exactly
+# max(field - d, 0) -- the resize/threshold path then stays the one every existing
+# letter goal went through, and d = 0 is byte-identical to `letter_mask`.
+# `LETTER_WIDTH_DILATE_PX` maps a nominal stroke width in mm (goal name
+# `letter_<L>_w<mm>`) to d; calibrated by EXP-0067 code/calibrate_width.py on the
+# realised 64-px stroke width (2 x median skeleton EDT, EXP-0046 vstar.py's measure)
+# averaged over O/T/S/X. Plain `letter_<L>` names are untouched.
+LETTER_ASSET_PX = 720
+LETTER_WIDTH_DILATE_PX = {10: 6, 15: 18, 20: 31}
+
+
+def widened_letter_mask(name: str, H: int, W: int, dilate_px: int, font_name: str = LETTER_FONT) -> np.ndarray:
+    """`letter_mask` with the glyph ink dilated by `dilate_px` asset pixels (720 px
+    glyph; 1 asset px = 128 mm / 720 = 0.178 mm) BEFORE the resize. 0 = `letter_mask`."""
+    if dilate_px <= 0:
+        return letter_mask(name, H, W, font_name)
+    root_dir = f"env/target_shapes/{font_name}"
+    goal = np.load(os.path.join(root_dir, f"helvetica_{name}.npy"))
+    goal = np.maximum(goal - float(dilate_px), 0.0).astype(goal.dtype)
+    goal = cv2.resize(goal, (H, W), interpolation=cv2.INTER_AREA)
+    return np.ascontiguousarray((goal <= 0.5).T)
+
+
+def parse_letter_goal(name: str):
+    """'letter_O' -> ('O', None); 'letter_O_w15' -> ('O', 15); anything else -> None."""
+    if not name.startswith("letter_"):
+        return None
+    rest = name[len("letter_"):]
+    if "_w" in rest:
+        letter, w = rest.split("_w", 1)
+        return letter, int(w)
+    return rest, None
+
+
+def letter_goal_mask(name: str, H: int, W: int) -> np.ndarray:
+    """Mask for a 'letter_<L>' or 'letter_<L>_w<mm>' goal name (EXP-0067)."""
+    parsed = parse_letter_goal(name)
+    if parsed is None:
+        raise ValueError(f"not a letter goal: {name!r}")
+    letter, w = parsed
+    if w is None:
+        return letter_mask(letter, H, W)
+    return widened_letter_mask(letter, H, W, LETTER_WIDTH_DILATE_PX[w])
+
+
+# Gather-to-disc goal (EXP-0075 T0b, 2026-10-15). A FIXED disc at the workspace
+# centre (world (0, 0)), the convention of the fixed-target gather tasks the
+# paper compares with (NFD / GS-VMPC-style: one target region in the workspace
+# frame, not re-centred per start), which also keeps V* a per-goal constant so
+# `rel` needs one optimum per goal name. `disc_n<N>`: area = N cubes of side
+# 5 mm at packing fraction DISC_PACKING = 0.7 (N = 20 -> r = 15.1 mm, ~7.4 px);
+# `disc_r<mm>`: explicit radius in mm. Pixel i <-> world lo + i (hi - lo) / (G - 1)
+# (the occ_for_scoring / inside_goal pixel-centre mapping); symmetric, so the
+# axis convention does not matter.
+DISC_PACKING = 0.7
+DISC_CUBE_SIZE_M = 0.005
+DISC_EXTENT_M = 0.064              # +-64 mm slate grid (simple_mpc.adapters.OCC_BOUNDS)
+
+
+def disc_mask(H: int, W: int, radius_m: float, centre_m=(0.0, 0.0), extent_m: float = DISC_EXTENT_M) -> np.ndarray:
+    """Binary (H, W) disc of world radius `radius_m` around world `centre_m`, convention A (row = world x, col = world y)."""
+    xs = -extent_m + np.arange(H) * (2 * extent_m) / (H - 1)
+    ys = -extent_m + np.arange(W) * (2 * extent_m) / (W - 1)
+    return ((xs[:, None] - centre_m[0]) ** 2 + (ys[None, :] - centre_m[1]) ** 2) <= radius_m ** 2
+
+
+def disc_radius_for_cubes(n: int, packing: float = DISC_PACKING, cube_m: float = DISC_CUBE_SIZE_M) -> float:
+    """Radius (m) of the disc whose area holds n cubes of side cube_m at the given packing fraction."""
+    return float(np.sqrt(n * cube_m ** 2 / (np.pi * packing)))
+
+
+def parse_disc_goal(name: str):
+    """'disc_n20' -> radius for 20 cubes; 'disc_r15' -> 0.015 m; anything else -> None."""
+    if name.startswith("disc_n"):
+        return disc_radius_for_cubes(int(name[len("disc_n"):]))
+    if name.startswith("disc_r"):
+        return float(name[len("disc_r"):]) / 1000.0
+    return None
+
+
+def named_goal_mask(name: str, H: int, W: int) -> np.ndarray:
+    """One resolver for every goal NAME the closed-loop drivers use: letter_<L>[_w<mm>], quadrant_<q>, two_squares, disc_n<N> / disc_r<mm>."""
+    r = parse_disc_goal(name)
+    if r is not None:
+        return disc_mask(H, W, r)
+    if name == "two_squares":
+        return two_squares_mask(H, W)
+    if name.startswith("quadrant_"):
+        return quadrant_mask(H, W, int(name[-1]))
+    return letter_goal_mask(name, H, W)
+
+
 def dist_field_from_mask(mask: np.ndarray) -> np.ndarray:
     """Normalised [0,1] distance-to-mask field, matching
     `control_utility_test.lyapunov_weights`'s own general (non-`ind-`,

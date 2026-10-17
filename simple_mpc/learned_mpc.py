@@ -161,7 +161,8 @@ class ModelObjective:
 
 def plan(objective: ModelObjective, candidates: torch.Tensor, planner: str, budget_s: float,
          n_restarts: int = 8, lr: float = 1.5e-3, cem_elite_frac: float = 0.125,
-         more_candidates=None, cem_pop: int | None = None, push_len: float | None = None) -> dict:
+         more_candidates=None, cem_pop: int | None = None, push_len: float | None = None,
+         topk: int = 0) -> dict:
     """Choose one push. Returns {action (4,), pred_dv, n_evals, n_iters, time_s}.
 
     `more_candidates()` -> (K, 4): if given, the `rank` planner keeps drawing and
@@ -171,7 +172,10 @@ def plan(objective: ModelObjective, candidates: torch.Tensor, planner: str, budg
     (default: the candidate-pool size, the EXP-0032/0039 behaviour); the pool
     still seeds the first elite set. `push_len` fixes the push length (e.g. 0.02 for the
     narrow 20 mm domain, EXP-0053): every candidate and iterate is projected to exactly
-    that length (yaw stays perpendicular to the push by the action_to_pose convention)."""
+    that length (yaw stays perpendicular to the push by the action_to_pose convention).
+    `topk` > 0 (EXP-0068) also returns `topk_actions` (k, 4) / `topk_dv` (k,): the k best-predicted
+    candidates among EVERYTHING the planner evaluated this decision (pool, rank batches, GD iterates,
+    CEM/MPPI populations), kept as a running top-k on the device; 0 = off (no extra work)."""
     lo, hi = (push_len, push_len) if push_len else (L_MIN, L_MAX)
     proj = lambda x: project_push(x, lo, hi)
     t0 = time.time()
@@ -189,6 +193,15 @@ def plan(objective: ModelObjective, candidates: torch.Tensor, planner: str, budg
         return time.time() - t0 + last_iter < budget_s
     best_i = int(dv.argmin())
     best, best_dv = cand[best_i].clone(), float(dv[best_i])
+    tk = [None, None]                     # running (actions, dv) top-k, EXP-0068
+
+    def keep_topk(a, c):
+        if topk <= 0:
+            return
+        A = a if tk[0] is None else torch.cat([tk[0], a]); C = c if tk[1] is None else torch.cat([tk[1], c])
+        k = min(topk, len(C)); i = C.topk(k, largest=False).indices
+        tk[0], tk[1] = A[i].detach().clone(), C[i].detach().clone()
+    keep_topk(cand, dv)
     if planner == "rank":
         while more_candidates is not None and time_left():
             ti = time.time()
@@ -196,6 +209,7 @@ def plan(objective: ModelObjective, candidates: torch.Tensor, planner: str, budg
             with torch.no_grad():
                 dv_x = objective(extra)
             n_evals += len(extra); n_iters += 1
+            keep_topk(extra, dv_x)
             k = int(dv_x.argmin())
             if float(dv_x[k]) < best_dv:
                 best, best_dv = extra[k].clone(), float(dv_x[k])
@@ -213,6 +227,7 @@ def plan(objective: ModelObjective, candidates: torch.Tensor, planner: str, budg
                 p.data.copy_(proj(p.data)[0])
                 cur = objective(p.data)
                 n_evals += len(cur); n_iters += 1
+                keep_topk(p.data, cur)
                 k = int(cur.argmin())
                 if float(cur[k]) < best_dv:
                     best, best_dv = p.data[k].clone(), float(cur[k])
@@ -228,6 +243,7 @@ def plan(objective: ModelObjective, candidates: torch.Tensor, planner: str, budg
                 pop = proj(mean + std * torch.randn(n_pop, 4, device=dev))[0]
                 cost = objective(pop)
                 n_evals += n_pop; n_iters += 1
+                keep_topk(pop, cost)
                 k = int(cost.argmin())
                 if float(cost[k]) < best_dv:
                     best, best_dv = pop[k].clone(), float(cost[k])
@@ -241,8 +257,11 @@ def plan(objective: ModelObjective, candidates: torch.Tensor, planner: str, budg
                 last_iter = time.time() - ti; max_iter = max(max_iter, last_iter)
     else:
         raise ValueError(f"unknown planner {planner!r}")
-    return dict(action=best.detach().cpu(), pred_dv=best_dv, n_evals=n_evals, n_iters=n_iters,
-                time_s=time.time() - t0, max_iter_s=max_iter, rank_s=rank_s)
+    out = dict(action=best.detach().cpu(), pred_dv=best_dv, n_evals=n_evals, n_iters=n_iters,
+               time_s=time.time() - t0, max_iter_s=max_iter, rank_s=rank_s)
+    if topk > 0:
+        out["topk_actions"], out["topk_dv"] = tk[0].cpu(), tk[1].cpu()
+    return out
 
 
 def run_episode(adapter, particles0: torch.Tensor, dist: torch.Tensor,
@@ -275,13 +294,37 @@ def run_episode(adapter, particles0: torch.Tensor, dist: torch.Tensor,
     return rec
 
 
+def legal_fallback(objective: ModelObjective, bank: torch.Tensor, legalize, env: int,
+                   push_len: float | None = None, batch: int = 64):
+    """Best LEGAL candidate of `bank` (m, 4) under `objective` (EXP-0066; see run_episodes_batched).
+    Scores the whole bank (projected like `plan` does), walks it in objective order in batches of
+    `batch`, and returns (action, shift_m, ok) for the first candidate `legalize(acts, envs=...)`
+    reports legal (ok True; shift is then that candidate's own slide). ok False = none in the bank."""
+    lo, hi = (push_len, push_len) if push_len else (L_MIN, L_MAX)
+    dev = objective.ad.device
+    cand = project_push(bank.to(dev).float(), lo, hi)[0]
+    with torch.no_grad():
+        order = objective(cand).argsort()
+    cand = cand[order].cpu()
+    for i in range(0, len(cand), batch):
+        c = cand[i:i + batch]
+        a2, s2, ok2 = legalize(c, envs=torch.full((len(c),), env, dtype=torch.long, device="cpu"))
+        j = ok2.nonzero().flatten()
+        if len(j):
+            j = int(j[0])
+            return a2[j], float(s2[j]), True
+    return None, 0.0, False
+
+
 def run_episodes_batched(episodes: list, particles0: torch.Tensor,
                          execute_batch: Callable[[torch.Tensor], torch.Tensor],
                          sample_candidates_batch: Callable[[int], torch.Tensor],
                          n_steps: int, n_cand: int = 64, bank_per_env: int = 16384,
                          on_step: Callable[[int, list], None] | None = None,
                          record_states: bool = False,
-                         legalize: Callable[[torch.Tensor], tuple] | None = None) -> list:
+                         legalize: Callable[[torch.Tensor], tuple] | None = None,
+                         legalize_fallback: bool = False,
+                         planner_seed: int | None = None) -> list:
     """K closed-loop episodes run side by side, one per simulator env (K = len(episodes)).
 
     `episodes[k]` = dict(adapter, dist (H, W), planner, budget_s, plan_kw={} optional,
@@ -298,10 +341,24 @@ def run_episodes_batched(episodes: list, particles0: torch.Tensor,
     budget. Returns one record per episode, with the same keys as `run_episode`.
     `on_step(t, records)` is called after every step (checkpoint hook).
     `record_states=True` adds `states` (list of (n, 3) xyz lists, start + after every
-    push) to each record, for success-type value functions and videos.
+    push) to each record, for success-type value functions and videos. If `particles0` /
+    `execute_batch` carry >= 7 columns (xyz + wxyz quaternion), `quats` (start + after every
+    push, (n, 4)) is recorded beside `states`, so an episode's visited states can be re-simulated
+    (EXP-0068; xyz alone cannot restore cube yaw). A `plan_kw` of `topk=k` also records
+    `topk_actions` per step (the k best-predicted candidates the planner evaluated).
     `legalize(actions (K, 4)) -> (actions, shift_m (K,), ok (K,))`, if given, is applied to the
     planned pushes right before execution (e.g. `Genesis.action_sampling.legalize_pushes` with the
     current cube poses) and records `legal_shift_m` / `legal_ok` per step (ISS-013).
+    `legalize_fallback=True` (EXP-0066) never executes a push `legalize` could not make legal
+    (`ok` False): that env's whole candidate bank is re-scored with its objective, walked in
+    objective order, and the best candidate `legalize` CAN make legal is executed instead; the
+    `legalize` callable must then also accept `envs` (LongTensor, the env index of every row).
+    Records `legal_fallback` per step (0 = planned push kept, 1 = fallback fired) and
+    `legal_ok` becomes the legality of the EXECUTED push. Off by default so old records reproduce.
+    `planner_seed` (EXP-0066): seeds torch's global RNG (CPU + CUDA) before every candidate draw and
+    before every `plan` call, as a function of (planner_seed, step, env), so CEM/MPPI noise and
+    the Genesis pile-aware candidate sampler (both draw from the global RNG) replicate exactly for
+    one seed and are independent across seeds. None = unseeded, as before.
     """
     K = len(episodes)
     parts = particles0.float()
@@ -313,9 +370,16 @@ def run_episodes_batched(episodes: list, particles0: torch.Tensor,
         recs[k]["values"].append(float(lyap(occ_for_scoring(parts[k:k + 1]), ep["dist"].float())[0]))
         if record_states:
             recs[k]["states"] = [parts[k, :, :3].tolist()]
+            if parts.shape[-1] >= 7:
+                recs[k]["quats"] = [parts[k, :, 3:7].tolist()]
+    def _seed(t, k):
+        if planner_seed is not None:
+            torch.manual_seed(int(planner_seed) * 1_000_003 + 100_003 * (t + 1) + k)
+
     for t in range(n_steps):
+        _seed(t, -1)
         bank = sample_candidates_batch(bank_per_env)
-        acts = []
+        acts, objs = [], []
         for k, ep in enumerate(episodes):
             n = ep.get("n_cand", n_cand)
             bk = bank[k]
@@ -325,6 +389,8 @@ def run_episodes_batched(episodes: list, particles0: torch.Tensor,
                 i = ptr[0] % len(bk); ptr[0] += n
                 return bk[i:i + n]
             obj = ModelObjective(ep["adapter"], parts[k], ep["dist"].float(), **ep.get("obj_kw", {}))
+            objs.append(obj)
+            _seed(t, k)
             out = plan(obj, bk[:n], ep["planner"], ep["budget_s"],
                        more_candidates=more if ep["planner"] == "rank" else None, **ep.get("plan_kw", {}))
             acts.append(out["action"])
@@ -332,12 +398,27 @@ def run_episodes_batched(episodes: list, particles0: torch.Tensor,
             r["actions"].append(out["action"].tolist()); r["pred_dv"].append(out["pred_dv"])
             r["n_evals"].append(out["n_evals"]); r["n_iters"].append(out["n_iters"])
             r["plan_time_s"].append(out["time_s"])
+            if "topk_actions" in out:
+                r.setdefault("topk_actions", []).append(out["topk_actions"].tolist())
+                r.setdefault("topk_dv", []).append(out["topk_dv"].tolist())
         acts = torch.stack(acts)
         if legalize is not None:
             acts, shift, ok = legalize(acts)
+            fb = torch.zeros(K, dtype=torch.long, device="cpu")   # Genesis sets the default device to cuda
+            if legalize_fallback:
+                for k in (~ok).nonzero().flatten().tolist():
+                    a2, s2, ok2 = legal_fallback(objs[k], bank[k], legalize, k,
+                                                 push_len=episodes[k].get("plan_kw", {}).get("push_len"))
+                    if ok2:
+                        acts[k], shift[k], ok[k], fb[k] = a2, s2, True, 1
+                        recs[k]["pred_dv"][-1] = float(objs[k](a2[None].to(objs[k].ad.device))[0])
+                    else:
+                        raise RuntimeError(f"legalize_fallback: env {k} step {t}: no legal candidate in a bank of "
+                                           f"{len(bank[k])}; refusing to execute an illegal push")
             for k in range(K):
                 recs[k].setdefault("legal_shift_m", []).append(float(shift[k]))
                 recs[k].setdefault("legal_ok", []).append(bool(ok[k]))
+                recs[k].setdefault("legal_fallback", []).append(int(fb[k]))
                 recs[k]["actions"][-1] = acts[k].tolist()
         parts = execute_batch(acts).float()
         for k, ep in enumerate(episodes):
@@ -345,6 +426,8 @@ def run_episodes_batched(episodes: list, particles0: torch.Tensor,
             recs[k]["true_dv"].append(v - recs[k]["values"][-1]); recs[k]["values"].append(v)
             if record_states:
                 recs[k]["states"].append(parts[k, :, :3].tolist())
+                if parts.shape[-1] >= 7:
+                    recs[k]["quats"].append(parts[k, :, 3:7].tolist())
         if on_step is not None:
             on_step(t, recs)
     return recs

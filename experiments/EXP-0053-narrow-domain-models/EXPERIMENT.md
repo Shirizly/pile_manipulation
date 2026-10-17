@@ -109,3 +109,7 @@ larger narrow training set; NFD res128 (deferred).
 
 ## Unrelated findings
 none
+
+## Scope note (2026-10-05 policy)
+
+This record's question -- narrow-trained vs broad-trained NFD / linear on the narrow test set -- is, under the 2026-10-05 user decision, not a research axis of the project: the narrow corpora (DS-0008..0010 here) and the models trained on them are pilot instruments for rapid R&D. C-056 stands as a **pilot-grade** measurement (still carrying the ISS-010 caveat) and nothing here is to be built on as a project conclusion. The part worth replicating is the clump-vs-scatter predictability finding, with broad-trained models on a broad test set. Frontmatter unchanged.

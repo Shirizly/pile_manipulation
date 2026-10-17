@@ -1,0 +1,23 @@
+fV|ALL                   n   4287 R2 +0.425 within-goal R2 0.414 MAE 5.5s
+fV|quadrant              n    293 R2 +0.056 within-goal R2 0.343 MAE 6.8s
+fV|two_squares           n    334 R2 +0.578 within-goal R2 0.578 MAE 5.9s
+fV|letter                n   3660 R2 +0.425 within-goal R2 0.411 MAE 5.3s
+ridgeF|ALL               n   4287 R2 +0.428 within-goal R2 0.149 MAE 5.5s
+ridgeF|quadrant          n    293 R2 +0.004 within-goal R2 -1.045 MAE 6.9s
+ridgeF|two_squares       n    334 R2 +0.535 within-goal R2 0.535 MAE 6.2s
+ridgeF|letter            n   3660 R2 +0.439 within-goal R2 0.434 MAE 5.3s
+gbF|ALL                  n   4287 R2 +0.428 within-goal R2 -0.06 MAE 5.4s
+gbF|quadrant             n    293 R2 -0.060 within-goal R2 -2.116 MAE 7.4s
+gbF|two_squares          n    334 R2 +0.570 within-goal R2 0.57 MAE 5.9s
+gbF|letter               n   3660 R2 +0.440 within-goal R2 0.438 MAE 5.1s
+gbF_noplate|ALL          n   4287 R2 +0.423 within-goal R2 -0.096 MAE 5.4s
+gbF_noplate|quadrant     n    293 R2 -0.065 within-goal R2 -2.268 MAE 7.4s
+gbF_noplate|two_squares  n    334 R2 +0.567 within-goal R2 0.567 MAE 5.9s
+gbF_noplate|letter       n   3660 R2 +0.435 within-goal R2 0.43 MAE 5.1s
+gbF_td|ALL               n   4287 R2 +0.220 within-goal R2 -1.043 MAE 7.2s
+gbF_td|quadrant          n    293 R2 -0.207 within-goal R2 -6.18 MAE 8.7s
+gbF_td|two_squares       n    334 R2 +0.288 within-goal R2 0.288 MAE 7.7s
+gbF_td|letter            n   3660 R2 +0.232 within-goal R2 0.234 MAE 7.0s
+bellman_residual_fV {'mean': 0.09086487658691993, 'mae': 1.6079938866916956}
+bellman_residual_gbF {'mean': 0.022480037435353664, 'mae': 2.571771807430384}
+bellman_residual_gbF_td {'mean': 0.21574931559619864, 'mae': 2.5804201239005704}
