@@ -1,0 +1,90 @@
+36 scenarios to run, B=1 k=1 E=36
+[38;5;159m[Genesis] [21:29:23] [INFO] [38;5;121m╭───────────────────────────────────────────────╮[0m[38;5;159m[0m
+[38;5;159m[Genesis] [21:29:23] [INFO] [38;5;121m│┈┉┈┉┈┉┈┉┈┉┈┉┈┉┈┉┈┉┈[0m[38;5;159m [38;5;121m[1m[3mGenesis[0m[38;5;159m [38;5;121m┈┉┈┉┈┉┈┉┈┉┈┉┈┉┈┉┈┉┈│[0m[38;5;159m[0m
+[38;5;159m[Genesis] [21:29:23] [INFO] [38;5;121m╰───────────────────────────────────────────────╯[0m[38;5;159m[0m
+[38;5;159m[Genesis] [21:29:23] [INFO] Running on [38;5;121m[4m[NVIDIA GeForce RTX 4070 Laptop GPU][0m[38;5;159m with backend [38;5;121m[4mgs.cuda[0m[38;5;159m. Device memory: [38;5;121m[4m7.62[0m[38;5;159m GB.[0m
+[38;5;159m[Genesis] [21:29:23] [INFO] 🚀 Genesis initialized. 🔖 version: [38;5;121m[4m1.3.3[0m[38;5;159m, 🎨 theme: [38;5;121m[4mdark[0m[38;5;159m, 🌱 seed: [38;5;121m[4mNone[0m[38;5;159m, 🐛 debug: [38;5;121m[4mFalse[0m[38;5;159m, 📏 precision: [38;5;121m[4m32[0m[38;5;159m, 🔥 performance: [38;5;121m[4mTrue[0m[38;5;159m, 💬 verbose: [38;5;121m[4mINFO[0m[38;5;159m[0m
+[38;5;159m[Genesis] [21:29:25] [INFO] Scene [38;5;121m[3m<e6b4035>[0m[38;5;159m created.[0m
+[38;5;159m[Genesis] [21:29:25] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m0[0m[38;5;159m, uid: [38;5;121m[3m<f768629>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Plane>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [21:29:25] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m1[0m[38;5;159m, uid: [38;5;121m[3m<63caffc>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [21:29:25] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m2[0m[38;5;159m, uid: [38;5;121m[3m<e41aad0>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [21:29:25] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m3[0m[38;5;159m, uid: [38;5;121m[3m<5f1788d>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [21:29:25] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m4[0m[38;5;159m, uid: [38;5;121m[3m<c52536d>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [21:29:25] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m5[0m[38;5;159m, uid: [38;5;121m[3m<e0eb6ee>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [21:29:25] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m6[0m[38;5;159m, uid: [38;5;121m[3m<ea684ce>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [21:29:25] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m7[0m[38;5;159m, uid: [38;5;121m[3m<d33b8e5>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [21:29:25] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m8[0m[38;5;159m, uid: [38;5;121m[3m<226b6ae>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [21:29:25] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m9[0m[38;5;159m, uid: [38;5;121m[3m<c138af8>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [21:29:25] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m10[0m[38;5;159m, uid: [38;5;121m[3m<3e8e07c>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [21:29:25] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m11[0m[38;5;159m, uid: [38;5;121m[3m<bff0be1>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [21:29:25] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m12[0m[38;5;159m, uid: [38;5;121m[3m<cfb027a>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [21:29:25] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m13[0m[38;5;159m, uid: [38;5;121m[3m<e5baee6>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [21:29:25] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m14[0m[38;5;159m, uid: [38;5;121m[3m<dcbb96f>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [21:29:25] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m15[0m[38;5;159m, uid: [38;5;121m[3m<8e9f7cc>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [21:29:25] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m16[0m[38;5;159m, uid: [38;5;121m[3m<7a875c9>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [21:29:25] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m17[0m[38;5;159m, uid: [38;5;121m[3m<9234548>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [21:29:25] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m18[0m[38;5;159m, uid: [38;5;121m[3m<6802996>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [21:29:25] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m19[0m[38;5;159m, uid: [38;5;121m[3m<53878e4>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [21:29:25] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m20[0m[38;5;159m, uid: [38;5;121m[3m<2bbae22>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [21:29:25] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m21[0m[38;5;159m, uid: [38;5;121m[3m<d93e348>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [21:29:25] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m22[0m[38;5;159m, uid: [38;5;121m[3m<9ec6bb0>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [21:29:25] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m23[0m[38;5;159m, uid: [38;5;121m[3m<f20d7a9>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [21:29:25] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m24[0m[38;5;159m, uid: [38;5;121m[3m<55c9c5d>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [21:29:25] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m25[0m[38;5;159m, uid: [38;5;121m[3m<30394d8>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+[38;5;159m[Genesis] [21:29:25] [INFO] Adding [38;5;121m<gs.engine.entities.RigidEntity>[0m[38;5;159m. idx: [38;5;121m26[0m[38;5;159m, uid: [38;5;121m[3m<8164a35>[0m[38;5;159m, morph: [38;5;121m<gs.morphs.Box>[0m[38;5;159m, material: [38;5;121m<gs.materials.Rigid>[0m[38;5;159m.[0m
+Generated 20 particles out of 20
+[38;5;159m[Genesis] [21:29:25] [INFO] Building scene [38;5;121m[3m<e6b4035>[0m[38;5;159m...[0m
+[38;5;159m[Genesis] [21:29:28] [INFO] Compiling simulation kernels...[0m
+[38;5;159m[Genesis] [21:29:45] [INFO] Building visualizer...[0m
+libEGL warning: egl: failed to create dri2 screen
+libEGL warning: egl: failed to create dri2 screen
+  done n20-piled-disc-003: solved=True pushes=1 time=0.74s mass=0.995 sims=1 wall=104s
+tick 1: active 35 queue 0 nodes 36 kids 36 plan 86.4s sim 17.2s total 105s
+  done n20-piled-disc-005: solved=True pushes=2 time=2.10s mass=0.997 sims=2 wall=199s
+  done n20-piled-square-004: solved=True pushes=2 time=1.82s mass=0.984 sims=2 wall=199s
+  done n20-piled-letter-002: solved=True pushes=2 time=2.12s mass=0.997 sims=2 wall=199s
+  done n20-piled-letter-003: solved=True pushes=2 time=1.74s mass=0.970 sims=2 wall=199s
+tick 2: active 31 queue 0 nodes 35 kids 35 plan 80.0s sim 14.3s total 200s
+  done n20-piled-disc-002: solved=True pushes=3 time=2.87s mass=0.967 sims=3 wall=277s
+  done n20-piled-square-002: solved=True pushes=3 time=3.49s mass=0.978 sims=3 wall=277s
+tick 3: active 29 queue 0 nodes 31 kids 31 plan 63.5s sim 13.4s total 277s
+  done n20-inbetween-disc-005: solved=True pushes=4 time=5.03s mass=0.994 sims=4 wall=342s
+  done n20-piled-disc-004: solved=True pushes=4 time=3.74s mass=0.962 sims=4 wall=341s
+  done n20-piled-square-003: solved=True pushes=4 time=4.43s mass=0.951 sims=4 wall=341s
+  done n20-piled-letter-005: solved=True pushes=4 time=4.27s mass=0.963 sims=4 wall=341s
+tick 4: active 25 queue 0 nodes 29 kids 29 plan 51.7s sim 12.3s total 342s
+  done n20-inbetween-letter-005: solved=True pushes=5 time=6.58s mass=0.953 sims=5 wall=397s
+  done n20-piled-letter-004: solved=True pushes=5 time=5.00s mass=0.970 sims=5 wall=397s
+tick 5: active 23 queue 0 nodes 25 kids 25 plan 43.2s sim 11.8s total 397s
+  done n20-scattered-disc-005: solved=True pushes=6 time=7.44s mass=0.989 sims=6 wall=441s
+  done n20-scattered-letter-003: solved=True pushes=6 time=8.02s mass=0.998 sims=6 wall=441s
+  done n20-inbetween-disc-003: solved=True pushes=6 time=7.07s mass=0.972 sims=6 wall=441s
+  done n20-inbetween-disc-004: solved=True pushes=6 time=7.10s mass=0.989 sims=6 wall=441s
+tick 6: active 19 queue 0 nodes 23 kids 23 plan 31.4s sim 11.4s total 441s
+tick 7: active 19 queue 0 nodes 19 kids 19 plan 25.3s sim 11.2s total 478s
+  done n20-scattered-square-002: solved=True pushes=8 time=10.62s mass=0.986 sims=8 wall=511s
+  done n20-scattered-square-003: solved=True pushes=8 time=9.59s mass=0.965 sims=8 wall=511s
+  done n20-inbetween-letter-003: solved=True pushes=8 time=9.90s mass=0.973 sims=8 wall=511s
+tick 8: active 16 queue 0 nodes 19 kids 19 plan 25.3s sim 7.7s total 511s
+  done n20-scattered-square-004: solved=True pushes=9 time=11.48s mass=0.997 sims=9 wall=542s
+  done n20-scattered-letter-002: solved=True pushes=9 time=11.35s mass=0.967 sims=9 wall=542s
+  done n20-scattered-letter-005: solved=True pushes=9 time=11.50s mass=0.959 sims=9 wall=542s
+  done n20-inbetween-square-003: solved=True pushes=9 time=10.56s mass=0.958 sims=9 wall=542s
+  done n20-inbetween-square-005: solved=True pushes=9 time=10.55s mass=0.973 sims=9 wall=542s
+tick 9: active 11 queue 0 nodes 16 kids 16 plan 21.8s sim 8.7s total 543s
+  done n20-scattered-square-005: solved=True pushes=10 time=12.68s mass=0.974 sims=10 wall=568s
+tick 10: active 10 queue 0 nodes 11 kids 11 plan 15.8s sim 9.4s total 568s
+tick 11: active 10 queue 0 nodes 10 kids 10 plan 14.4s sim 5.9s total 589s
+  done n20-scattered-disc-002: solved=False pushes=12 time=13.50s mass=0.929 sims=12 wall=610s
+  done n20-scattered-disc-003: solved=False pushes=12 time=13.75s mass=0.880 sims=12 wall=610s
+  done n20-scattered-disc-004: solved=False pushes=12 time=12.31s mass=0.700 sims=12 wall=610s
+  done n20-scattered-letter-004: solved=False pushes=12 time=14.46s mass=0.912 sims=12 wall=610s
+  done n20-inbetween-disc-002: solved=False pushes=12 time=13.74s mass=0.947 sims=12 wall=610s
+  done n20-inbetween-square-002: solved=False pushes=12 time=12.18s mass=0.916 sims=12 wall=610s
+  done n20-inbetween-square-004: solved=False pushes=12 time=11.51s mass=0.950 sims=12 wall=610s
+  done n20-inbetween-letter-002: solved=False pushes=12 time=12.88s mass=0.947 sims=12 wall=610s
+  done n20-inbetween-letter-004: solved=False pushes=12 time=10.58s mass=0.947 sims=12 wall=610s
+  done n20-piled-square-005: solved=False pushes=12 time=12.80s mass=0.675 sims=12 wall=610s
+tick 12: active 0 queue 0 nodes 10 kids 10 plan 14.5s sim 6.3s total 610s
+[38;5;159m[Genesis] [21:39:59] [INFO] 💤 Exiting Genesis and caching compiled kernels...[0m
+wrote /home/alon/Code/pile_manipulation/experiments/EXP-0076-expert-demos/results/runs/F3_phaseH2H1.json
